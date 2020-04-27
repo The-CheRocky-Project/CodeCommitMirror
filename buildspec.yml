@@ -5,7 +5,7 @@ phases:
       nodejs: 12
     commands:
       # Install dependencies needed for running tests
-      - npm install
+      - npm install nodeJS/
 
       # Upgrade AWS CLI to the latest version
       - pip3 install --upgrade awscli
@@ -22,7 +22,7 @@ phases:
       - rm -r node_modules
 
       # Install runtime dependencies
-      - npm install --production
+      - npm install --production nodeJS/
 
       - aws cloudformation package --template template.yml --s3-bucket $S3_BUCKET --output-template-file template-export.yml
 
