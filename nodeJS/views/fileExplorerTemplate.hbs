@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="it" id="home">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="Pagina principale per poter caricare ed elaborare video di highligths di partite di calcio">
+		<title>Home - Highligths</title>
+
+		<!-- Bootstrap core CSS -->
+		<link href="./css/bootstrap.min.css" rel="stylesheet"/>
+		<!-- Custom styles for this page -->
+		<link href="./css/style.css" rel="stylesheet"/>
+        <!-- js script includes -->
+        <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="./javascript/serverListener.js"></script>
+	</head>
+	<body>
+		<header>
+			<div class="navbar navbar-dark bg-dark shadow-sm">
+				<div class="container d-flex justify-content-between">
+					<strong class="navbar-brand d-flex align-items-center">Autonomous Highlights</strong>
+				</div>
+			</div>
+		</header>
+
+		<main role="main">
+
+		  <section class="jumbotron text-center">
+			<div class="container">
+				<h1>Carica un video</h1>
+				<p class="lead text-muted">Carica un video, in formato mp4, di una partita di calcio di cui vuoi venga elaborato un video degli highlights.</p>
+				<p>
+					<form action="#" method="post" enctype="multipart/form-data">
+						<input class="buttonSubmit" type="file" accept=".mp4" name="filetoupload" />
+						<button type="button" class="btn btn-warning" id="carica">Carica</button>
+					</form>
+					<div class="progress">
+						<div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+					</div>
+				</p>
+			</div>
+		  </section>
+
+		  <div class="album py-5 bg-light">
+			<div class="container">
+
+			  <div class="row">
+				<div class="col-md-4">
+				  <div class="card mb-4 shadow-sm">
+					<img src="./img/thumbnail.png" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail" title="Descrizione immagine"></img>
+					<div class="card-body">
+						<p>Titolo.mp4</p>
+						<div class="d-flex justify-content-between align-items-center">
+							<div class="btn-group">
+							<button type="button" class="btn btn-sm btn-outline-secondary">Scarica</button>
+							<button id="start" type="button" class="btn btn-sm btn-outline-secondary">Elabora</button>
+							</div>
+							<small class="text-muted">5:32 min</small>
+						</div>
+					</div>
+				  </div>
+				</div>
+				<div class="col-md-4">
+				  <div class="card mb-4 shadow-sm">
+					<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+					<div class="card-body">
+						<p>Titolo.mp4</p>
+						<div class="d-flex justify-content-between align-items-center">
+							<div class="btn-group">
+							<button type="button" class="btn btn-sm btn-outline-secondary">Scarica</button>
+							<button type="button" class="btn btn-sm btn-outline-secondary">Elabora</button>
+							</div>
+							<small class="text-muted">5:32 min</small>
+						</div>
+					</div>
+				  </div>
+				</div>
+				<div class="col-md-4">
+				  <div class="card mb-4 shadow-sm">
+					<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+					<div class="card-body">
+						<p>Titolo.mp4</p>
+						<div class="d-flex justify-content-between align-items-center">
+							<div class="btn-group">
+							<button type="button" class="btn btn-sm btn-outline-secondary">Scarica</button>
+							<button type="button" class="btn btn-sm btn-outline-secondary">Elabora</button>
+							</div>
+							<small class="text-muted">5:32 min</small>
+						</div>
+					</div>
+				  </div>
+				</div>
+				<div class="col-md-4">
+				  <div class="card mb-4 shadow-sm">
+					<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+					<div class="card-body">
+						<p>Titolo.mp4</p>
+						<div class="d-flex justify-content-between align-items-center">
+							<div class="btn-group">
+							<button type="button" class="btn btn-sm btn-outline-secondary">Scarica</button>
+							<button type="button" class="btn btn-sm btn-outline-secondary">Elabora</button>
+							</div>
+							<small class="text-muted">5:32 min</small>
+						</div>
+					</div>
+				  </div>
+				</div>
+				<div class="col-md-4">
+				  <div class="card mb-4 shadow-sm">
+					<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+					<div class="card-body">
+						<p>Titolo.mp4</p>
+						<div class="d-flex justify-content-between align-items-center">
+							<div class="btn-group">
+							<button type="button" class="btn btn-sm btn-outline-secondary">Scarica</button>
+							<button type="button" class="btn btn-sm btn-outline-secondary">Elabora</button>
+							</div>
+							<small class="text-muted">5:32 min</small>
+						</div>
+					</div>
+				  </div>
+				</div>
+				<div class="col-md-4">
+				  <div class="card mb-4 shadow-sm">
+					<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+					<div class="card-body">
+						<p>Titolo.mp4</p>
+						<div class="d-flex justify-content-between align-items-center">
+							<div class="btn-group">
+							<button type="button" class="btn btn-sm btn-outline-secondary">Scarica</button>
+							<button type="button" class="btn btn-sm btn-outline-secondary">Elabora</button>
+							</div>
+							<small class="text-muted">5:32 min</small>
+						</div>
+					</div>
+				  </div>
+				</div>
+				<div class="col-md-4">
+				  <div class="card mb-4 shadow-sm">
+					<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+					<div class="card-body">
+						<p>Titolo.mp4</p>
+						<div class="d-flex justify-content-between align-items-center">
+							<div class="btn-group">
+							<button type="button" class="btn btn-sm btn-outline-secondary">Scarica</button>
+							<button type="button" class="btn btn-sm btn-outline-secondary">Elabora</button>
+							</div>
+							<small class="text-muted">5:32 min</small>
+						</div>
+					</div>
+				  </div>
+				</div>
+				<div class="col-md-4">
+				  <div class="card mb-4 shadow-sm">
+					<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+					<div class="card-body">
+						<p>Titolo.mp4</p>
+						<div class="d-flex justify-content-between align-items-center">
+							<div class="btn-group">
+							<button type="button" class="btn btn-sm btn-outline-secondary">Scarica</button>
+							<button type="button" class="btn btn-sm btn-outline-secondary">Elabora</button>
+							</div>
+							<small class="text-muted">5:32 min</small>
+						</div>
+					</div>
+				  </div>
+				</div>
+				<div class="col-md-4">
+				  <div class="card mb-4 shadow-sm">
+					<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+					<div class="card-body">
+						<p>Titolo.mp4</p>
+						<div class="d-flex justify-content-between align-items-center">
+							<div class="btn-group">
+							<button type="button" class="btn btn-sm btn-outline-secondary">Scarica</button>
+							<button type="button" class="btn btn-sm btn-outline-secondary">Elabora</button>
+							</div>
+							<small class="text-muted">5:32 min</small>
+						</div>
+					</div>
+				  </div>
+				</div>
+			  </div>
+			</div>
+		  </div>
+
+		</main>
+
+		<footer class="bg-dark">
+		  <div class="container">
+			<p class="float-right">
+			  <a href="#">Torna su</a>
+			</p>
+			<p>Progetto di ingegneria del software 2019/2020 del gruppo TheCherockyProject.</p>
+		  </div>
+		</footer>
+	</body>
+</html>

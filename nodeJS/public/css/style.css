@@ -1,0 +1,163 @@
+* {
+	margin:0;
+	padding: 0;
+	font-size: 1.0em;
+}
+
+/*Stili generali del sito*/
+h1{
+  font-size:2.2em;
+}
+
+.bg-orange{
+  background-color: #ff9300;
+}
+
+.navbar-orange{
+  color: #212529;
+}
+
+.container1{
+  width: 80%;
+  margin:1em 10% 1em 10%;
+}
+
+/* CSS per il footer */
+footer {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  color:#fff;
+}
+
+footer p {
+  margin-bottom: .25rem;
+}
+
+/* CSS per la pagina home */
+#home .jumbotron {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  margin-bottom: 0;
+  background-color: #fff;
+}
+@media (min-width: 768px) {
+  #home .jumbotron {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+
+#home .jumbotron p:last-child {
+  margin-bottom: 0;
+}
+
+#home .jumbotron h1 {
+  font-weight: 300;
+}
+
+#home .jumbotron .container {
+  max-width: 40rem;
+}
+
+#home .bd-placeholder-img {
+	font-size: 1.125rem;
+	text-anchor: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+@media (min-width: 768px) {
+	#home .bd-placeholder-img-lg {
+		font-size: 3.5rem;
+	}
+}
+
+#home .progress {
+	margin-top: 5em;
+}
+
+
+/*CSS per results, pagina video elaborato e tabella*/
+/*tutti tag del UC3*/
+
+/*Parte del video a display*/
+
+#divVideo {
+    margin-top: 1.5%;
+    margin-bottom: 1.5%;
+}
+
+legend {
+    display: none;
+}
+
+iframe {
+    display: block;
+    height: 34.375em;
+    width: 100%;
+    margin-bottom: 0.8em;
+}
+
+#bar-width{
+  width:30% !important;
+  margin:auto;
+}
+
+#divTable{
+  margin-top:2em;
+}
+
+.addElementRow{
+	text-align: center;
+}
+
+#video {
+    margin-left: 45%;
+    margin-right: 45%;
+}
+
+.button-right{
+  float:right;
+}
+
+#tableReset{
+  margin-right: 2%;
+}
+
+.backButton{
+	margin-bottom: 0.5em;
+}
+
+.alert{
+	text-align: center;
+}
+
+/*Bottone annulla modifiche, messo qui perchè è dentro div tabella ma è fuori dalla tabella*/
+#annullaMod {
+    margin-left: 89%;
+    margin-right: 1%;
+}
+
+/*Parte tabella*/
+
+#confermaButton {
+    margin-left: 89%;
+    margin-right: 1%;
+}
+
+/*CSS per la pagina di caricamento*/
+
+#distance{
+  text-align: center;
+  margin:12.2em 10% 12.2em 10%;
+}
+
+#progress-style{
+  width: 25%;
+}
+
+#progress-div-style{
+  height: 3em;
+}

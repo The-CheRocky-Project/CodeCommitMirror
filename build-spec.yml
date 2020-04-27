@@ -1,0 +1,45 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      nodejs: 12
+    commands:
+      # Install dependencies needed for running tests
+      - npm install
+
+      # Upgrade AWS CLI to the latest version
+      - pip3 install --upgrade awscli
+      #- nohup /usr/local/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://127.0.0.1:2375 --storage-driver=overlay2&
+      #- timeout 15 sh -c "until docker info; do echo .; sleep 1; done"
+  #pre_build:
+    #commands:
+      #- $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+      #- REPOSITORY_URI=693949087897.dkr.ecr.us-east-2.amazonaws.com/ahlcontainer
+      #- COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)
+  post_build:
+    commands:
+      # Remove existing node_modules to clear dev dependencies
+      - rm -r node_modules
+
+      # Install runtime dependencies
+      - npm install --production
+
+      - aws cloudformation package --template template.yml --s3-bucket $S3_BUCKET --output-template-file template-export.yml
+
+      # Do not remove this statement. This command is required for AWS CodeStar projects.
+      # Update the AWS Partition, AWS Region, account ID and project ID in the project ARN on template-configuration.json file so AWS CloudFormation can tag project resources.
+      - sed -i.bak 's/\$PARTITION\$/'${PARTITION}'/g;s/\$AWS_REGION\$/'${AWS_REGION}'/g;s/\$ACCOUNT_ID\$/'${ACCOUNT_ID}'/g;s/\$PROJECT_ID\$/'${PROJECT_ID}'/g' template-configuration.json
+artifacts:
+  files:
+    - template-export.yml
+    - template-configuration.json
+
+      #- docker build -t ahlcontainer ./nodeJS
+  #post_build:
+    #commands:
+      #- docker tag ahlcontainer:latest $REPOSITORY_URI:latest
+      #- docker push $REPOSITORY_URI:latest
+      #- printf "[{\"name\":\"ahlcontainer\",\"imageUri\":\"%s\"}]" $REPOSITORY_URI:latest > images.json
+#artifacts:
+  #files:
+    #images.json

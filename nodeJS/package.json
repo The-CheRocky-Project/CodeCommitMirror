@@ -1,0 +1,22 @@
+{
+  "name": "ahlConsole",
+  "version": "0.0.2",
+  "desciption": "Autonomous Highlights Platform Web Console",
+  "author": "The CheRocky Project",
+  "scripts": {
+    "start": "node router.js"
+  },
+  "main": "router.js",
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "express-handlebars": "^4.0.3",
+    "hbs": "^4.1.1",
+    "http": "0.0.0",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "nodemon": "^2.0.3",
+    "socket.io": "^2.3.0"
+  }
+}
