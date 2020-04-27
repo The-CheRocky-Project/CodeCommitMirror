@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node nodeJS/router.js"
   },
-  "main": "router.js",
+  "main": "nodeJS/router.js",
   "dependencies": {
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
