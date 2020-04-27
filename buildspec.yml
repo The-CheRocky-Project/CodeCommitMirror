@@ -5,7 +5,8 @@ phases:
       nodejs: 12
     commands:
       # Install dependencies needed for running tests
-      - npm install nodeJS/
+      - cd nodeJS/
+      - npm install
 
       # Upgrade AWS CLI to the latest version
       - pip3 install --upgrade awscli
@@ -23,7 +24,7 @@ phases:
 
       # Install runtime dependencies
       - npm install --production nodeJS/
-
+      - cd ..
       - aws cloudformation package --template template.yml --s3-bucket $S3_BUCKET --output-template-file template-export.yml
 
       # Do not remove this statement. This command is required for AWS CodeStar projects.
