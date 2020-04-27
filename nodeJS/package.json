@@ -4,7 +4,7 @@
   "desciption": "Autonomous Highlights Platform Web Console",
   "author": "The CheRocky Project",
   "scripts": {
-    "start": "node router.js"
+    "start": "node nodeJS/router.js"
   },
   "main": "router.js",
   "dependencies": {
