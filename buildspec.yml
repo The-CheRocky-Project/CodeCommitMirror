@@ -23,7 +23,7 @@ phases:
       - rm -r node_modules
 
       # Install runtime dependencies
-      - npm install --production nodeJS/
+      - npm install --production
       - cd ..
       - aws cloudformation package --template template.yml --s3-bucket $S3_BUCKET --output-template-file template-export.yml
 

@@ -4,9 +4,9 @@
   "desciption": "Autonomous Highlights Platform Web Console",
   "author": "The CheRocky Project",
   "scripts": {
-    "start": "node nodeJS/router.js"
+    "start": "node router.js"
   },
-  "main": "nodeJS/router.js",
+  "main": "router.js",
   "dependencies": {
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
