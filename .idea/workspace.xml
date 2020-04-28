@@ -2,50 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ab918ca1-b1be-45cf-ad6f-5a0d0d896ddd" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.ebextensions/cloudwatch.config" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/controllers/editController.js" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/controllers/editController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/controllers/fileExplorerController.js" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/controllers/fileExplorerController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/controllers/loadingController.js" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/controllers/loadingController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/models/editModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/models/editModel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/models/fileExplorerModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/models/fileExplorerModel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/models/loadingModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/models/loadingModel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/public/css/bootstrap-grid.css" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/public/css/bootstrap-grid.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/public/css/bootstrap-grid.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/public/css/bootstrap-grid.css.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/public/css/bootstrap-grid.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/public/css/bootstrap-grid.min.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/public/css/bootstrap-grid.min.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/public/css/bootstrap-grid.min.css.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/public/css/bootstrap-reboot.css" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/public/css/bootstrap-reboot.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/public/css/bootstrap-reboot.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/public/css/bootstrap-reboot.css.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/public/css/bootstrap-reboot.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/public/css/bootstrap-reboot.min.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/public/css/bootstrap-reboot.min.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/public/css/bootstrap-reboot.min.css.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/public/css/bootstrap.css" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/public/css/bootstrap.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/public/css/bootstrap.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/public/css/bootstrap.css.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/public/css/bootstrap.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/public/css/bootstrap.min.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/public/css/bootstrap.min.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/public/css/bootstrap.min.css.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/public/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/public/css/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/public/img/thumbnail.png" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/public/img/thumbnail.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/public/javascript/bootstrap.bundle.js" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/public/javascript/bootstrap.bundle.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/public/javascript/bootstrap.bundle.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/public/javascript/bootstrap.bundle.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/public/javascript/bootstrap.bundle.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/public/javascript/bootstrap.bundle.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/public/javascript/bootstrap.bundle.min.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/public/javascript/bootstrap.bundle.min.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/public/javascript/bootstrap.js" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/public/javascript/bootstrap.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/public/javascript/bootstrap.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/public/javascript/bootstrap.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/public/javascript/bootstrap.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/public/javascript/bootstrap.min.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/public/javascript/bootstrap.min.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/public/javascript/bootstrap.min.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/public/javascript/serverListener.js" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/public/javascript/serverListener.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/public/stylesheets/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/public/stylesheets/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/router.js" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/router.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/views/editTemplate.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/views/editTemplate.hbs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/views/editView.js" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/views/editView.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/views/error.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/views/error.hbs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/views/errorTemplate.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/views/errorTemplate.hbs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/views/fileExplorerTemplate.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/views/fileExplorerTemplate.hbs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/views/fileExplorerView.js" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/views/fileExplorerView.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/views/index.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/views/index.hbs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/views/loadingTemplate.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/views/loadingTemplate.hbs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/views/loadingView.js" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/views/loadingView.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nodeJS/src/router.js" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/router.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,6 +23,12 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
   </component>
   <component name="RecentsManager">
@@ -95,7 +59,7 @@
       <option name="presentableId" value="Default" />
       <updated>1587999008905</updated>
       <workItem from="1587999012516" duration="730000" />
-      <workItem from="1588064967070" duration="1901000" />
+      <workItem from="1588064967070" duration="2503000" />
     </task>
     <servers />
   </component>

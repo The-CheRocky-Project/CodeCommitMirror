@@ -5,11 +5,10 @@ const http = require('http').createServer(ahl);
 const port = process.env.PORT || 3000;
 const path = require('path');
 const handlebars = require('express-handlebars');
-const io = require('socket.io')(http);
+
 
 //creates a backport for the socket communication
-const backdoor = require('http').createServer(ahl);
-const backport = require('socket.io')(backdoor);
+const backport = require('socket.io')(http);
 
 //publish CSS, client JS and images
 ahl.use(express.static(path.join(__dirname,'/public')));
@@ -59,7 +58,7 @@ ahl.all('/toLoading',(req,res) => {
     res.send('');
     setTimeout(() => {
         activePage = pages.edit;
-        io.emit('refresh','');
+        backport.emit('refresh','');
     },10000)
 });
 
@@ -70,18 +69,13 @@ ahl.all('/toEdit',(req,res) => {
 });
 
 // associate connection events to messages emit
-io.on('connection', (socket) => {
+backport.on('connection', (socket) => {
     console.log('user connected to io');
     socket.on('disconnect', () => {
         console.log('user disconnected from io');
     })
 });
-// backport.on('connection', (socket) => {
-//     console.log('user connected to backport');
-//     socket.on('disconnect', () => {
-//         console.log('user disconnected from backport');
-//     })
-// });
+
 // notifyChangedFileList()
 ahl.get('/notifyChangedFileList', (req, res, next) => {
     backport.emit('changeFile', req.body);
@@ -92,8 +86,3 @@ ahl.get('/notifyChangedFileList', (req, res, next) => {
 http.listen(port, function(){
     console.log('listening on *:' + port);
 });
-
-//puts the socket listening on the correct port
-//backdoor.listen(3001, function () {
-//    console.log('backdoor opened on *:3001');
-//});
