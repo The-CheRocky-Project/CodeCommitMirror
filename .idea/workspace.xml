@@ -2,13 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ab918ca1-b1be-45cf-ad6f-5a0d0d896ddd" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/nodeJS/tests/views/fileExplorerViewTest.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/src/router.js" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/router.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nodeJS/src/controllers/fileExplorerController.js" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/controllers/fileExplorerController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nodeJS/src/views/fileExplorerTemplate.hbs" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/views/fileExplorerTemplate.hbs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nodeJS/src/views/fileExplorerView.js" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/src/views/fileExplorerView.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -29,12 +40,54 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs.mocha.mocha_node_package_dir" value="$PROJECT_DIR$/node_modules/mocha" />
     <property name="nodejs_package_manager_path" value="npm" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/nodeJS/src" />
     </key>
+  </component>
+  <component name="RunManager" selected="Mocha.nodeJS\tests\views\fileExplorerViewTest.js">
+    <configuration name="router.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/nodeJS/src/router.js" working-dir="$PROJECT_DIR$/nodeJS/src">
+      <method v="2" />
+    </configuration>
+    <configuration name="nodeJS\tests\views\fileExplorerViewTest.js" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <mocha-package>$PROJECT_DIR$/node_modules/mocha</mocha-package>
+      <working-directory>$PROJECT_DIR$</working-directory>
+      <pass-parent-env>true</pass-parent-env>
+      <ui>bdd</ui>
+      <extra-mocha-options />
+      <test-kind>TEST_FILE</test-kind>
+      <test-file>$PROJECT_DIR$/nodeJS/tests/views/fileExplorerViewTest.js</test-file>
+      <method v="2" />
+    </configuration>
+    <configuration name="print().with argument.body should contain the given fileKeys and Urls" type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <mocha-package>$PROJECT_DIR$/node_modules/mocha</mocha-package>
+      <working-directory>$PROJECT_DIR$</working-directory>
+      <pass-parent-env>true</pass-parent-env>
+      <ui>bdd</ui>
+      <extra-mocha-options />
+      <test-kind>TEST</test-kind>
+      <test-file>$PROJECT_DIR$/nodeJS/tests/views/fileExplorerViewTest.js</test-file>
+      <test-names>
+        <name value="print()" />
+        <name value="with argument" />
+        <name value="body should contain the given fileKeys and Urls" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Mocha.nodeJS\tests\views\fileExplorerViewTest.js" />
+        <item itemvalue="Mocha.print().with argument.body should contain the given fileKeys and Urls" />
+        <item itemvalue="Node.js.router.js" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="ServiceViewManager">
     <option name="viewStates">
@@ -71,5 +124,69 @@
       <screen x="0" y="0" width="1280" height="1024" />
     </state>
     <state x="374" y="259" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.1024.1280.1024/0.0.1280.1024@0.0.1280.1024" timestamp="1588066891483" />
+    <state width="1596" height="285" key="GridCell.Tab.0.bottom" timestamp="1588086499180">
+      <screen x="63" y="0" width="1617" height="1050" />
+    </state>
+    <state width="1596" height="285" key="GridCell.Tab.0.bottom/63.0.1617.1050/-1920.-30.1920.1040@63.0.1617.1050" timestamp="1588086499180" />
+    <state width="1596" height="285" key="GridCell.Tab.0.center" timestamp="1588086499179">
+      <screen x="63" y="0" width="1617" height="1050" />
+    </state>
+    <state width="1596" height="285" key="GridCell.Tab.0.center/63.0.1617.1050/-1920.-30.1920.1040@63.0.1617.1050" timestamp="1588086499179" />
+    <state width="1596" height="285" key="GridCell.Tab.0.left" timestamp="1588086499179">
+      <screen x="63" y="0" width="1617" height="1050" />
+    </state>
+    <state width="1596" height="285" key="GridCell.Tab.0.left/63.0.1617.1050/-1920.-30.1920.1040@63.0.1617.1050" timestamp="1588086499179" />
+    <state width="1596" height="285" key="GridCell.Tab.0.right" timestamp="1588086499179">
+      <screen x="63" y="0" width="1617" height="1050" />
+    </state>
+    <state width="1596" height="285" key="GridCell.Tab.0.right/63.0.1617.1050/-1920.-30.1920.1040@63.0.1617.1050" timestamp="1588086499179" />
+    <state width="1596" height="352" key="GridCell.Tab.1.bottom" timestamp="1588085696668">
+      <screen x="63" y="0" width="1617" height="1050" />
+    </state>
+    <state width="1596" height="352" key="GridCell.Tab.1.bottom/63.0.1617.1050/-1920.-30.1920.1040@63.0.1617.1050" timestamp="1588085696668" />
+    <state width="1596" height="352" key="GridCell.Tab.1.center" timestamp="1588085696668">
+      <screen x="63" y="0" width="1617" height="1050" />
+    </state>
+    <state width="1596" height="352" key="GridCell.Tab.1.center/63.0.1617.1050/-1920.-30.1920.1040@63.0.1617.1050" timestamp="1588085696668" />
+    <state width="1596" height="352" key="GridCell.Tab.1.left" timestamp="1588085696667">
+      <screen x="63" y="0" width="1617" height="1050" />
+    </state>
+    <state width="1596" height="352" key="GridCell.Tab.1.left/63.0.1617.1050/-1920.-30.1920.1040@63.0.1617.1050" timestamp="1588085696667" />
+    <state width="1596" height="352" key="GridCell.Tab.1.right" timestamp="1588085696668">
+      <screen x="63" y="0" width="1617" height="1050" />
+    </state>
+    <state width="1596" height="352" key="GridCell.Tab.1.right/63.0.1617.1050/-1920.-30.1920.1040@63.0.1617.1050" timestamp="1588085696668" />
+    <state width="1596" height="352" key="GridCell.Tab.2.bottom" timestamp="1588085696668">
+      <screen x="63" y="0" width="1617" height="1050" />
+    </state>
+    <state width="1596" height="352" key="GridCell.Tab.2.bottom/63.0.1617.1050/-1920.-30.1920.1040@63.0.1617.1050" timestamp="1588085696668" />
+    <state width="1596" height="352" key="GridCell.Tab.2.center" timestamp="1588085696668">
+      <screen x="63" y="0" width="1617" height="1050" />
+    </state>
+    <state width="1596" height="352" key="GridCell.Tab.2.center/63.0.1617.1050/-1920.-30.1920.1040@63.0.1617.1050" timestamp="1588085696668" />
+    <state width="1596" height="352" key="GridCell.Tab.2.left" timestamp="1588085696668">
+      <screen x="63" y="0" width="1617" height="1050" />
+    </state>
+    <state width="1596" height="352" key="GridCell.Tab.2.left/63.0.1617.1050/-1920.-30.1920.1040@63.0.1617.1050" timestamp="1588085696668" />
+    <state width="1596" height="352" key="GridCell.Tab.2.right" timestamp="1588085696668">
+      <screen x="63" y="0" width="1617" height="1050" />
+    </state>
+    <state width="1596" height="352" key="GridCell.Tab.2.right/63.0.1617.1050/-1920.-30.1920.1040@63.0.1617.1050" timestamp="1588085696668" />
+    <state width="1596" height="352" key="GridCell.Tab.3.bottom" timestamp="1588085696669">
+      <screen x="63" y="0" width="1617" height="1050" />
+    </state>
+    <state width="1596" height="352" key="GridCell.Tab.3.bottom/63.0.1617.1050/-1920.-30.1920.1040@63.0.1617.1050" timestamp="1588085696669" />
+    <state width="1596" height="352" key="GridCell.Tab.3.center" timestamp="1588085696668">
+      <screen x="63" y="0" width="1617" height="1050" />
+    </state>
+    <state width="1596" height="352" key="GridCell.Tab.3.center/63.0.1617.1050/-1920.-30.1920.1040@63.0.1617.1050" timestamp="1588085696668" />
+    <state width="1596" height="352" key="GridCell.Tab.3.left" timestamp="1588085696668">
+      <screen x="63" y="0" width="1617" height="1050" />
+    </state>
+    <state width="1596" height="352" key="GridCell.Tab.3.left/63.0.1617.1050/-1920.-30.1920.1040@63.0.1617.1050" timestamp="1588085696668" />
+    <state width="1596" height="352" key="GridCell.Tab.3.right" timestamp="1588085696668">
+      <screen x="63" y="0" width="1617" height="1050" />
+    </state>
+    <state width="1596" height="352" key="GridCell.Tab.3.right/63.0.1617.1050/-1920.-30.1920.1040@63.0.1617.1050" timestamp="1588085696668" />
   </component>
 </project>
