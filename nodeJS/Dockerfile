@@ -10,11 +10,11 @@ COPY package*.json ./
 RUN npm install
 
 # copy the source code
-COPY ./controllers ./controllers
-COPY ./models ./models
-COPY ./public ./public
-COPY ./views ./views
-COPY ./router.js ./router.js
+COPY src/controllers ./controllers
+COPY src/models ./models
+COPY src/public ./public
+COPY src/views ./views
+COPY src/router.js ./router.js
 
 # expose ports
 
