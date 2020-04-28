@@ -90,7 +90,7 @@ ahl.get('/notifyChangedFileList', (req, res, next) => {
 
 //puts the server listening on the correct port
 http.listen(port, function(){
-    console.log('listening on *:80');
+    console.log('listening on *:' + port);
 });
 
 //puts the socket listening on the correct port
