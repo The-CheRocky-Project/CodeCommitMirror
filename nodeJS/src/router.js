@@ -76,13 +76,13 @@ backport.on('connection', (socket) => {
     })
 });
 
+//puts the server listening on the correct port
+http.listen(port, function(){
+    console.log('listening on *:' + port);
+});
+
 // notifyChangedFileList()
 ahl.get('/notifyChangedFileList', (req, res, next) => {
     backport.emit('changeFile', req.body);
     res.send('');
-});
-
-//puts the server listening on the correct port
-http.listen(port, function(){
-    console.log('listening on *:' + port);
 });
