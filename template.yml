@@ -93,8 +93,3 @@ Resources:
           OptionName: Subnets
           Value: !Ref 'SubnetId'
         - !Ref "AWS::NoValue"
-  ahlStorage:
-    Type: AWS::S3::Bucket
-    DeletionPolicy: Delete
-    Properties:
-      BucketName: ahlgiovanni

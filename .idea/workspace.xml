@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ab918ca1-b1be-45cf-ad6f-5a0d0d896ddd" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodeJS/router.js" beforeDir="false" afterPath="$PROJECT_DIR$/nodeJS/router.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/template.yml" beforeDir="false" afterPath="$PROJECT_DIR$/template.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -49,7 +47,7 @@
       <option name="presentableId" value="Default" />
       <updated>1587999008905</updated>
       <workItem from="1587999012516" duration="730000" />
-      <workItem from="1588064967070" duration="997000" />
+      <workItem from="1588064967070" duration="1410000" />
     </task>
     <servers />
   </component>
