@@ -1,5 +1,4 @@
 # Default ignored files
 node_modules/
-nodeJS/package-lock.json
 nodeJS/node_modules/
-package-lock.json
+.idea
