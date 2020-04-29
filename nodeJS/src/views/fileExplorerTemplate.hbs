@@ -25,7 +25,7 @@
 		</header>
 
 		<main role="main">
-
+            <!-- Da implementare eventualmente
 		  <section class="jumbotron text-center">
 			<div class="container">
 				<h1>Carica un video</h1>
@@ -41,12 +41,18 @@
 				</p>
 			</div>
 		  </section>
+		  -->
 
 		  <div class="album py-5 bg-light">
 			<div class="container">
 
 			  <div class="row">
-                  {{{tiles}}}
+                {{#unless files}}
+                    <p>Non sono presenti video.</p>
+                {{/unless}}
+                {{#each files}}
+                    {{> tileTemplate fileKey=fileKey thumbnailUrl=thumbnailUrl}}
+                {{/each}}
 			  </div>
 			</div>
 		  </div>
