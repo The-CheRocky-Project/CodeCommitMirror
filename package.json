@@ -7,7 +7,7 @@
     "start": "node nodeJS/src/router.js",
     "test": "mocha nodeJS/tests --recursive --exit"
   },
-  "main": "router.js",
+  "main": "nodeJS/src/router.js",
   "dependencies": {
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
