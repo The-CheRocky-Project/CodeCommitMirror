@@ -11,5 +11,7 @@
  * @param {json} fileList - Lista dei file in formato json contente la key del file e l'url alla sua thumbail
  */
 exports.print = (req,res,fileList) => {
-    res.render('fileExplorerTemplate',fileList);
-};
+    res.render('layouts/fileExplorerTemplate', {
+        template: 'fileExplorerTemplate',
+        data: fileList
+    })};

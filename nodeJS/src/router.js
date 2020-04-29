@@ -21,18 +21,19 @@ ahl.set('views',path.join(__dirname,'views'));
 
 // sets up the handlebars view engine
 const partialsLocation = path.join(__dirname,'views/partials');
+const layoutsLocation = path.join(__dirname,'views/layouts');
 ahl.engine('.hbs', exphbs({
     extname: 'hbs',
-    layoutsDir: path.join(__dirname,'views'),
+    layoutsDir: layoutsLocation,
     partialsDir: partialsLocation,
-    defaultLayout: 'fileExplorerTemplate'
+    defaultLayout: 'main'
 }));
 ahl.set('view engine','.hbs');
 
 // initialize all the 3 controller
 const fileExplorerController = require('./controllers/fileExplorerController');
-const loadingController=require('./controllers/loadingController');
-const editController=require('./controllers/editController');
+const loadingController = require('./controllers/loadingController');
+const editController = require('./controllers/editController');
 
 const pages = {
     fileExplorer: fileExplorerController,
@@ -47,29 +48,32 @@ const getActive = () => {
 
 //sets up all the routes
 ahl.get('/',(req,res) =>
-    activePage.getBody(req,res)
+    getActive().getBody(req,res)
 );
 
 ahl.all('/toFileExplorer',(req,res) => {
     console.log('called toFileExplorer');
     activePage = pages.fileExplorer;
     res.send('');
+    backport.emit('refresh','');
 });
 
 ahl.all('/toLoading',(req,res) => {
     console.log('called toLoading');
     activePage = pages.loading;
     res.send('');
-    setTimeout(() => {
-        activePage = pages.edit;
-        backport.emit('refresh','');
-    },10000)
+    backport.emit('refresh','');
+    // setTimeout(() => {
+    //     activePage = pages.edit;
+    //     backport.emit('refresh','');
+    // },10000)
 });
 
 ahl.all('/toEdit',(req,res) => {
     console.log('called toEdit');
     activePage = pages.edit;
     res.send('');
+    backport.emit('refresh','');
 });
 
 // associate connection events to messages emit
