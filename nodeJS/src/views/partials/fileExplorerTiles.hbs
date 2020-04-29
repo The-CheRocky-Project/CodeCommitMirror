@@ -1,0 +1,6 @@
+{{#unless files}}
+    <p>Non sono presenti video.</p>
+{{/unless}}
+{{#each files}}
+    {{> tileTemplate fileKey=fileKey thumbnailUrl=thumbnailUrl}}
+{{/each}}
