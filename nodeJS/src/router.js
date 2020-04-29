@@ -4,7 +4,7 @@ const ahl = express();
 const http = require('http').createServer(ahl);
 const port = process.env.PORT || 3000;
 const path = require('path');
-const handlebars = require('express-handlebars');
+const exphbs = require('express-handlebars');
 
 
 //creates a backport for the socket communication
@@ -18,12 +18,16 @@ ahl.set('controllers',path.join(__dirname,'/controllers'));
 ahl.set('models',path.join(__dirname,'models'));
 ahl.set('views',path.join(__dirname,'views'));
 
+
 // sets up the handlebars view engine
-ahl.set('view engine','hbs');
-ahl.engine('handlebars', handlebars({
+const partialsLocation = path.join(__dirname,'views/partials');
+ahl.engine('.hbs', exphbs({
     extname: 'hbs',
-    layoutsDir: ahl.get('views')
+    layoutsDir: path.join(__dirname,'views'),
+    partialsDir: partialsLocation,
+    defaultLayout: 'fileExplorerTemplate'
 }));
+ahl.set('view engine','.hbs');
 
 // initialize all the 3 controller
 const fileExplorerController = require('./controllers/fileExplorerController');
@@ -43,7 +47,7 @@ const getActive = () => {
 
 //sets up all the routes
 ahl.get('/',(req,res) =>
-    getActive().getBody(req,res)
+    activePage.getBody(req,res)
 );
 
 ahl.all('/toFileExplorer',(req,res) => {
