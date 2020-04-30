@@ -2,6 +2,6 @@
 
 //require the template
 //const body= require('../templates/editTemplate.hbs');
-exports.print = (req,res) => {
+exports.print = (res) => {
     res.render('layouts/editTemplate');
 };
