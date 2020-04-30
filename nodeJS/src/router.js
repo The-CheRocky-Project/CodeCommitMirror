@@ -162,3 +162,13 @@ ahl.post('includeLabel', (req,res) => {
 ahl.post('getVideoFrame', (req,res) => {
     editController.updateVideoFrame(res);
 });
+
+/**
+ *  ​API che si occupa dell’inoltro delle informazioni delle label passate tramite HTTP POST
+ *  come parametro sfruttando la funzione addNewLabelRow(start, duration, modelIndex).
+ * @param {object} req - Rappresenta la richiesta http contenente il dizionario con start, duration e model index
+ * @param {object} res - Rappresenta la risposta http
+ */
+ahl.post('addLabel', (req,res) => {
+    res.send(editController.addNewLabelRow(req['start'],req['duration'],req['modelIndex']));
+});
