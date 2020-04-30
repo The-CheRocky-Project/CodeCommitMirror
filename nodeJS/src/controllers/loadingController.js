@@ -3,11 +3,15 @@
  * @module controllers/loadingController
  */
 // requires model and view
-let view=require('../views/loadingView');
-model= require('../models/loadingModel');
+const view = require('../views/loadingView');
+const model = require('../models/loadingModel');
 
-exports.getBody = (req,res) => {
-    view.print(req,res);
+/**
+ * Funzione per ​stampare la progress bar iniziale
+ * @param {object} res - Rappresenta un oggetto XHTML da ritornare
+ */
+exports.getBody = (res) => {
+    view.print(res)
 }
 
 /**

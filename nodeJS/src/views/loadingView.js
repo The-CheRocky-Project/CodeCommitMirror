@@ -3,11 +3,10 @@
 //Register progressBar as a partial
 //handlebars.registerPartial('progressBar','progressBar');
 /**
- * Effettua il rendering del body della pagina di caricamento
- * @param {object} req - Rappresenta la richiesta http
+ * Effettua il rendering del body della pagina di caricamento allo stato iniziale
  * @param {object} res - Rappresenta la risposta http
  */
-exports.print = (req,res) => {
+exports.print = (res) => {
     res.render('layouts/loadingTemplate',
         {
             template: 'progressBar',
