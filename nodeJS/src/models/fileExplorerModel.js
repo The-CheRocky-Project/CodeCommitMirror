@@ -2,14 +2,14 @@
  * File Explorer Model module.
  * @module models/fileExplorerModel
  */
-const s3 = require('../wrappers/s3Wrapper')
-const sns = require('../wrappers/snsWrapper')
+const s3Wrap = require('../wrappers/s3Wrapper');
+//const snsWrap = require('../wrappers/snsWrapper');
 
 /**
  * return files from the fileExplorer bucket
  */
 exports.listFilekeys = () =>{
-    return s3.listObject();
+    return s3Wrap.listObjects();
 }
 
 /**

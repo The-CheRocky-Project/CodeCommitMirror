@@ -11,7 +11,7 @@
  * @param {object} res - Rappresenta la risposta http
  * @param {json} fileList - Lista dei file in formato json contente la key del file e l'url alla sua thumbail
  */
-exports.print = (param,res,) => {
+exports.print = (param,res) => {
     res.render('layouts/fileExplorerTemplate', {
         template: 'fileExplorerTemplate',
         data: param['files'],
