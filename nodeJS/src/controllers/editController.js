@@ -1,7 +1,7 @@
 // editController module
 // requires model and view
-let view=require('../views/editView');
-model= require('../models/editModel');
+const view = require('../views/editView');
+const model = require('../models/editModel');
 
 /**
  * Effettua il rendering del body della pagina di visualizzazione dei risultati dell'elaborazione.
@@ -14,6 +14,7 @@ exports.getBody = (res) => {
 /**
  * Imposta la modalità di visualizzazione su original oppure preview
  * @param {boolean} toOriginal - Indica se si vuole passare alla modalità original (true) oppure preview (false)
+ * @returns {boolean} true se la richiestra di cambio modalità è stata elaborata correttamente, false altrimenti.
  */
 exports.changeVideoMode = (toOriginal) => {
     if(toOriginal)
@@ -21,3 +22,11 @@ exports.changeVideoMode = (toOriginal) => {
     else
         return model.setPreviewMode();
 };
+
+/**
+ * Notifica il gradimento del contenuto della tabella
+ * @returns {boolean} true se la richiesta di conferma è stata elaborata correttamente, false altrimenti.
+ */
+exports.confirmEditing = () => {
+    return model.sendConfirmation();
+}
