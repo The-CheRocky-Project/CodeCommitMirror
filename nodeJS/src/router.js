@@ -219,3 +219,16 @@ ahl.post('confirmEdit', (req,res) => {
 ahl.post('getProgressionBar', (req,res) => {
     loadingController.getUpdatedBar(res);
 });
+
+/**
+ *  ​API che si occupa della ​notifica del client tramite il socket
+ *  che il livello di progressione è cambiato ricevendo in
+ *  POST il valore percentuale.
+ * @param {object} req - Rappresenta la richiesta http contenente il valore intero progress
+ * @param {object} res - Rappresenta la risposta http
+ */
+ahl.post('notifyProgressionUpdate', (req,res) => {
+    res.send(backport.emit('progress',req.body['progress']));
+    if (progression >= 100)
+        activePage = pages.edit;
+});
