@@ -1,4 +1,8 @@
-// initalize all the required modules
+/**
+ * Router module - Main Application.
+ * @module router
+ */
+// requires all the modules dependencies
 const express = require('express');
 const ahl = express();
 const http = require('http').createServer(ahl);
@@ -14,7 +18,7 @@ const backport = require('socket.io')(http);
 ahl.use(express.static(path.join(__dirname,'/public')));
 
 //refers different paths for every component
-ahl.set('controllers',path.join(__dirname,'/controllers'));
+ahl.set('controllers',path.join(__dirname,'controllers'));
 ahl.set('models',path.join(__dirname,'models'));
 ahl.set('views',path.join(__dirname,'views'));
 
