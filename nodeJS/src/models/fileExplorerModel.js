@@ -21,7 +21,12 @@ exports.getThumbnailURL = (filekey) =>{
 
 /**
  * send a message by snsWrap to serverless application to launch the file elaboration
+ * @fileKey URL video to elaborate
  */
-// exports.processFile = (fileKey) =>{
-//     return sns.message(fileKey);
-// }
+exports.processFile = (fileKey) =>{
+    return sns.message({
+        message: "start process",
+        data: fileKey
+        }
+    );
+};
