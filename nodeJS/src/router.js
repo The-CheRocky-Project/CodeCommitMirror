@@ -98,3 +98,15 @@ ahl.get('/notifyChangedFileList', (req, res, next) => {
     backport.emit('changeFile', req.body);
     res.send('');
 });
+
+/**
+ * All'accesso all'API getTable() la function restituisce l’oggetto XHTML
+ * rappresentante la tabella delle label aggiornata tramite la
+ * updateLabelTable() dell’editController.
+ * @param {object} req - Rappresenta la richiesta http
+ * @param {object} res - Rappresenta la risposta http
+ */
+ahl.post('getTable', (req,res) => {
+    editController.updateLabelTable(req,res);
+});
+
