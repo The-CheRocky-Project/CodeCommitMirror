@@ -9,22 +9,27 @@ const model = require('../models/fileExplorerModel');
  * @param {object} res - Rappresenta la risposta XHTML
  */
 exports.getBody = (res) => {
+    const mainLayout = true;
+    getUpdatedFileList(mainLayout, res);
+}
+
+exports.getUpdatedFileList = (mainLayout,res) => {
     //Variabile fileList di prova (da costruire prendendo i file da s3)
-    const fileKeys = model.getUpdatedFileList();
+    const fileKeys = model.listFileKeys();
     let fileList = Array();
     for (key in fileKeys){
         fileList.push({
             fileKey: key,
-            thumbnailURL: fileExplorerModel.getThumbnailURL(key)
+            thumbnailURL: model.getThumbnailURL(key)
         });
     }
-    view.print(fileList,res);
-}
+    view.print({files:fileList,main:mainLayout},res);
+};
 
 /**
  * Effettua la chiamata al model per il lancio del processo di elaborazione
  * @param {object} fileKey - Rappresenta la risposta XHTML
  */
 exports.launchFileProcessing = (fileKey) => {
-    model.processFile(fileKey);
-}
+    return model.processFile(fileKey);
+};

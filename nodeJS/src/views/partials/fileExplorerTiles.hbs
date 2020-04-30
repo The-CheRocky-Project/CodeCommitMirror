@@ -1,6 +1,12 @@
-{{#unless files}}
-    <p>Non sono presenti video.</p>
-{{/unless}}
-{{#each files}}
-    {{> tileTemplate fileKey=fileKey thumbnailUrl=thumbnailUrl}}
-{{/each}}
+<div id="tileList" class="album py-5 bg-light">
+    <div class="container">
+        <div id="explorer" class="row">
+            {{#unless files}}
+                <p>Non sono presenti video.</p>
+            {{/unless}}
+            {{#each files}}
+                {{> tileTemplate fileKey=fileKey thumbnailUrl=thumbnailUrl}}
+            {{/each}}
+        </div>
+    </div>
+</div>
