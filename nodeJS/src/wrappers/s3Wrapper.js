@@ -8,7 +8,7 @@ const s3Mod = require('aws-sdk/clients/s3');
 const s3Client = new s3Mod();
 
 //defaults for bucket and region
-let bucket="ahlConsoleBucket";
+let bucket="ahlconsolebucket";
 let region="us-east-2";
 
 /**
