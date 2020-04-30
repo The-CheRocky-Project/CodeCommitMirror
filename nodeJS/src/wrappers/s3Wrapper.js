@@ -4,7 +4,8 @@
  */
 const utils = require('util');
 //requires the s3 AWS object storage Service
-const s3 = require('aws-sdk/clients/s3');
+const s3Mod = require('aws-sdk/clients/s3');
+const s3Client = new s3Mod();
 
 //defaults for bucket and region
 let bucket="ahlConsoleBucket";
@@ -34,7 +35,7 @@ exports.getObjectUrl = (fileKey) => {
  */
 exports.listObjects = () => {
     let objects = Array();
-    s3.listObjects({Bucket:bucket},(err,data) => {
+    s3Client.listObjects({Bucket:bucket},(err,data) => {
         if(err){
             object = false;
             console.log(err, err.stack);
