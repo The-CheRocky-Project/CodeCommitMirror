@@ -98,4 +98,4 @@ Resources:
     Type: AWS::S3::Bucket
     DeletionPolicy: Retain
     Properties:
-      BucketName: ahlConsoleBucket
+      BucketName: ahlconsolebucket
