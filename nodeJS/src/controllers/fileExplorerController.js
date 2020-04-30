@@ -10,7 +10,7 @@ const model = require('../models/fileExplorerModel');
  */
 exports.getBody = (res) => {
     const mainLayout = true;
-    const fileList = getUpdatedFileList();
+    const fileList = model.listFilekeys();
     view.print({files:fileList,main:mainLayout},res);
 }
 
