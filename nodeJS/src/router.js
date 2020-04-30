@@ -117,7 +117,7 @@ ahl.post('getTable', (req,res) => {
  * @param {object} res - Rappresenta la risposta http
  */
 ahl.post('selectFile', (req,res) => {
-    res.send(fileExplorerController.launchFileProcessing(req['fileKey']));
+    res.send(fileExplorerController.launchFileProcessing(req.body['fileKey']));
 });
 
 /**
@@ -127,7 +127,7 @@ ahl.post('selectFile', (req,res) => {
  * @param {object} res - Rappresenta la risposta http
  */
 ahl.post('notifyLabelRowChange', (req,res) => {
-    res.send(backport.emit('changedRow',req['rowIndex']));
+    res.send(backport.emit('changedRow',req.body['rowIndex']));
 });
 
 /**
@@ -138,7 +138,7 @@ ahl.post('notifyLabelRowChange', (req,res) => {
  * @param {object} res - Rappresenta la risposta http
  */
 ahl.post('includeLabel', (req,res) => {
-    res.send(fileExplorerController.checkLabel(req['rowIndex']));
+    res.send(fileExplorerController.checkLabel(req.body['rowIndex']));
 });
 
 /**
@@ -149,7 +149,7 @@ ahl.post('includeLabel', (req,res) => {
  * @param {object} res - Rappresenta la risposta http
  */
 ahl.post('includeLabel', (req,res) => {
-    res.send(fileExplorerController.uncheckLabel(req['rowIndex']));
+    res.send(fileExplorerController.uncheckLabel(req.body['rowIndex']));
 });
 
 /**
@@ -170,7 +170,8 @@ ahl.post('getVideoFrame', (req,res) => {
  * @param {object} res - Rappresenta la risposta http
  */
 ahl.post('addLabel', (req,res) => {
-    res.send(editController.addNewLabelRow(req['start'],req['duration'],req['modelIndex']));
+    const reqDict=req.body;
+    res.send(editController.addNewLabelRow(reqDict['start'],reqDict['duration'],reqDict['modelIndex']));
 });
 
 /**
@@ -180,7 +181,7 @@ ahl.post('addLabel', (req,res) => {
  * @param {object} res - Rappresenta la risposta http
  */
 ahl.post('setVideoMode', (req,res) => {
-    res.send(editController.changeVideoMode(req['toOriginal']));
+    res.send(editController.changeVideoMode(req.body['toOriginal']));
 });
 
 /**
