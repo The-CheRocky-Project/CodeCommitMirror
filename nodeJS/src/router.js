@@ -172,3 +172,13 @@ ahl.post('getVideoFrame', (req,res) => {
 ahl.post('addLabel', (req,res) => {
     res.send(editController.addNewLabelRow(req['start'],req['duration'],req['modelIndex']));
 });
+
+/**
+ *  ​API che si occupa della notifica dell'intenzione da parte dell'utente di voler
+ *  cambiare la modalità di visualizzazione del video in base al parametro toOriginal
+ * @param {object} req - Rappresenta la richiesta http contenente il valore booleano toOriginal
+ * @param {object} res - Rappresenta la risposta http
+ */
+ahl.post('setVideoMode', (req,res) => {
+    res.send(editController.changeVideoMode(req['toOriginal']));
+});
