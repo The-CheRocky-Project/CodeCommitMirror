@@ -119,3 +119,13 @@ ahl.post('getTable', (req,res) => {
 ahl.post('selectFile', (req,res) => {
     res.send(fileExplorerController.launchFileProcessing(req['fileKey']));
 });
+
+/**
+ *  ​Notifica il client tramite il socket che una riga
+ *  della tabella dei riconoscimenti è stata cambiata.
+ * @param {object} req - Rappresenta la richiesta http contenente la fileKey
+ * @param {object} res - Rappresenta la risposta http
+ */
+ahl.post('notifyLabelRowChange', (req,res) => {
+    res.send(backport.emit('changedRow',req['rowIndex']));
+});
