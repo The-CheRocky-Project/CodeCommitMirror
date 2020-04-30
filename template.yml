@@ -93,3 +93,9 @@ Resources:
           OptionName: Subnets
           Value: !Ref 'SubnetId'
         - !Ref "AWS::NoValue"
+  consoleBucket:
+    Description: The bucket containing videos from the console application
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: ahlConsoleBucket
