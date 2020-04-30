@@ -51,9 +51,10 @@ const getActive = () => {
 };
 
 //sets up all the routes
-ahl.get('/',(req,res) =>
+ahl.get('/',(req,res) =>{
     getActive().getBody(res)
-);
+    getActive().getBody(res);
+});
 
 ahl.all('/toFileExplorer',(req,res) => {
     console.log('called toFileExplorer');

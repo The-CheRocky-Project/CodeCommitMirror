@@ -15,6 +15,6 @@ exports.print = (param,res) => {
     res.render('layouts/fileExplorerTemplate', {
         template: 'fileExplorerTemplate',
         data: param['files'],
-        layout: param['main']
+        layout: param['main']?"main":false
     });
 };

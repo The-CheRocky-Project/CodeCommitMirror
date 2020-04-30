@@ -41,8 +41,9 @@ exports.listObjects = () => {
             console.log(err, err.stack);
         }
         else{
-            for(content in data['Contents'])
+            data['Contents'].forEach((content) => {
                 objects.push(content['Key']);
+            });
         }
     });
     return objects;
