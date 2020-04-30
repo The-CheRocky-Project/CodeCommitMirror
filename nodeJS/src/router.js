@@ -151,3 +151,14 @@ ahl.post('includeLabel', (req,res) => {
 ahl.post('includeLabel', (req,res) => {
     res.send(fileExplorerController.uncheckLabel(req['rowIndex']));
 });
+
+/**
+ * All'accesso all'API getVideoFrame() la function restituisce l’oggetto XHTML
+ * rappresentante il frame video aggiornato tramite la funzione
+ * updateVideoFrame() dell’editController.
+ * @param {object} req - Rappresenta la richiesta http
+ * @param {object} res - Rappresenta la risposta http
+ */
+ahl.post('getVideoFrame', (req,res) => {
+    editController.updateVideoFrame(res);
+});
