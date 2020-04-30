@@ -140,3 +140,14 @@ ahl.post('notifyLabelRowChange', (req,res) => {
 ahl.post('includeLabel', (req,res) => {
     res.send(fileExplorerController.checkLabel(req['rowIndex']));
 });
+
+/**
+ *  Deseleziona la label indicata tramite HTTP POST come
+ *  parametro sfruttando la funzione uncheckLabel(labelIndex)
+ *  dell’editController.
+ * @param {object} req - Rappresenta la richiesta http contenente la labelIndex
+ * @param {object} res - Rappresenta la risposta http
+ */
+ahl.post('includeLabel', (req,res) => {
+    res.send(fileExplorerController.uncheckLabel(req['rowIndex']));
+});
