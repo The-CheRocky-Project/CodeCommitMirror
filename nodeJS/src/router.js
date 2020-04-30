@@ -107,11 +107,11 @@ ahl.get('/notifyChangedFileList', (req, res, next) => {
  * @param {object} res - Rappresenta la risposta http
  */
 ahl.post('getTable', (req,res) => {
-    editController.updateLabelTable(req,res);
+    editController.updateLabelTable(res);
 });
 
 /**
- * All'accesso all'API selectFile(fileKey) la function  ​richiede al controller
+ * All'accesso all'API selectFile(fileKey) la function  ​richiede al File Explorer Controller
  * di effettuare la scelta del file in base alla filekey ricevuta in POST in formato json.
  * @param {object} req - Rappresenta la richiesta http contenente la fileKey
  * @param {object} res - Rappresenta la risposta http
