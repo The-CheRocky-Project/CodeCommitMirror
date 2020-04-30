@@ -182,3 +182,13 @@ ahl.post('addLabel', (req,res) => {
 ahl.post('setVideoMode', (req,res) => {
     res.send(editController.changeVideoMode(req['toOriginal']));
 });
+
+/**
+ *  ​API che si occupa della notifica del client tramite il socket
+ *  che il processo di montaggio è stato concluso correttamente o negativamente.
+ * @param {object} req - Rappresenta la richiesta http contenente il booleano done
+ * @param {object} res - Rappresenta la risposta http
+ */
+ahl.post('notifyEditingFinish', (req,res) => {
+    res.send(backport.emit('finish', req.body['done']));
+});
