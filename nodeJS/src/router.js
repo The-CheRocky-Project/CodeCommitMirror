@@ -197,3 +197,14 @@ ahl.post('notifyEditingFinish', (req,res) => {
 ahl.post('notifyChangedFileList', (req,res) => {
     res.send(backport.emit('changeFile',''));
 });
+
+/**
+ *  ​API che si occupa dell'inoltro della richiesta di conferma
+ *  del gradimento dello stato attuale della tabella dei riconoscimenti
+ *  tramite la funzione confirmEditing() dell’editController.
+ * @param {object} req - Rappresenta la richiesta http
+ * @param {object} res - Rappresenta la risposta http
+ */
+ahl.post('confirmEdit', (req,res) => {
+    res.send(editController.confirmEditing());
+});
