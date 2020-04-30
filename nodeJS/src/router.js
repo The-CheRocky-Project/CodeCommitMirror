@@ -129,3 +129,14 @@ ahl.post('selectFile', (req,res) => {
 ahl.post('notifyLabelRowChange', (req,res) => {
     res.send(backport.emit('changedRow',req['rowIndex']));
 });
+
+/**
+ *  Seleziona la label indicata tramite HTTP POST come
+ *  parametro sfruttando la funzione checkLabel(labelIndex)
+ *  dell’editController.
+ * @param {object} req - Rappresenta la richiesta http contenente la labelIndex
+ * @param {object} res - Rappresenta la risposta http
+ */
+ahl.post('includeLabel', (req,res) => {
+    res.send(fileExplorerController.checkLabel(req['rowIndex']));
+});
