@@ -40,6 +40,5 @@ $(document).ready(() => {
     $('#addRow').click(() => {
         alert("Non è ancora possibile aggiungere righe alla tabella dei riconoscimenti");
     });
-
 });
 
