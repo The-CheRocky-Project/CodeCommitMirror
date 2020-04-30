@@ -93,12 +93,6 @@ http.listen(port, function(){
     console.log('listening on *:' + port);
 });
 
-// notifyChangedFileList()
-ahl.get('/notifyChangedFileList', (req, res, next) => {
-    backport.emit('changeFile', req.body);
-    res.send('');
-});
-
 /**
  * All'accesso all'API getTable() la function restituisce l’oggetto XHTML
  * rappresentante la tabella delle label aggiornata tramite la
@@ -192,4 +186,14 @@ ahl.post('setVideoMode', (req,res) => {
  */
 ahl.post('notifyEditingFinish', (req,res) => {
     res.send(backport.emit('finish', req.body['done']));
+});
+
+/**
+ *  ​API che si occupa della notifica del client tramite il socket
+ *  che la lista dei files è cambiata.
+ * @param {object} req - Rappresenta la richiesta http
+ * @param {object} res - Rappresenta la risposta http
+ */
+ahl.post('notifyChangedFileList', (req,res) => {
+    res.send(backport.emit('changeFile',''));
 });
