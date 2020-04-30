@@ -10,10 +10,11 @@ const model = require('../models/fileExplorerModel');
  */
 exports.getBody = (res) => {
     const mainLayout = true;
-    getUpdatedFileList(mainLayout, res);
+    const fileList = getUpdatedFileList();
+    view.print({files:fileList,main:mainLayout},res);
 }
 
-exports.getUpdatedFileList = (mainLayout,res) => {
+exports.getUpdatedFileList = () => {
     //Variabile fileList di prova (da costruire prendendo i file da s3)
     const fileKeys = model.listFileKeys();
     let fileList = Array();
@@ -23,7 +24,7 @@ exports.getUpdatedFileList = (mainLayout,res) => {
             thumbnailURL: model.getThumbnailURL(key)
         });
     }
-    view.print({files:fileList,main:mainLayout},res);
+    return fileList;
 };
 
 /**
