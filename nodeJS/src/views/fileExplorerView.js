@@ -1,7 +1,8 @@
-// fileExplorerView module
+/**
+ * File Explorer View module.
+ * @module views/fileExplorerView
+ */
 
-//require the template
-//const body= require('../templates/fileExplorerTemplate.hbs');
 
 /**
  * Effettua il rendering del body della pagina di visualizzazione dei file in base ai parametri contenuti nel json fileList. Se fileList
