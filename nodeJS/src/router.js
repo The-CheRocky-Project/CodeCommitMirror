@@ -232,3 +232,14 @@ ahl.post('notifyProgressionUpdate', (req,res) => {
     if (progression >= 100)
         activePage = pages.edit;
 });
+
+/**
+ * All'accesso all'API getFileList() la function restituisce l’oggetto XHTML
+ * rappresentante il frame contenente tutti i tiles dei video da elaborare tramite
+ * la funzione getUpdatedFileList() del fileExplorerController
+ * @param {object} req - Rappresenta la richiesta http
+ * @param {object} res - Rappresenta la risposta http
+ */
+ahl.post('getFileList', (req,res) => {
+    fileExplorerController.getUpdatedFileList(res);
+});
