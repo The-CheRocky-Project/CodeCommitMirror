@@ -19,9 +19,10 @@ exports.print = (res) => {
 
 /**
  * Effettua il rendering della progress bar nella percentuale indicata dalla request
- * @param {object} res - Rappresenta la risposta http
+ * @param {object} res - Rappresenta la risposta XHTML
+ * @param {integer} percent - Rappresenta il livello di progressione che si vuole renderizzare
  */
-exports.generateProgressBar = (res,progress) => {
+exports.generateProgressBar = (res,percent) => {
     res.render('partials/progressBar',
         {
             progression: progress,
