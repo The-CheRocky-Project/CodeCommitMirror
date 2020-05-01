@@ -8,36 +8,33 @@ const utils = require('util');
 const AWS = require('aws-sdk');
 const s3Client = new AWS.S3();
 
-//defaults for bucket and region
-let bucket="ahlconsolebucket";
-let region="us-east-2";
+// /** TODO remove from DevManual
+//  *  Imposta il bucket desiderato all'interno del modulo
+//  * @param {String} bucketName - Rappresenta il bucket che deve essere impostato
+//  */
+// exports.setBucket = (bucketName) => {
+//     bucket=bucketName;
+// };
 
 /**
- *  Imposta il bucket desiderato all'interno del modulo
- * @param {String} bucketName - Rappresenta il bucket che deve essere impostato
- */
-exports.setBucket = (bucketName) => {
-    bucket=bucketName;
-};
-
-/**
- *  Recupera l'url permettendone l'accesso pubblico di un particolare file
+ *  Fornisce l'url pubblico di un particolare file tramite la sua fileKey.
  * @param {String} fileKey - Rappresenta la fileKey del quale deve essere fornito
  */
-exports.getObjectUrl = (fileKey) => {
+exports.getObjectUrl = (fileKey, bucket, region) => {
     return utils.format('https://%s.s3.%s.amazonaws.com/%s',
         bucket,
         region,
-        "thumbnails/" + fileKey + ".jpg");
+        fileKey);
 };
 
 /**
  *  Funzione asincrona che ritorna la lista dei files contenuti nel bucket settato nel modulo
  */
-exports.listObjects = async () => {
+exports.listObjects = async (bucket, prefix) => {
     const params = {
-        Bucket: bucket
-    }
+        Bucket: bucket,
+        Prefix: prefix
+    };
     const keyList = await getKeys(params);
     return keyList;
 };
