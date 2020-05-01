@@ -68,3 +68,15 @@ exports.checkRow = (index) =>{
         target: index
     });
 };
+
+/**
+ *  Effettua la richiesta di de-selezione della riga di indice index al sistema.
+ * @param {number} index - Rappresenta l'indice della riga da de-selezionare
+ * @returns {boolean} ritorna true se la chiamata è stata effettuata correttamente.
+ */
+exports.uncheckRow = (index) =>{
+    return snsWrap.message({
+        message: "uncheckRow",
+        target: index
+    });
+};
