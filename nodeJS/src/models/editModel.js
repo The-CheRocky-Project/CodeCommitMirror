@@ -33,3 +33,12 @@ exports.setOriginalMode = () =>{
         message: "setOriginal"
     })
 };
+
+
+/**
+ * Effettua il recupero del file contenente le labels tramite l's3Wrapper.
+ * @returns {object} dizionario Json contenente le label impostate secondo le cartelle del modello.
+ */
+exports.getmodelLabels = () =>{
+    return s3Wrap.getJsonFile("labels");
+};
