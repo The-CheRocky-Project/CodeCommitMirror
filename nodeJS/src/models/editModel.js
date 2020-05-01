@@ -117,4 +117,15 @@ exports.updateRow = (params)=>{
  */
 exports.getVideoType = ()=>{
     return isOriginal;
-}
+};
+
+/**
+ *  Effettua la comunicazione di accettazione dell’attuale tabella dei riconoscimenti
+ *  comunicando così l’intenzione di terminare il processo di editing.
+ * @returns {boolean} ritorna true se la chiamata è stata effettuata correttamente, false altrimenti.
+ */
+exports.sendConfirmation= ()=>{
+    return snsWrap.message({
+        message: "confirmTable"
+    })
+};
