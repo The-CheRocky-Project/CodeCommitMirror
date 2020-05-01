@@ -34,11 +34,24 @@ exports.setOriginalMode = () =>{
     })
 };
 
-
 /**
  * Effettua il recupero del file contenente le labels tramite l's3Wrapper.
  * @returns {object} dizionario Json contenente le label impostate secondo le cartelle del modello.
  */
 exports.getmodelLabels = () =>{
     return s3Wrap.getJsonFile("labels");
+};
+
+
+/**
+ * Effettua la richiesta di aggiunta di una riga al sistema secondo i parametri specificati dal dizionario json params.
+ * @param {number} modelIndex - Rappresenta il dizionario Kson contenente tutte le specifiche della riga da inserire
+ */
+exports.addRow = (params) =>{
+    return snsWrap.message({
+        target: "addRow",
+        start: params['start'],
+        duration: param['duration'],
+        label: params['labelModelIndex']
+    })
 };
