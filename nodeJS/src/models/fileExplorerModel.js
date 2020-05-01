@@ -15,7 +15,7 @@ const AWSregion = "us-east-2";
  */
 exports.listFileKeys = async () => {
     console.log(bucketName);
-    return await s3Wrap.listObjects(bucketName, "origin/");
+    return (await s3Wrap.listObjects(bucketName, "origin/")).filter(str => str.endsWith(".mp4"));
 }
 
 /**
