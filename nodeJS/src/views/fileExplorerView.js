@@ -13,8 +13,6 @@
  * @param {XHTMLresponse} res - Rappresenta la risposta http
  */
 exports.print = (param,res) => {
-    console.log("Call to FileXView.print");
-    console.log(param);
     res.render('layouts/fileExplorerTemplate', {
         template: 'fileExplorerTemplate',
         data: param,
