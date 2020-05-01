@@ -2,10 +2,11 @@
  * s3Wrapper module
  * @module wrappers/s3Wrapper
  */
+
 const utils = require('util');
 //requires the s3 AWS object storage Service
-const s3Mod = require('aws-sdk/clients/s3');
-const s3Client = new s3Mod();
+const AWS = require('aws-sdk');
+const s3Client = new AWS.S3();
 
 //defaults for bucket and region
 let bucket="ahlconsolebucket";
@@ -27,24 +28,30 @@ exports.getObjectUrl = (fileKey) => {
     return utils.format('https://%s.s3.%s.amazonaws.com/%s',
         bucket,
         region,
-        "thumbnails/" + fileKey);
+        "thumbnails/" + fileKey + ".jpg");
 };
 
 /**
- *  Ritorna la lista dei files contenuti nel bucket settato nel modulo
+ *  Funzione asincrona che ritorna la lista dei files contenuti nel bucket settato nel modulo
  */
-exports.listObjects = () => {
-    let objects = Array();
-    s3Client.listObjects({Bucket:bucket},(err,data) => {
-        if(err){
-            object = false;
-            console.log(err, err.stack);
-        }
-        else{
-            data['Contents'].forEach((content) => {
-                objects.push(content['Key']);
-            });
-        }
-    });
-    return objects;
+exports.listObjects = async () => {
+    const params = {
+        Bucket: bucket
+    }
+    const keyList = await getKeys(params);
+    return keyList;
 };
+
+/**
+ *  Funzione ausiliaria che effettua il prelievo delle key da AWS s3 in maniera asincrona
+ */
+async function getKeys(params, keys = []){
+    const response = await s3Client.listObjectsV2(params).promise();
+    response.Contents.forEach(obj => keys.push(obj.Key));
+
+    if (response.NextContinuationToken) {
+        params.ContinuationToken = response.NextContinuationToken;
+        await getAllKeys(params, keys); // RECURSIVE CALL
+    }
+    return keys;
+}

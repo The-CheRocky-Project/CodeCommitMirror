@@ -52,7 +52,7 @@ const getActive = () => {
 
 //sets up all the routes
 ahl.get('/',(req,res) =>{
-    getActive().getBody(res)
+    console.log("Requested /")
     getActive().getBody(res);
 });
 

@@ -6,17 +6,18 @@ const s3Wrap = require('../wrappers/s3Wrapper');
 //const snsWrap = require('../wrappers/snsWrapper');
 
 /**
- * return files from the fileExplorer bucket
+ * Asynchronously retrieves files from the S3 Wrapped bucket
  */
-exports.listFilekeys = () =>{
-    return s3Wrap.listObjects();
+exports.listFileKeys = async () => {
+    return await s3Wrap.listObjects();
 }
 
 /**
- * return thumbnail URL from a bucket
+ * This function returns the URL of a video in a bucket using the S3 Wrapped bucket module
+ * @param {String} fileKey - The video file key that has a thumbnail in the bucket
  */
-exports.getThumbnailURL = (filekey) =>{
-    return s3.getObjectUrl(filekey);
+exports.getThumbnailURL = (fileKey) =>{
+    return s3Wrap.getObjectUrl(fileKey);
 }
 
 /**
