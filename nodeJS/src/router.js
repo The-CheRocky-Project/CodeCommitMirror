@@ -210,16 +210,16 @@ ahl.post('confirmEdit', (req,res) => {
     res.send(editController.confirmEditing());
 });
 
-/**
- * All'accesso all'API getProgressionBar() la function restituisce l’oggetto XHTML
- * rappresentante la  la progress bar aggiornata tramite la
- * funzione getUpdatedBar() del loadingController.
- * @param {object} req - Rappresenta la richiesta http
- * @param {object} res - Rappresenta la risposta http
- */
-ahl.post('getProgressionBar', (req,res) => {
-    loadingController.getUpdatedBar(res);
-});
+// /** TODO remove from the Dev Manual
+//  * All'accesso all'API getProgressionBar() la function restituisce l’oggetto XHTML
+//  * rappresentante la  la progress bar aggiornata tramite la
+//  * funzione getUpdatedBar() del loadingController.
+//  * @param {object} req - Rappresenta la richiesta http
+//  * @param {object} res - Rappresenta la risposta http
+//  */
+// ahl.post('getProgressionBar', (req,res) => {
+//     loadingController.getUpdatedBar(res);
+// });
 
 /**
  *  ​API che si occupa della ​notifica del client tramite il socket
