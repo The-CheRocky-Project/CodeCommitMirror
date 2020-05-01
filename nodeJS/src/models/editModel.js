@@ -80,3 +80,18 @@ exports.uncheckRow = (index) =>{
         target: index
     });
 };
+
+/**
+ * Effettua la richiesta di aggiornamento di una riga al sistema secondo i parametri specificati dal dizionario json params.
+ * @param {object} params - Rappresenta il dizionario Json contenente tutte le specifiche della riga da aggiornare
+ * @returns {boolean} ritorna true se la chiamata è stata effettuata correttamente.
+ */
+exports.updateRow = (params)=>{
+    return snsWrap.message({
+        message: "updateRow",
+        index: params['index'],
+        start: params['start'],
+        duration: param['duration'],
+        label: params['labelModelIndex']
+    });
+};
