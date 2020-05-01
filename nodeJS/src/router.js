@@ -52,7 +52,7 @@ const getActive = () => {
 
 //sets up all the routes
 ahl.get('/',(req,res) =>{
-    getActive().getBody(res)
+    console.log("Requested /")
     getActive().getBody(res);
 });
 
@@ -210,28 +210,31 @@ ahl.post('confirmEdit', (req,res) => {
     res.send(editController.confirmEditing());
 });
 
-/**
- * All'accesso all'API getProgressionBar() la function restituisce l’oggetto XHTML
- * rappresentante la  la progress bar aggiornata tramite la
- * funzione getUpdatedBar() del loadingController.
- * @param {object} req - Rappresenta la richiesta http
- * @param {object} res - Rappresenta la risposta http
- */
-ahl.post('getProgressionBar', (req,res) => {
-    loadingController.getUpdatedBar(res);
-});
+// /** TODO remove from the Dev Manual
+//  * All'accesso all'API getProgressionBar() la function restituisce l’oggetto XHTML
+//  * rappresentante la  la progress bar aggiornata tramite la
+//  * funzione getUpdatedBar() del loadingController.
+//  * @param {object} req - Rappresenta la richiesta http
+//  * @param {object} res - Rappresenta la risposta http
+//  */
+// ahl.post('getProgressionBar', (req,res) => {
+//     loadingController.getUpdatedBar(res);
+// });
 
 /**
  *  ​API che si occupa della ​notifica del client tramite il socket
  *  che il livello di progressione è cambiato ricevendo in
- *  POST il valore percentuale.
+ *  POST il valore percentuale. Nel caso la progressione sia ultimata, modifica la active page
+ *  e notifica il client
  * @param {object} req - Rappresenta la richiesta http contenente il valore intero progress
  * @param {object} res - Rappresenta la risposta http
  */
 ahl.post('notifyProgressionUpdate', (req,res) => {
     res.send(backport.emit('progress',req.body['progress']));
-    if (progression >= 100)
+    if (progression >= 100){
         activePage = pages.edit;
+        backport.emit('refresh','');
+    }
 });
 
 /**
