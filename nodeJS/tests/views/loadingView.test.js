@@ -1,5 +1,5 @@
-let view = require('../../src/views/loadingView');
-let assert = require('assert');
+const view = require('../../src/views/loadingView');
+const assert = require('assert');
 
 let mockRes = {
     viewName: "",

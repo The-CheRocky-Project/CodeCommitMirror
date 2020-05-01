@@ -1,5 +1,5 @@
-let view = require('../../src/views/fileExplorerView');
-let assert = require('assert');
+const view = require('../../src/views/fileExplorerView');
+const assert = require('assert');
 
 let param = {};
 let mockRes = {
