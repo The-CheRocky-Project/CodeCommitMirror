@@ -5,6 +5,11 @@
 const s3Wrap = require('../wrappers/s3Wrapper');
 const snsWrap = require('../wrappers/snsWrapper');
 
+/**
+ * parametro che memorizza il tipo del video in riproduzione
+ */
+let isOriginal = true;
+
 
 // exports.getVideoEndpoint = () =>{
 //     return const videoURL = s3Wrap.getObjectUrl(fileKey);
@@ -19,9 +24,14 @@ const snsWrap = require('../wrappers/snsWrapper');
  * @returns {boolean} true se la chiamata è stata effettuata con successo, false altrimenti.
  */
 exports.setPreviewMode = () =>{
-    return snsWrap.message({
+    let ok = snsWrap.message({
         message: "setPreview"
     });
+
+    if(ok)
+        isOriginal = false;
+
+    return ok;
 };
 
 /**
@@ -29,9 +39,14 @@ exports.setPreviewMode = () =>{
  * @returns {boolean} true se la chiamata è stata effettuata con successo, false altrimenti.
  */
 exports.setOriginalMode = () =>{
-    return snsWrap.message({
+    const ok = snsWrap.message({
         message: "setOriginal"
     });
+
+    if(ok)
+        isOriginal = true;
+
+    return ok;
 };
 
 /**
@@ -95,3 +110,4 @@ exports.updateRow = (params)=>{
         label: params['labelModelIndex']
     });
 };
+
