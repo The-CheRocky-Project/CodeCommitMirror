@@ -111,3 +111,10 @@ exports.updateRow = (params)=>{
     });
 };
 
+/**
+ * Restuisce il tipo di video correntemente in esecuzione.
+ * @returns {boolean} ritorna true se se il video in riproduzione è quello originale false altrimenti.
+ */
+exports.getVideoType = ()=>{
+    return isOriginal;
+}
