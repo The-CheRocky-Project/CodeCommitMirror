@@ -9,15 +9,10 @@ describe('s3Wrapper', function() {
     describe('getObjectUrl()', () => {
         it("should get the correct object url", () =>{
             let fileKey = "fileKeyDiProva";
-            let url = s3Wrap.getObjectUrl(fileKey);
-            assert.equal(url,"https://ahlconsolebucket.s3.us-east-2.amazonaws.com/thumbnails/"+fileKey+".jpg");
-        });
-        it("should get the correct object url with bucket changed", () =>{
-            let newBucket = "bucketDiProva";
-            s3Wrap.setBucket(newBucket);
-            let fileKey = "fileKeyDiProva";
-            let url = s3Wrap.getObjectUrl("fileKeyDiProva");
-            assert.equal(url,"https://"+newBucket+".s3.us-east-2.amazonaws.com/thumbnails/"+fileKey+".jpg");
+            let bucket = "bucketDiProva";
+            let region = "regioneDiProva"
+            let url = s3Wrap.getObjectUrl(fileKey,bucket,region);
+            assert.equal(url,"https://"+bucket+".s3."+region+".amazonaws.com/"+fileKey);
         });
     });
 });
