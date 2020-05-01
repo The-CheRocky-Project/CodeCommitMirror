@@ -14,7 +14,6 @@ const AWSregion = "us-east-2";
  * Asynchronously retrieves files from the S3 Wrapped bucket
  */
 exports.listFileKeys = async () => {
-    console.log(bucketName);
     return (await s3Wrap.listObjects(bucketName, "origin/")).filter(str => str.endsWith(".mp4"));
 }
 

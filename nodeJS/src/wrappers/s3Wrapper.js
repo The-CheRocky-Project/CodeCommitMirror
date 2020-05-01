@@ -52,3 +52,35 @@ async function getKeys(params, keys = []){
     }
     return keys;
 }
+
+/**
+ *  Restituisce un dizionario json rappresentante il file fileKey
+ *  @param {String} bucket - Il bucket di origine
+ *  @param {String} fileKey - La fileKey da deserializzare
+ *  @returns {Object} - Dizionario JSON con il contenuto di fileKey
+ */
+exports.getJsonFile = async (bucket,fileKey) =>{
+    const param ={
+        Bucket: bucket,
+        Key: fileKey,
+        ResponseContentType: "application/json"
+    };
+    const dict = await getObject(param);
+    return dict;
+};
+
+/**
+ *  Funzione ausiliaria che effettua il prelievo di un oggetto JSON da s3
+ *  @param {Dict} params - Dizionario dei parametri per l'accesso al file
+ *  @returns {Dict} fileContent - The parsing of the JSON file
+ */
+async function getObject(params, fileContent = {}){
+    const response = await s3Client.getObject(params).promise();
+    const deserialized = JSON.parse(response.Body.toString());
+    const keys = Object.getOwnPropertyNames(deserialized).forEach( key => fileContent[key] = deserialized[key]);
+    if (response.NextContinuationToken) {
+        params.ContinuationToken = response.NextContinuationToken;
+        await getAllKeys(params, keys); // RECURSIVE CALL
+    }
+    return fileContent;
+}
