@@ -21,7 +21,7 @@ const snsWrap = require('../wrappers/snsWrapper');
 exports.setPreviewMode = () =>{
     return snsWrap.message({
         message: "setPreview"
-    })
+    });
 };
 
 /**
@@ -31,7 +31,7 @@ exports.setPreviewMode = () =>{
 exports.setOriginalMode = () =>{
     return snsWrap.message({
         message: "setOriginal"
-    })
+    });
 };
 
 /**
@@ -45,13 +45,26 @@ exports.getmodelLabels = () =>{
 
 /**
  * Effettua la richiesta di aggiunta di una riga al sistema secondo i parametri specificati dal dizionario json params.
- * @param {number} modelIndex - Rappresenta il dizionario Kson contenente tutte le specifiche della riga da inserire
+ * @param {object} params - Rappresenta il dizionario Json contenente tutte le specifiche della riga da inserire
+ * @returns {boolean} ritorna true se la chiamata è stata effettuata correttamente.
  */
 exports.addRow = (params) =>{
     return snsWrap.message({
-        target: "addRow",
+        message: "addRow",
         start: params['start'],
         duration: param['duration'],
         label: params['labelModelIndex']
-    })
+    });
+};
+
+/**
+ *  Effettua la richiesta di selezione della riga di indice index al sistema.
+ * @param {number} index - Rappresenta l'indice della riga da selezionare
+ * @returns {boolean} ritorna true se la chiamata è stata effettuata correttamente.
+ */
+exports.checkRow = (index) =>{
+    return snsWrap.message({
+        message: "checkRow",
+        target: index
+    });
 };
