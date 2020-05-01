@@ -1,4 +1,7 @@
-// fileExplorerController module
+/**
+ * File Explorer Controller module.
+ * @module controllers/fileExplorerController
+ */
 // requires model and view
 const view = require('../views/fileExplorerView');
 const model = require('../models/fileExplorerModel');
