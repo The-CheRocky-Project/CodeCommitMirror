@@ -24,7 +24,7 @@ let isOriginal = true;
  * @returns {boolean} true se la chiamata è stata effettuata con successo, false altrimenti.
  */
 exports.setPreviewMode = () =>{
-    let ok = snsWrap.message({
+    const ok = await snsWrap.message({
         message: "setPreview"
     });
 
@@ -39,7 +39,7 @@ exports.setPreviewMode = () =>{
  * @returns {boolean} true se la chiamata è stata effettuata con successo, false altrimenti.
  */
 exports.setOriginalMode = () =>{
-    const ok = snsWrap.message({
+    const ok = await snsWrap.message({
         message: "setOriginal"
     });
 
