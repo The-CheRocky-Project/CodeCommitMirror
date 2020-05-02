@@ -85,3 +85,60 @@ exports.addRow = async (params) =>{
         label: params['labelModelIndex']
     })
 };
+/**
+ *  Effettua la comunicazione di accettazione dell’attuale tabella dei riconoscimenti
+ *  comunicando così l’intenzione di terminare il processo di editing.
+ * @returns {boolean} ritorna true se la chiamata è stata effettuata correttamente, false altrimenti.
+ */
+exports.sendConfirmation= ()=>{
+
+    return snsWrap.message({
+        message: "confirmTable"
+    })
+};
+
+/**
+ * Restuisce il tipo di video correntemente in esecuzione.
+ * @returns {boolean} ritorna true se se il video in riproduzione è quello originale false altrimenti.
+ */
+    return isOriginal;
+exports.getVideoType = ()=>{
+};
+/**
+ * Effettua la richiesta di aggiornamento di una riga al sistema secondo i parametri specificati dal dizionario json params.
+
+ * @param {object} params - Rappresenta il dizionario Json contenente tutte le specifiche della riga da aggiornare
+ * @returns {boolean} ritorna true se la chiamata è stata effettuata correttamente.
+ */
+exports.updateRow = (params)=>{
+    return snsWrap.message({
+        message: "updateRow",
+        start: params['start'],
+        index: params['index'],
+        duration: param['duration'],
+        label: params['labelModelIndex']
+    });
+};
+};
+    });
+        target: index
+        message: "uncheckRow",
+    return snsWrap.message({
+exports.uncheckRow = (index) =>{
+ */
+ * @returns {boolean} ritorna true se la chiamata è stata effettuata correttamente.
+ * @param {number} index - Rappresenta l'indice della riga da de-selezionare
+ *  Effettua la richiesta di de-selezione della riga di indice index al sistema.
+/**
+
+};
+    });
+        target: index
+        message: "checkRow",
+    return snsWrap.message({
+ */
+exports.checkRow = (index) =>{
+ * @returns {boolean} ritorna true se la chiamata è stata effettuata correttamente.
+ * @param {number} index - Rappresenta l'indice della riga da selezionare
+ *  Effettua la richiesta di selezione della riga di indice index al sistema.
+/**
