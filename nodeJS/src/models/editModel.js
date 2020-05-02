@@ -35,10 +35,14 @@ exports.getVideoEndpoint =  () =>{
         s3Defaults.region);
 };
 
-//
-// exports.getRecognizementList = () =>{
-//
-// };
+/**
+ * Effettua la richiesta di selezione della riga di indice index al sistema.
+ * @returns {boolean} ritorna true se la chiamata è stata effettuata correttamente.
+ * @param {number} index - Rappresenta l'indice della riga da selezionare
+ */
+exports.getRecognizementList = async () =>{
+    return await s3Wrap.getJsonFile(s3Defaults.bucket,"resume.json");
+};
 
 /**
  * Effettua la comunicazione di impostare il video in modalità preview.
@@ -101,8 +105,8 @@ exports.sendConfirmation= ()=>{
  * Restuisce il tipo di video correntemente in esecuzione.
  * @returns {boolean} ritorna true se se il video in riproduzione è quello originale false altrimenti.
  */
-exports.getVideoType = ()=>{
-    return isOriginal;
+exports.isVideoTypeOriginal = ()=>{
+    return actualVideoKey.original;
 };
 
 /**
@@ -113,10 +117,10 @@ exports.getVideoType = ()=>{
 exports.updateRow = async (params)=>{
     return await snsWrap.message({
         message: "updateRow",
-        start: params['start'],
-        index: params['index'],
-        duration: param['duration'],
-        label: params['labelModelIndex']
+        start: params.start,
+        index: params.index,
+        duration: param.duration,
+        label: params.labelModelIndex
     });
 };
 
@@ -139,7 +143,7 @@ exports.uncheckRow = async (index) =>{
  * @param {number} index - Rappresenta l'indice della riga da selezionare
  */
 exports.checkRow = async (index) =>{
-    return snsWrap.message({
+    return await snsWrap.message({
         message: "checkRow",
         target: index
     });
