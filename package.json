@@ -22,8 +22,9 @@
     "socket.io": "^2.3.0"
   },
   "devDependencies": {
+    "aws-sdk-mock": "^5.1.0",
     "mocha": "5.0.0",
-    "unit.js": "2.0.0",
-    "supertest": "3.0.0"
+    "supertest": "3.0.0",
+    "unit.js": "^2.1.1"
   }
 }
