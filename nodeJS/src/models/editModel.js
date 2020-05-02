@@ -101,17 +101,17 @@ exports.sendConfirmation= ()=>{
  * Restuisce il tipo di video correntemente in esecuzione.
  * @returns {boolean} ritorna true se se il video in riproduzione è quello originale false altrimenti.
  */
-    return isOriginal;
 exports.getVideoType = ()=>{
+    return isOriginal;
 };
+
 /**
  * Effettua la richiesta di aggiornamento di una riga al sistema secondo i parametri specificati dal dizionario json params.
-
  * @param {object} params - Rappresenta il dizionario Json contenente tutte le specifiche della riga da aggiornare
  * @returns {boolean} ritorna true se la chiamata è stata effettuata correttamente.
  */
-exports.updateRow = (params)=>{
-    return snsWrap.message({
+exports.updateRow = async (params)=>{
+    return await snsWrap.message({
         message: "updateRow",
         start: params['start'],
         index: params['index'],
@@ -119,26 +119,28 @@ exports.updateRow = (params)=>{
         label: params['labelModelIndex']
     });
 };
-};
-    });
-        target: index
-        message: "uncheckRow",
-    return snsWrap.message({
-exports.uncheckRow = (index) =>{
- */
+
+/**
+ * *  Effettua la richiesta di de-selezione della riga di indice index al sistema.
+ * @returns {Generator<*, void, *>}
  * @returns {boolean} ritorna true se la chiamata è stata effettuata correttamente.
  * @param {number} index - Rappresenta l'indice della riga da de-selezionare
- *  Effettua la richiesta di de-selezione della riga di indice index al sistema.
-/**
-
-};
-    });
-        target: index
-        message: "checkRow",
-    return snsWrap.message({
  */
-exports.checkRow = (index) =>{
+exports.uncheckRow = async (index) =>{
+    return await snsWrap.message({
+        message: "uncheckRow",
+        target: index
+    });
+};
+
+/**
+ * Effettua la richiesta di selezione della riga di indice index al sistema.
  * @returns {boolean} ritorna true se la chiamata è stata effettuata correttamente.
  * @param {number} index - Rappresenta l'indice della riga da selezionare
- *  Effettua la richiesta di selezione della riga di indice index al sistema.
-/**
+ */
+exports.checkRow = async (index) =>{
+    return snsWrap.message({
+        message: "checkRow",
+        target: index
+    });
+};

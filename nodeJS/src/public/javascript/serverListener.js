@@ -182,8 +182,8 @@ function updateProgressBar(data) {
 
   // forse si vuole modificare la 'notifyProgressionUpdate' in router.js e includere il messaggio di refresh
   if (data >= 100) {
-    $.ajax {
+    $.ajax({
       url: './toEdit'
-    }
+    });
   }
 }
