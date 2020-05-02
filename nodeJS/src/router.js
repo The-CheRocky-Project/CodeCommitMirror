@@ -247,3 +247,13 @@ ahl.post('notifyProgressionUpdate', (req,res) => {
 ahl.post('getFileList', (req,res) => {
     fileExplorerController.getUpdatedFileList(res);
 });
+
+/**
+ *  ​API che si occupa della notifica del client tramite il socket
+ *  che è stato cambiato correttamente l'endpoint video.
+ * @param {object} req - Rappresenta la richiesta http contenente il booleano done
+ * @param {object} res - Rappresenta la risposta http
+ */
+ahl.post('notifyNewVideoEndpoint', (req,res) => {
+    res.send(backport.emit('newEndpoint', req.body['done']));
+});
