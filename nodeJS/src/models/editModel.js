@@ -5,10 +5,27 @@
 const s3Wrap = require('../wrappers/s3Wrapper');
 const snsWrap = require('../wrappers/snsWrapper');
 
+//Rappresenta lo stato attuale del video in fase di lavorazione
+let actualVideoKey = {
+    partialKey: "",
+    original: true
+};
 
-// exports.getVideoEndpoint = () =>{
-//     return const videoURL = s3Wrap.getObjectUrl(fileKey);
-// };
+//Prefissi di default per la chiave video
+const originalPrefixes = {
+    true: "origin",
+    false: "preview"
+};
+
+
+/**
+ * Effettua la comunicazione di impostare il video in modalità preview.
+ * @returns {boolean} true se la chiamata è stata effettuata con successo, false altrimenti.
+ */
+exports.getVideoEndpoint =  () =>{
+    return s3Wrap.getObjectUrl(originalPrefixes[actualVideoKey.original] + actualVideoKey.key);
+};
+
 //
 // exports.getRecognizementList = () =>{
 //
@@ -18,10 +35,12 @@ const snsWrap = require('../wrappers/snsWrapper');
  * Effettua la comunicazione di impostare il video in modalità preview.
  * @returns {boolean} true se la chiamata è stata effettuata con successo, false altrimenti.
  */
-exports.setPreviewMode = () =>{
-    return snsWrap.message({
+exports.setPreviewMode = async () =>{
+    if(await snsWrap.message({
         message: "setPreview"
-    })
+    })){
+        actualVideoKey.original = false;
+    }
 };
 
 /**
