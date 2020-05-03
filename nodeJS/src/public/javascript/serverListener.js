@@ -33,10 +33,10 @@ $(document).ready(() => {
      * @param {object} data - intero 0-100 che indica la percentuale di caricamento
      */
     socket.on('progress', (data) => {
-      if (!($('#loadingProgressBar').lenght)) {
-        goLoading();
+      if (document.getElementById("loadingProgressBar")) {
+        updateProgressBar(data);
       } else {
-        updateProgressBar(data)
+        goLoading();
       }
     });
 
@@ -47,6 +47,8 @@ $(document).ready(() => {
      * @param {object} data - parametro fittizio che non fa nulla
      */
     socket.on('newEndPoint', (data) => {
+      console.log("chiamata a progress");
+      window.alert("ciao")
       goEdit();
     });
 
@@ -177,9 +179,8 @@ function updateProgressBar(data) {
 //   pagina.print();
 
   // con jquery
-  $(#loadingProgressBar).css('width', data+'%');
-  $(#loadingProgressBar).attr('aria-valuenow', data);
-
+  $('#loadingProgressBar').css('width', data+'%');
+  $('#loadingProgressBar').attr('aria-valuenow', data);
   // forse si vuole modificare la 'notifyProgressionUpdate' in router.js e includere il messaggio di refresh
   if (data >= 100) {
     $.ajax({
