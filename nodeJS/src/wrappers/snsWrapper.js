@@ -50,7 +50,7 @@ class TopicPublisher{
      * @param {mimeType} dataFormat - Il formato del payload
      * @returns {Promise<Boolean>} - L'esito della richiesta
      */
-    async sendMessage(message, data, dataFormat){
+    sendMessage = async (message, data, dataFormat)=>{
         return await publisher({
             Message: message,
             MessageAttributes: {
@@ -61,7 +61,7 @@ class TopicPublisher{
             },
             TopicArn: this.arn
         });
-    }
+    };
 }
 
 /**
