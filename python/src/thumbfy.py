@@ -8,13 +8,9 @@ Contenuto:
 
 """
 
-# imports boto3 sdk, url utils and media management layer
-import boto3
+# imports url utils and media management layer
 import urllib.parse
 import media_manager as media_lib
-
-# create a reference to boto3 client
-s3 = boto3.client('s3')
 
 def lambda_handler(event, context)
     """
@@ -36,7 +32,7 @@ def lambda_handler(event, context)
         key = urllib.parse.unquote_plus(record['object']['key'], encoding= 'utf-8')
         full_qualifier = bucket + '/' +key
         # creates job
-        job_id = media_lib.createThumbnail(full_qualifier, full_qualifier + '.jpg')
+        job_id = media_lib.createThumbnail(full_qualifier, full_qualifier + '.jpg', 'console_thumbnail')
         return job_id
     except Exception as e:
         print(e)
