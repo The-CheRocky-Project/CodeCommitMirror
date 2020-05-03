@@ -101,7 +101,7 @@ http.listen(port, function(){
  * @param {object} req - Rappresenta la richiesta http
  * @param {object} res - Rappresenta la risposta http
  */
-ahl.post('getTable', (req,res) => {
+ahl.post('/getTable', (req,res) => {
     editController.updateLabelTable(res);
 });
 
@@ -154,7 +154,7 @@ ahl.post('includeLabel', (req,res) => {
  * @param {object} req - Rappresenta la richiesta http
  * @param {object} res - Rappresenta la risposta http
  */
-ahl.post('getVideoFrame', (req,res) => {
+ahl.post('/getVideoFrame', (req,res) => {
     editController.updateVideoFrame(res);
 });
 
@@ -244,7 +244,7 @@ ahl.post('notifyProgressionUpdate', (req,res) => {
  * @param {object} req - Rappresenta la richiesta http
  * @param {object} res - Rappresenta la risposta http
  */
-ahl.post('getFileList', (req,res) => {
+ahl.post('/getFileList', (req,res) => {
     fileExplorerController.getUpdatedFileList(res);
 });
 
