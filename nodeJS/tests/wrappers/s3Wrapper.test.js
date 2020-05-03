@@ -1,12 +1,9 @@
 const assert = require('assert');
+let s3Wrap = require('../../src/wrappers/s3Wrapper');
 
-describe('s3Wrapper', function() {
-    let s3Wrap;
-    beforeEach(function () {
-        s3Wrap = require('../../src/wrappers/s3Wrapper');
-    });
+describe('testS3Wrapper', function() {
 
-    describe('getObjectUrl()', () => {
+    describe('#getObjectUrl()', () => {
         it("should get the correct object url", () =>{
             let fileKey = "fileKeyDiProva";
             let bucket = "bucketDiProva";

@@ -3,7 +3,7 @@ const snsWrap=require('../../src/wrappers/snsWrapper');
 var AWS = require('aws-sdk-mock');
 
 describe('testSnsWrapper',() => {
-
+  describe('#getTopicArn()', () => {
     before(() => {
       let topic = 'myTopic';
       let region = 'us-east-2';
@@ -11,7 +11,7 @@ describe('testSnsWrapper',() => {
       let arn = snsWrap.getTopicArn(topic, region, userCode);
     });
 
-    it("testGetTopicARN", () => {
+    it("should get the correct ARN", () => {
       let expectedARN="arn:aws:sns:"+this.region+":"+this.userCode+":"+this.topic;
       let arn = snsWrap.getTopicArn(this.topic, this.region, this.userCode);
       assert.strictEqual(arn, expectedARN);
@@ -36,4 +36,5 @@ describe('testSnsWrapper',() => {
       AWS.restore('SNS', 'publish');
       assert.strictEqual(expectedResult, result);
     });*/
+  });
 });

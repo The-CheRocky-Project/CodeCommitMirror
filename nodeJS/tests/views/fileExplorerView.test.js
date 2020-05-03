@@ -2,17 +2,19 @@ const view = require('../../src/views/fileExplorerView');
 const assert = require('assert');
 
 describe('testFileExplorerView', () => {
-    it("testPrint", () =>{
-        let param = {};
-        let mockRes = {
-            viewName: "",
-            viewData: {},
-            render: function(viewName, viewData) {
-                this.viewName = viewName;
-                this.viewData = viewData;
-            }
-        };
-        view.print(param,mockRes);
-        assert.equal(mockRes.viewName,"layouts/fileExplorerTemplate");
+    describe('#print()', () => {
+        it("should render the fileExplorerTemplate", () =>{
+            let param = {};
+            let mockRes = {
+                viewName: "",
+                viewData: {},
+                render: function(viewName, viewData) {
+                    this.viewName = viewName;
+                    this.viewData = viewData;
+                }
+            };
+            view.print(param,mockRes);
+            assert.equal(mockRes.viewName,"layouts/fileExplorerTemplate");
+        });
     });
 });
