@@ -79,3 +79,5 @@ async function publisher(params){
 }
 
 exports.TopicPublisher= TopicPublisher;
+exports.getTopicArn= getTopicArn;
+exports.publisher= publisher;
