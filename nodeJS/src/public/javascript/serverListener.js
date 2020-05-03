@@ -47,8 +47,6 @@ $(document).ready(() => {
      * @param {object} data - parametro fittizio che non fa nulla
      */
     socket.on('newEndPoint', (data) => {
-      console.log("chiamata a progress");
-      window.alert("ciao")
       goEdit();
     });
 
@@ -141,6 +139,7 @@ function goEdit() {
 
 function updateStreaming() {
   $.ajax({
+      type: "POST",
       url: "./getVideoFrame"
   }).done( (video) => {
     // sostituisci il tag video con quella nuova(data)
@@ -150,6 +149,7 @@ function updateStreaming() {
 
 function updateFileList() {
   $.ajax({
+      type: "POST",
       url: "./getFileList"
   }).done(function(data){
       // replace titleList con quella nuova(data)
@@ -159,6 +159,7 @@ function updateFileList() {
 
 function updateTable() {
   $.ajax({
+      type: "POST",
       url: "./getTable"
   }).done(function(data){
       // sostituisci la table con quella nuova(data)
