@@ -13,7 +13,7 @@ describe('testLoadingView', () => {
                 }
             };
             view.print(mockRes);
-            assert.equal(mockRes.viewName,"layouts/loadingTemplate");
+            assert.strictEqual(mockRes.viewName,"layouts/loadingTemplate");
         });
     });
 });

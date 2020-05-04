@@ -14,7 +14,7 @@ describe('testFileExplorerView', () => {
                 }
             };
             view.print(param,mockRes);
-            assert.equal(mockRes.viewName,"layouts/fileExplorerTemplate");
+            assert.strictEqual(mockRes.viewName,"layouts/fileExplorerTemplate");
         });
     });
 });
