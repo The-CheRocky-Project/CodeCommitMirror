@@ -12,8 +12,8 @@ describe('testS3Wrapper', function() {
             let fileKey = "fileKeyDiProva";
             let bucket = "bucketDiProva";
             let region = "regioneDiProva";
-            let url = s3Wrap.getObjectUrl(this.fileKey,this.bucket,this.region);
-            assert.strictEqual(url,"https://"+this.bucket+".s3."+this.region+".amazonaws.com/"+this.fileKey);
+            let url = s3Wrap.getObjectUrl(fileKey,bucket,region);
+            assert.strictEqual(url,"https://"+bucket+".s3."+region+".amazonaws.com/"+fileKey);
         });
     });
     describe('#listObjects()', () => {
