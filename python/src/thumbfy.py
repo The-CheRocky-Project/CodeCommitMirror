@@ -12,7 +12,7 @@ Contenuto:
 import urllib.parse
 import media_manager as media_lib
 
-def lambda_handler(event, context)
+def lambda_handler(event, context):
     """
     Handler che crea le
     thumbnail dei video carcati sul bucket
