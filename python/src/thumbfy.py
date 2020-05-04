@@ -10,9 +10,10 @@ Contenuto:
 
 # imports url utils and media management layer
 import urllib.parse
-import media_manager as media_lib
+import media_manager
 
-def lambda_handler(event, context)
+
+def lambda_handler(event, context):
     """
     Handler che crea le
     thumbnail dei video carcati sul bucket
@@ -20,19 +21,23 @@ def lambda_handler(event, context)
     e avvia un job su transcoder che la produce
     con Key e prefisso identici ma con suffisso aggiuntivo
     ".jpg"
-    :param event: L'evento che ha fatto scaturire l'avvio dell'handler 
-    :param context: Il dizionario rappresentante le variabili di contesto
-        d'esecuzione
-    :return: Esito dell'esecuzione
+
+    Args:
+        event: L'evento che ha fatto scaturire l'avvio dell'handler
+        context: Il dizionario rappresentante le variabili di contesto
+            d'esecuzione
+
+    Returns:
+        string: job_id del lavoro avviato in Media Convert oppure false
     """
     try:
         # Extract bucket and fileKey strings
         record = event['Records'][0]['s3']
         bucket = record['bucket']['name']
-        key = urllib.parse.unquote_plus(record['object']['key'], encoding= 'utf-8')
-        full_qualifier = bucket + '/' +key
+        key = urllib.parse.unquote_plus(record['object']['key'], encoding='utf-8')
+        full_qualifier = bucket + '/' + key
         # creates job
-        job_id = media_lib.createThumbnail(full_qualifier, full_qualifier + '.jpg', 'console_thumbnail')
+        job_id = media_manager.createThumbnail(full_qualifier, full_qualifier + '.jpg', 'console_thumbnail')
         return job_id
     except Exception as e:
         print(e)
