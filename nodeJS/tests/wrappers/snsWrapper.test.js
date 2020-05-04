@@ -16,7 +16,7 @@ describe('testSnsWrapper',() => {
       assert.strictEqual(arn, expectedARN);
     });
   });
-  describe('#sendMessage()', ()=> {
+  /*describe('#publisher()', ()=> {
     before(() => {
       var msg= {
         Message: "message",
@@ -28,6 +28,7 @@ describe('testSnsWrapper',() => {
         },
         TopicArn: this.arn
       };
+
       AWS.mock('SNS', 'publish', (params, callback) => {
         callback(undefined, 'success'); // Mocked response returns ‘success’ always
       });
@@ -41,7 +42,7 @@ describe('testSnsWrapper',() => {
     after(() => {
       AWS.restore('SNS', 'publish');
     });
-    /*it("testEsitoPositivoRichiestaInvioMessaggio", () => {
+    it("testEsitoPositivoRichiestaInvioMessaggio", () => {
       var expectedResult=true;
       //var topicPub = new snsWrap.TopicPublisher(this.topic, this.region, this.userCode);
       //var result= topicPub.sendMessage(this.msg, this.data, this.dataFormat);
@@ -60,5 +61,4 @@ describe('testSnsWrapper',() => {
       AWS.restore('SNS', 'publish');
       assert.strictEqual(expectedResult, result);
     });*/
-  });
 });
