@@ -8,12 +8,10 @@ let s3Wrap = rewire("../../src/wrappers/s3Wrapper");
 describe('testS3Wrapper', function() {
 
     describe('#getObjectUrl()', () => {
-        before(() => {
+        it("should get the correct object url", () =>{
             let fileKey = "fileKeyDiProva";
             let bucket = "bucketDiProva";
             let region = "regioneDiProva";
-        });
-        it("should get the correct object url", () =>{
             let url = s3Wrap.getObjectUrl(this.fileKey,this.bucket,this.region);
             assert.strictEqual(url,"https://"+this.bucket+".s3."+this.region+".amazonaws.com/"+this.fileKey);
         });
