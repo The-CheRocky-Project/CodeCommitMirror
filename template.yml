@@ -99,3 +99,27 @@ Resources:
     DeletionPolicy: Retain
     Properties:
       BucketName: ahlconsolebucket
+  recoTopic:
+    Description: The SNS Topic for recnognizement news messaging
+    DeletionPolicy: Delete
+    Type: AWS::SNS:Topic
+    Properties:
+      TopicName: recognizement
+  trainTopic:
+    Description: The SNS Topic for training news messaging
+    DeletionPolicy: Delete
+    Type: AWS::SNS:Topic
+    Properties:
+      TopicName: training
+  editTopic:
+    Description: The SNS Topic for editing news messaging
+    DeletionPolicy: Delete
+    Type: AWS::SNS:Topic
+    Properties:
+      TopicName: editLabels
+  confirmTopic:
+    Description: The SNS Topic for confirmations news messaging
+    DeletionPolicy: Delete
+    Type: AWS::SNS:Topic
+    Properties:
+      TopicName: confirmation
