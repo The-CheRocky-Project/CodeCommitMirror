@@ -15,6 +15,7 @@ import boto3
 # Definisce il client s3
 s3 = boto3.client('s3')
 
+
 def lambda_handler(event, context):
     """
         Handler che, analizza la key del file che ha fatto scaturire l'evento e,
@@ -36,7 +37,7 @@ def lambda_handler(event, context):
     key = urllib.parse.unquote_plus(record['object']['key'], encoding='utf-8')
 
     # Controlla se il video è un .mp4 con suffisso "-low"
-    if key[-4:] == '.mp4' && key[-8:-4] == '-low' :
-        s3.delete_object(Bucket= bucket, Key= key)
+    if (key[-4:] == '.mp4') & (key[-8:-4] == '-low'):
+        s3.delete_object(Bucket=bucket, Key=key)
         return True
     return False
