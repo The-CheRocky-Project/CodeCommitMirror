@@ -35,3 +35,4 @@ def lambda_handler(event, context):
     record = event['Records'][0]['s3']
     bucket = record['bucket']['name']
     key = urllib.parse.unquote_plus(record['object']['key'], encoding='utf-8')
+    # TODO implement the handler using media_manager layer "mount" function
