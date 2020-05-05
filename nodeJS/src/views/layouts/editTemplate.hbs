@@ -6,10 +6,9 @@
     </svg>
     Torna indietro
   </a>
-    {{> videoFrame}}
-    {{> errorMessage}}
+    {{> videoFrame videoData}}
   <div id="divTable" class="table-responsive">
-      {{> recognitionTable}}
+      {{> recognitionTable recoData}}
       <!-- Bottone che appare non appena una persona inserisce un nuovo campo nella tabella, da fare il CSS -->
       <button id="confirm" type="button" class="button-right btn btn-warning">
           <svg class="bi bi-check" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

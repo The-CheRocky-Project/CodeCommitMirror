@@ -13,7 +13,9 @@ const model = require('../models/editModel');
 exports.getBody = (res) => {
     const videoEndpoint = model.getVideoEndpoint();
     const recogList = model.getRecognizementList();
-    view.print(videoEndpoint, recogList, res);
+    // Aggiungere calcolo dei 5 minuti e il tipoo dio video
+    let params = {url: videoEndpoint, recoList: recogList}
+    view.print(params, res);
 }
 
 /**

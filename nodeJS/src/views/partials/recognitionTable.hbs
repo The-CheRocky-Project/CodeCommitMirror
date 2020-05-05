@@ -1,3 +1,4 @@
+{{> errorMessage}}
 <table class="table table-striped table-sm">
     <thead>
     <tr>
@@ -9,27 +10,10 @@
     </tr>
     </thead>
     <tbody>
-    <tr>
-        <td><input id="col1row1" type="checkbox" name="col1row1" checked="checked"/></td>
-        <td><input id="col2row1" type="text" name="col2row1" readonly="readonly" value="00:04:30.123"/></td>
-        <td><input id="col3row1" type="text" name="col3row1" readonly="readonly" value="00:04:59.934"/></td>
-        <td>
-            <select id="col4row1" disabled="readonly">
-                <option value="" disabled="disabled">Etichette disponibili</option>
-                <option value="1" selected="selected">Goal</option>
-                <option value="2">Falso Goal</option>
-                <option value="3">Cartellino rosso</option>
-                <option value="4">Falso cartellino rosso</option>
-                <option value="5">Cartellino giallo</option>
-                <option value="6">Falso cartellino giallo</option>
-                <option value="7">Cambio</option>
-                <option value="8">Falso cambio</option>
-                <option value="9">etc...</option>
-            </select>
-        </td>
-        <td>IA</td>
-    </tr>
-    <tr>
+    {{#each files}}
+        {{> rowTemplate start=start end=end label=label who=who}}
+    {{/each}}
+        <tr>
         <td><input id="col1row2" type="checkbox" name="col1row1" checked="checked"/></td>
         <td><input id="col2row2" type="text" name="col2row1" readonly="readonly" value="00:05:12.123"/></td>
         <td><input id="col3row2" type="text" name="col3row1" readonly="readonly" value="00:05.30.934"/></td>
