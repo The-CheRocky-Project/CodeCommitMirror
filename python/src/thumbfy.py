@@ -35,7 +35,7 @@ def lambda_handler(event, context):
         record = event['Records'][0]['s3']
         bucket = record['bucket']['name']
         key = urllib.parse.unquote_plus(record['object']['key'], encoding='utf-8')
-        full_qualifier = bucket + '/' + key
+        full_qualifier = 's3://' + bucket + '/' + key
         # creates job
         job_id = media_manager.createThumbnail(full_qualifier, full_qualifier + '.jpg', 'console_thumbnail')
         return job_id
