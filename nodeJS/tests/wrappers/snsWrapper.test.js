@@ -22,7 +22,7 @@ describe('testSnsWrapper',() => {
   });
 
   describe('#publisher()', ()=> {
-    
+
     it("effettuazione della pubblicazione di un messaggio con esito positivo", () => {
       let params = { Message: JSON.stringify({ data: 'Message to send'})};
       var publisher= snsRewire.__get__("publisher");
@@ -30,8 +30,10 @@ describe('testSnsWrapper',() => {
         callback(null, 'success'); // Mocked response returns ‘success’ always
       });
       var expectedValue=true;
-      var result= publisher(params);
-      assert.equal(result,expectedValue);
+      var result= publisher(params).then((data) => {
+          assert.equal(data,expectedValue);
+      }).catch((err) => {console.log('errorro');});
+
     });
 
     it("la pubblicazione di un messaggio da esito negativo", () => {
@@ -41,8 +43,10 @@ describe('testSnsWrapper',() => {
         callback('err', null); // Mocked response returns error always
       });
       var expectedValue=false;
-      var result= publisher(params);
-      assert.equal(result,expectedValue);
+      var result= publisher(params).then((data) => {
+          assert.equal(result,expectedValue);
+      }).catch((err) => {console.log('err');});
+
     });
 
     afterEach(()=>{

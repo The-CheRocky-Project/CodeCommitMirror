@@ -65,7 +65,7 @@ class TopicPublisher{
         catch(error){
             throw "Publish error";
         }
-            
+
     };
 }
 
@@ -74,16 +74,15 @@ class TopicPublisher{
  * @param {Dict} params - I parametri di invio
  * @returns {Promise<Boolean>} - L'esito della richiesta di invio messaggio
  */
-function publisher(params){
+async function publisher(params){
     const snsClient = new AWS.SNS();
     let response = false;
-    async function snsPublish(){
-        const result = await snsClient.publish(params, (err, data) => {
+
+    const result = await snsClient.publish(params, (err, data) => {
             if(!err)
                 response=true;
-        }).promise().catch(error => {throw error});
-    }
-    snsPublish();
+    }).promise().catch(err => {throw err});
+
     return response;
 }
 
