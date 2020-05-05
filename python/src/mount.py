@@ -8,6 +8,7 @@ Contenuto:
 """
 
 # imports url utils and media management layer
+import json
 import urllib.parse
 import boto3
 import media_manager
@@ -31,8 +32,22 @@ def lambda_handler(event, context):
         id del job Elemental Media Convert oppure, False altrimenti
 
     """
-    # Preleva bucket name e key da event
-    record = event['Records'][0]['s3']
-    bucket = record['bucket']['name']
-    key = urllib.parse.unquote_plus(record['object']['key'], encoding='utf-8')
+    try:
+        # Preleva bucket name e key da event
+        record = event['Records'][0]['s3']
+        bucket = record['bucket']['name']
+        key = urllib.parse.unquote_plus(record['object']['key'], encoding='utf-8')
+        full_qualifier = bucket + '/' + key
+        #ottenimento resume file
+        resumejson = s3.Object(bucket, 'resume.json')
+        resume = resumejson.get()
+        resumecontent = json.loads(resume['Body'].read().decode('utf-8'))
+        #avvio job di creazione video
+        job_id = media_manager.mount(full_qualifier, resumecontent,'console_mount')
+        return job_id
+    except Exception as e:
+        print(e)
+        print('Impossibile creare creare il video di ' + full_qualifier)
+        raise e
+
     # TODO implement the handler using media_manager layer "mount" function

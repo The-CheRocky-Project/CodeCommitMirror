@@ -178,4 +178,147 @@ def mount(input_file_key, piece_list, queue):
         job_id se il lavoro è stato correttamente avviato, false altrimenti
     """
     # TODO implementation
-    return False
+
+    inputarray = {}
+
+    for piece in piece_list:
+        inputarray.append(
+            {
+                "AudioSelectors": {
+                    "Audio Selector 1": {
+                    "Offset": 0,
+                    "DefaultSelection": "DEFAULT",
+                    "ProgramSelection": 1
+                    }
+                },
+                "VideoSelector": {
+                    "ColorSpace": "FOLLOW",
+                    "Rotate": "DEGREE_0",
+                    "AlphaBehavior": "DISCARD"
+                },
+                "FilterEnable": "AUTO",
+                "PsiControl": "USE_PSI",
+                "FilterStrength": 0,
+                "DeblockFilter": "DISABLED",
+                "DenoiseFilter": "DISABLED",
+                'FileInput': input_file_key,
+                'InputClippings': [
+                    {
+                        'StartTimecode': piece.start,
+                        'EndTimecode': pice.start+piece.duration
+                    }
+                ],
+                'TimecodeSource': 'SPECIFIEDSTART',
+                'TimecodeStart': '00:00:00:00'
+            }
+        )
+
+
+    media_setting = {
+        "OutputGroups": [
+            {
+                "Name": "File Group",
+                "Outputs": [
+                    {
+                        "ContainerSettings": {
+                            "Container": "MP4",
+                            "Mp4Settings": {
+                                "CslgAtom": "INCLUDE",
+                                "CttsVersion": 0,
+                                "FreeSpaceBox": "EXCLUDE",
+                                "MoovPlacement": "PROGRESSIVE_DOWNLOAD"
+                            }
+                        },
+                        "VideoDescription": {
+                            "Width": 1280,
+                            "ScalingBehavior": "DEFAULT",
+                            "Height": 720,
+                            "TimecodeInsertion": "DISABLED",
+                            "AntiAlias": "ENABLED",
+                            "Sharpness": 50,
+                            "CodecSettings": {
+                                "Codec": "H_264",
+                                "H264Settings": {
+                                    "InterlaceMode": "PROGRESSIVE",
+                                    "NumberReferenceFrames": 3,
+                                    "Syntax": "DEFAULT",
+                                    "Softness": 0,
+                                    "GopClosedCadence": 1,
+                                    "GopSize": 90,
+                                    "Slices": 1,
+                                    "GopBReference": "DISABLED",
+                                    "SlowPal": "DISABLED",
+                                    "SpatialAdaptiveQuantization": "ENABLED",
+                                    "TemporalAdaptiveQuantization": "ENABLED",
+                                    "FlickerAdaptiveQuantization": "DISABLED",
+                                    "EntropyEncoding": "CABAC",
+                                    "Bitrate": 10000,
+                                    "FramerateControl": "INITIALIZE_FROM_SOURCE",
+                                    "RateControlMode": "CBR",
+                                    "CodecProfile": "MAIN",
+                                    "Telecine": "NONE",
+                                    "MinIInterval": 0,
+                                    "AdaptiveQuantization": "HIGH",
+                                    "CodecLevel": "AUTO",
+                                    "FieldEncoding": "PAFF",
+                                    "SceneChangeDetect": "ENABLED",
+                                    "QualityTuningLevel": "SINGLE_PASS",
+                                    "FramerateConversionAlgorithm": "DUPLICATE_DROP",
+                                    "UnregisteredSeiTimecode": "DISABLED",
+                                    "GopSizeUnits": "FRAMES",
+                                    "ParControl": "INITIALIZE_FROM_SOURCE",
+                                    "NumberBFramesBetweenReferenceFrames": 2,
+                                    "RepeatPps": "DISABLED",
+                                    "DynamicSubGop": "STATIC"
+                                }
+                            },
+                            "AfdSignaling": "NONE",
+                            "DropFrameTimecode": "ENABLED",
+                            "RespondToAfd": "NONE",
+                            "ColorMetadata": "INSERT"
+                        },
+                        "AudioDescriptions": [
+                            {
+                                "AudioTypeControl": "FOLLOW_INPUT",
+                                "CodecSettings": {
+                                    "Codec": "AAC",
+                                    "AacSettings": {
+                                        "AudioDescriptionBroadcasterMix": "NORMAL",
+                                        "Bitrate": 96000,
+                                        "RateControlMode": "CBR",
+                                        "CodecProfile": "LC",
+                                        "CodingMode": "CODING_MODE_2_0",
+                                        "RawFormat": "NONE",
+                                        "SampleRate": 48000,
+                                        "Specification": "MPEG4"
+                                    }
+                                },
+                                "LanguageCodeControl": "FOLLOW_INPUT"
+                            }
+                        ],
+                        "Extension": ".mp4",
+                        "NameModifier": "-combination"
+                    }
+                ],
+                "OutputGroupSettings": {
+                    "Type": "FILE_GROUP_SETTINGS",
+                    "FileGroupSettings": {
+                        "Destination": "s3://ahlconsolebucket/modify"
+                    }
+                }
+            }
+        ],
+        "AdAvailOffset": 0,
+        "Inputs": inputArray,
+    }
+
+    media_conv = client("mediaconvert")
+    result = media_conv.create_job(
+        Role=env_settings['Role'],
+        Settings=media_settings,
+        AccelerationSettings=env_settings['AccelerationSettings'],
+        StatusUpdateInterval='SECONDS_60',
+        Priority=0,
+        Queue=env_settings["QueuePrefix" + queue]
+    )
+    return result['Job']['Id']
