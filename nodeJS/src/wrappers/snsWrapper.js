@@ -78,7 +78,7 @@ function publisher(params){
     const snsClient = new AWS.SNS();
     let response = false;
     async function snsPublish(){
-        const result = snsClient.publish(params, (err, data) => {
+        const result = await snsClient.publish(params, (err, data) => {
             if(!err)
                 response=true;
         }).promise().catch(error => {throw error});
