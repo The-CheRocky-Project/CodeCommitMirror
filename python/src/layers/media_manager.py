@@ -9,7 +9,19 @@ Contenuto:
 """
 
 # Import boto3 sdk
-import boto3 as AWS
+from typing import Dict, Union
+
+from boto3 import client
+
+# le variabili di configurazione dell'ambiente
+env_settings = {
+    'AccelerationSettings': {
+        'Mode': 'DISABLED'
+    },
+    'BillingTagsSource': 'QUEUE',
+    'QueuePrefix': "arn:aws:mediaconvert:us-east-2:693949087897:queues/",
+    'Role': "arn:aws:iam::693949087897:role/mediaRole"
+}
 
 
 def create_thumbnail(input_key, output_folder_key, queue):
@@ -18,22 +30,13 @@ def create_thumbnail(input_key, output_folder_key, queue):
     "output_queue"
     
     Args:
+        output_folder_key: il prefisso di chiave S3 di destinazione
         input_key: la chiave S3 del video di origine
-        output_key: la chiave S3 di destinazione della thumbnail
         queue: la coda desiderata per il transcoding job
 
     Returns:
         il job_id del lavoro creato o false se non è stato possibile avviarlo
     """
-    # le variabili di configurazione dell'ambiente
-    env_settings = {
-        'AccelerationSettings': {
-            'Mode': 'DISABLED'
-        },
-        'BillingTagsSource': 'QUEUE',
-        'Queue': 'arn:aws:mediaconvert:us-east-2:693949087897:queues/' + queue,
-        'Role': 'arn:aws:iam::693949087897:role/mediaRole'
-    }
     # le variabili di configurazione del processo
     media_settings = {
         'OutputGroups': [
@@ -46,7 +49,7 @@ def create_thumbnail(input_key, output_folder_key, queue):
                     }
                 },
                 'Outputs': [
-                # output del frame da usare come thumbnail
+                    # output del frame da usare come thumbnail
                     {
                         "ContainerSettings": {
                             "Container": "RAW"
@@ -70,7 +73,7 @@ def create_thumbnail(input_key, output_folder_key, queue):
                             "ColorMetadata": "INSERT"
                         }
                     },
-                # output obbligatorio di almeno 1 video, scelto volutamente di bassa qualità
+                    # output obbligatorio di almeno 1 video, scelto volutamente di bassa qualità
                     {
                         'Extension': '.mp4',
                         'NameModifier': '-low',
@@ -149,12 +152,30 @@ def create_thumbnail(input_key, output_folder_key, queue):
             }
         ]
     }
-    media_conv = AWS.client('mediaconvert')
+    media_conv = client("mediaconvert")
     result = media_conv.create_job(
-        Role= env_settings['Role'],
-        Settings=  media_settings,
-        AccelerationSettings= env_settings['AccelerationSettings'],
-        StatusUpdateInterval= 'SECONDS_60',
-        Priority= 0
+        Role=env_settings['Role'],
+        Settings=media_settings,
+        AccelerationSettings=env_settings['AccelerationSettings'],
+        StatusUpdateInterval='SECONDS_60',
+        Priority=0,
+        Queue=env_settings["QueuePrefix" + queue]
     )
     return result['Job']['Id']
+
+
+def mount(input_file_key, piece_list, queue):
+    """
+    Effettua la creazione del lavoro di montaggio di alcuni spezzoni
+    di un video indicato come input in base al contenuto della
+    lista degli spezzoni sulla coda di lavori passata come parametro
+    Args:
+        input_file_key: la key del file da cui estrarre le parti
+        piece_list: l'array contenente inizio e durata di ogni spezzone
+        queue: il nome della queue da utilizzare per accodare il job
+
+    Returns:
+        job_id se il lavoro è stato correttamente avviato, false altrimenti
+    """
+    
+    return False
