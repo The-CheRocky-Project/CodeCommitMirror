@@ -1,6 +1,6 @@
 const assert = require('assert');
-const rewire = require("rewire");
-let s3Wrap = rewire("../../src/wrappers/s3Wrapper");
+const s3Wrap = require("../../src/wrappers/s3Wrapper");
+const AWSMock = require('aws-sdk-mock');
 
 describe('testS3Wrapper', function() {
     describe('#getObjectUrl()', () => {
@@ -22,16 +22,9 @@ describe('testS3Wrapper', function() {
                     {Key: "test.mp4"}
                 ]
             }
-            let s3ClientMock = {
-                listObjectsV2 : function() {
-                    return {
-                        promise: function() {
-                            return response;
-                        }
-                    }
-                }
-            }
-            s3Wrap.__set__("s3Client", s3ClientMock);
+            AWSMock.mock('S3', 'listObjectsV2', (params, callback) => {
+                callback(null, response);
+            });
             let objects = s3Wrap.listObjects(bucket,prefix);
             objects.then(function (res) {
                 assert.deepStrictEqual(res,["happyface.mp4","test.mp4"]);
@@ -48,16 +41,9 @@ describe('testS3Wrapper', function() {
             let response = {
                 Body: '{"campo1":"prova","campo2":"ciao"}'
             }
-            let s3ClientMock = {
-                getObject : function() {
-                    return {
-                        promise: function() {
-                            return response;
-                        }
-                    }
-                }
-            }
-            s3Wrap.__set__("s3Client", s3ClientMock);
+            AWSMock.mock('S3', 'getObject', (params, callback) => {
+                callback(null, response);
+            });
             let json = s3Wrap.getJsonFile(bucket,fileKey);
             json.then(function (res) {
                 expectedRes = {
