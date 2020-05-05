@@ -8,7 +8,6 @@ const Buffer = require('buffer');
 //Richiede i moduli sdk necessari e ne crea un istanza
 
 const AWS = require('aws-sdk');
-const snsClient = new AWS.SNS();
 
 /**
  * Funzione ausiliaria che calcola l'arn di un topic
@@ -50,8 +49,8 @@ class TopicPublisher{
      * @param {mimeType} dataFormat - Il formato del payload
      * @returns {Promise<Boolean>} - L'esito della richiesta
      */
-    sendMessage = async (message, data, dataFormat)=>{
-        return await publisher({
+    sendMessage = (message, data, dataFormat)=>{
+        return publisher({
             Message: message,
             MessageAttributes: {
                 'data': {
@@ -70,6 +69,7 @@ class TopicPublisher{
  * @returns {Promise<Boolean>} - L'esito della richiesta di invio messaggio
  */
 async function publisher(params){
+    const snsClient = new AWS.SNS();
     let response = false;
     const result = await snsClient.publish(params, (err, data) => {
         if(!err)

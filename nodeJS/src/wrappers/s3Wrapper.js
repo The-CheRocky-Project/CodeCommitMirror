@@ -6,7 +6,6 @@
 const utils = require('util');
 //requires the s3 AWS object storage Service
 const AWS = require('aws-sdk');
-const s3Client = new AWS.S3();
 
 // /** TODO remove from DevManual
 //  *  Imposta il bucket desiderato all'interno del modulo
@@ -30,12 +29,12 @@ exports.getObjectUrl = (fileKey, bucket, region) => {
 /**
  *  Funzione asincrona che ritorna la lista dei files contenuti nel bucket settato nel modulo
  */
-exports.listObjects = async (bucket, prefix) => {
+exports.listObjects = (bucket, prefix) => {
     const params = {
         Bucket: bucket,
         Prefix: prefix
     };
-    const keyList = await getKeys(params);
+    const keyList = getKeys(params);
     return keyList;
 };
 
@@ -43,6 +42,7 @@ exports.listObjects = async (bucket, prefix) => {
  *  Funzione ausiliaria che effettua il prelievo delle key da AWS s3 in maniera asincrona
  */
 async function getKeys(params, keys = []){
+    const s3Client = new AWS.S3();
     const response = await s3Client.listObjectsV2(params).promise();
     response.Contents.forEach(obj => keys.push(obj.Key));
 
@@ -59,13 +59,13 @@ async function getKeys(params, keys = []){
  *  @param {String} fileKey - La fileKey da deserializzare
  *  @returns {Object} - Dizionario JSON con il contenuto di fileKey
  */
-exports.getJsonFile = async (bucket,fileKey) =>{
+exports.getJsonFile = (bucket,fileKey) =>{
     const param ={
         Bucket: bucket,
         Key: fileKey,
         ResponseContentType: "application/json"
     };
-    const dict = await getObject(param);
+    const dict = getObject(param);
     return dict;
 };
 
@@ -75,6 +75,7 @@ exports.getJsonFile = async (bucket,fileKey) =>{
  *  @returns {Dict} fileContent - The parsing of the JSON file
  */
 async function getObject(params, fileContent = {}){
+    const s3Client = new AWS.S3();
     const response = await s3Client.getObject(params).promise();
     const deserialized = JSON.parse(response.Body.toString());
     const keys = Object.getOwnPropertyNames(deserialized).forEach( key => fileContent[key] = deserialized[key]);
