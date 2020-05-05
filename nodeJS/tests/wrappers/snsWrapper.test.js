@@ -13,6 +13,7 @@ describe('testSnsWrapper',() => {
   });
 
   describe('#getTopicArn()', () => {
+
     it("deve restituire l'ARN correttamente calcolato di un topic", () => {
       let expectedARN="arn:aws:sns:"+this.region+":"+this.userCode+":"+this.topic;
       let arn = snsWrap.getTopicArn(this.topic, this.region, this.userCode);
@@ -22,7 +23,7 @@ describe('testSnsWrapper',() => {
 
   describe('#publisher()', ()=> {
     
-    it("deve effettuare la pubblicazione di un messaggio con esito positivo", () => {
+    it("effettuazione della pubblicazione di un messaggio con esito positivo", () => {
       let params = { Message: JSON.stringify({ data: 'Message to send'})};
       var publisher= snsRewire.__get__("publisher");
       AWSMock.mock('SNS', 'publish', (params, callback) => {
@@ -30,20 +31,22 @@ describe('testSnsWrapper',() => {
       });
       var expectedValue=true;
       var result= publisher(params);
-      AWSMock.restore('SNS', 'publish');
       assert.equal(result,expectedValue);
     });
 
-    it("non deve effettuare la pubblicazione di un messaggio perché ha esito negativo", () => {
+    it("la pubblicazione di un messaggio da esito negativo", () => {
       let params = { Message: JSON.stringify({ data: 'Message to send'})};
       var publisher= snsRewire.__get__("publisher"); //importa la funzione privata "publisher"
       AWSMock.mock('SNS', 'publish', (params, callback) => {
-        callback('err', null); // Mocked response returns ‘success’ always
+        callback('err', null); // Mocked response returns error always
       });
       var expectedValue=false;
       var result= publisher(params);
-      AWSMock.restore('SNS', 'publish');
       assert.equal(result,expectedValue);
+    });
+
+    afterEach(()=>{
+      AWSMock.restore('SNS', 'publish');
     });
   });
 });
