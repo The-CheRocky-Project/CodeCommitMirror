@@ -3,9 +3,9 @@ const assert = require('assert');
 
 describe('testFileExplorerView', () => {
     describe('#print()', () => {
-        it("should render the fileExplorerTemplate", () =>{
-            let param = {};
-            let mockRes = {
+        let mockRes;
+        beforeEach(function() {
+            mockRes = {
                 viewName: "",
                 viewData: {},
                 render: function(viewName, viewData) {
@@ -13,8 +13,18 @@ describe('testFileExplorerView', () => {
                     this.viewData = viewData;
                 }
             };
+        });
+        it("should render the fileExplorerTemplate with main == false", () =>{
+            let param = {};
             view.print(param,mockRes);
             assert.strictEqual(mockRes.viewName,"layouts/fileExplorerTemplate");
+            assert.ok(!mockRes.viewData.layout);
+        });
+        it("should render the fileExplorerTemplate with main == true", () =>{
+            let param = {main:true};
+            view.print(param,mockRes);
+            assert.strictEqual(mockRes.viewName,"layouts/fileExplorerTemplate");
+            assert.ok(mockRes.viewData.layout);
         });
     });
 });

@@ -33,6 +33,9 @@ describe('testS3Wrapper', function() {
                     assert.fail("Promise error: "+err);
                 })
         });
+        after(()=>{
+            AWSMock.restore('S3','listObjectsV2');
+        });
     });
     describe('#getJsonFile()', () => {
         it("should get the json content", () =>{
@@ -55,6 +58,9 @@ describe('testS3Wrapper', function() {
                 .catch(function (err) {
                     assert.fail("Promise error: "+err);
                 })
+        });
+        after(()=>{
+            AWSMock.restore('S3','getObject');
         });
     });
 });
