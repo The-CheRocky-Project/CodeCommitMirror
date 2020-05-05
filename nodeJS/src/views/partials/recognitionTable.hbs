@@ -1,4 +1,9 @@
-{{> errorMessage}}
+{{#if error}}
+    <div class="alert alert-danger" role="alert">
+        Attenzione! Il video di sintesi supera la durata massima di 5 minuti.
+        Modificare i match in modo da ridurre la durata totale.
+    </div>
+{{/if}}
 <table class="table table-striped table-sm">
     <thead>
     <tr>
@@ -10,9 +15,9 @@
     </tr>
     </thead>
     <tbody>
-    {{#each files}}
-        {{> rowTemplate start=start end=end label=label who=who}}
-    {{/each}}
+        {{#each recognizements}}
+            {{> rowTemplate this }}
+        {{/each}}
         <tr>
         <td><input id="col1row2" type="checkbox" name="col1row1" checked="checked"/></td>
         <td><input id="col2row2" type="text" name="col2row1" readonly="readonly" value="00:05:12.123"/></td>

@@ -12,9 +12,15 @@ const model = require('../models/editModel');
  */
 exports.getBody = (res) => {
     const videoEndpoint = model.getVideoEndpoint();
-    const recogList = model.getRecognizementList();
-    // Aggiungere calcolo dei 5 minuti e il tipoo dio video
-    let params = {url: videoEndpoint, recoList: recogList}
+    const recoList = model.getRecognizementList();
+    const labelList = model.getmodelLabels();
+    const params = {
+        url: videoEndpoint,
+        originalVideo: model.isVideoTypeOriginal(),
+        error: calculateOvertime(recoList),
+        list: recoList,
+        labels: labelList
+    }
     view.print(params, res);
 }
 
@@ -92,3 +98,15 @@ exports.updateLabelTable = (res) => {
 exports.confirmEditing = () => {
     return model.sendConfirmation();
 };
+
+/**
+ * Calcola la dutata totale dei riconoscimenti presenti in lista
+ * @param recognizerList - la lista dei riconoscimenti
+ * @returns {boolean} true se la lista di riconoscimenti supera i 5 minuti false altrimenti
+ */
+function calculateOvertime(recognizerList){
+    let sum=0;
+    for(const single in recognizerList)
+        sum+=single.duration;
+    return sum>300000
+}

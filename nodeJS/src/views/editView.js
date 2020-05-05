@@ -7,7 +7,7 @@
  * Effettua il rendering del body in base ai parametri
  * @param {string} videoURL - rappresenta l'URL pubblico del video originale o modificato
  * @param {object} listParams - dizionario contenente tutti i dettagli delle varie righe per la creazione della tabella
- * @param {XHTMLresponse} res - Rappresenta la risposta http
+ * @param {Object} res - Rappresenta la risposta http
  */
 exports.print = (params, res) => {
     res.render('layouts/editTemplate',
@@ -16,14 +16,12 @@ exports.print = (params, res) => {
             data: {
                 videoData: {
                     endpoint: params.url,
-                    videoType: params.type
+                    original: params.originalVideo
                 },
-                //TODO inserire errore corretto
                 tableData:{
-                    errorData:{
-                        error: true
-                    },
-                    recoList: params.recoList
+                    error: params.error,
+                    recognizements: params.list,
+                    labelIndexes: params.labels
                 },
             },
             layout: true
@@ -42,8 +40,8 @@ exports.print = (params, res) => {
 exports.generateVideoFrame = (url, isOriginal, res)=>{
     res.render('partials/videoFrame',
         {
-            url: url,
-            isOriginal: isOriginal,
+            endpoint: params.url,
+            original: params.originalVideo,
             layout: false
         });
 };
@@ -55,7 +53,15 @@ exports.generateVideoFrame = (url, isOriginal, res)=>{
  */
 exports.generateTable = (params, res)=>{
     res.render('partials/tableTemplate',{
-        data: params,
+        data:{
+            errorData:{
+                error: params.error
+            },
+            rowData: {
+                recognizement: params.list,
+                labelIndexes: params.labels
+            }
+        },
         layout: false
     });
 };

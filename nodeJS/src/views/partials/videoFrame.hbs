@@ -23,8 +23,8 @@
             <label class="input-group-text" for="inputGroupSelect01">Tipo di video</label>
         </div>
         <select class="custom-select" id="inputGroupSelect01">
-            <option value="elaborate">Elaborato</option>
-            <option value="original">Originale</option>
+            <option value="elaborate"{{#unless original}}selected="selected()"{{/unless}}>Elaborato</option>
+            <option value="original"{{#if original}}selected="selected()"{{/if}}>Originale</option>
         </select>
     </div>
 </div>
