@@ -50,16 +50,22 @@ class TopicPublisher{
      * @returns {Promise<Boolean>} - L'esito della richiesta
      */
     sendMessage = (message, data, dataFormat)=>{
-        return publisher({
-            Message: message,
-            MessageAttributes: {
-                'data': {
-                    DataType: dataFormat,
-                    BinaryValue: Buffer.from(data)
-                }
-            },
-            TopicArn: this.arn
-        });
+        try{
+            return publisher({
+                Message: message,
+                MessageAttributes: {
+                    'data': {
+                        DataType: dataFormat,
+                        BinaryValue: Buffer.from(data)
+                    }
+                },
+                TopicArn: this.arn
+            });
+        }
+        catch(error){
+            throw "Publish error";
+        }
+            
     };
 }
 
@@ -75,7 +81,7 @@ function publisher(params){
         const result = snsClient.publish(params, (err, data) => {
             if(!err)
                 response=true;
-        }).promise();
+        }).promise().catch(error => {throw error});
     }
     snsPublish();
     return response;
