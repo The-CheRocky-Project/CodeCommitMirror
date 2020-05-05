@@ -1,64 +1,49 @@
 const assert = require('assert');
 const snsWrap=require('../../src/wrappers/snsWrapper');
-var AWS = require('aws-sdk-mock');
+var AWSMock = require('aws-sdk-mock');
+var rewire = require("rewire");
+var snsRewire = rewire("../../src/wrappers/snsWrapper.js");
 
 describe('testSnsWrapper',() => {
-  describe('#getTopicArn()', () => {
-    before(() => {
-      let topic = 'myTopic';
-      let region = 'us-east-2';
-      let userCode = 'myCode';
-    });
 
+  before(() => {
+    let topic = 'myTopic';
+    let region = 'us-east-2';
+    let userCode = 'myCode';
+  });
+
+  describe('#getTopicArn()', () => {
     it("deve restituire l'ARN correttamente calcolato di un topic", () => {
       let expectedARN="arn:aws:sns:"+this.region+":"+this.userCode+":"+this.topic;
       let arn = snsWrap.getTopicArn(this.topic, this.region, this.userCode);
       assert.strictEqual(arn, expectedARN);
     });
   });
-  /*describe('#publisher()', ()=> {
-    before(() => {
-      var msg= {
-        Message: "message",
-        MessageAttributes: {
-            'data': {
-                DataType: "dataFormat",
-                BinaryValue: Buffer.from("data")
-            }
-        },
-        TopicArn: this.arn
-      };
 
-      AWS.mock('SNS', 'publish', (params, callback) => {
-        callback(undefined, 'success'); // Mocked response returns ‘success’ always
-      });
-    });
+  describe('#publisher()', ()=> {
+    
     it("deve effettuare la pubblicazione di un messaggio con esito positivo", () => {
-      var expectedValue=true;
-      var result= snsWrap.publisher(this.msg);
-      assert.strictEqual(result,expectedValue);
-      
-    });
-    after(() => {
-      AWS.restore('SNS', 'publish');
-    });
-    it("testEsitoPositivoRichiestaInvioMessaggio", () => {
-      var expectedResult=true;
-      //var topicPub = new snsWrap.TopicPublisher(this.topic, this.region, this.userCode);
-      //var result= topicPub.sendMessage(this.msg, this.data, this.dataFormat);
-      var param= publisher({
-        Message: "message",
-        MessageAttributes: {
-            'data': {
-                DataType: "dataFormat",
-                BinaryValue: Buffer.from("data")
-            }
-        },
-        TopicArn: this.arn
+      let params = { Message: JSON.stringify({ data: 'Message to send'})};
+      var publisher= snsRewire.__get__("publisher");
+      AWSMock.mock('SNS', 'publish', (params, callback) => {
+        callback(null, 'success'); // Mocked response returns ‘success’ always
       });
-      AWS.mock('SNS', 'publish', 'test-method');
-      var result= snsWrap.publisher(param);
-      AWS.restore('SNS', 'publish');
-      assert.strictEqual(expectedResult, result);
-    });*/
+      var expectedValue=true;
+      var result= publisher(params);
+      AWSMock.restore('SNS', 'publish');
+      assert.equal(result,expectedValue);
+    });
+
+    it("non deve effettuare la pubblicazione di un messaggio perché ha esito negativo", () => {
+      let params = { Message: JSON.stringify({ data: 'Message to send'})};
+      var publisher= snsRewire.__get__("publisher"); //importa la funzione privata "publisher"
+      AWSMock.mock('SNS', 'publish', (params, callback) => {
+        callback('err', null); // Mocked response returns ‘success’ always
+      });
+      var expectedValue=false;
+      var result= publisher(params);
+      AWSMock.restore('SNS', 'publish');
+      assert.equal(result,expectedValue);
+    });
+  });
 });

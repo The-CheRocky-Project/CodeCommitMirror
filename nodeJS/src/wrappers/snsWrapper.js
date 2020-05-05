@@ -68,16 +68,18 @@ class TopicPublisher{
  * @param {Dict} params - I parametri di invio
  * @returns {Promise<Boolean>} - L'esito della richiesta di invio messaggio
  */
-async function publisher(params){
+function publisher(params){
     const snsClient = new AWS.SNS();
     let response = false;
-    const result = await snsClient.publish(params, (err, data) => {
-        if(!err)
-            response=true;
-    }).promise();
+    async function snsPublish(){
+        const result = snsClient.publish(params, (err, data) => {
+            if(!err)
+                response=true;
+        }).promise();
+    }
+    snsPublish();
     return response;
 }
 
 exports.TopicPublisher= TopicPublisher;
 exports.getTopicArn= getTopicArn;
-exports.publisher= publisher;
