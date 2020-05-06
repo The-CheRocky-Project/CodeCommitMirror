@@ -5,7 +5,7 @@
   "author": "The CheRocky Project",
   "scripts": {
     "start": "node nodeJS/src/router.js",
-    "test": "nyc mocha nodeJS/tests --recursive --exit"
+    "test": "nyc mocha nodeJS/tests --recursive --reporter mocha-xunit-reporter --exit"
   },
   "main": "nodeJS/src/router.js",
   "dependencies": {
@@ -28,6 +28,7 @@
     "plato": "^1.7.0",
     "rewire": "^5.0.0",
     "supertest": "^3.0.0",
-    "unit.js": "^2.1.1"
+    "unit.js": "^2.1.1",
+    "mocha-xunit-reporter": "^2.1.0"
   }
 }
