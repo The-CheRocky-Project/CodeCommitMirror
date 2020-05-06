@@ -102,38 +102,47 @@ Resources:
   recoTopic:
     Description: The SNS Topic for recnognizement news messaging
     DeletionPolicy: Delete
-    Type: AWS::SNS:Topic
+    Type: AWS::SNS::Topic
     Properties:
       TopicName: recognizement
   trainTopic:
     Description: The SNS Topic for training news messaging
     DeletionPolicy: Delete
-    Type: AWS::SNS:Topic
+    Type: AWS::SNS::Topic
     Properties:
       TopicName: training
   editTopic:
     Description: The SNS Topic for editing news messaging
     DeletionPolicy: Delete
-    Type: AWS::SNS:Topic
+    Type: AWS::SNS::Topic
     Properties:
       TopicName: editLabels
   confirmTopic:
     Description: The SNS Topic for confirmations news messaging
     DeletionPolicy: Delete
-    Type: AWS::SNS:Topic
+    Type: AWS::SNS::Topic
     Properties:
       TopicName: confirmation
-  editQueue:
-    Description: The SQS Queue to manage editing requests to resume file
-    DeletionPolicy: Delete
-    Type: AWS::SQS::Queue
-    Properties:
-      ContentBasedDeduplication: true
-      FiFoQueue: true
-      QueueName: editQueue.fifo
+#  editQueue:
+#    Description: The SQS Queue to manage editing requests to resume file
+#    DeletionPolicy: Delete
+#    Type: AWS::SQS::Queue
+#    Properties:
+#      ContentBasedDeduplication: true
+#      FiFoQueue: true
+#      QueueName: editQueue.fifo
   dbQueue:
     Description: The SQS Queue to batch the recognizement DB insertion
     DeletionPolicy: Delete
     Type: AWS::SQS::Queue
     Properties:
       QueueName: dbQueue
+  codeReports:
+    Description: The code indexes reportGroup for CodeBuild
+    DeletionPolicy: Retain
+    Type: AWS::CodeBuild::ReportGroup
+    Properties:
+      Name: ahl
+      Type: TEST
+      ExportConfig:
+        ExportConfigType: NO_EXPORT

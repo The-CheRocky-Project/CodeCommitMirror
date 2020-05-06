@@ -33,13 +33,7 @@ artifacts:
   files:
     - template-export.yml
     - template-configuration.json
-
-      #- docker build -t ahlcontainer ./nodeJS
-  #post_build:
-    #commands:
-      #- docker tag ahlcontainer:latest $REPOSITORY_URI:latest
-      #- docker push $REPOSITORY_URI:latest
-      #- printf "[{\"name\":\"ahlcontainer\",\"imageUri\":\"%s\"}]" $REPOSITORY_URI:latest > images.json
-#artifacts:
-  #files:
-    #images.json
+reports:
+  Plato:
+    files:
+      - 'Plato_reports/report.json'
