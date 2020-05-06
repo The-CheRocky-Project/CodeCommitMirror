@@ -11,7 +11,13 @@ Contenuto:
 # Import boto3 sdk
 from typing import Dict, Union
 
+
+import json
+import boto3
 from boto3 import client
+
+runtime = boto3.client('runtime.sagemaker')
+dynamodb = boto3.resource('dynamodb')
 
 # le variabili di configurazione dell'ambiente
 env_settings = {
@@ -401,3 +407,33 @@ def frame(input_file_key, duration, queue):
         Queue=env_settings["QueuePrefix" + queue]
     )
     return result['Job']['Id']
+
+def get_frame_details(endpoint, payload):
+    response = runtime.invoke_endpoint(EndpointName=endpoint,
+                                       ContentType='application/x-image',
+                                       Body=payload)
+    result = json.loads(response['Body'].read().decode())
+
+    index = 0
+    top= result[index]
+    for i in range(len(result)-1):
+        tmp = result[i+1]
+        if top < tmp:
+            index = i+1
+            top = tmp
+
+    return {
+        'index': index,
+        'accuracy' : top
+    }
+
+def dynamo_insertion(frame_info, label, name):
+    table = dynamodb.Table('frame_rekognitions')
+
+    return table.put_item(
+        Item={
+            'file_name' : name,
+            'label': label,
+            'accuracy': frame_info.accuracy
+        }
+    )
