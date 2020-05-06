@@ -34,6 +34,6 @@ artifacts:
     - template-export.yml
     - template-configuration.json
 reports:
-  Plato:
+  nyc:
     files:
-      - 'Plato_reports/report.json'
+      - '.nyc_output/*'

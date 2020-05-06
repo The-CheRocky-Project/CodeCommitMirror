@@ -137,12 +137,3 @@ Resources:
     Type: AWS::SQS::Queue
     Properties:
       QueueName: dbQueue
-  codeReports:
-    Description: The code indexes reportGroup for CodeBuild
-    DeletionPolicy: Retain
-    Type: AWS::CodeBuild::ReportGroup
-    Properties:
-      Name: ahl
-      Type: TEST
-      ExportConfig:
-        ExportConfigType: NO_EXPORT
