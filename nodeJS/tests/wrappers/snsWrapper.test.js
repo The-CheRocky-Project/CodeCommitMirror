@@ -53,4 +53,11 @@ describe('testSnsWrapper',() => {
       AWSMock.restore('SNS', 'publish');
     });
   });
+/*
+  describe('#sendMessage()', ()=> {
+    it("l'oggetto TopicPublisher deve pubblicare un messaggio con esito positivo", () => {
+      let topic_publisher= new snsWrap.TopicPublisher(this.topic, this.userCode, this.region);
+      
+    });
+  });*/
 });

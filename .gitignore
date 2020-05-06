@@ -2,5 +2,6 @@
 node_modules/
 nodeJS/node_modules/
 .idea/
-.nyc_output
+.nyc_output/
+.vscode/
 .DS_Store
