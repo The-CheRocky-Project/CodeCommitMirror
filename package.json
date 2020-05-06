@@ -5,12 +5,13 @@
   "author": "The CheRocky Project",
   "scripts": {
     "start": "node nodeJS/src/router.js",
-    "test": "nyc mocha nodeJS/tests --recursive --reporter mocha-junit-reporter --exit"
+    "test":"nyc mocha nodeJS/tests --recursive --exit && nyc --no-clean ./node_modules/cucumber/bin/cucumber-js"
   },
   "main": "nodeJS/src/router.js",
   "dependencies": {
     "aws-sdk": "^2.667.0",
     "cookie-parser": "~1.4.4",
+    "cucumber": "^6.0.5",
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "express-handlebars": "^4.0.3",

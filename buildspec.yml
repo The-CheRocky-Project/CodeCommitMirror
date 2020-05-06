@@ -36,4 +36,4 @@ artifacts:
 reports:
   nyc:
     files:
-      - 'test-results.xml'
+      - '.nyc_output/processinfo/*'
