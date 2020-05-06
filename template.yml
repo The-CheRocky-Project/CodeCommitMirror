@@ -123,14 +123,14 @@ Resources:
     Type: AWS::SNS::Topic
     Properties:
       TopicName: confirmation
-  editQueue:
-    Description: The SQS Queue to manage editing requests to resume file
-    DeletionPolicy: Delete
-    Type: AWS::SQS::Queue
-    Properties:
-      ContentBasedDeduplication: true
-      FiFoQueue: true
-      QueueName: editQueue.fifo
+#  editQueue:
+#    Description: The SQS Queue to manage editing requests to resume file
+#    DeletionPolicy: Delete
+#    Type: AWS::SQS::Queue
+#    Properties:
+#      ContentBasedDeduplication: true
+#      FiFoQueue: true
+#      QueueName: editQueue.fifo
   dbQueue:
     Description: The SQS Queue to batch the recognizement DB insertion
     DeletionPolicy: Delete
