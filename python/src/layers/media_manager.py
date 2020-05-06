@@ -177,7 +177,6 @@ def mount(input_file_key, piece_list, queue):
     Returns:
         job_id se il lavoro è stato correttamente avviato, false altrimenti
     """
-    # TODO implementation
 
     inputarray = {}
 
@@ -205,7 +204,7 @@ def mount(input_file_key, piece_list, queue):
                 'InputClippings': [
                     {
                         'StartTimecode': piece.start,
-                        'EndTimecode': pice.start+piece.duration
+                        'EndTimecode': piece.start+piece.duration
                     }
                 ],
                 'TimecodeSource': 'SPECIFIEDSTART',
@@ -214,7 +213,7 @@ def mount(input_file_key, piece_list, queue):
         )
 
 
-    media_setting = {
+    media_settings = {
         "OutputGroups": [
             {
                 "Name": "File Group",
@@ -309,9 +308,89 @@ def mount(input_file_key, piece_list, queue):
             }
         ],
         "AdAvailOffset": 0,
-        "Inputs": inputArray,
+        "Inputs": inputarray,
     }
 
+    media_conv = client("mediaconvert")
+    result = media_conv.create_job(
+        Role=env_settings['Role'],
+        Settings=media_settings,
+        AccelerationSettings=env_settings['AccelerationSettings'],
+        StatusUpdateInterval='SECONDS_60',
+        Priority=0,
+        Queue=env_settings["QueuePrefix" + queue]
+    )
+    return result['Job']['Id']
+
+def frame(input_file_key, duration, queue):
+    media_settings={
+            'Inputs': [
+                {
+                    'AudioSelectors': {
+                        'Audio Selector 1': {
+                            'Offset': 0,
+                            'DefaultSelection': 'DEFAULT',
+                            'ProgramSelection': 1
+                        }
+                    },
+                    'VideoSelector': {
+                        'ColorSpace': 'FOLLOW',
+                        'Rotate': 'DEGREE_0',
+                        'AlphaBehavior': 'DISCARD'
+                    },
+                    'FilterEnable': 'AUTO',
+                    'PsiControl': 'USE_PSI',
+                    'FilterStrength': 0,
+                    'DeblockFilter': 'DISABLED',
+                    'DenoiseFilter': 'DISABLED',
+                    'TimecodeSource': 'EMBEDDED',
+                    'FileInput': input_file_key
+                }
+            ],
+            'OutputGroups': [
+                {
+                    'Name': 'File Group',
+                    'Outputs': [
+                        {
+                            'Preset': 'Low',
+                            'Extension': 'mp4',
+                            'NameModifier': 'low'
+                        },
+                        {
+                            "VideoDescription": {
+                                "ScalingBehavior": "DEFAULT",
+                                "TimecodeInsertion": "DISABLED",
+                                "AntiAlias": "ENABLED",
+                                "Sharpness": 50,
+                                "CodecSettings": {
+                                    "Codec": "FRAME_CAPTURE",
+                                    "FrameCaptureSettings": {
+                                        "FramerateNumerator": 30,
+                                        #nel caso da modificare a piacimento
+                                        #TODO verificare il funzionamento
+                                        "FramerateDenominator": (duration*30)/10,
+                                        "MaxCaptures": 10000000,
+                                        "Quality": 80
+                                    }
+                                },
+                                "DropFrameTimecode": "ENABLED",
+                                "ColorMetadata": "INSERT"
+                            },
+                            "ContainerSettings": {
+                                "Container": "RAW"
+                            }
+                        }
+                    ],
+                    'OutputGroupSettings': {
+                        'Type': 'FILE_GROUP_SETTINGS',
+                        'FileGroupSettings': {
+                            'Destination': 's3://ahlconsolebucket/frames/'
+                        }
+                    }
+                }
+            ],
+            'AdAvailOffset': 0,
+        }
     media_conv = client("mediaconvert")
     result = media_conv.create_job(
         Role=env_settings['Role'],
