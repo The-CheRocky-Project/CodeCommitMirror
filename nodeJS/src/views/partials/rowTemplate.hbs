@@ -11,9 +11,9 @@
         <select id="col4row1">
             {{#each labels}}
                 <option value="{{@index}}"
-                {{#if @index==modelIndex}}
+                {{#eq @index modelIndex}}
                     selected="selected()"
-                {{/if}}
+                {{/eq}}
                 >
                 {{this}}
                 </option>

@@ -47,7 +47,5 @@ def lambda_handler(event, context):
         return job_id
     except Exception as e:
         print(e)
-        print('Impossibile creare creare il video di ' + full_qualifier)
+        print('Impossibile creare il video di ' + full_qualifier)
         raise e
-
-    # TODO implement the handler using media_manager layer "mount" function
