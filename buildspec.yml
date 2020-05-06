@@ -33,7 +33,7 @@ artifacts:
   files:
     - template-export.yml
     - template-configuration.json
-#reports:
-#  Plato:
-#    files:
-#      - 'Plato_reports/report.json'
+reports:
+  Plato:
+    files:
+      - 'Plato_reports/report.json'
