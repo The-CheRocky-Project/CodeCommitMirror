@@ -30,7 +30,14 @@ ahl.engine('.hbs', exphbs({
     extname: 'hbs',
     layoutsDir: layoutsLocation,
     partialsDir: partialsLocation,
-    defaultLayout: 'main'
+    defaultLayout: 'main',
+    helpers: {
+        eq: (op1, op2, opt) => {
+            if(op1 == op2)
+                return opt.fn(this);
+            return opt.inverse(this);
+        }
+    }
 }));
 ahl.set('view engine','.hbs');
 
