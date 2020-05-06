@@ -14,6 +14,7 @@ from typing import Dict, Union
 
 import json
 import boto3
+import decimal
 from boto3 import client
 
 runtime = boto3.client('runtime.sagemaker')
@@ -434,6 +435,6 @@ def dynamo_insertion(frame_info, label, name):
         Item={
             'file_name' : name,
             'label': label,
-            'accuracy': frame_info.accuracy
+            'accuracy': decimal.Decimal(frame_info.accuracy)
         }
     )

@@ -9,7 +9,6 @@ Contenuto:
 """
 
 # imports url utils and media management layer
-import decimal
 import json
 import os
 import urllib.parse
@@ -56,7 +55,7 @@ def lambda_handler(event, context):
         splitted = key.split('/')
         newkey = splitted[len(splitted)-1]
 
-        job_id = dynamo_insertion(result,label<, newkey)
+        job_id = dynamo_insertion(result,label, newkey)
         return job_id
     except Exception as e:
         print(e)
