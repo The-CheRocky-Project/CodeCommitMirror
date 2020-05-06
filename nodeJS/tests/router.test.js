@@ -1,5 +1,5 @@
 // const router = require('../src/nodeJS/router.js')
-const request = require('supertest');
+/*const request = require('supertest');
 const rewire = require('rewire');
 const express = require('express');
 var routerRew = rewire('../src/router.js');
@@ -157,3 +157,4 @@ describe('Test su endpoint router', function() {
   //
   // });
 });
+*/
