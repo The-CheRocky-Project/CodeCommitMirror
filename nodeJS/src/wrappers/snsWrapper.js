@@ -50,22 +50,16 @@ class TopicPublisher{
      * @returns {Promise<Boolean>} - L'esito della richiesta
      */
     sendMessage = (message, data, dataFormat)=>{
-        try{
-            return publisher({
-                Message: message,
-                MessageAttributes: {
-                    'data': {
-                        DataType: dataFormat,
-                        BinaryValue: Buffer.from(data)
-                    }
-                },
-                TopicArn: this.arn
-            });
-        }
-        catch(error){
-            throw "Publish error";
-        }
-
+        return publisher({
+            Message: message,
+            MessageAttributes: {
+                'data': {
+                    DataType: dataFormat,
+                    BinaryValue: Buffer.from(data)
+                }
+            },
+            TopicArn: this.arn
+        });
     };
 }
 
@@ -76,14 +70,13 @@ class TopicPublisher{
  */
 async function publisher(params){
     const snsClient = new AWS.SNS();
-    let response = false;
-
-    const result = await snsClient.publish(params, (err, data) => {
-            if(!err)
-                response=true;
-    }).promise().catch(err => {throw err});
-
-    return response;
+    let result = false;
+    // Wait for SNS call
+    await snsClient.publish(params)
+        .promise()
+        .then(data => result=true)
+        .catch(err => console.log("Errore SNS #" + err.code + ": " + err.message));
+    return result;
 }
 
 exports.TopicPublisher= TopicPublisher;
