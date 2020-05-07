@@ -3,7 +3,7 @@
  * @module wrappers/snsWrapper
  */
 
-const Buffer = require('buffer');
+const Buffer = require('buffer').Buffer;
 
 //Richiede i moduli sdk necessari e ne crea un istanza
 
