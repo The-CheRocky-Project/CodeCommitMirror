@@ -6,9 +6,10 @@ Contenuto:
     * lambda_handler - l'handler principale per la lambda
 """
 
-# imports url utils and json utils
+# imports url utils, json utils & boto3 sdk
 import urllib.parse
 import json
+import boto3
 
 s3 = boto3.resource('S3')
 
