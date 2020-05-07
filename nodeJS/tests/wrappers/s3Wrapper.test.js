@@ -33,7 +33,7 @@ describe('testS3Wrapper', function() {
                     assert.fail("Promise error: "+err);
                 })
         });
-        after(()=>{
+        afterEach(()=>{
             AWSMock.restore('S3','listObjectsV2');
         });
     });
@@ -59,7 +59,7 @@ describe('testS3Wrapper', function() {
                     assert.fail("Promise error: "+err);
                 })
         });
-        after(()=>{
+        afterEach(()=>{
             AWSMock.restore('S3','getObject');
         });
     });

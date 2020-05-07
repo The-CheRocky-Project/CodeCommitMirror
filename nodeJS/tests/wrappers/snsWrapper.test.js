@@ -6,7 +6,7 @@ var snsRewire = rewire("../../src/wrappers/snsWrapper.js");
 
 describe('testSnsWrapper',() => {
 
-  before(() => {
+  beforeEach(() => {
     let topic = 'myTopic';
     let region = 'us-east-2';
     let userCode = 'myCode';
@@ -32,7 +32,7 @@ describe('testSnsWrapper',() => {
       var expectedValue=true;
       var result= publisher(params).then((data) => {
           assert.equal(data,expectedValue);
-      }).catch((err) => {console.log('errorro');});
+      }).catch((err) => {console.log('error');});
 
     });
 
