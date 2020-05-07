@@ -13,7 +13,7 @@ describe('testS3Wrapper', function() {
         });
     });
     describe('#listObjects()', () => {
-        it("should list the objects", () =>{
+        it("should list the objects", (done) =>{
             let bucket = "prova";
             let prefix = "prova";
             let response = {
@@ -28,9 +28,10 @@ describe('testS3Wrapper', function() {
             let objects = s3Wrap.listObjects(bucket,prefix);
             objects.then(function (res) {
                 assert.deepStrictEqual(res,["happyface.mp4","test.mp4"]);
+                done();
             })
                 .catch(function (err) {
-                    assert.fail("Promise error: "+err);
+                    done(new Error(err));
                 })
         });
         afterEach(()=>{
@@ -38,7 +39,7 @@ describe('testS3Wrapper', function() {
         });
     });
     describe('#getJsonFile()', () => {
-        it("should get the json content", () =>{
+        it("should get the json content", (done) =>{
             let bucket = "prova";
             let fileKey = "prova.json";
             let response = {
@@ -54,9 +55,10 @@ describe('testS3Wrapper', function() {
                     campo2 : "ciao"
                 }
                 assert.deepStrictEqual(res,expectedRes);
+                done();
             })
                 .catch(function (err) {
-                    assert.fail("Promise error: "+err);
+                    done(new Error(err));
                 })
         });
         afterEach(()=>{
