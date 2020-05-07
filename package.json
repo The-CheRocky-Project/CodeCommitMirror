@@ -5,7 +5,7 @@
   "author": "The CheRocky Project",
   "scripts": {
     "start": "node nodeJS/src/router.js",
-    "test": "jest nodeJS/tests/ --coverage"
+    "test": "jest --coverage"
   },
   "main": "nodeJS/src/router.js",
   "dependencies": {
