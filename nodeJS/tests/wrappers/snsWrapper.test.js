@@ -35,7 +35,7 @@ describe('testSnsWrapper',() => {
         assert.deepStrictEqual(res,expectedValue);
         done();
       }).catch(function (errOnAssert) {
-        done(new Error("Valori diversi! ExpectedValue: "+expectedValue));
+        done(new Error(errOnAssert));
       })
 
 
