@@ -36,4 +36,4 @@ artifacts:
 reports:
   nyc:
     files:
-      - '.nyc_output/processinfo/*'
+      - '.nyc_output/*.json'
