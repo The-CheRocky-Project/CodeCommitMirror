@@ -35,5 +35,6 @@ artifacts:
     - template-configuration.json
 reports:
   nyc:
+    base-directory: 'coverage'
     files:
-      - 'coverage/coverage-final.json'
+      - '**/*'
