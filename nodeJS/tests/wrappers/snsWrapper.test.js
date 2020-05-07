@@ -23,29 +23,36 @@ describe('testSnsWrapper',() => {
 
   describe('#publisher()', ()=> {
 
-    it("effettuazione della pubblicazione di un messaggio con esito positivo", () => {
+    it("effettuazione della pubblicazione di un messaggio con esito positivo", (done) => {
       let params = { Message: JSON.stringify({ data: 'Message to send'})};
       var publisher= snsRewire.__get__("publisher");
       AWSMock.mock('SNS', 'publish', (params, callback) => {
         callback(null, 'success'); // Mocked response returns ‘success’ always
       });
       var expectedValue=true;
-      var result= publisher(params).then((data) => {
-          assert.equal(data,expectedValue);
-      }).catch((err) => {console.log(err.message);});
+      var result= publisher(params);
+      result.then(function (res) {
+        assert.deepStrictEqual(res,expectedValue);
+        done();
+      }).catch(function (errOnAssert) {
+        done(new Error("Valori diversi! ExpectedValue: "+expectedValue));
+      })
+
 
     });
 
-    it("la pubblicazione di un messaggio da esito negativo", () => {
+    it("la pubblicazione di un messaggio da esito negativo", (done) => {
       let params = { Message: JSON.stringify({ data: 'Message to send'})};
       var publisher= snsRewire.__get__("publisher"); //importa la funzione privata "publisher"
       AWSMock.mock('SNS', 'publish', (params, callback) => {
         callback('err', null); // Mocked response returns error always
       });
       var expectedValue=false;
-      var result= publisher(params).then((data) => {
-          assert.equal(result,expectedValue);
-      }).catch((err) => {console.log(err.message);});
+      var result= publisher(params)
+      result.then((res) => {
+          assert.deepStrictEqual(res,expectedValue);
+          done();
+      }).catch((errOnAssert) => {done(new Error(errOnAssert));});
 
     });
 
@@ -57,7 +64,7 @@ describe('testSnsWrapper',() => {
   describe('#sendMessage()', ()=> {
     it("l'oggetto TopicPublisher deve pubblicare un messaggio con esito positivo", () => {
       let topic_publisher= new snsWrap.TopicPublisher(this.topic, this.userCode, this.region);
-      
+
     });
   });*/
 });
