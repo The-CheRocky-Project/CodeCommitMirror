@@ -35,6 +35,6 @@ artifacts:
     - template-configuration.json
 reports:
   nyc:
-    base-directory: 'coverage'
     files:
-      - '**/*'
+      - '.nyc_output/**/*'
+      - 'test-results.xml'

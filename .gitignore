@@ -5,3 +5,5 @@ nodeJS/node_modules/
 .nyc_output/
 .vscode/
 .DS_Store
+Radon_reports/
+Plato_reports/

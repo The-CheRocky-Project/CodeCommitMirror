@@ -32,7 +32,7 @@ describe('testSnsWrapper',() => {
       var expectedValue=true;
       var result= publisher(params).then((data) => {
           assert.equal(data,expectedValue);
-      }).catch((err) => {console.log('error');});
+      }).catch((err) => {console.log(err.message);});
 
     });
 
@@ -45,7 +45,7 @@ describe('testSnsWrapper',() => {
       var expectedValue=false;
       var result= publisher(params).then((data) => {
           assert.equal(result,expectedValue);
-      }).catch((err) => {console.log('err');});
+      }).catch((err) => {console.log(err.message);});
 
     });
 
