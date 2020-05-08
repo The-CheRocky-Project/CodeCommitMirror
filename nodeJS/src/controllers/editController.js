@@ -100,7 +100,7 @@ exports.confirmEditing = () => {
 };
 
 /**
- * Calcola la durata totale dei riconoscimenti presenti in lista
+ * Calcola la durata totale dei riconoscimenti presenti in lista e verifica se è minore o maggiore di 5 minuti
  * @param recognizerList - la lista dei riconoscimenti
  * @returns {boolean} true se la lista di riconoscimenti supera i 5 minuti false altrimenti
  */

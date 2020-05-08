@@ -167,4 +167,28 @@ describe('testEditController',() => {
       assert.equal(result,expected);
     });
   });
+
+  describe('#calculateOvertime()', () => {
+
+    it("Calcola la durata totale dei riconoscimenti presenti in lista e verifica se è minore o maggiore di 5 minuti", () => {
+      /**
+       * function calculateOvertime(recognizerList){
+              let sum=0;
+              for(const single in recognizerList)
+                  sum+=single.duration;
+              return sum>300000
+          }
+       */
+      class single{
+        constructor(duration){
+          this.duration = duration;
+        }
+      }
+      var recognizerList = [new single(10), new single(4), new single(13)];
+      var calcOvertime = editController.__get__('calculateOvertime');
+      var result = calcOvertime(recognizerList);
+      var expected = false;
+      assert.equal(result,expected);
+    });
+  });
 });
