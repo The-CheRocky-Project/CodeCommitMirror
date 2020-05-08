@@ -23,7 +23,7 @@ describe('Test fileExplorerController', () => {
         }
       });
 
-      mock('../../src/models/fileExploereModel', {
+      mock('../../src/models/fileExplorerModel', {
         listFileKeys: async () => {
           //console.log('listFileKeysMockato');
           listFileKeysModel = true;
@@ -42,7 +42,7 @@ describe('Test fileExplorerController', () => {
       const res = 'resMock';
 
       const fevMock = require('../../src/view/fileExplorerView');
-      const femMock = require('../../src/models/fileExploereModel');
+      const femMock = require('../../src/models/fileExplorerModel');
 
       fileExplorerController.__set__('view', fevMock);
       fileExplorerController.__set__('model', femMock);
@@ -61,7 +61,7 @@ describe('Test fileExplorerController', () => {
 
   });
 
-  describe('#getUpdatedFileList', () => {
+  describe('#getUpdatedFileList(res)', () => {
 
     let printIsCalled1 = false;
     let listFileKeysModel1 = false;
@@ -76,7 +76,7 @@ describe('Test fileExplorerController', () => {
         }
       });
 
-      mock('../../src/models/fileExploereModel', {
+      mock('../../src/models/fileExplorerModel', {
         listFileKeys: async () => {
           //console.log('listFileKeysMockato');
           listFileKeysModel1 = true;
@@ -94,7 +94,7 @@ describe('Test fileExplorerController', () => {
       const res = 'resMock';
 
       const fevMock = require('../../src/view/fileExplorerView');
-      const femMock = require('../../src/models/fileExploereModel');
+      const femMock = require('../../src/models/fileExplorerModel');
 
       fileExplorerController.__set__('view', fevMock);
       fileExplorerController.__set__('model', femMock);
@@ -113,13 +113,13 @@ describe('Test fileExplorerController', () => {
 
   });
 
-  describe('#launchFileProcessingTrue', () => {
+  describe('#launchFileProcessingTrue(fileKey)', () => {
 
     let preocessFileModel = false;
 
     before(() => {
 
-      mock('../../src/models/fileExploereModel', {
+      mock('../../src/models/fileExplorerModel', {
         processFile: (fileKey) => {
           //console.log('getThumbnailURLMockato');
           preocessFileModel = true;
@@ -129,7 +129,7 @@ describe('Test fileExplorerController', () => {
 
       const filekey = 'filekeyMock';
 
-      const femMock = require('../../src/models/fileExploereModel');
+      const femMock = require('../../src/models/fileExplorerModel');
 
       fileExplorerController.__set__('model', femMock);
 
@@ -145,13 +145,13 @@ describe('Test fileExplorerController', () => {
 
   });
 
-  describe('#launchFileProcessingFalse', () => {
+  describe('#launchFileProcessingFalse(fileKey)', () => {
 
     let preocessFileModel1 = true;
 
     before(() => {
 
-      mock('../../src/models/fileExploereModel', {
+      mock('../../src/models/fileExplorerModel', {
         processFile: (fileKey) => {
           //console.log('getThumbnailURLMockato');
           preocessFileModel1 = false;
@@ -161,7 +161,7 @@ describe('Test fileExplorerController', () => {
 
       const filekey = 'filekeyMock';
 
-      const femMock = require('../../src/models/fileExploereModel');
+      const femMock = require('../../src/models/fileExplorerModel');
 
       fileExplorerController.__set__('model', femMock);
 
