@@ -85,7 +85,7 @@ exports.addRow = async (params) =>{
     return await snsWrap.message({
         target: "addRow",
         start: params['start'],
-        duration: param['duration'],
+        duration: params['duration'],
         label: params['labelModelIndex']
     })
 };
@@ -119,7 +119,7 @@ exports.updateRow = async (params)=>{
         message: "updateRow",
         start: params.start,
         index: params.index,
-        duration: param.duration,
+        duration: params.duration,
         label: params.labelModelIndex
     });
 };
