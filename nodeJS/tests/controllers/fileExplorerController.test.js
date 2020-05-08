@@ -27,13 +27,13 @@ describe('Test fileExplorerController', () => {
         listFileKeys: async () => {
           //console.log('listFileKeysMockato');
           listFileKeysModel = true;
-          let stringa = Array('Questa è una stringa');
+          let stringa = Array('Questo è un array di stringhe');
           return stringa;
         },
         getThumbnailURL: (fileKey) => {
           //console.log('getThumbnailURLMockato');
           getThumbnailURLModel = true;
-          let stringa = Array('Questa è una stringa');
+          let stringa = Array('Questo è un array di stringhe');
           return stringa;
         }
       });
@@ -80,13 +80,13 @@ describe('Test fileExplorerController', () => {
         listFileKeys: async () => {
           //console.log('listFileKeysMockato');
           listFileKeysModel1 = true;
-          let stringa = Array('Questa è una stringa');
+          let stringa = Array('Questo è un array di stringhe');
           return stringa;
         },
         getThumbnailURL: (fileKey) => {
           //console.log('getThumbnailURLMockato');
           getThumbnailURLModel1 = true;
-          let stringa = Array('Questa è una stringa');
+          let stringa = Array('Questo è un array di stringhe');
           return stringa;
         }
       });
