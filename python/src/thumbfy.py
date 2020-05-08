@@ -10,13 +10,14 @@ Contenuto:
 
 # imports url utils and media management layer
 import urllib.parse
-import media_manager
+#import media_manager
+from .layers import media_manager
 
 
 def lambda_handler(event, context):
     """
     Handler che crea le
-    thumbnail dei video carcati sul bucket
+    thumbnail dei video caricati sul bucket
     "ahlconsolebucket" con prefisso origin
     e avvia un job su transcoder che la produce
     con Key e prefisso identici ma con suffisso aggiuntivo
@@ -37,7 +38,7 @@ def lambda_handler(event, context):
         key = urllib.parse.unquote_plus(record['object']['key'], encoding='utf-8')
         full_qualifier = 's3://' + bucket + '/' + key
         # creates job
-        job_id = media_manager.createThumbnail(full_qualifier, full_qualifier + '.jpg', 'console_thumbnail')
+        job_id = media_manager.create_thumbnail(full_qualifier, full_qualifier + '.jpg', 'console_thumbnail')
         return job_id
     except Exception as e:
         print(e)
