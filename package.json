@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node nodeJS/src/router.js",
     "test": "nyc mocha nodeJS/tests --recursive --coverage --exit",
-    "report": "mocha nodeJS/tests --recursive --reporter mocha-multi --exit"
+    "report": "mocha nodeJS/tests --recursive --reporter mocha-sonar-reporter --exit"
   },
   "main": "nodeJS/src/router.js",
   "dependencies": {
