@@ -2,6 +2,7 @@ const assert = require('assert');
 var rewire = require('rewire');
 var mock = require('mock-require');
 var editController = rewire('../../src/controllers/editController.js');
+var editController1 = require('../../src/controllers/editController');
 
 describe('testEditController',() => {
 
@@ -170,7 +171,20 @@ describe('testEditController',() => {
 
   describe('#calculateOvertime()', () => {
 
-    it("Calcola la durata totale dei riconoscimenti presenti in lista e verifica se è minore o maggiore di 5 minuti", () => {
+    /*it("Calcola la durata totale dei riconoscimenti presenti in lista e verifica se è minore 5 minuti", () => {
+      class single{
+        constructor(duration){
+          this.duration = duration;
+        }
+      }
+      var recognizerList = [new single(10302), new single(40000), new single(20000)];
+      var calcOvertime = editController.__get__('calculateOvertime');
+      var result = calcOvertime(recognizerList);
+      var expected = false;
+      assert.equal(result,expected);
+    });*/
+
+    it("Calcola la durata totale dei riconoscimenti presenti in lista e verifica se maggiore di 5 minuti", () => {
       /**
        * function calculateOvertime(recognizerList){
               let sum=0;
@@ -179,16 +193,26 @@ describe('testEditController',() => {
               return sum>300000
           }
        */
-      class single{
+      /*class single{
         constructor(duration){
           this.duration = duration;
         }
+      }*/
+      //var singole = { "duration":"333322" };
+      //var recognizerList = [singole, singole, singole, singole];
+      /*var recognizerList = {
+        "duration": 100000,
+        "duration": 200000,
+        "duration": 434434,
+      }*/
+      const recognizerList = {
+        duration: 20323222 
       }
-      var recognizerList = [new single(10), new single(4), new single(13)];
-      var calcOvertime = editController.__get__('calculateOvertime');
-      var result = calcOvertime(recognizerList);
-      var expected = false;
-      assert.equal(result,expected);
+      console.log(recognizerList);
+      //var calcOvertime = editController.__get__('calculateOvertime');
+      var result = editController1.calculateOvertime(recognizerList);
+      var expected = true;
+      assert.equal(expected, result);
     });
   });
 });
