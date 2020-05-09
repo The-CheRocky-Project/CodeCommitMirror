@@ -10,7 +10,7 @@ file_path = absolute_path + '/../event/thumbfy_event.json'
 
 # Carico il file json con l'evento di test
 """
-    Campi importanti allo scopo di test:
+    Campi importanti dell'event.json allo scopo di test:
     - Records[0].s3.bucket.name
     - Records[0].object.key
 """
