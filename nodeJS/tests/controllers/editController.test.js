@@ -2,11 +2,10 @@ const assert = require('assert');
 var rewire = require('rewire');
 var mock = require('mock-require');
 var editController = rewire('../../src/controllers/editController.js');
-var editController1 = require('../../src/controllers/editController');
 
 describe('testEditController',() => {
 
-  describe('#addNewLabelRow()', () => {
+  describe('#changeRowValue()', () => {
 
     it("deve inserire un nuovo riconoscimento customizzato", () => {
       let updateRowIsCalled = false;
@@ -19,6 +18,22 @@ describe('testEditController',() => {
       editController.changeRowValue(index, start, duration, label);
       var expected = true;
       assert.equal(updateRowIsCalled,expected);
+    });
+  });
+
+  describe('#addNewLabelRow()', () => {
+
+    it("deve inserire un nuovo riconoscimento customizzato.", () => {
+      let addRowIsCalled = false;
+      mock('../../src/models/editModel', { addRow: function(index,start,duration,label) {
+        addRowIsCalled = true;
+      }});
+      let index = 'indexMock', start = 'startMock', duration = 'durationMock', label = 'labelMock';
+      let mMock = require('../../src/models/editModel');
+      editController.__set__('model', mMock);
+      editController.addNewLabelRow(index, start, duration, label);
+      var expected = true;
+      assert.equal(addRowIsCalled,expected);
     });
   });
 
@@ -171,48 +186,76 @@ describe('testEditController',() => {
 
   describe('#calculateOvertime()', () => {
 
-    /*it("Calcola la durata totale dei riconoscimenti presenti in lista e verifica se è minore 5 minuti", () => {
+    it("Calcola la durata totale dei riconoscimenti presenti in lista e verifica se è minore 5 minuti", () => {
       class single{
         constructor(duration){
           this.duration = duration;
         }
       }
-      var recognizerList = [new single(10302), new single(40000), new single(20000)];
+      var recognizerList = Array(new single(1123), new single(1123));
       var calcOvertime = editController.__get__('calculateOvertime');
       var result = calcOvertime(recognizerList);
       var expected = false;
-      assert.equal(result,expected);
-    });*/
+      assert.equal(expected, result);
+    });
 
     it("Calcola la durata totale dei riconoscimenti presenti in lista e verifica se maggiore di 5 minuti", () => {
-      /**
-       * function calculateOvertime(recognizerList){
-              let sum=0;
-              for(const single in recognizerList)
-                  sum+=single.duration;
-              return sum>300000
-          }
-       */
-      /*class single{
+      class single{
         constructor(duration){
           this.duration = duration;
         }
-      }*/
-      //var singole = { "duration":"333322" };
-      //var recognizerList = [singole, singole, singole, singole];
-      /*var recognizerList = {
-        "duration": 100000,
-        "duration": 200000,
-        "duration": 434434,
-      }*/
-      const recognizerList = {
-        duration: 20323222 
       }
-      console.log(recognizerList);
-      //var calcOvertime = editController.__get__('calculateOvertime');
-      var result = editController1.calculateOvertime(recognizerList);
+      var recognizerList = Array(new single(112312312));
+      var calcOvertime = editController.__get__('calculateOvertime');
+      var result = calcOvertime(recognizerList);
       var expected = true;
       assert.equal(expected, result);
+    });
+  });
+  describe('#getBody()', () => {
+    it("Deve effettuare il rendering del body della pagina di visualizzazione dei risultati dell'elaborazione.",()=>{
+      let getVideoEndpointIsCalled = false;
+      let getRecognizementListIsCalled = false;
+      let getmodelLabelsIsCalled = false;
+      let isVideoTypeOriginalIsCalled = false;
+      class single{
+        constructor(duration){
+          this.duration = duration;
+        }
+      }
+      mock('../../src/models/editModel', { 
+        getVideoEndpoint: function() {
+          getVideoEndpointIsCalled = true;
+        },
+        getRecognizementList: function() {
+          getRecognizementListIsCalled = true;
+          var recognizerList = Array(new single(24322), new single(2332121));
+          return recognizerList;
+        },
+        getmodelLabels: function() {
+          getmodelLabelsIsCalled = true;
+        },
+        isVideoTypeOriginal:function() {
+          isVideoTypeOriginalIsCalled = true;
+        }
+      });
+      let printIsCalled = false;
+      mock('../../src/views/editView', { print: function(param, res) {
+        printIsCalled = true;
+      }});
+      let mMock = require('../../src/models/editModel');
+      let vMock = require('../../src/views/editView');
+      editController.__set__('model', mMock);
+      editController.__set__('view', vMock);
+      var res = 'resMock';
+      editController.getBody(res);
+      var expected = true;
+      var result = getVideoEndpointIsCalled && 
+      getRecognizementListIsCalled && 
+      getmodelLabelsIsCalled && 
+      isVideoTypeOriginalIsCalled &&
+      printIsCalled;
+      assert.equal(result,expected);
     });
   });
 });
