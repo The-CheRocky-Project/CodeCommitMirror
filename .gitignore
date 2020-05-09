@@ -9,3 +9,4 @@ Radon_reports/
 Plato_reports/
 test-results.xml
 npm-debug.log
+*.pyc
