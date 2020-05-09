@@ -7,7 +7,7 @@
     "start": "node nodeJS/src/router.js",
     "test": "nyc mocha nodeJS/tests --recursive --coverage --exit",
     "_comment": "nyc mocha nodeJS/tests --recursive --coverage --reporter mocha-sonar-reporter --exit",
-    "report": "mocha nodeJS/tests/ --recursive -R mocha-sonar-reporter"
+    "report": "mocha nodeJS/tests/ --recursive --coverage -R mocha-sonar-reporter"
   },
   "main": "nodeJS/src/router.js",
   "dependencies": {
