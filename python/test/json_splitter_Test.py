@@ -56,14 +56,28 @@ class TestJsonSplitter:
             jsonToUpload = {
                 "fileKey": "partita_di_calcio.mp4",
                 "list": [
-                    {"labelIndex": "0"}, {"labelIndex": "1"}
+                    {
+                        "start": "01:54:20.1234",
+                        "duration": "3456",
+                        "labelIndex": "0"
+                    },
+                    {
+                        "start": "01:54:20.1234",
+                        "duration": "3456",
+                        "labelIndex": "1"
+                    }
                 ]
             }
             s3Client.put_object(Bucket='ahlconsolebucket', Key='partita_di_calcio.json', Body=json.dumps(jsonToUpload))
             # Verifico che abbia ritornato True e quindi sia andato tutto a posto
             assert lambda_handler(event_json, context)
             # Verifico che nel bucket ci siano i json splittati
+            # La key dei singoli json è così costruita: labelIndex + progressiveNumber + fileKey + .json
             body = s3Client.get_object(Bucket='ahlconsolebucket', Key='singles/00partita_di_calcio.mp4.json')['Body'].read().decode("utf-8")
-            assert body == '{"fileKey": "partita_di_calcio.mp4", "bucket": "ahlconsolebucket", "recognizement": {"labelIndex": "0"}}'
+            assert body == '{"fileKey": "partita_di_calcio.mp4", ' \
+                           '"bucket": "ahlconsolebucket", ' \
+                           '"recognizement": {"start": "01:54:20.1234", "duration": "3456", "labelIndex": "0"}}'
             body = s3Client.get_object(Bucket='ahlconsolebucket', Key='singles/11partita_di_calcio.mp4.json')['Body'].read().decode("utf-8")
-            assert body == '{"fileKey": "partita_di_calcio.mp4", "bucket": "ahlconsolebucket", "recognizement": {"labelIndex": "1"}}'
+            assert body == '{"fileKey": "partita_di_calcio.mp4", ' \
+                           '"bucket": "ahlconsolebucket", ' \
+                           '"recognizement": {"start": "01:54:20.1234", "duration": "3456", "labelIndex": "1"}}'
