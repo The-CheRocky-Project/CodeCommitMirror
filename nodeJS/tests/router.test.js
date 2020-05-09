@@ -8,16 +8,16 @@ var ahl = router.__get__('ahl');
 
 describe('testRouter',() => {
 
-  describe('#get/', () => {
-
-    it("deve invocare il getBody della pagina attiva", (done) => {
-
-      request(ahl).get('/').set('Accept', 'application/json')
-        .expect('Content-Type', 'text/html; charset=utf-8')
-        .expect(200, done);
-
-    });
-  });
+//   describe('#get/', () => {
+// 
+//     it("deve invocare il getBody della pagina attiva", (done) => {
+// 
+//       request(ahl).get('/').set('Accept', 'application/json')
+//         .expect('Content-Type', 'text/html; charset=utf-8')
+//         .expect(200, done);
+// 
+//     });
+//   });
 
   describe('#get/toFileExplorer', () => {
 
