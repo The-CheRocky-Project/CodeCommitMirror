@@ -36,8 +36,8 @@ def lambda_handler(event, context):
         key = urllib.parse.unquote_plus(event['Records'][0]['s3']['object']['key'], encoding='utf-8')
 
         resume = s3.Object(bucket, 'resume.json')
-        resumeRes = resume.get();
-        resumeContent = json.loads(resumeRes['Body'].read().decode('utf-8'))
+        resume_res = resume.get();
+        resume_content = json.loads(resume_res['Body'].read().decode('utf-8'))
 
         # Preleva il messaggio ricevuto da SNS, e ne fa il parsing
         #TODO da verificare che funzioni
@@ -53,14 +53,14 @@ def lambda_handler(event, context):
         founded = False
 
         # Destinazione del video spezzone di highlight
-        newKey = 'cuts/' + key
+        new_key = 'cuts/' + key
 
         # Se la label è già presente in resume.json, viene aggiornata
-        for reco in resumeContent:
+        for reco in resume_content:
             if reco['FrameName'] == name:
                 # Elimina il vecchio video spezzone di highlight dal bucket S3 ahlvideos/cuts
                 #TODO da verificare che funzioni
-                bucket.delete_key(newKey[:-4]+'mp4')
+                bucket.delete_key(new_key[:-4]+'mp4')
                 # Aggiorna i dati del frame
                 reco['Start'] = start
                 reco['Duration'] = duration
@@ -70,7 +70,7 @@ def lambda_handler(event, context):
                 founded = True
         # se il frame non è presente in resume.json, viene aggiunto al file
         if founded == False:
-            resumeContent.append(
+            resume_content.append(
                 {
     		        "FrameName": name,
     		        "Start": start,
@@ -82,8 +82,8 @@ def lambda_handler(event, context):
             )
 
         # Sovrascrive il file resume.json aggiornandolo
-        bToWrite = json.dumps(resumeContent)
-        resume.put(Body=bToWrite)
+        b_to_write = json.dumps(resume_content)
+        resume.put(Body=b_to_write)
 
         # Avvia job di ritaglio con chiave numerica corrispondente all'indice all'interno del file resume.json
         #TODO da verificare che funzioni
