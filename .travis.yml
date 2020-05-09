@@ -9,6 +9,7 @@ addons:
       secure: "q67GMM4ZRyG+dDMTu0znygUmcs65dlRsS3eINRpoX2GhnPgfgSTbcoVt2NJF3VTxZmbhb4VeNEsL4UarFvyRYof5U1zlMLkw8tNM6hbm1lo1teF4f04xdYnAL4IY43v76jpyh6YPb+gqHDhQI+5LY6ZVTpG8ebg/W7mDAHX747oXr42MDfkhDKy6v6ye4HUEwh3YtWyYY1S4hpbyhhR7uwbtj9fx1deEawyXvwlSOR9uuTAgl0rnPE+BqmemkjL86L3eCbmiD6zeZkfeMUXlw8LJTTmcIB9KCDT4b48iY5/alp63c0oI4p2FE3EPT1AnwF4rZ+AZ+I4+A0RZ3y+iMIqCiTlTVl/1wPs118R2WDGMp/iE4R1bKmqIMTYXiR7Ft6zBMlT6wD3mxoWgxQ/4Fd6K4h00/rSGLw/5i3BppH9HNdoL/LyxYPyd/Rmsc5FQ012frccCFken9aW1I2doC2MYMpmixLTSMIZsBZ5Q487h2aSGd8lNnFzvfCplhXl02f677W4xDF4Sqfljo0s/cbDbfiLd9C0f4q7naqcK78LMuIp53dfkQwF9N+/ftSK1J+fHqUqjiek5PBbSapQewb28KxmG0HaOz6OlGjqIQ1pdqGQ87wAh5W+KlSCAhuJG/tsvs3JUYTkMCzkuqUk2t3z2Cq0vunfknfzlqhGOQmc="
 install:
   - npm install
+before_script:
+  - npm test
 script:
-  - sonar-scanner -v
   - sonar-scanner
