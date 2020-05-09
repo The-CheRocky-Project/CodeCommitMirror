@@ -37,8 +37,6 @@ describe('testSnsWrapper',() => {
       }).catch(function (errOnAssert) {
         done(new Error(errOnAssert));
       })
-
-
     });
 
     it("la pubblicazione di un messaggio da esito negativo", (done) => {
@@ -53,18 +51,27 @@ describe('testSnsWrapper',() => {
           assert.deepStrictEqual(res,expectedValue);
           done();
       }).catch((errOnAssert) => {done(new Error(errOnAssert));});
-
     });
 
     afterEach(()=>{
       AWSMock.restore('SNS', 'publish');
     });
   });
-/*
-  describe('#sendMessage()', ()=> {
-    it("l'oggetto TopicPublisher deve pubblicare un messaggio con esito positivo", () => {
-      let topic_publisher= new snsWrap.TopicPublisher(this.topic, this.userCode, this.region);
 
+  describe('#sendMessage()', ()=> {
+    it("TopicPublisher deve pubblicare un messaggio con esito positivo", (done) => {
+      let topic_publisher= new snsWrap.TopicPublisher(this.topic, this.userCode, this.region);
+      let msg='msg', data='data', dataFormat='dataFormat';
+      AWSMock.mock('SNS', 'publish', (params, callback) => {
+        callback('err', null); // Mocked response returns error always
+      });
+      var expectedValue=true;
+      var result= topic_publisher.sendMessage(msg, data, dataFormat);
+      AWSMock.restore('SNS', 'publish');
+      result.then((res) => {
+          assert.deepStrictEqual(res,expectedValue);
+          done();
+      }).catch((errOnAssert) => {done(new Error(errOnAssert));});
     });
-  });*/
+  });
 });

@@ -122,7 +122,7 @@ describe('testRouter',() => {
 
       mock('../src/controllers/fileExplorerController', {
          checkLabel: (res) => {
-           console.log(res);
+           //console.log(res);
            // return true;
          }
        });
@@ -148,7 +148,7 @@ describe('testRouter',() => {
 
       mock('../src/controllers/fileExplorerController', {
          uncheckLabel: (res) => {
-           console.log(res);
+           //console.log(res);
            // return true;
          }
        });
@@ -198,7 +198,7 @@ describe('testRouter',() => {
 
       mock('../src/controllers/editController', {
          addNewLabelRow: (start,duration,modelIndex) => {
-           console.log(start, duration, modelIndex);
+           //console.log(start, duration, modelIndex);
            // return true;
          }
        });
@@ -227,7 +227,7 @@ describe('testRouter',() => {
 
       mock('../src/controllers/editController', {
          changeVideoMode: (toOriginal) => {
-           console.log(toOriginal);
+           //console.log(toOriginal);
            // return true;
          }
        });
