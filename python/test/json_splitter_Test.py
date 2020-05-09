@@ -3,6 +3,7 @@ import os
 import boto3
 from moto import mock_s3
 from python.src.json_splitter import lambda_handler
+import pytest
 
 # Percorso assouluto per caricare il file event.json
 absolute_path = os.path.dirname(os.path.abspath(__file__))
@@ -18,34 +19,6 @@ with open(file_path, 'r') as f:
     event_json = json.load(f)
 
 context = "fake"
-
-"""
-with mock_s3():
-    s3Client = boto3.client('s3', region_name='us-east-2')
-    s3Client.create_bucket(Bucket='ahlconsolebucket')
-    jsonToUpload = {
-        "fileKey": "partita_di_calcio.mp4",
-        "list": [
-            {"labelIndex": "0"}, {"labelIndex": "1"}
-        ]
-    }
-    s3Client.put_object(Bucket='ahlconsolebucket', Key='partita_di_calcio.json', Body=json.dumps(jsonToUpload))
-    #assert lambda_handler(event_json, context)
-
-
-    body = s3Client.get_object(Bucket='ahlconsolebucket', Key='partita_di_calcio.json')['Body'].read().decode("utf-8")
-    print(body)
-
-    reco_data = json.loads(body)
-    reco_file_key = reco_data['fileKey']
-    reco_list = reco_data['list']
-    counter = 0
-    for single_reco in reco_list:
-        print(reco_file_key)
-        print(single_reco)
-        #print(single_reco['labelIndex'])
-        print(counter)
-"""
 
 
 class TestJsonSplitter:
@@ -81,3 +54,20 @@ class TestJsonSplitter:
             assert body == '{"fileKey": "partita_di_calcio.mp4", ' \
                            '"bucket": "ahlconsolebucket", ' \
                            '"recognizement": {"start": "01:54:20.1234", "duration": "3456", "labelIndex": "1"}}'
+
+    def test_negative_result_malformed_json(self):
+        with mock_s3():
+            s3Client = boto3.client('s3', region_name='us-east-2')
+            s3Client.create_bucket(Bucket='ahlconsolebucket')
+            # Json malformato (manca fileKey e labelIndex). Dovrebbe far interrompere la lambda.
+            jsonToUpload = {
+                "list": [
+                    {
+                        "start": "01:54:20.1234",
+                        "duration": "3456",
+                    }
+                ]
+            }
+            s3Client.put_object(Bucket='ahlconsolebucket', Key='partita_di_calcio.json', Body=json.dumps(jsonToUpload))
+            # Controllo che ritorni False per avvertire che non ha avuto successo
+            assert not(lambda_handler(event_json, context))
