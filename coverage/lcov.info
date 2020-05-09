@@ -477,8 +477,8 @@ FNDA:2,getTopicArn
 FNDA:1,(anonymous_1)
 FNDA:1,(anonymous_2)
 FNDA:3,publisher
-FNDA:1,(anonymous_4)
-FNDA:2,(anonymous_5)
+FNDA:2,(anonymous_4)
+FNDA:1,(anonymous_5)
 DA:6,2
 DA:10,2
 DA:20,2
@@ -490,8 +490,8 @@ DA:53,1
 DA:72,3
 DA:73,3
 DA:75,3
-DA:77,1
-DA:78,2
+DA:77,2
+DA:78,1
 DA:79,3
 DA:82,2
 DA:83,2

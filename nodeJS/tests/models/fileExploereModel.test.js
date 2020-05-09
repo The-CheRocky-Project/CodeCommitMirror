@@ -3,7 +3,7 @@ const rewire = require('rewire');
 const mock = require('mock-require');
 const fileExplorerModel = rewire('../../src/models/fileExplorerModel.js');
 
-describe('Test fileExplorerModel', () =>{
+describe('testFileExplorerModel', () =>{
   describe('#listFileKeys()', () => {
 
     let listObjectsS3Wrap = false;
@@ -38,7 +38,7 @@ describe('Test fileExplorerModel', () =>{
 
   });
 
-  describe('#getThumbnailURL(fileKey)', () => {
+  describe('#getThumbnailURL()', () => {
 
     let getObjectUrlS3Wrap = false;
 
@@ -73,7 +73,7 @@ describe('Test fileExplorerModel', () =>{
 
   });
 
-  describe('#processFileTrue(fileKey)', () => {
+  describe('#processFileTrue()', () => {
 
     let messageSNSWrap = false;
 
@@ -105,7 +105,7 @@ describe('Test fileExplorerModel', () =>{
 
   });
 
-  describe('#processFileFalse(fileKey)', () => {
+  describe('#processFileFalse()', () => {
 
     let messageSNSWrap = false;
 

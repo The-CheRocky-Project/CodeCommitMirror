@@ -63,15 +63,15 @@ describe('testSnsWrapper',() => {
       let topic_publisher= new snsWrap.TopicPublisher(this.topic, this.userCode, this.region);
       let msg='msg', data='data', dataFormat='dataFormat';
       AWSMock.mock('SNS', 'publish', (params, callback) => {
-        callback('err', null); // Mocked response returns error always
+        callback(null, 'success'); // Mocked response returns error always
       });
       var expectedValue=true;
       var result= topic_publisher.sendMessage(msg, data, dataFormat);
-      AWSMock.restore('SNS', 'publish');
       result.then((res) => {
           assert.deepStrictEqual(res,expectedValue);
           done();
       }).catch((errOnAssert) => {done(new Error(errOnAssert));});
+      AWSMock.restore('SNS', 'publish');
     });
   });
 });
