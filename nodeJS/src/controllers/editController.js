@@ -106,7 +106,15 @@ exports.confirmEditing = () => {
  */
 function calculateOvertime(recognizerList){
     let sum=0;
+    recognizerList.forEach((single)=>{
+        sum+=single.duration;
+    });
+    return sum>300000
+}
+
+/*function calculateOvertime(recognizerList){
+    let sum=0;
     for(const single in recognizerList)
         sum+=single.duration;
     return sum>300000
-}
+}*/

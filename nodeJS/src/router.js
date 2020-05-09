@@ -9,8 +9,12 @@ const http = require('http').createServer(ahl);
 const port = process.env.PORT || 3000;
 const path = require('path');
 const exphbs = require('express-handlebars');
+var bodyParser = require('body-parser')
+// parse application/x-www-form-urlencoded
+ahl.use(bodyParser.urlencoded({ extended: false }))
 
-
+// parse application/json
+ahl.use(bodyParser.json())
 //creates a backport for the socket communication
 const backport = require('socket.io')(http);
 
@@ -118,7 +122,7 @@ ahl.post('/getTable', (req,res) => {
  * @param {object} req - Rappresenta la richiesta http contenente la fileKey
  * @param {object} res - Rappresenta la risposta http
  */
-ahl.post('selectFile', (req,res) => {
+ahl.post('/selectFile', (req,res) => {
     res.send(fileExplorerController.launchFileProcessing(req.body['fileKey']));
 });
 
@@ -128,8 +132,9 @@ ahl.post('selectFile', (req,res) => {
  * @param {object} req - Rappresenta la richiesta http contenente la fileKey
  * @param {object} res - Rappresenta la risposta http
  */
-ahl.post('notifyLabelRowChange', (req,res) => {
-    res.send(backport.emit('changedRow',req.body['rowIndex']));
+ahl.post('/notifyLabelRowChange', (req,res) => {
+    backport.emit('changedRow',req.body['rowIndex']);
+    res.send();
 });
 
 /**
@@ -139,7 +144,7 @@ ahl.post('notifyLabelRowChange', (req,res) => {
  * @param {object} req - Rappresenta la richiesta http contenente la labelIndex
  * @param {object} res - Rappresenta la risposta http
  */
-ahl.post('includeLabel', (req,res) => {
+ahl.post('/includeLabel', (req,res) => {
     res.send(fileExplorerController.checkLabel(req.body['rowIndex']));
 });
 
@@ -150,7 +155,7 @@ ahl.post('includeLabel', (req,res) => {
  * @param {object} req - Rappresenta la richiesta http contenente la labelIndex
  * @param {object} res - Rappresenta la risposta http
  */
-ahl.post('includeLabel', (req,res) => {
+ahl.post('/excludeLabel', (req,res) => {
     res.send(fileExplorerController.uncheckLabel(req.body['rowIndex']));
 });
 
@@ -161,7 +166,7 @@ ahl.post('includeLabel', (req,res) => {
  * @param {object} req - Rappresenta la richiesta http
  * @param {object} res - Rappresenta la risposta http
  */
-ahl.post('/getVideoFrame', (req,res) => {
+ahl.post('getVideoFrame', (req,res) => {
     editController.updateVideoFrame(res);
 });
 
@@ -171,7 +176,7 @@ ahl.post('/getVideoFrame', (req,res) => {
  * @param {object} req - Rappresenta la richiesta http contenente il dizionario con start, duration e model index
  * @param {object} res - Rappresenta la risposta http
  */
-ahl.post('addLabel', (req,res) => {
+ahl.post('/addLabel', (req,res) => {
     const reqDict=req.body;
     res.send(editController.addNewLabelRow(reqDict['start'],reqDict['duration'],reqDict['modelIndex']));
 });
@@ -182,7 +187,7 @@ ahl.post('addLabel', (req,res) => {
  * @param {object} req - Rappresenta la richiesta http contenente il valore booleano toOriginal
  * @param {object} res - Rappresenta la risposta http
  */
-ahl.post('setVideoMode', (req,res) => {
+ahl.post('/setVideoMode', (req,res) => {
     res.send(editController.changeVideoMode(req.body['toOriginal']));
 });
 
@@ -192,8 +197,9 @@ ahl.post('setVideoMode', (req,res) => {
  * @param {object} req - Rappresenta la richiesta http contenente il booleano done
  * @param {object} res - Rappresenta la risposta http
  */
-ahl.post('notifyEditingFinish', (req,res) => {
-    res.send(backport.emit('finish', req.body['done']));
+ahl.post('/notifyEditingFinish', (req,res) => {
+    backport.emit('finish', req.body['done'])
+    res.send();
 });
 
 /**
@@ -202,8 +208,9 @@ ahl.post('notifyEditingFinish', (req,res) => {
  * @param {object} req - Rappresenta la richiesta http
  * @param {object} res - Rappresenta la risposta http
  */
-ahl.post('notifyChangedFileList', (req,res) => {
-    res.send(backport.emit('changeFile',''));
+ahl.post('/notifyChangedFileList', (req,res) => {
+    backport.emit('changeFile','');
+    res.send();
 });
 
 /**
@@ -213,7 +220,7 @@ ahl.post('notifyChangedFileList', (req,res) => {
  * @param {object} req - Rappresenta la richiesta http
  * @param {object} res - Rappresenta la risposta http
  */
-ahl.post('confirmEdit', (req,res) => {
+ahl.post('/confirmEdit', (req,res) => {
     res.send(editController.confirmEditing());
 });
 
@@ -261,6 +268,7 @@ ahl.post('/getFileList', (req,res) => {
  * @param {object} req - Rappresenta la richiesta http contenente il booleano done
  * @param {object} res - Rappresenta la risposta http
  */
-ahl.post('notifyNewVideoEndpoint', (req,res) => {
-    res.send(backport.emit('newEndpoint', req.body['done']));
+ahl.post('/notifyNewVideoEndpoint', (req,res) => {
+    backport.emit('newEndpoint', req.body['done'])
+    res.send();
 });

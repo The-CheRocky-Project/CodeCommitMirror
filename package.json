@@ -5,9 +5,8 @@
   "author": "The CheRocky Project",
   "scripts": {
     "start": "node nodeJS/src/router.js",
-    "test": "nyc mocha nodeJS/tests --recursive --coverage --exit",
-    "_comment": "nyc mocha nodeJS/tests --recursive --coverage --reporter mocha-sonar-reporter --exit",
-    "report": "mocha --recursive --reporter=lcov --coverage nodeJS/tests"
+    "test": "nyc mocha nodeJS/tests --recursive --exit",
+    "report": "nyc --reporter=lcov mocha nodeJS/tests/ --recursive --coverage --exit"
   },
   "main": "nodeJS/src/router.js",
   "dependencies": {
@@ -31,7 +30,6 @@
     "rewire": "^5.0.0",
     "supertest": "^3.0.0",
     "unit.js": "^2.1.1",
-    "mocha-sonar-reporter": "^0.1.6",
     "mock-require": "^3.0.3",
     "mocha-multi": "^1.1.3"
   }
