@@ -4,11 +4,12 @@ const mock = require('mock-require');
 const fileExplorerModel = rewire('../../src/models/fileExplorerModel.js');
 
 describe('testFileExplorerModel', () =>{
+
   describe('#listFileKeys()', () => {
 
-    let listObjectsS3Wrap = false;
+    it('Deve ritornare un array di file come stringa', () => {
 
-    before(() => {
+      let listObjectsS3Wrap = false;
 
       mock('../../src/wrappers/s3Wrapper', {
         listObjects: (bucket, prefix) => {
@@ -28,10 +29,6 @@ describe('testFileExplorerModel', () =>{
 
       fileExplorerModel.listFileKeys();
 
-    });
-
-    it('Deve ritornare un array di file come stringa', () => {
-
       assert.equal(listObjectsS3Wrap, true);
 
     });
@@ -40,9 +37,9 @@ describe('testFileExplorerModel', () =>{
 
   describe('#getThumbnailURL()', () => {
 
-    let getObjectUrlS3Wrap = false;
+    it('Deve ritorna una stringa del URL del video', () => {
 
-    before(() => {
+      let getObjectUrlS3Wrap = false;
 
       mock('../../src/wrappers/s3Wrapper', {
         getObjectUrl: (fileKey, bucket, region) => {
@@ -63,21 +60,17 @@ describe('testFileExplorerModel', () =>{
 
       fileExplorerModel.getThumbnailURL(fileKey);
 
-    });
-
-    it('Deve ritorna una stringa del URL del video', () => {
-
       assert.equal(getObjectUrlS3Wrap, true);
 
     });
 
   });
 
-  describe('#processFileTrue()', () => {
+  describe('#processFile()', () => {
 
-    let messageSNSWrap = false;
+    it('Deve ritornare true se invia messaggio SNS', () => {
 
-    before(() => {
+      let messageSNSWrap = false;
 
       mock('../../src/wrappers/snsWrapper', {
         message: () => {
@@ -93,23 +86,16 @@ describe('testFileExplorerModel', () =>{
 
       fileExplorerModel.__set__('snsWrap', snsWrapperMock);
 
-      fileExplorerModel.processFile(fileKey);
+      let risultato = fileExplorerModel.processFile(fileKey);
 
-    });
-
-    it('Deve ritornare true se invia messaggio SNS', () => {
-
+      assert.equal(risultato, true);
       assert.equal(messageSNSWrap, true);
 
     });
 
-  });
+    it('Deve ritornare false se non invia messaggio SNS', () => {
 
-  describe('#processFileFalse()', () => {
-
-    let messageSNSWrap = false;
-
-    before(() => {
+      let messageSNSWrap = false;
 
       mock('../../src/wrappers/snsWrapper', {
         message: () => {
@@ -125,13 +111,10 @@ describe('testFileExplorerModel', () =>{
 
       fileExplorerModel.__set__('snsWrap', snsWrapperMock);
 
-      fileExplorerModel.processFile(fileKey);
+       let risultato = fileExplorerModel.processFile(fileKey);
 
-    });
-
-    it('Deve ritornare false se non invia messaggio SNS', () => {
-
-      assert.equal(messageSNSWrap, true);
+       assert.equal(risultato, false);
+       assert.equal(messageSNSWrap, true);
 
     });
 
