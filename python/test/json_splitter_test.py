@@ -23,7 +23,7 @@ context = "fake"
 
 
 class TestJsonSplitter:
-    def test_positive_result(self):
+    def test_json_is_splitted(self):
         with mock_s3():
             s3Client = boto3.client('s3', region_name='us-east-2')
             s3Client.create_bucket(Bucket='ahlconsolebucket')
