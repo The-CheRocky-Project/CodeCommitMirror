@@ -113,6 +113,7 @@ http.listen(port, function(){
  * @param {object} res - Rappresenta la risposta http
  */
 ahl.post('getTable', (req,res) => {
+  // TODO sistemare la funzione (res.send()?)
     editController.updateLabelTable(res);
 });
 
@@ -167,6 +168,7 @@ ahl.post('/excludeLabel', (req,res) => {
  * @param {object} res - Rappresenta la risposta http
  */
 ahl.post('getVideoFrame', (req,res) => {
+  // TODO sistemare la funzione (res.send()?)
     editController.updateVideoFrame(res);
 });
 
@@ -244,6 +246,7 @@ ahl.post('/confirmEdit', (req,res) => {
  * @param {object} res - Rappresenta la risposta http
  */
 ahl.post('notifyProgressionUpdate', (req,res) => {
+  // TODO sistemare la funzione e testarla
     res.send(backport.emit('progress',req.body['progress']));
     if (progression >= 100){
         activePage = pages.edit;
@@ -259,6 +262,7 @@ ahl.post('notifyProgressionUpdate', (req,res) => {
  * @param {object} res - Rappresenta la risposta http
  */
 ahl.post('getFileList', (req,res) => {
+  // TODO sistemare la funzione (res.send()?)
     fileExplorerController.getUpdatedFileList(res);
 });
 
