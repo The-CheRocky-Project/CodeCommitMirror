@@ -17,9 +17,11 @@ file_path_wrong = absolute_path + '/../event/low_q_remover_wrong_event.json'
     - Records[0].s3.bucket.name
     - Records[0].object.key
 """
+# Evento di un file che finisce con -low.mp4
 with open(file_path_correct, 'r') as f:
     correct_event_json = json.load(f)
 
+# Evento di un file che NON finisce con -low.mp4
 with open(file_path_wrong, 'r') as f:
     wrong_event_json = json.load(f)
 
@@ -33,6 +35,7 @@ class TestLowQRemover:
             s3Client = boto3.client('s3', region_name='us-east-2')
             s3Client.create_bucket(Bucket='ahlconsolebucket')
             s3Client.put_object(Bucket='ahlconsolebucket', Key='origin/file-low.mp4', Body="body")
+            # Dovrebbe ritornare true visto che il file deve essere stato cancellato
             assert lambda_handler(correct_event_json, context)
             # Dovrebbe lanciare un'eccezione siccome il file che sto cercando di ottenere dovrebbe essere stato cancellato
             with pytest.raises(Exception):
@@ -44,6 +47,7 @@ class TestLowQRemover:
             s3Client = boto3.client('s3', region_name='us-east-2')
             s3Client.create_bucket(Bucket='ahlconsolebucket')
             s3Client.put_object(Bucket='ahlconsolebucket', Key='origin/file.mp4', Body="body")
+            # Dovrebbe ritornare false visto che il file non deve essere stato cancellato
             assert not(lambda_handler(wrong_event_json, context))
             result = s3Client.get_object(Bucket='ahlconsolebucket', Key='origin/file.mp4')
             # Se arriva a questo punto vuol dire che il file esiste (altrimenti avrebbe lanciato un'eccezione)
