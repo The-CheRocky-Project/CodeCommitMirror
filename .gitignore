@@ -10,3 +10,4 @@ Plato_reports/
 test-results.xml
 npm-debug.log
 *.pyc
+coverage/
