@@ -47,8 +47,6 @@ describe('testFileExplorerController', () => {
       fileExplorerController.__set__('view', fevMock);
       fileExplorerController.__set__('model', femMock);
 
-      console.log("prova del valore = " + this.param);
-
       fileExplorerController.getBody(param, res).then(() => {
 
         assert.equal(printIsCalled, true);
