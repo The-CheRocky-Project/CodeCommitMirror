@@ -29,6 +29,7 @@ exports.getThumbnailURL = (fileKey) =>{
  * send a message by snsWrap to serverless application to launch the file elaboration
  * @fileKey URL video to elaborate
  */
+//TODO snsWrap.message inesistente, sistemare tenendo conto di TopicPublisher.sendMessage in snsWrapper
 exports.processFile = (fileKey) =>{
     return snsWrap.message({
         message: "startProcess",

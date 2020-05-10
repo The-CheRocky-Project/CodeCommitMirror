@@ -48,6 +48,7 @@ exports.getRecognizementList = async () =>{
  * Effettua la comunicazione di impostare il video in modalità preview.
  * @returns {boolean} true se la chiamata è stata effettuata con successo, false altrimenti.
  */
+//TODO snsWrap.message inesistente, sistemare tenendo conto di TopicPublisher.sendMessage in snsWrapper
 exports.setPreviewMode = async () =>{
     if(await snsWrap.message({
         message: "setPreview"
@@ -60,6 +61,7 @@ exports.setPreviewMode = async () =>{
  * Effettua la comunicazione di impostare il video in modalità originale.
  * @returns {boolean} true se la chiamata è stata effettuata con successo, false altrimenti.
  */
+//TODO snsWrap.message inesistente, sistemare tenendo conto di TopicPublisher.sendMessage in snsWrapper
 exports.setOriginalMode = async () =>{
     if(await snsWrap.message({
         message: "setOriginal"
@@ -81,6 +83,7 @@ exports.getmodelLabels = async () =>{
  * Effettua la richiesta di aggiunta di una riga al sistema secondo i parametri specificati dal dizionario json params.
  * @param {number} modelIndex - Rappresenta il dizionario Kson contenente tutte le specifiche della riga da inserire
  */
+//TODO snsWrap.message inesistente, sistemare tenendo conto di TopicPublisher.sendMessage in snsWrapper
 exports.addRow = async (params) =>{
     return await snsWrap.message({
         target: "addRow",
@@ -94,6 +97,7 @@ exports.addRow = async (params) =>{
  *  comunicando così l’intenzione di terminare il processo di editing.
  * @returns {boolean} ritorna true se la chiamata è stata effettuata correttamente, false altrimenti.
  */
+//TODO snsWrap.message inesistente, sistemare tenendo conto di TopicPublisher.sendMessage in snsWrapper
 exports.sendConfirmation= ()=>{
 
     return snsWrap.message({
@@ -114,6 +118,7 @@ exports.isVideoTypeOriginal = ()=>{
  * @param {object} params - Rappresenta il dizionario Json contenente tutte le specifiche della riga da aggiornare
  * @returns {boolean} ritorna true se la chiamata è stata effettuata correttamente.
  */
+//TODO snsWrap.message inesistente, sistemare tenendo conto di TopicPublisher.sendMessage in snsWrapper
 exports.updateRow = async (params)=>{
     return await snsWrap.message({
         message: "updateRow",
@@ -130,6 +135,7 @@ exports.updateRow = async (params)=>{
  * @returns {boolean} ritorna true se la chiamata è stata effettuata correttamente.
  * @param {number} index - Rappresenta l'indice della riga da de-selezionare
  */
+//TODO snsWrap.message inesistente, sistemare tenendo conto di TopicPublisher.sendMessage in snsWrapper
 exports.uncheckRow = async (index) =>{
     return await snsWrap.message({
         message: "uncheckRow",
@@ -142,6 +148,7 @@ exports.uncheckRow = async (index) =>{
  * @returns {boolean} ritorna true se la chiamata è stata effettuata correttamente.
  * @param {number} index - Rappresenta l'indice della riga da selezionare
  */
+//TODO snsWrap.message inesistente, sistemare tenendo conto di TopicPublisher.sendMessage in snsWrapper
 exports.checkRow = async (index) =>{
     return await snsWrap.message({
         message: "checkRow",

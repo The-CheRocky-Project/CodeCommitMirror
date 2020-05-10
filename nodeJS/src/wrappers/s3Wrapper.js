@@ -41,6 +41,7 @@ exports.listObjects = (bucket, prefix) => {
 /**
  *  Funzione ausiliaria che effettua il prelievo delle key da AWS s3 in maniera asincrona
  */
+//TODO sostituire il metodo getAllkeys con uno esistente e aggiustare la chiamata ricorsiva
 async function getKeys(params, keys = []){
     const s3Client = new AWS.S3();
     const response = await s3Client.listObjectsV2(params).promise();

@@ -37,6 +37,7 @@ exports.print = (params, res) => {
  * @param {boolean} isOriginal - indica il tipo di video in riproduzione
  * @param {object} res - Rappresenta la risposta XHTML
  */
+//TODO sostituire params con i valori corretti (i parametri della funzione?)
 exports.generateVideoFrame = (url, isOriginal, res)=>{
     res.render('partials/videoFrame',
         {
