@@ -3,7 +3,7 @@ const view = require('../../src/views/editView');
 
 const res = '';
 
-describe('testFileExplorerView', () => {
+describe('testEditView', () => {
     describe('#print()', () => {
 
         let mockRes;
