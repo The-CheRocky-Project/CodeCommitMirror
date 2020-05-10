@@ -11,3 +11,4 @@ test-results.xml
 npm-debug.log
 *.pyc
 coverage/
+venv/
