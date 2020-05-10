@@ -5,12 +5,11 @@ const editModel = rewire('../../src/models/editModel.js');
 
 describe('testEditModel', () => {
 
-  describe('#getVideoEndpointTrue()', () => {
+  describe('#getVideoEndpoint()', () => {
 
-    let getObjectUrlS3Wrap = false;
-    let risultato = null;
+    it('Deve ritornare true se la chiamata è avvenuta con successo', () => {
 
-    before(() => {
+      let getObjectUrlS3Wrap = false;
 
       mock('../../src/wrappers/s3Wrapper', {
         getObjectUrl: (fileKey, bucket, region) => {
@@ -27,25 +26,16 @@ describe('testEditModel', () => {
 
       editModel.__set__('s3Wrap', s3wrapMock);
 
-      risultato = editModel.getVideoEndpoint();
-
-    });
-
-    it('Deve ritornare true se la chiamata è avvenuta con successo', () => {
+      let risultato = editModel.getVideoEndpoint();
 
       assert.equal(risultato, true);
       assert.equal(getObjectUrlS3Wrap, true);
 
     });
 
-  });
+    it('Deve ritornare false se la chiamata non è avvenuta con successo', () => {
 
-  describe('#getVideoEndpointFalse()', () => {
-
-    let getObjectUrlS3Wrap = false;
-    let risultato = null;
-
-    before(() => {
+      let getObjectUrlS3Wrap = false;
 
       mock('../../src/wrappers/s3Wrapper', {
         getObjectUrl: (fileKey, bucket, region) => {
@@ -62,23 +52,20 @@ describe('testEditModel', () => {
 
       editModel.__set__('s3Wrap', s3wrapMock);
 
-      risultato = editModel.getVideoEndpoint();
-
-    });
-
-    it('Deve ritornare false se la chiamata non è avvenuta con successo', () => {
+      let risultato = editModel.getVideoEndpoint();
 
       assert.equal(risultato, false);
       assert.equal(getObjectUrlS3Wrap, true);
 
     });
+
   });
 
-   describe('#getRecognizementListTrue()', () => {
+   describe('#getRecognizementList()', () => {
 
-    let getJsonFileS3Wrap = false;
+    it('Deve ritornare true se chiamata avvenuta correttamente', (done) => {
 
-    before(() => {
+      let getJsonFileS3Wrap = false;
 
       mock('../../src/wrappers/s3Wrapper', {
         getJsonFile: (bucket, fileKey) => {
@@ -93,10 +80,6 @@ describe('testEditModel', () => {
       const s3wrapMock = require('../../src/wrappers/s3Wrapper');
 
       editModel.__set__('s3Wrap', s3wrapMock);
-
-    });
-
-    it('Deve ritornare true se chiamata avvenuta correttamente', (done) => {
 
       editModel.getRecognizementList().then((token) => {
 
@@ -108,13 +91,9 @@ describe('testEditModel', () => {
 
     });
 
-  });
+    it('Deve ritornare false se chiamata non avvenuta correttamente', (done) => {
 
-  describe('#getRecognizementListFalse()', () => {
-
-    let getJsonFileS3Wrap = false;
-
-    before(() => {
+      let getJsonFileS3Wrap = false;
 
       mock('../../src/wrappers/s3Wrapper', {
         getJsonFile: (bucket, fileKey) => {
@@ -129,10 +108,6 @@ describe('testEditModel', () => {
       const s3wrapMock = require('../../src/wrappers/s3Wrapper');
 
       editModel.__set__('s3Wrap', s3wrapMock);
-
-    });
-
-    it('Deve ritornare false se chiamata non avvenuta correttamente', (done) => {
 
       editModel.getRecognizementList().then((token) => {
 
@@ -146,11 +121,11 @@ describe('testEditModel', () => {
 
   });
 
-  describe('#setPreviewModeTrue()', () => {
+  describe('#setPreviewMode()', () => {
 
-    let messageSNSWrap = false;
+    it('Ritorna true se ha avuto successo', (done) => {
 
-    before(() => {
+      let messageSNSWrap = false;
 
       mock('../../src/wrappers/snsWrapper', {
         message: () => {
@@ -163,10 +138,6 @@ describe('testEditModel', () => {
 
       editModel.__set__('snsWrap', snsWrapperMock);
 
-    });
-
-    it('Ritorna true se ha avuto successo', (done) => {
-
       editModel.setPreviewMode().then(() => {
 
         assert.equal(messageSNSWrap, true);
@@ -176,13 +147,9 @@ describe('testEditModel', () => {
 
     });
 
-  });
+    it('Ritorna false se non ha avuto successo', (done) => {
 
-  describe('#setPreviewModeFalse()', () => {
-
-    let messageSNSWrap = false;
-
-    before(() => {
+      let messageSNSWrap = false;
 
       mock('../../src/wrappers/snsWrapper', {
         message: () => {
@@ -195,10 +162,6 @@ describe('testEditModel', () => {
 
       editModel.__set__('snsWrap', snsWrapperMock);
 
-    });
-
-    it('Ritorna false se non ha avuto successo', (done) => {
-
       editModel.setPreviewMode().then(() => {
 
         assert.equal(messageSNSWrap, true);
@@ -210,11 +173,11 @@ describe('testEditModel', () => {
 
   });
 
-  describe('#setOriginalModeTrue()', () => {
+  describe('#setOriginalMode()', () => {
 
-    let messageSNSWrap = false;
+    it('Ritorna true se ha avuto successo', (done) => {
 
-    before(() => {
+      let messageSNSWrap = false;
 
       mock('../../src/wrappers/snsWrapper', {
         message: () => {
@@ -226,10 +189,6 @@ describe('testEditModel', () => {
       const snsWrapperMock = require('../../src/wrappers/snsWrapper');
 
       editModel.__set__('snsWrap', snsWrapperMock);
-
-    });
-
-    it('Ritorna true se ha avuto successo', (done) => {
 
       editModel.setOriginalMode().then(() => {
 
@@ -240,13 +199,9 @@ describe('testEditModel', () => {
 
     });
 
-  });
+    it('Ritorna false se non ha avuto successo', (done) => {
 
-  describe('#setOriginalModeFalse()', () => {
-
-    let messageSNSWrap = false;
-
-    before(() => {
+      let messageSNSWrap = false;
 
       mock('../../src/wrappers/snsWrapper', {
         message: () => {
@@ -258,10 +213,6 @@ describe('testEditModel', () => {
       const snsWrapperMock = require('../../src/wrappers/snsWrapper');
 
       editModel.__set__('snsWrap', snsWrapperMock);
-
-    });
-
-    it('Ritorna false se non ha avuto successo', (done) => {
 
       editModel.setOriginalMode().then((token) => {
 
@@ -276,9 +227,9 @@ describe('testEditModel', () => {
 
   describe('#getmodelLabels()', () => {
 
-    let getJsonFileS3Wrap = false;
+    it('Deve restituire un dizionario JSON', (done) => {
 
-    before(() => {
+      let getJsonFileS3Wrap = false;
 
       mock('../../src/wrappers/s3Wrapper', {
         getJsonFile: (bucket, fileKey) => {
@@ -293,10 +244,6 @@ describe('testEditModel', () => {
       const s3wrapMock = require('../../src/wrappers/s3Wrapper');
 
       editModel.__set__('s3Wrap', s3wrapMock);
-
-    });
-
-    it('Deve restituire un dizionario JSON', (done) => {
 
       editModel.getmodelLabels().then((token) => {
 
@@ -312,9 +259,9 @@ describe('testEditModel', () => {
 
   describe('#addRow()', () => {
 
-    let messageSNSWrap = false;
+    it('Ritorna dizionario JSON con specifiche da inseire nella riga', (done) => {
 
-    before(() => {
+      let messageSNSWrap = false;
 
       mock('../../src/wrappers/snsWrapper', {
         message: () => {
@@ -326,10 +273,6 @@ describe('testEditModel', () => {
       const snsWrapperMock = require('../../src/wrappers/snsWrapper');
 
       editModel.__set__('snsWrap', snsWrapperMock);
-
-    });
-
-    it('Ritorna dizionario JSON con specifiche da inseire nella riga', (done) => {
 
       const params = 'paramMock';
 
@@ -345,12 +288,12 @@ describe('testEditModel', () => {
 
   });
 
-  describe('#sendConfirmationTrue()', () => {
+  describe('#sendConfirmation()', () => {
 
-    let messageSNSWrap = false;
-    let risultato = null;
+    it('Ritorna true se ha avuto successo', () => {
 
-    before(() => {
+      let messageSNSWrap = false;
+      let risultato = null;
 
       mock('../../src/wrappers/snsWrapper', {
         message: () => {
@@ -365,41 +308,28 @@ describe('testEditModel', () => {
 
       risultato = editModel.sendConfirmation();
 
-    });
-
-    it('Ritorna true se ha avuto successo', () => {
-
       assert.equal(risultato, true);
       assert.equal(messageSNSWrap, true);
-
-    });
-
-  });
-
-  describe('#sendConfirmationFalse()', () => {
-
-    let messageSNSWrap = false;
-    let risultato = null;
-
-    before(() => {
-
-      mock('../../src/wrappers/snsWrapper', {
-        message: () => {
-          messageSNSWrap = true;
-          return false;
-        }
-      });
-
-      const snsWrapperMock = require('../../src/wrappers/snsWrapper');
-
-      editModel.__set__('snsWrap', snsWrapperMock);
-
-      risultato = editModel.sendConfirmation();
 
     });
 
     it('Ritorna false se non ha avuto successo', () => {
 
+      let messageSNSWrap = false;
+
+      mock('../../src/wrappers/snsWrapper', {
+        message: () => {
+          messageSNSWrap = true;
+          return false;
+        }
+      });
+
+      const snsWrapperMock = require('../../src/wrappers/snsWrapper');
+
+      editModel.__set__('snsWrap', snsWrapperMock);
+
+      let risultato = editModel.sendConfirmation();
+
       assert.equal(risultato, false);
       assert.equal(messageSNSWrap, true);
 
@@ -407,39 +337,23 @@ describe('testEditModel', () => {
 
   });
 
-  describe('#isVideoTypeOriginalTrue()', () => {
+  describe('#isVideoTypeOriginal()', () => {
 
-    let risultato = null;
-
-    before(() => {
+    it('Deve ritorna true se il video in riproduzione è quello originale', () => {
 
       editModel.__set__('actualVideoKey.original', true);
 
-      risultato = editModel.isVideoTypeOriginal();
-
-    });
-
-    it('Deve ritorna true se il video in riproduzione è quello originale', () => {
+      let risultato = editModel.isVideoTypeOriginal();
 
       assert.equal(risultato, true);
 
     });
 
-  });
-
-  describe('#isVideoTypeOriginalFalse()', () => {
-
-    let risultato = null;
-
-    before(() => {
+    it('Deve ritorna false se il video in riproduzione è quello originale', () => {
 
       editModel.__set__('actualVideoKey.original', false);
 
-      risultato = editModel.isVideoTypeOriginal();
-
-    });
-
-    it('Deve ritorna true se il video in riproduzione è quello originale', () => {
+      let risultato = editModel.isVideoTypeOriginal();
 
       assert.equal(risultato, false);
 
@@ -447,11 +361,11 @@ describe('testEditModel', () => {
 
   });
 
-  describe('#updateRowTrue()', () => {
+  describe('#updateRow()', () => {
 
-    let messageSNSWrap = false;
+    it('Deve ritornare true se la chiamata è stata effettuata correttamente', (done) => {
 
-    before(() => {
+      let messageSNSWrap = false;
 
       mock('../../src/wrappers/snsWrapper', {
         message: () => {
@@ -464,10 +378,6 @@ describe('testEditModel', () => {
 
       editModel.__set__('snsWrap', snsWrapperMock);
 
-    });
-
-    it('Deve ritornare true se la chiamata è stata effettuata correttamente', (done) => {
-
       const params = 'paramsMock';
 
       editModel.updateRow(params).then((token) => {
@@ -477,32 +387,24 @@ describe('testEditModel', () => {
         done();
 
       })
-
-    });
-
-  });
-
-  describe('#updateRowFalse()', () => {
-
-    let messageSNSWrap = false;
-
-    before(() => {
-
-      mock('../../src/wrappers/snsWrapper', {
-        message: () => {
-          messageSNSWrap = true;
-          return false;
-        }
-      });
-
-      const snsWrapperMock = require('../../src/wrappers/snsWrapper');
-
-      editModel.__set__('snsWrap', snsWrapperMock);
 
     });
 
     it('Deve ritornare false se la chiamata non è stata effettuata correttamente', (done) => {
 
+      let messageSNSWrap = false;
+
+      mock('../../src/wrappers/snsWrapper', {
+        message: () => {
+          messageSNSWrap = true;
+          return false;
+        }
+      });
+
+      const snsWrapperMock = require('../../src/wrappers/snsWrapper');
+
+      editModel.__set__('snsWrap', snsWrapperMock);
+
       const params = 'paramsMock';
 
       editModel.updateRow(params).then((token) => {
@@ -511,17 +413,17 @@ describe('testEditModel', () => {
         assert.equal(messageSNSWrap, true);
         done();
 
-      })
+      });
 
     });
 
   });
 
-  describe('#uncheckRowTrue()', () => {
+  describe('#uncheckRow()', () => {
 
-    let messageSNSWrap = false;
+    it('Ritorna true se la chiamata è stata effettuata correttamente', (done) => {
 
-    before(() => {
+      let messageSNSWrap = false;
 
       mock('../../src/wrappers/snsWrapper', {
         message: () => {
@@ -533,10 +435,6 @@ describe('testEditModel', () => {
       const snsWrapperMock = require('../../src/wrappers/snsWrapper');
 
       editModel.__set__('snsWrap', snsWrapperMock);
-
-    });
-
-    it('Ritorna true se la chiamata è stata effettuata correttamente', (done) => {
 
       const index = 'indexMock';
 
@@ -550,13 +448,9 @@ describe('testEditModel', () => {
 
     });
 
-  });
+    it('Ritorna false se la chiamata non è stata effettuata correttamente', (done) => {
 
-  describe('#uncheckRowTrue()', () => {
-
-    let messageSNSWrap = false;
-
-    before(() => {
+      let messageSNSWrap = false;
 
       mock('../../src/wrappers/snsWrapper', {
         message: () => {
@@ -568,10 +462,6 @@ describe('testEditModel', () => {
       const snsWrapperMock = require('../../src/wrappers/snsWrapper');
 
       editModel.__set__('snsWrap', snsWrapperMock);
-
-    });
-
-    it('Ritorna false se la chiamata non è stata effettuata correttamente', (done) => {
 
       const index = 'indexMock';
 
@@ -587,11 +477,11 @@ describe('testEditModel', () => {
 
   });
 
-  describe('#checkRowTrue()', () => {
+  describe('#checkRow()', () => {
 
-    let messageSNSWrap = false;
+    it('Ritorna true se la chiamata è stata effettuata correttamente', (done) => {
 
-    before(() => {
+      let messageSNSWrap = false;
 
       mock('../../src/wrappers/snsWrapper', {
         message: () => {
@@ -603,10 +493,6 @@ describe('testEditModel', () => {
       const snsWrapperMock = require('../../src/wrappers/snsWrapper');
 
       editModel.__set__('snsWrap', snsWrapperMock);
-
-    });
-
-    it('Ritorna true se la chiamata è stata effettuata correttamente', (done) => {
 
       const index = 'indexMock';
 
@@ -620,13 +506,9 @@ describe('testEditModel', () => {
 
     });
 
-  });
+    it('Ritorna false se la chiamata non  è stata effettuata correttamente', (done) => {
 
-  describe('#checkRowFalse()', () => {
-
-    let messageSNSWrap = false;
-
-    before(() => {
+      let messageSNSWrap = false;
 
       mock('../../src/wrappers/snsWrapper', {
         message: () => {
@@ -638,10 +520,6 @@ describe('testEditModel', () => {
       const snsWrapperMock = require('../../src/wrappers/snsWrapper');
 
       editModel.__set__('snsWrap', snsWrapperMock);
-
-    });
-
-    it('Ritorna false se la chiamata non  è stata effettuata correttamente', (done) => {
 
       const index = 'indexMock';
 
