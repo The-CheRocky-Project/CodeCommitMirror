@@ -5,7 +5,7 @@
   "author": "The CheRocky Project",
   "scripts": {
     "start": "node nodeJS/src/router.js",
-    "test": "nyc mocha nodeJS/tests --recursive --coverage --exit"
+    "test": "nyc --reporter=lcov mocha nodeJS/tests --recursive --coverage --exit"
   },
   "main": "nodeJS/src/router.js",
   "dependencies": {
