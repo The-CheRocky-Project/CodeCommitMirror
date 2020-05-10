@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """  json_splitter Lambda module
 Questo modulo contiene tutti i layer utili all'esecuzione della
 AWS Serverless Lambda thumbfy

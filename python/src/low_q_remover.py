@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """ Low Quality Remover Lambda module
 
 Questo modulo contiene l'handler che elimina un particolare
