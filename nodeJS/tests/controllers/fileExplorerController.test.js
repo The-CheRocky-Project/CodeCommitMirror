@@ -10,11 +10,11 @@ describe('testFileExplorerController', () => {
 
   describe('#getBody()', () => {
 
-    let printIsCalled = false;
-    let listFileKeysModel = false;
-    let getThumbnailURLModel = false;
+    it('deve creare file XHTML fileExplorer', (done) => {
 
-    before(() => {
+      let printIsCalled = false;
+      let listFileKeysModel = false;
+      let getThumbnailURLModel = false;
 
       mock('../../src/view/fileExplorerView', {
         print: (param, res) => {
@@ -47,15 +47,17 @@ describe('testFileExplorerController', () => {
       fileExplorerController.__set__('view', fevMock);
       fileExplorerController.__set__('model', femMock);
 
-      fileExplorerController.getBody(param, res);
+      console.log("prova del valore = " + this.param);
 
-    });
+      fileExplorerController.getBody(param, res).then(() => {
 
-    it('deve creare file XHTML fileExplorer', () => {
+        assert.equal(printIsCalled, true);
+        assert.equal(listFileKeysModel, true);
+        assert.equal(getThumbnailURLModel, true);
 
-      assert.equal(printIsCalled, true);
-      assert.equal(listFileKeysModel, true);
-      assert.equal(getThumbnailURLModel, true);
+        done();
+
+      });
 
     });
 
@@ -63,29 +65,29 @@ describe('testFileExplorerController', () => {
 
   describe('#getUpdatedFileList()', () => {
 
-    let printIsCalled1 = false;
-    let listFileKeysModel1 = false;
-    let getThumbnailURLModel1 = false;
+    it('deve fare update file XHTML fileExplorer', (done) => {
 
-    before(() => {
+      let printIsCalled = false;
+      let listFileKeysModel = false;
+      let getThumbnailURLModel = false;
 
       mock('../../src/view/fileExplorerView', {
         print: (param, res) => {
           //console.log('printMockato');
-          printIsCalled1 = true;
+          printIsCalled = true;
         }
       });
 
       mock('../../src/models/fileExplorerModel', {
         listFileKeys: async () => {
           //console.log('listFileKeysMockato');
-          listFileKeysModel1 = true;
+          listFileKeysModel = true;
           let stringa = Array('Questo è un array di stringhe');
           return stringa;
         },
         getThumbnailURL: (fileKey) => {
           //console.log('getThumbnailURLMockato');
-          getThumbnailURLModel1 = true;
+          getThumbnailURLModel = true;
           let stringa = Array('Questo è un array di stringhe');
           return stringa;
         }
@@ -99,25 +101,25 @@ describe('testFileExplorerController', () => {
       fileExplorerController.__set__('view', fevMock);
       fileExplorerController.__set__('model', femMock);
 
-      fileExplorerController.getUpdatedFileList(res);
+      fileExplorerController.getUpdatedFileList(res).then(() => {
 
-    });
+        assert.equal(printIsCalled, true);
+        assert.equal(listFileKeysModel, true);
+        assert.equal(getThumbnailURLModel, true);
 
-    it('deve fare update file XHTML fileExplorer', () => {
+        done();
 
-      assert.equal(printIsCalled1, true);
-      assert.equal(listFileKeysModel1, true);
-      assert.equal(getThumbnailURLModel1, true);
+      });
 
     });
 
   });
 
-  describe('#launchFileProcessingTrue()', () => {
+  describe('#launchFileProcessing()', () => {
 
-    let preocessFileModel = false;
+    it('Ritorna true se eseguita correttamente', () => {
 
-    before(() => {
+      let preocessFileModel = false;
 
       mock('../../src/models/fileExplorerModel', {
         processFile: (fileKey) => {
@@ -135,26 +137,19 @@ describe('testFileExplorerController', () => {
 
       fileExplorerController.launchFileProcessing(filekey);
 
-    });
-
-    it('Ritorna true se eseguita correttamente', () => {
-
       assert.equal(preocessFileModel, true);
 
     });
 
-  });
+    it('Ritorna false se eseguita correttamente', () => {
 
-  describe('#launchFileProcessingFalse()', () => {
-
-    let preocessFileModel1 = true;
-
-    before(() => {
+      let preocessFileModel = true;
+      let result = true;
 
       mock('../../src/models/fileExplorerModel', {
         processFile: (fileKey) => {
           //console.log('getThumbnailURLMockato');
-          preocessFileModel1 = false;
+          preocessFileModel = false;
           return false;
         }
       });
@@ -167,11 +162,7 @@ describe('testFileExplorerController', () => {
 
       fileExplorerController.launchFileProcessing(filekey);
 
-    });
-
-    it('Ritorna false se eseguita correttamente', () => {
-
-      assert.equal(preocessFileModel1, false);
+      assert.equal(preocessFileModel, false);
 
     });
 
