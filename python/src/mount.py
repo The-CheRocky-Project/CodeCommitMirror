@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """ Mount Lambda module
 
 Questo modulo contiene l'handler che effettua il motaggio di un video

@@ -36,7 +36,7 @@ def lambda_handler(event, context):
         bucket = record['bucket']['name']
         key = urllib.parse.unquote_plus(record['object']['key'], encoding='utf-8')
 
-        messageId = sns.publish(
+        message_id = sns.publish(
             TopicArn = 'arn:aws:sns:us-east-2:693949087897:ahlTopic',
             Message = 'created video published',
             Subject = 'video publish confirmation',
@@ -52,7 +52,7 @@ def lambda_handler(event, context):
                 }
             }
         )
-        return messageId
+        return message_id
     except Exception as e:
         print(e)
         print('Impossibile inviare il messaggio di pubblicazione video')

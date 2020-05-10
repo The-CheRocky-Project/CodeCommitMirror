@@ -35,8 +35,8 @@ def lambda_handler(event, context):
         key = urllib.parse.unquote_plus(event['Records'][0]['s3']['object']['key'], encoding='utf-8')
 
         resume = s3.Object(bucket, 'resume.json')
-        resumeRes = resume.get();
-        resumeContent = json.loads(resumeRes['Body'].read().decode('utf-8'))
+        resume_res = resume.get();
+        resume_content = json.loads(resume_res['Body'].read().decode('utf-8'))
 
         # Preleva il messaggio ricevuto da SNS, e ne fa il parsing
         #TODO da verificare che funzioni (dovrebbe essere sufficiente l'indice del frame)
@@ -47,20 +47,20 @@ def lambda_handler(event, context):
         founded = False
 
         # Destinazione del video spezzone di highlight
-        newKey = 'cuts/' + key
+        new_key = 'cuts/' + key
 
         # Se la label è presente in resume.json, viene rimossa
-        for reco in resumeContent:
+        for reco in resume_content:
             if reco['FrameName'] == name:
                 # Elimina il vecchio video spezzone di highlight dal bucket S3 ahlvideos/cuts
                 #TODO da verificare che funzioni
-                bucket.delete_key(newKey[:-4]+'mp4')
+                bucket.delete_key(new_key[:-4]+'mp4')
                 # Elimina i dati del frame dal file resume.json
                 #TODO da verificare che funzioni
                 del reco['FrameName']
                 # Sovrascrive il file resume.json aggiornandolo
-                bToWrite = json.dumps(resumeContent)
-                resume.put(Body=bToWrite)
+                b_to_write = json.dumps(resume_content)
+                resume.put(Body=b_to_write)
                 founded = True
 
         # Se il frame non è presente in resume.json, ritorna false

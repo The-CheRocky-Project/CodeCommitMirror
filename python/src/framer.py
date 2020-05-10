@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """ Framer Lambda module
 
 Questo modulo contiene l'handler che effettua la frammentazione di un video in input

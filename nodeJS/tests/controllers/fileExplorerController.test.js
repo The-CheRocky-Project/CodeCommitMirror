@@ -6,9 +6,9 @@ const sinon = require('sinon');
 //const fileExploereModel = rewire('../../src/models/fileExploereModel.js');
 //const fileExplorerView = rewire('../../src/view/fileExplorerView.js');
 
-describe('Test fileExplorerController', () => {
+describe('testFileExplorerController', () => {
 
-  describe('#getBody(res)', () => {
+  describe('#getBody()', () => {
 
     let printIsCalled = false;
     let listFileKeysModel = false;
@@ -61,7 +61,7 @@ describe('Test fileExplorerController', () => {
 
   });
 
-  describe('#getUpdatedFileList(res)', () => {
+  describe('#getUpdatedFileList()', () => {
 
     let printIsCalled1 = false;
     let listFileKeysModel1 = false;
@@ -113,7 +113,7 @@ describe('Test fileExplorerController', () => {
 
   });
 
-  describe('#launchFileProcessingTrue(fileKey)', () => {
+  describe('#launchFileProcessingTrue()', () => {
 
     let preocessFileModel = false;
 
@@ -145,7 +145,7 @@ describe('Test fileExplorerController', () => {
 
   });
 
-  describe('#launchFileProcessingFalse(fileKey)', () => {
+  describe('#launchFileProcessingFalse()', () => {
 
     let preocessFileModel1 = true;
 

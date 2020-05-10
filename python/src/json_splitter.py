@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """  json_splitter Lambda module
 Questo modulo contiene tutti i layer utili all'esecuzione della
 AWS Serverless Lambda thumbfy
@@ -11,7 +12,8 @@ import urllib.parse
 import json
 import boto3
 
-s3 = boto3.resource('S3')
+s3 = boto3.resource('s3')
+
 
 def lambda_handler(event, context):
     """
@@ -50,12 +52,14 @@ def lambda_handler(event, context):
                 'bucket': bucket,
                 'recognizement': single_reco
             }
-            dest_object = s3.Object(bucket,destination_key_prefix +
+            dest_object = s3.Object(bucket, destination_key_prefix +
                                     single_reco['labelIndex'] +
-                                    counter +
-                                    reco_file_key)
-            dest_dump = json.dump(destination_dict)
+                                    str(counter) +
+                                    reco_file_key +
+                                    ".json")
+            dest_dump = json.dumps(destination_dict)
             dest_object.put(Body=dest_dump)
+            counter += 1
         return True
     except Exception as err:
         print(err)

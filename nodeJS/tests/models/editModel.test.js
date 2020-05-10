@@ -3,7 +3,7 @@ const rewire = require('rewire');
 const mock = require('mock-require');
 const editModel = rewire('../../src/models/editModel.js');
 
-describe('Test editModel', () => {
+describe('testEditModel', () => {
 
   describe('#getVideoEndpointTrue()', () => {
 
@@ -310,7 +310,7 @@ describe('Test editModel', () => {
 
   });
 
-  describe('#addRow(params)', () => {
+  describe('#addRow()', () => {
 
     let messageSNSWrap = false;
 
@@ -447,7 +447,7 @@ describe('Test editModel', () => {
 
   });
 
-  describe('#updateRowTrue(params)', () => {
+  describe('#updateRowTrue()', () => {
 
     let messageSNSWrap = false;
 
@@ -482,7 +482,7 @@ describe('Test editModel', () => {
 
   });
 
-  describe('#updateRowFalse(params)', () => {
+  describe('#updateRowFalse()', () => {
 
     let messageSNSWrap = false;
 
@@ -517,7 +517,7 @@ describe('Test editModel', () => {
 
   });
 
-  describe('#uncheckRowTrue(index)', () => {
+  describe('#uncheckRowTrue()', () => {
 
     let messageSNSWrap = false;
 
@@ -552,7 +552,7 @@ describe('Test editModel', () => {
 
   });
 
-  describe('#uncheckRowTrue(index)', () => {
+  describe('#uncheckRowTrue()', () => {
 
     let messageSNSWrap = false;
 
@@ -587,7 +587,7 @@ describe('Test editModel', () => {
 
   });
 
-  describe('#checkRowTrue(index)', () => {
+  describe('#checkRowTrue()', () => {
 
     let messageSNSWrap = false;
 
@@ -622,7 +622,7 @@ describe('Test editModel', () => {
 
   });
 
-  describe('#checkRowFalse(index)', () => {
+  describe('#checkRowFalse()', () => {
 
     let messageSNSWrap = false;
 

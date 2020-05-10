@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """ media_manager lambda layer
 
 Il layer media manager si occupa di wrappare tutte le richieste

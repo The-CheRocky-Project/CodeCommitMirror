@@ -10,7 +10,6 @@ Contenuto:
 
 # imports url utils and media management layer
 import urllib.parse
-#import media_manager
 from .layers import media_manager
 
 

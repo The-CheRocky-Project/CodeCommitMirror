@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.com/The-CheRocky-Project/CodeCommitMirror.svg?branch=develop)](https://travis-ci.com/The-CheRocky-Project/CodeCommitMirror)
 Welcome to the AWS CodeStar sample web application
 ==================================================
 

@@ -43,14 +43,14 @@ def lambda_handler(event, context):
         full_qualifier = 's3://' + bucket + '/' + key
         # ottenimento frame
         image = s3.Object(bucket, key)
-        imageGet = image.get()
-        payload = bytearray(imageGet['Body'].read())
+        image_get = image.get()
+        payload = bytearray(image_get['Body'].read())
         #use endpoint
         result = get_frame_details(ENDPOINT_NAME, payload)
-        labelJson = s3.Object(bucket, '/utils/label.json' )
-        labelres = labelJson.get()
-        labelContent = json.loads(labelres['Body'].read().decode('utf-8'))
-        label = labelContent['labels'][result.index]
+        label_json = s3.Object(bucket, '/utils/label.json' )
+        labelres = label_json.get()
+        label_content = json.loads(labelres['Body'].read().decode('utf-8'))
+        label = label_content['labels'][result.index]
 
         splitted = key.split('/')
         newkey = splitted[len(splitted)-1]
