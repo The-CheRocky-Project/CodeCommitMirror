@@ -2,8 +2,11 @@ import json
 import os
 import boto3
 from moto import mock_s3
+# Imposto delle variabili di ambiente per simulare le credenziali necessarie a far andare la lambda
+os.environ.setdefault("AWS_ACCESS_KEY_ID", "foobar_key")
+os.environ.setdefault("AWS_SECRET_ACCESS_KEY", "foobar_secret")
 from python.src.json_splitter import lambda_handler
-import pytest
+
 
 # Percorso assouluto per caricare il file event.json
 absolute_path = os.path.dirname(os.path.abspath(__file__))
