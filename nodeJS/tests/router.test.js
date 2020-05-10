@@ -207,7 +207,7 @@ describe('testRouter',() => {
 
     });
 
-    it("deve inviare un json con una rowIndex", (done) => {
+    it("deve inviare un json con start, duration, modelIndex", (done) => {
 
       request(ahl).post('/addLabel')
       .send({
@@ -263,7 +263,7 @@ describe('testRouter',() => {
 
   describe('#post/notifyChangedFileList', () => {
 
-    it("deve inviare un json con un campo done", (done) => {
+    it("inviare? un json quello che gli pare", (done) => {
 
       request(ahl).post('/notifyChangedFileList')
       .send({done: 'john'})
@@ -273,7 +273,7 @@ describe('testRouter',() => {
     });
   });
 
-  describe('#post/setVideoMode', () => {
+  describe('#post/confirmEdit', () => {
 
     before(() => {
 
@@ -287,7 +287,7 @@ describe('testRouter',() => {
 
     });
 
-    it("deve inviare un json con un campo toOriginal", (done) => {
+    it("inviare? un json quello che gli pare", (done) => {
 
       request(ahl).post('/confirmEdit')
       .send({
