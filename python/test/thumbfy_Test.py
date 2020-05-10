@@ -1,9 +1,6 @@
 import json
 import os
 import pytest
-import boto3
-# Imposto una regione a boto3 solo a scopo di test per i moduli che importo dopo
-boto3.setup_default_session(region_name='us-east-2')
 from python.src.layers import media_manager
 from python.src.thumbfy import lambda_handler
 
