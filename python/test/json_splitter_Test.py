@@ -50,13 +50,19 @@ class TestJsonSplitter:
             # Verifico che nel bucket ci siano i json splittati
             # La key dei singoli json è così costruita: labelIndex + progressiveNumber + fileKey + .json
             body = s3Client.get_object(Bucket='ahlconsolebucket', Key='singles/00partita_di_calcio.mp4.json')['Body'].read().decode("utf-8")
-            assert body == '{"fileKey": "partita_di_calcio.mp4", ' \
-                           '"bucket": "ahlconsolebucket", ' \
-                           '"recognizement": {"start": "01:54:20.1234", "duration": "3456", "labelIndex": "0"}}'
+            bodyJson = json.loads(body)
+            assert bodyJson["fileKey"] == "partita_di_calcio.mp4"
+            assert bodyJson["bucket"] == "ahlconsolebucket"
+            assert bodyJson["recognizement"]["start"] == "01:54:20.1234"
+            assert bodyJson["recognizement"]["duration"] == "3456"
+            assert bodyJson["recognizement"]["labelIndex"] == "0"
             body = s3Client.get_object(Bucket='ahlconsolebucket', Key='singles/11partita_di_calcio.mp4.json')['Body'].read().decode("utf-8")
-            assert body == '{"fileKey": "partita_di_calcio.mp4", ' \
-                           '"bucket": "ahlconsolebucket", ' \
-                           '"recognizement": {"start": "01:54:20.1234", "duration": "3456", "labelIndex": "1"}}'
+            bodyJson = json.loads(body)
+            assert bodyJson["fileKey"] == "partita_di_calcio.mp4"
+            assert bodyJson["bucket"] == "ahlconsolebucket"
+            assert bodyJson["recognizement"]["start"] == "01:54:20.1234"
+            assert bodyJson["recognizement"]["duration"] == "3456"
+            assert bodyJson["recognizement"]["labelIndex"] == "1"
 
     def test_negative_result_malformed_json(self):
         with mock_s3():
