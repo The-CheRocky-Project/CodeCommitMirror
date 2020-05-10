@@ -133,8 +133,9 @@ describe('testFileExplorerController', () => {
 
       fileExplorerController.__set__('model', femMock);
 
-      fileExplorerController.launchFileProcessing(filekey);
+      let risultato = fileExplorerController.launchFileProcessing(filekey);
 
+      assert.equal(risultato, true);
       assert.equal(preocessFileModel, true);
 
     });
@@ -158,8 +159,9 @@ describe('testFileExplorerController', () => {
 
       fileExplorerController.__set__('model', femMock);
 
-      fileExplorerController.launchFileProcessing(filekey);
+      let risultato = fileExplorerController.launchFileProcessing(filekey);
 
+      assert.equal(risultato, false);
       assert.equal(preocessFileModel, false);
 
     });
