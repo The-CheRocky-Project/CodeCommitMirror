@@ -13,7 +13,7 @@ jobs:
         - pip install boto3
         - pip install moto
       before_script:
-        - python -m pylint python/
+        - pylint python/
     - language: node_js
       node_js: 12 
       install:
