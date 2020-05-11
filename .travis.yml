@@ -13,8 +13,9 @@ jobs:
         - pip install boto3
         - pip install moto
         - pip install moviepy
+        - pip install pytest-cov
       before_script:
-        - pylint python/
+        - pytest --cov-report xml --cov python/src
     - language: node_js
       node_js: 12 
       install:
