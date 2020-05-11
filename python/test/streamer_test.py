@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
+"""
+Modulo di test per la lambda streamer
+"""
 import json
 import os
-import pytest
-from python.src.layers import media_manager
-from python.src.thumbfy import lambda_handler
 
 # Percorso assouluto per caricare il file event.json
 absolute_path = os.path.dirname(os.path.abspath(__file__))
@@ -18,4 +18,4 @@ file_path = absolute_path + '/../event/thumbfy_event.json'
 with open(file_path, 'r') as f:
     event_json = json.load(f)
 
-context = "fake"
+CONTEXT = "fake"

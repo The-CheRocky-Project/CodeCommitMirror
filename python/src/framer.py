@@ -11,8 +11,8 @@ Contenuto:
 # imports url and media manager layer
 import urllib.parse
 import boto3
-import media_manager
 from moviepy.editor import VideoFileClip
+from src.layers import media_manager
 
 # definizione della risorsa s3
 s3 = boto3.resource('s3')

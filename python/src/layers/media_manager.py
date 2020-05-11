@@ -10,12 +10,10 @@ Contenuto:
 """
 
 # Import boto3 sdk
-from typing import Dict, Union
-
 
 import json
-import boto3
 import decimal
+import boto3
 from boto3 import client
 
 runtime = boto3.client('runtime.sagemaker')
@@ -36,7 +34,6 @@ def create_thumbnail(input_key, output_folder_key, queue):
     """Funzione che avvia un job sulla coda "queue" transcoder per creare
     una thumbnail del video di chiave s3 "input_key" che verrà salvata in
     "output_queue"
-    
     Args:
         output_folder_key: il prefisso di chiave S3 di destinazione
         input_key: la chiave S3 del video di origine
@@ -186,16 +183,16 @@ def mount(input_file_key, piece_list, queue):
         job_id se il lavoro è stato correttamente avviato, false altrimenti
     """
 
-    inputarray = {}
+    inputarray = []
 
     for piece in piece_list:
         inputarray.append(
             {
                 "AudioSelectors": {
                     "Audio Selector 1": {
-                    "Offset": 0,
-                    "DefaultSelection": "DEFAULT",
-                    "ProgramSelection": 1
+                        "Offset": 0,
+                        "DefaultSelection": "DEFAULT",
+                        "ProgramSelection": 1
                     }
                 },
                 "VideoSelector": {
@@ -212,14 +209,13 @@ def mount(input_file_key, piece_list, queue):
                 'InputClippings': [
                     {
                         'StartTimecode': piece.start,
-                        'EndTimecode': piece.start+piece.duration
+                        'EndTimecode': piece.start + piece.duration
                     }
                 ],
                 'TimecodeSource': 'SPECIFIEDSTART',
                 'TimecodeStart': '00:00:00:00'
             }
         )
-
 
     media_settings = {
         "OutputGroups": [
@@ -330,75 +326,83 @@ def mount(input_file_key, piece_list, queue):
     )
     return result['Job']['Id']
 
+
 def frame(input_file_key, duration, queue):
-    media_settings={
-            'Inputs': [
-                {
-                    'AudioSelectors': {
-                        'Audio Selector 1': {
-                            'Offset': 0,
-                            'DefaultSelection': 'DEFAULT',
-                            'ProgramSelection': 1
-                        }
+    """
+    TODO
+    :param input_file_key: la key del file di origine
+    :param duration:
+    :param queue:
+    :return:
+    """
+    media_settings = {
+        'Inputs': [
+            {
+                'AudioSelectors': {
+                    'Audio Selector 1': {
+                        'Offset': 0,
+                        'DefaultSelection': 'DEFAULT',
+                        'ProgramSelection': 1
+                    }
+                },
+                'VideoSelector': {
+                    'ColorSpace': 'FOLLOW',
+                    'Rotate': 'DEGREE_0',
+                    'AlphaBehavior': 'DISCARD'
+                },
+                'FilterEnable': 'AUTO',
+                'PsiControl': 'USE_PSI',
+                'FilterStrength': 0,
+                'DeblockFilter': 'DISABLED',
+                'DenoiseFilter': 'DISABLED',
+                'TimecodeSource': 'EMBEDDED',
+                'FileInput': input_file_key
+            }
+        ],
+        'OutputGroups': [
+            {
+                'Name': 'File Group',
+                'Outputs': [
+                    {
+                        'Preset': 'Low',
+                        'Extension': 'mp4',
+                        'NameModifier': 'low'
                     },
-                    'VideoSelector': {
-                        'ColorSpace': 'FOLLOW',
-                        'Rotate': 'DEGREE_0',
-                        'AlphaBehavior': 'DISCARD'
-                    },
-                    'FilterEnable': 'AUTO',
-                    'PsiControl': 'USE_PSI',
-                    'FilterStrength': 0,
-                    'DeblockFilter': 'DISABLED',
-                    'DenoiseFilter': 'DISABLED',
-                    'TimecodeSource': 'EMBEDDED',
-                    'FileInput': input_file_key
-                }
-            ],
-            'OutputGroups': [
-                {
-                    'Name': 'File Group',
-                    'Outputs': [
-                        {
-                            'Preset': 'Low',
-                            'Extension': 'mp4',
-                            'NameModifier': 'low'
-                        },
-                        {
-                            "VideoDescription": {
-                                "ScalingBehavior": "DEFAULT",
-                                "TimecodeInsertion": "DISABLED",
-                                "AntiAlias": "ENABLED",
-                                "Sharpness": 50,
-                                "CodecSettings": {
-                                    "Codec": "FRAME_CAPTURE",
-                                    "FrameCaptureSettings": {
-                                        "FramerateNumerator": 30,
-                                        #nel caso da modificare a piacimento
-                                        #TODO verificare il funzionamento
-                                        "FramerateDenominator": (duration*30)/10,
-                                        "MaxCaptures": 10000000,
-                                        "Quality": 80
-                                    }
-                                },
-                                "DropFrameTimecode": "ENABLED",
-                                "ColorMetadata": "INSERT"
+                    {
+                        "VideoDescription": {
+                            "ScalingBehavior": "DEFAULT",
+                            "TimecodeInsertion": "DISABLED",
+                            "AntiAlias": "ENABLED",
+                            "Sharpness": 50,
+                            "CodecSettings": {
+                                "Codec": "FRAME_CAPTURE",
+                                "FrameCaptureSettings": {
+                                    "FramerateNumerator": 30,
+                                    # nel caso da modificare a piacimento
+                                    # TODO verificare il funzionamento
+                                    "FramerateDenominator": (duration * 30) / 10,
+                                    "MaxCaptures": 10000000,
+                                    "Quality": 80
+                                }
                             },
-                            "ContainerSettings": {
-                                "Container": "RAW"
-                            }
-                        }
-                    ],
-                    'OutputGroupSettings': {
-                        'Type': 'FILE_GROUP_SETTINGS',
-                        'FileGroupSettings': {
-                            'Destination': 's3://ahlconsolebucket/frames/'
+                            "DropFrameTimecode": "ENABLED",
+                            "ColorMetadata": "INSERT"
+                        },
+                        "ContainerSettings": {
+                            "Container": "RAW"
                         }
                     }
+                ],
+                'OutputGroupSettings': {
+                    'Type': 'FILE_GROUP_SETTINGS',
+                    'FileGroupSettings': {
+                        'Destination': 's3://ahlconsolebucket/frames/'
+                    }
                 }
-            ],
-            'AdAvailOffset': 0,
-        }
+            }
+        ],
+        'AdAvailOffset': 0,
+    }
     media_conv = client("mediaconvert")
     result = media_conv.create_job(
         Role=env_settings['Role'],
@@ -410,32 +414,59 @@ def frame(input_file_key, duration, queue):
     )
     return result['Job']['Id']
 
+
 def get_frame_details(endpoint, payload):
+    """
+    Funzione che recupera i dettagli di un frame TODO
+    :param endpoint:
+    :param payload:
+    :return:
+    """
     response = runtime.invoke_endpoint(EndpointName=endpoint,
                                        ContentType='application/x-image',
                                        Body=payload)
     result = json.loads(response['Body'].read().decode())
 
     index = 0
-    top= result[index]
-    for i in range(len(result)-1):
-        tmp = result[i+1]
+    top = result[index]
+    for i in range(len(result) - 1):
+        tmp = result[i + 1]
         if top < tmp:
-            index = i+1
+            index = i + 1
             top = tmp
 
     return {
         'index': index,
-        'accuracy' : top
+        'accuracy': top
     }
 
+
 def dynamo_insertion(frame_info, label, name):
+    """
+    Funzione per inserire su dynamo TODO
+    :param frame_info:
+    :param label:
+    :param name:
+    :return:
+    """
     table = dynamodb.Table('frame_rekognitions')
 
     return table.put_item(
         Item={
-            'file_name' : name,
+            'file_name': name,
             'label': label,
             'accuracy': decimal.Decimal(frame_info.accuracy)
         }
     )
+
+
+def cutter(name, start, duration):
+    """
+    TODO funzione non implementata
+    :param name:
+    :param start:
+    :param duration:
+    :return:
+    """
+    print(name, start, duration)
+    return 'lavoro1'

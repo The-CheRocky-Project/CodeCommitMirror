@@ -1,4 +1,5 @@
-""" thumbfy Lambda module
+# coding=utf-8
+""" Thumbfy Lambda module
 
 Questo modulo contiene tutti i layer utili all'esecuzione della
 AWS Serverless Lambda thumbfy
@@ -10,7 +11,7 @@ Contenuto:
 
 # imports url utils and media management layer
 import urllib.parse
-from .layers import media_manager
+from src.layers import media_manager
 
 
 def lambda_handler(event, context):
@@ -38,9 +39,12 @@ def lambda_handler(event, context):
         key = urllib.parse.unquote_plus(record['object']['key'], encoding='utf-8')
         full_qualifier = 's3://' + bucket + '/' + key
         # creates job
-        job_id = media_manager.create_thumbnail(full_qualifier, full_qualifier + '.jpg', 'console_thumbnail')
+        job_id = media_manager.create_thumbnail(
+            full_qualifier,
+            full_qualifier + '.jpg',
+            'console_thumbnail')
         return job_id
-    except Exception as e:
-        print(e)
+    except Exception as err:
+        print(err)
         print('Impossibile creare la thumbnail di ' + full_qualifier)
-        raise e
+        raise err

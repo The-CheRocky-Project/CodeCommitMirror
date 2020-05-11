@@ -13,7 +13,7 @@ import json
 import os
 import urllib.parse
 import boto3
-import media_manager
+from src.layers import media_manager
 
 # Definisce la risorsa s3
 s3 = boto3.resource('s3')
@@ -47,18 +47,18 @@ def lambda_handler(event, context):
         image_get = image.get()
         payload = bytearray(image_get['Body'].read())
         #use endpoint
-        result = get_frame_details(ENDPOINT_NAME, payload)
-        label_json = s3.Object(bucket, '/utils/label.json' )
+        result = media_manager.get_frame_details(ENDPOINT_NAME, payload)
+        label_json = s3.Object(bucket, '/utils/label.json')
         labelres = label_json.get()
         label_content = json.loads(labelres['Body'].read().decode('utf-8'))
-        label = label_content['labels'][result.index]
+        label = label_content['labels'][result['index']]
 
         splitted = key.split('/')
         newkey = splitted[len(splitted)-1]
 
-        job_id = dynamo_insertion(result,label, newkey)
+        job_id = media_manager.dynamo_insertion(result, label, newkey)
         return job_id
-    except Exception as e:
-        print(e)
+    except Exception as err:
+        print(err)
         print('Impossibile effettuare il riconoscimento del frame ' + full_qualifier)
-        raise e
+        raise err

@@ -12,7 +12,7 @@ Contenuto:
 import json
 import urllib.parse
 import boto3
-import media_manager
+from src.layers import media_manager
 
 # Definisce la risorsa s3
 s3 = boto3.resource('s3')
@@ -20,10 +20,9 @@ s3 = boto3.resource('s3')
 def lambda_handler(event, context):
     """
     Handler che riceve l'evento scaturante l'esecuzione che contiene
-    la key del file di riassunto formattato json contenente tutti i 
+    la key del file di riassunto formattato json contenente tutti i
     dati degli spezzoni che vanno montati in un unico video il nome
-    del file originale 
-    
+    del file originale
     Args:
         event: L'evento che ha fatto scaturire l'avvio dell'handler
         context: Il dizionario rappresentante le variabili di contesto
@@ -45,9 +44,9 @@ def lambda_handler(event, context):
         resume = resumejson.get()
         resumecontent = json.loads(resume['Body'].read().decode('utf-8'))
         #avvio job di creazione video
-        job_id = media_manager.mount(full_qualifier, resumecontent,'console_mount')
+        job_id = media_manager.mount(full_qualifier, resumecontent, 'console_mount')
         return job_id
-    except Exception as e:
-        print(e)
+    except Exception as err:
+        print(err)
         print('Impossibile creare il video di ' + full_qualifier)
-        raise e
+        raise err

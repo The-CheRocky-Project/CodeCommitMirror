@@ -54,7 +54,7 @@ def lambda_handler(event, context):
             }
         )
         return message_id
-    except Exception as e:
-        print(e)
+    except Exception as err:
+        print(err)
         print('Impossibile inviare il messaggio di pubblicazione video')
-        raise e
+        raise err

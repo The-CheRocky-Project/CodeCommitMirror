@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
+"""
+Modulo di test per il modulo low_q_remover
+"""
 import json
 import os
 import boto3
 from moto import mock_s3
-from python.src.low_q_remover import lambda_handler
 import pytest
+from src.low_q_remover import lambda_handler
+
 
 
 # Percorso assouluto per caricare il file event.json
@@ -26,30 +30,44 @@ with open(file_path_correct, 'r') as f:
 with open(file_path_wrong, 'r') as f:
     wrong_event_json = json.load(f)
 
-context = "fake"
+CONTEXT = "fake"
 
 
 class TestLowQRemover:
-    # L'evento è scatenato da un file che finisce con -low.mp4 e quindi deve essere cancellato
+    """
+    Classe di test per low_q_remover
+    """
     def test_file_is_deleted(self):
+        """
+        L'evento è scatenato da un file che finisce con -low.mp4 e quindi deve essere cancellato
+        :return:
+        """
+        print(self)
         with mock_s3():
-            s3Client = boto3.client('s3', region_name='us-east-2')
-            s3Client.create_bucket(Bucket='ahlconsolebucket')
-            s3Client.put_object(Bucket='ahlconsolebucket', Key='origin/file-low.mp4', Body="body")
+            s3_client = boto3.client('s3', region_name='us-east-2')
+            s3_client.create_bucket(Bucket='ahlconsolebucket')
+            s3_client.put_object(Bucket='ahlconsolebucket', Key='origin/file-low.mp4', Body="body")
             # Dovrebbe ritornare true visto che il file deve essere stato cancellato
-            assert lambda_handler(correct_event_json, context)
-            # Dovrebbe lanciare un'eccezione siccome il file che sto cercando di ottenere dovrebbe essere stato cancellato
+            assert lambda_handler(correct_event_json, CONTEXT)
+            # Dovrebbe lanciare un'eccezione siccome il file che sto cercando di ottenere dovrebbe
+            # essere stato cancellato
             with pytest.raises(Exception):
-                s3Client.get_object(Bucket='ahlconsolebucket', Key='origin/file-low.mp4')
+                s3_client.get_object(Bucket='ahlconsolebucket', Key='origin/file-low.mp4')
 
-    # L'evento è scatenato da un file che NON finisce con -low.mp4 e quindi NON deve essere cancellato
     def test_file_is_not_deleted(self):
+        """
+        L'evento è scatenato da un file che NON finisce con -low.mp4
+        e quindi NON deve essere cancellato
+        :return:
+        """
+        print(self)
         with mock_s3():
-            s3Client = boto3.client('s3', region_name='us-east-2')
-            s3Client.create_bucket(Bucket='ahlconsolebucket')
-            s3Client.put_object(Bucket='ahlconsolebucket', Key='origin/file.mp4', Body="body")
-            # Dovrebbe ritornare false visto che il file non deve essere stato cancellato
-            assert not(lambda_handler(wrong_event_json, context))
-            result = s3Client.get_object(Bucket='ahlconsolebucket', Key='origin/file.mp4')
-            # Se arriva a questo punto vuol dire che il file esiste (altrimenti avrebbe lanciato un'eccezione)
-            assert not(result is None)
+            s3_client = boto3.client('s3', region_name='us-east-2')
+            s3_client.create_bucket(Bucket='ahlconsolebucket')
+            s3_client.put_object(Bucket='ahlconsolebucket', Key='origin/file.mp4', Body="body")
+            # Dovrebbe ritornare false visto che il file nondeve essere stato cancellato
+            assert not lambda_handler(wrong_event_json, CONTEXT)
+            result = s3_client.get_object(Bucket='ahlconsolebucket', Key='origin/file.mp4')
+            # Se arriva a questo punto vuol dire che il file esiste
+            # altrimenti avrebbe lanciato un'eccezione
+            assert not result is None
