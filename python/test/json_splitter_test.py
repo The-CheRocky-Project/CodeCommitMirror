@@ -7,8 +7,7 @@ import os
 import pytest
 import boto3
 from moto import mock_s3
-from src.json_splitter import lambda_handler
-
+from python.src.json_splitter import lambda_handler
 
 # Percorso assouluto per caricare il file event.json
 absolute_path = os.path.dirname(os.path.abspath(__file__))
@@ -32,6 +31,7 @@ class TestJsonSplitter:
     """
     Classe di test per il lambda_handler di json_splitter
     """
+
     def test_json_is_splitted(self):
         """
         Test di divisione
@@ -50,8 +50,8 @@ class TestJsonSplitter:
                         "labelIndex": "0"
                     },
                     {
-                        "start": "01:54:20.1234",
-                        "duration": "3456",
+                        "start": "02:37:20.1234",
+                        "duration": "9356",
                         "labelIndex": "1"
                     }
                 ]
@@ -65,26 +65,36 @@ class TestJsonSplitter:
             # La key dei singoli json è così costruita:
             # labelIndex + progressiveNumber + fileKey + .json
             body = s3_client.get_object(Bucket='ahlconsolebucket',
-                                        Key='singles/00partita_di_calcio.mp4.json')['Body']\
-                .read()\
+                                        Key='singles/00partita_di_calcio.mp4.json')['Body'] \
+                .read() \
                 .decode("utf-8")
             body_json = json.loads(body)
-            assert body_json["fileKey"] == "partita_di_calcio.mp4"
-            assert body_json["bucket"] == "ahlconsolebucket"
-            assert body_json["recognizement"]["start"] == "01:54:20.1234"
-            assert body_json["recognizement"]["duration"] == "3456"
-            assert body_json["recognizement"]["labelIndex"] == "0"
+            expectedbody_json = {
+                "fileKey": "partita_di_calcio.mp4",
+                "bucket": "ahlconsolebucket",
+                "recognizement": {
+                    "start": "01:54:20.1234",
+                    "duration": "3456",
+                    "labelIndex": "0"
+                }
+            }
+            assert body_json == expectedbody_json
             body = s3_client.get_object(
                 Bucket='ahlconsolebucket',
-                Key='singles/11partita_di_calcio.mp4.json')['Body']\
-                .read().\
+                Key='singles/11partita_di_calcio.mp4.json')['Body'] \
+                .read(). \
                 decode("utf-8")
             body_json = json.loads(body)
-            assert body_json["fileKey"] == "partita_di_calcio.mp4"
-            assert body_json["bucket"] == "ahlconsolebucket"
-            assert body_json["recognizement"]["start"] == "01:54:20.1234"
-            assert body_json["recognizement"]["duration"] == "3456"
-            assert body_json["recognizement"]["labelIndex"] == "1"
+            expectedbody_json = {
+                "fileKey": "partita_di_calcio.mp4",
+                "bucket": "ahlconsolebucket",
+                "recognizement": {
+                    "start": "02:37:20.1234",
+                    "duration": "9356",
+                    "labelIndex": "1"
+                }
+            }
+            assert body_json == expectedbody_json
 
     def test_negative_result_malformed_json(self):
         """
