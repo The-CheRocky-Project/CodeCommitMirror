@@ -38,13 +38,13 @@ def lambda_handler(event, context):
         key = urllib.parse.unquote_plus(record['object']['key'], encoding='utf-8')
 
         message_id = sns.publish(
-            TopicArn = 'arn:aws:sns:us-east-2:693949087897:ahlTopic',
-            Message = 'created video published',
-            Subject = 'video publish confirmation',
-            MessageStructure = 'json',
-            MessageAttributes = {
-                'bucket':{
-                    'DataType':'string',
+            TopicArn="arn:aws:sns:us-east-2:693949087897:ahlTopic",
+            Message='created video published',
+            Subject="video publish confirmation",
+            MessageStructure="json",
+            MessageAttributes={
+                'bucket': {
+                    'DataType': 'string',
                     'Stringvalue': bucket
                 },
                 'key': {

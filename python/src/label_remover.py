@@ -6,12 +6,12 @@ Contenuto:
     * lambda_handler - l'handler principale per la lambda
 """
 
-#imports url
+# imports url
+import urllib.parse
 import json
 import boto3
-import urllib.parse
 
-#definizione della risorsa s3
+# definizione della risorsa s3
 s3 = boto3.resource('s3')
 
 def lambda_handler(event, context):
@@ -31,16 +31,17 @@ def lambda_handler(event, context):
     print('Executing :' + context['function_name'])
     try:
         # Preleva bucket name e key da event
-        #TODO da verificare che funzioni
+        # TODO da verificare che funzioni
         bucket = event['Records'][0]['s3']['bucket']['name']
-        key = urllib.parse.unquote_plus(event['Records'][0]['s3']['object']['key'], encoding='utf-8')
-
+        key = urllib.parse.unquote_plus(
+            event['Records'][0]['s3']['object']['key'],
+            encoding='utf-8')
         resume = s3.Object(bucket, 'resume.json')
-        resume_res = resume.get();
+        resume_res = resume.get()
         resume_content = json.loads(resume_res['Body'].read().decode('utf-8'))
 
         # Preleva il messaggio ricevuto da SNS, e ne fa il parsing
-        #TODO da verificare che funzioni (dovrebbe essere sufficiente l'indice del frame)
+        # TODO da verificare che funzioni (dovrebbe essere sufficiente l'indice del frame)
         message = event['Records'][0]['SNS']['Message']
         name = message[1]
 
@@ -65,10 +66,10 @@ def lambda_handler(event, context):
                 founded = True
 
         # Se il frame non è presente in resume.json, ritorna false
-        if founded == False:
+        if not founded:
             return False
         return True
-    except Exception as e:
-        print(e)
+    except Exception as err:
+        print(err)
         print('Impossibile rimuovere la label ' + name)
-        raise e
+        raise err

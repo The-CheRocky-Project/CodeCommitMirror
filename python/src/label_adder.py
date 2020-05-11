@@ -6,14 +6,15 @@ Contenuto:
     * lambda_handler - l'handler principale per la lambda
 """
 
-#imports url and media manager layer
+# imports url and media manager layer
+import urllib.parse
 import json
 import boto3
-import urllib.parse
 import media_manager
 
-#definizione della risorsa s3
+# definizione della risorsa s3
 s3 = boto3.resource('s3')
+
 
 def lambda_handler(event, context):
     """
@@ -32,16 +33,17 @@ def lambda_handler(event, context):
     print('Executing :' + context['function_name'])
     try:
         # Preleva bucket name e key da event
-        #TODO da verificare che funzioni
+        # TODO da verificare che funzioni
         bucket = event['Records'][0]['s3']['bucket']['name']
-        key = urllib.parse.unquote_plus(event['Records'][0]['s3']['object']['key'], encoding='utf-8')
-
+        key = urllib.parse.unquote_plus(
+            event['Records'][0]['s3']['object']['key'],
+            encoding='utf-8')
         resume = s3.Object(bucket, 'resume.json')
-        resume_res = resume.get();
+        resume_res = resume.get()
         resume_content = json.loads(resume_res['Body'].read().decode('utf-8'))
 
         # Preleva il messaggio ricevuto da SNS, e ne fa il parsing
-        #TODO da verificare che funzioni
+        # TODO da verificare che funzioni
         message = event['Records'][0]['SNS']['Message']
         name = message[1]
         start = message[2]
@@ -60,8 +62,8 @@ def lambda_handler(event, context):
         for reco in resume_content:
             if reco['FrameName'] == name:
                 # Elimina il vecchio video spezzone di highlight dal bucket S3 ahlvideos/cuts
-                #TODO da verificare che funzioni
-                bucket.delete_key(new_key[:-4]+'mp4')
+                # TODO da verificare che funzioni
+                bucket.delete_key(new_key[:-4] + 'mp4')
                 # Aggiorna i dati del frame
                 reco['Start'] = start
                 reco['Duration'] = duration
@@ -70,27 +72,26 @@ def lambda_handler(event, context):
                 reco['Checked'] = checked
                 founded = True
         # se il frame non è presente in resume.json, viene aggiunto al file
-        if founded == False:
+        if not founded:
             resume_content.append(
-                {
-    		        "FrameName": name,
-    		        "Start": start,
-    		        "Duration": duration,
-    		        "Label": label,
-    		        "Accuracy": accuracy,
-    		        "Checked": checked
-    		    }
+                dict(FrameName=name,
+                     Start=start,
+                     Duration=duration,
+                     Label=label,
+                     Accuracy=accuracy,
+                     Checked=checked)
             )
 
         # Sovrascrive il file resume.json aggiornandolo
         b_to_write = json.dumps(resume_content)
         resume.put(Body=b_to_write)
 
-        # Avvia job di ritaglio con chiave numerica corrispondente all'indice all'interno del file resume.json
-        #TODO da verificare che funzioni
-        job_id = media_manager.cutter(name,start,duration)
+        # Avvia job di ritaglio con chiave numerica corrispondente
+        # all'indice all'interno del file resume.json
+        # TODO da verificare che funzioni
+        job_id = media_manager.cutter(name, start, duration)
         return job_id
-    except Exception as e:
-        print(e)
+    except Exception as err:
+        print(err)
         print('Impossibile aggiungere la label ' + name)
-        raise e
+        raise err

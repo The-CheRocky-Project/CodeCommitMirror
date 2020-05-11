@@ -9,8 +9,8 @@ Contenuto:
 """
 
 # imports url and media manager layer
-import boto3
 import urllib.parse
+import boto3
 import media_manager
 from moviepy.editor import VideoFileClip
 
@@ -49,7 +49,7 @@ def lambda_handler(event, context):
         # avvio job di creazione frame
         job_id = media_manager.frame(full_qualifier, duration, 'console_mount')
         return job_id
-    except Exception as e:
-        print(e)
+    except Exception as err:
+        print(err)
         print('Impossibile frammentare il video di ' + full_qualifier)
-        raise e
+        raise err
