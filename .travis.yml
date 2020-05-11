@@ -1,4 +1,6 @@
+os: linux
 dist: xenial
+language: node_js
 addons:
   sonarcloud:
     organization: "the-cherocky-project"
@@ -15,14 +17,14 @@ jobs:
         - pip install moto
         - pip install moviepy
         - pip install pytest-cov
-      test:
+      script:
         - pytest --cov-report xml --cov python/src
     - stage: test
       language: node_js
       node_js: 12 
       install:
         - npm install
-      test:
+      script:
         - npm test
     - stage: build
       script: sonar-scanner
