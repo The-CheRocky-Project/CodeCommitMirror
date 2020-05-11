@@ -15,14 +15,14 @@ jobs:
         - pip install moto
         - pip install moviepy
         - pip install pytest-cov
-      before_script:
+      test:
         - pytest --cov-report xml --cov python/src
     - stage: test
       language: node_js
       node_js: 12 
       install:
         - npm install
-      before_script:
+      test:
         - npm test
     - stage: build
       script: sonar-scanner
