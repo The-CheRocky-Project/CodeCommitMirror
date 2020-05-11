@@ -30,11 +30,7 @@ phases:
       #- REPOSITORY_URI=693949087897.dkr.ecr.us-east-2.amazonaws.com/ahlcontainer
       #- COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)
       - pytest --cov-report xml --cov python/src
-      - sonar-scanner \
-        -Dsonar.organization=the-cherocky-project \
-        -Dsonar.projectKey=The-CheRocky-Project_CodeCommitMirror \
-        -Dsonar.host.url=https://sonarcloud.io \
-        -Dsonar.login=b6ce9fb2ade25b4c7a7b4636c4b7b62038c96b3b
+      - sonar-scanner -Dsonar.login=b6ce9fb2ade25b4c7a7b4636c4b7b62038c96b3b
   post_build:
     commands:
       # Remove existing node_modules to clear dev dependencies
