@@ -7,7 +7,7 @@ import os
 import pytest
 import boto3
 from moto import mock_s3
-from python.src.json_splitter import lambda_handler
+from src.json_splitter import lambda_handler
 
 # Percorso assouluto per caricare il file event.json
 absolute_path = os.path.dirname(os.path.abspath(__file__))
