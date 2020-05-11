@@ -30,7 +30,7 @@ phases:
       #- REPOSITORY_URI=693949087897.dkr.ecr.us-east-2.amazonaws.com/ahlcontainer
       #- COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)
       - pytest --cov-report xml --cov python/src
-      sonar-scanner \
+      - sonar-scanner \
         -Dsonar.organization=the-cherocky-project \
         -Dsonar.projectKey=The-CheRocky-Project_CodeCommitMirror \
         -Dsonar.host.url=https://sonarcloud.io \
