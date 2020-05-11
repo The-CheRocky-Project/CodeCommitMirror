@@ -30,6 +30,7 @@ def lambda_handler(event, context):
     Returns:
         string: true se lo splitting è andato a buon fine false altrimenti
     """
+    print('Executing :' + context['function_name'])
     try:
         # retrieves the file infos from event
         record = event['Records'][0]['s3']

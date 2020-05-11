@@ -8,14 +8,15 @@ Contenuto:
 
 """
 
-#imports url and media manager layer
+# imports url and media manager layer
 import boto3
 import urllib.parse
 import media_manager
 from moviepy.editor import VideoFileClip
 
-#definizione della risorsa s3
+# definizione della risorsa s3
 s3 = boto3.resource('s3')
+
 
 def lambda_handler(event, context):
     """
@@ -32,20 +33,21 @@ def lambda_handler(event, context):
             id del job Elemental Media Convert oppure, False altrimenti
 
         """
+    print('Executing :' + context['function_name'])
     try:
         # Preleva bucket name e key da event
         record = event['Records'][0]['s3']
         bucket = record['bucket']['name']
         key = urllib.parse.unquote_plus(record['object']['key'], encoding='utf-8')
         full_qualifier = 's3://' + bucket + '/' + key
-        #ottenimento durata video
-        #TODO da verificare che funzioni
+        # ottenimento durata video
+        # TODO da verificare che funzioni
         video = s3.Object(bucket, 'resume.json')
         videoget = video.get()
         clip = VideoFileClip(videoget)
         duration = clip.duration
-        #avvio job di creazione frame
-        job_id = media_manager.frame(full_qualifier, duration ,'console_mount')
+        # avvio job di creazione frame
+        job_id = media_manager.frame(full_qualifier, duration, 'console_mount')
         return job_id
     except Exception as e:
         print(e)

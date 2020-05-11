@@ -35,6 +35,7 @@ def lambda_handler(event, context):
         id del job di inserimento in Dynamo DB oppure, False altrimenti
 
     """
+    print('Executing :' + context['function_name'])
     try:
         # Preleva bucket name e key da event
         record = event['Records'][0]['s3']

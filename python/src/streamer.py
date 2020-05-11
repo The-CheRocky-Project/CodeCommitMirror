@@ -30,6 +30,7 @@ def lambda_handler(event, context):
         message ID
 
     """
+    print('Executing :' + context['function_name'])
     try:
         # Preleva bucket name e key da event
         record = event['Records'][0]['s3']

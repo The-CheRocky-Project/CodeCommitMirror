@@ -30,6 +30,7 @@ def lambda_handler(event, context):
     Returns:
         string: job_id del lavoro avviato in Media Convert oppure false
     """
+    print('Executing :' + context['function_name'])
     try:
         # Extract bucket and fileKey strings
         record = event['Records'][0]['s3']
