@@ -1,4 +1,10 @@
 version: 0.2
+env:
+  secrets-manager:
+    LOGIN: sonarCloudSecret:sonartoken
+    HOST: sonarCloudSecret:HOST
+    Organization: sonarCloudSecret:Organization
+    Project: sonarCloudSecret:Project
 phases:
   install:
     runtime-versions:
@@ -17,12 +23,9 @@ phases:
       #- nohup /usr/local/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://127.0.0.1:2375 --storage-driver=overlay2&
       #- timeout 15 sh -c "until docker info; do echo .; sleep 1; done"
       # Sonar scanner installation
-      - export SONAR_SCANNER_VERSION=4.2.0.1873
-      - export SONAR_SCANNER_HOME=$HOME/.sonar/sonar-scanner-$SONAR_SCANNER_VERSION-linux
-      - curl --create-dirs -sSLo $HOME/.sonar/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux.zip
-      - unzip -o $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/
-      - export PATH=$SONAR_SCANNER_HOME/bin:$PATH
-      - export SONAR_SCANNER_OPTS="-server"
+      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.3.0.1492-linux.zip
+      - unzip ./sonar-scanner-cli-3.3.0.1492-linux.zip
+      - export PATH=$PATH:/sonar-scanner-3.3.0.1492-linux/bin/
   pre_build:
     commands:
       - npm test
@@ -30,7 +33,7 @@ phases:
       #- REPOSITORY_URI=693949087897.dkr.ecr.us-east-2.amazonaws.com/ahlcontainer
       #- COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)
       - pytest --cov-report xml --cov python/src
-      - sonar-scanner -Dsonar.login=b6ce9fb2ade25b4c7a7b4636c4b7b62038c96b3b
+      - sonar-scanner -Dsonar.login=$LOGIN -Dsonar.host.url=$HOST -Dsonar.projectKey=$Project -Dsonar.organization=$Organization
   post_build:
     commands:
       # Remove existing node_modules to clear dev dependencies
