@@ -18,4 +18,6 @@ file_path = absolute_path + '/../event/thumbfy_event.json'
 with open(file_path, 'r') as f:
     event_json = json.load(f)
 
-CONTEXT = "fake"
+CONTEXT = {
+    "function_name": "streamer"
+}

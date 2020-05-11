@@ -4,6 +4,7 @@ Test module for json_splitter lambda
 """
 import json
 import os
+import pytest
 import boto3
 from moto import mock_s3
 from src.json_splitter import lambda_handler
@@ -22,7 +23,9 @@ file_path = absolute_path + '/../event/json_splitter_event.json'
 with open(file_path, 'r') as f:
     event_json = json.load(f)
 
-CONTEXT = "fake"
+CONTEXT = {
+    "function_name": "json_splitter"
+}
 
 
 class TestJsonSplitter:
@@ -104,5 +107,6 @@ class TestJsonSplitter:
             s3_client.put_object(Bucket='ahlconsolebucket',
                                  Key='partita_di_calcio.json',
                                  Body=json.dumps(json_to_upload))
-            # Controllo che ritorni False per avvertire che non ha avuto successo
-            assert not lambda_handler(event_json, CONTEXT)
+            # Controllo che sia stata lanciata un'eccezione perchè non ha avuto successo
+            with pytest.raises(Exception):
+                lambda_handler(event_json, CONTEXT)

@@ -30,7 +30,9 @@ with open(file_path_correct, 'r') as f:
 with open(file_path_wrong, 'r') as f:
     wrong_event_json = json.load(f)
 
-CONTEXT = "fake"
+CONTEXT = {
+    "function_name": "low_q_remover"
+}
 
 
 class TestLowQRemover:

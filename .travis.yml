@@ -12,6 +12,7 @@ jobs:
         - pip install pylint
         - pip install boto3
         - pip install moto
+        - pip install moviepy
       before_script:
         - pylint python/
     - language: node_js
