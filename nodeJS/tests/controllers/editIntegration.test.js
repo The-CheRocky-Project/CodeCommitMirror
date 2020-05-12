@@ -36,4 +36,12 @@ describe('test integrazione edit', () => {
     });
   });
 
+  // describe('#changeVideoMode()', () => {
+  //
+  //   it('deve impostare la modalità di visualizzazione su original', () => {
+  //     editController.changeVideoMode(true);
+  //   });
+  //
+  // });
+
 });
