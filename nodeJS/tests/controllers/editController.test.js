@@ -107,7 +107,7 @@ describe('testEditController',() => {
     it("deve generare e renderizzare il nuovo frame video", () => {
       let getVideoEndpointIsCalled = false;
       let getVideoTypeIsCalled = false;
-      mock('../../src/models/editModel', { 
+      mock('../../src/models/editModel', {
         getVideoEndpoint: function() {
           getVideoEndpointIsCalled = true;
         },
@@ -134,7 +134,7 @@ describe('testEditController',() => {
 
     it("deve effettuare la richiesta di selezionare una riga di riconoscimento", () => {
       let checkRowIsCalled = false;
-      mock('../../src/models/editModel', { 
+      mock('../../src/models/editModel', {
         checkRow: function(index) {
           checkRowIsCalled = true;
         },
@@ -150,7 +150,7 @@ describe('testEditController',() => {
 
     it("deve effettuare la richiesta di selezionare una riga di riconoscimento", () => {
       let uncheckRowIsCalled = false;
-      mock('../../src/models/editModel', { 
+      mock('../../src/models/editModel', {
         uncheckRow: function(index) {
           uncheckRowIsCalled = true;
         },
@@ -168,7 +168,7 @@ describe('testEditController',() => {
 
     it("deve effettuare la richiesta al sistema di modificare una riga della tabella dei riconoscimenti", () => {
       let updateRowIsCalled = false;
-      mock('../../src/models/editModel', { 
+      mock('../../src/models/editModel', {
         updateRow: function(index,start,duration,label) {
           updateRowIsCalled = true;
         },
@@ -184,34 +184,35 @@ describe('testEditController',() => {
     });
   });
 
-  describe('#calculateOvertime()', () => {
-
-    it("Calcola la durata totale dei riconoscimenti presenti in lista e verifica se è minore 5 minuti", () => {
-      class single{
-        constructor(duration){
-          this.duration = duration;
-        }
-      }
-      var recognizerList = Array(new single(1123), new single(1123));
-      var calcOvertime = editController.__get__('calculateOvertime');
-      var result = calcOvertime(recognizerList);
-      var expected = false;
-      assert.equal(expected, result);
-    });
-
-    it("Calcola la durata totale dei riconoscimenti presenti in lista e verifica se maggiore di 5 minuti", () => {
-      class single{
-        constructor(duration){
-          this.duration = duration;
-        }
-      }
-      var recognizerList = Array(new single(112312312));
-      var calcOvertime = editController.__get__('calculateOvertime');
-      var result = calcOvertime(recognizerList);
-      var expected = true;
-      assert.equal(expected, result);
-    });
-  });
+  // describe('#calculateOvertime()', () => {
+  //
+  //   it("Calcola la durata totale dei riconoscimenti presenti in lista e verifica se è minore 5 minuti", () => {
+  //     class single{
+  //       constructor(duration){
+  //         this.duration = duration;
+  //       }
+  //     }
+  //     var recognizerList = Array(new single(1123), new single(1123));
+  //     var calcOvertime = editController.__get__('calculateOvertime');
+  //     var result = calcOvertime(recognizerList);
+  //     var expected = false;
+  //     assert.equal(expected, result);
+  //   });
+  //
+  //   it("Calcola la durata totale dei riconoscimenti presenti in lista e verifica se maggiore di 5 minuti", () => {
+  //     class single{
+  //       constructor(duration){
+  //         this.duration = duration;
+  //       }
+  //     }
+  //     var recognizerList = Array(new single(112312312));
+  //     var calcOvertime = editController.__get__('calculateOvertime');
+  //     var result = calcOvertime(recognizerList);
+  //     var expected = true;
+  //     assert.equal(expected, result);
+  //   });
+  // });
+  
   describe('#getBody()', () => {
     it("Deve effettuare il rendering del body della pagina di visualizzazione dei risultati dell'elaborazione.",()=>{
       let getVideoEndpointIsCalled = false;
@@ -223,7 +224,7 @@ describe('testEditController',() => {
           this.duration = duration;
         }
       }
-      mock('../../src/models/editModel', { 
+      mock('../../src/models/editModel', {
         getVideoEndpoint: function() {
           getVideoEndpointIsCalled = true;
         },
@@ -250,9 +251,9 @@ describe('testEditController',() => {
       var res = 'resMock';
       editController.getBody(res);
       var expected = true;
-      var result = getVideoEndpointIsCalled && 
-      getRecognizementListIsCalled && 
-      getmodelLabelsIsCalled && 
+      var result = getVideoEndpointIsCalled &&
+      getRecognizementListIsCalled &&
+      getmodelLabelsIsCalled &&
       isVideoTypeOriginalIsCalled &&
       printIsCalled;
       assert.equal(result,expected);

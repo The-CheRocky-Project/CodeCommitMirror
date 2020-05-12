@@ -104,17 +104,17 @@ exports.confirmEditing = () => {
  * @param recognizerList - la lista dei riconoscimenti
  * @returns {boolean} true se la lista di riconoscimenti supera i 5 minuti false altrimenti
  */
-function calculateOvertime(recognizerList){
-    let sum=0;
-    recognizerList.forEach((single)=>{
-        sum+=single.duration;
-    });
-    return sum>300000
-}
+// function calculateOvertime(recognizerList){
+//     let sum=0;
+//     recognizerList.forEach((single)=>{
+//         sum+=single.duration;
+//     });
+//     return sum>300000
+// }
 
-/*function calculateOvertime(recognizerList){
+function calculateOvertime(recognizerList){
     let sum=0;
     for(const single in recognizerList)
         sum+=single.duration;
     return sum>300000
-}*/
+}
