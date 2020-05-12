@@ -184,35 +184,26 @@ describe('testEditController',() => {
     });
   });
 
-  // describe('#calculateOvertime()', () => {
-  //
-  //   it("Calcola la durata totale dei riconoscimenti presenti in lista e verifica se è minore 5 minuti", () => {
-  //     class single{
-  //       constructor(duration){
-  //         this.duration = duration;
-  //       }
-  //     }
-  //     var recognizerList = Array(new single(1123), new single(1123));
-  //     var calcOvertime = editController.__get__('calculateOvertime');
-  //     var result = calcOvertime(recognizerList);
-  //     var expected = false;
-  //     assert.equal(expected, result);
-  //   });
-  //
-  //   it("Calcola la durata totale dei riconoscimenti presenti in lista e verifica se maggiore di 5 minuti", () => {
-  //     class single{
-  //       constructor(duration){
-  //         this.duration = duration;
-  //       }
-  //     }
-  //     var recognizerList = Array(new single(112312312));
-  //     var calcOvertime = editController.__get__('calculateOvertime');
-  //     var result = calcOvertime(recognizerList);
-  //     var expected = true;
-  //     assert.equal(expected, result);
-  //   });
-  // });
-  
+  describe('#calculateOvertime()', () => {
+
+    it("Calcola la durata totale dei riconoscimenti presenti in lista e verifica se è minore 5 minuti", () => {
+      let dizionarioJson = [{ 'duration': '24322' }];
+      var calcOvertime = editController.__get__('calculateOvertime');
+      var result = calcOvertime(dizionarioJson);
+      var expected = false;
+      assert.equal(expected, result);
+    });
+
+    it("Calcola la durata totale dei riconoscimenti presenti in lista e verifica se maggiore di 5 minuti", () => {
+      //let dizionarioJson = [{'single': { 'duration': '2434365345622' }}];
+      let dizionarioJson = [{ 'duration': '2434365345622' }];
+      var calcOvertime = editController.__get__('calculateOvertime');
+      var result = calcOvertime(dizionarioJson);
+      var expected = true;
+      assert.equal(expected, result);
+    });
+  });
+
   describe('#getBody()', () => {
     it("Deve effettuare il rendering del body della pagina di visualizzazione dei risultati dell'elaborazione.",()=>{
       let getVideoEndpointIsCalled = false;

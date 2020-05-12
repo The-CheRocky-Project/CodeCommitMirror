@@ -114,7 +114,10 @@ exports.confirmEditing = () => {
 
 function calculateOvertime(recognizerList){
     let sum=0;
-    for(const single in recognizerList)
-        sum+=single.duration;
+    //console.log(recognizerList);
+    for(const single in recognizerList) {
+        sum+=recognizerList[single].duration; //modificata perchè non andava per i test, TODO verificare che sia effetivamente corretta. Se è sbagliata rimettete come prima
+        //sum+=single.duration; versione precedente!!!!!!!!
+    }
     return sum>300000
 }
