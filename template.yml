@@ -137,7 +137,7 @@ Resources:
 #    Type: AWS::SQS::Queue
 #    Properties:
 #      QueueName: dbQueue
-  stepRole:
+  stepFRole:
     Description: The role for AWS Step Functions
     Type: AWS::IAM::Role
     Properties:
