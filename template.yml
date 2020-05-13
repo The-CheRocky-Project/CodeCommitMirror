@@ -146,15 +146,8 @@ Resources:
         Statement:
           - Effect: Allow
             Action:
-              - logs:CreateLogDelivery
-                logs:GetLogDelivery
-                logs:UpdateLogDelivery
-                logs:DeleteLogDelivery
-                logs:ListLogDeliveries
-                logs:PutResourcePolicy
-                logs:DescribeResourcePolicies
-                logs:DescribeLogGroups
-            Resource: '*'
+              - "lambda:InvokeFunction"
+            Resource: "*"
       Description: The role for the step function
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AWSStepFunctionsConsoleFullAccess
