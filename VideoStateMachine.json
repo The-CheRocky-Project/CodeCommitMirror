@@ -1,5 +1,6 @@
 {
-    "Comment": "The typical video workflow",
+    "Comment": "The typical video workflow step function",
+
     "StartAt": "Split",
     "States": {
       "Split": {
