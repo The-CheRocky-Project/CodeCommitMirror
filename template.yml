@@ -139,7 +139,7 @@ Resources:
 #      QueueName: dbQueue
   ahlLog:
     Description: The Autonomous HighLight Logging Group
-    Type: AWS::CloudWatch::LogGroup
+    Type: AWS::Logs::LogGroup
     Properties:
       LogGroupName: ahlLogs
       RetentionInDays: 7
