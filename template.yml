@@ -154,7 +154,7 @@ Resources:
                 logs:PutResourcePolicy
                 logs:DescribeResourcePolicies
                 logs:DescribeLogGroups
-            Resource: *
+            Resource: '*'
       Description: The role for the step function
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AWSStepFunctionsConsoleFullAccess
