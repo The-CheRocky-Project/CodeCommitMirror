@@ -137,6 +137,12 @@ Resources:
 #    Type: AWS::SQS::Queue
 #    Properties:
 #      QueueName: dbQueue
+  ahlLog:
+    Description: The Autonomous HighLight Logging Group
+    Type: AWS::CloudWatch::LogGroup
+    Properties:
+      LogGroupName: ahlLogs
+      RetentionInDays: 7
   stepFRole:
     Description: The role for AWS Step Functions
     Type: AWS::IAM::Role
@@ -164,6 +170,6 @@ Resources:
       LoggingConfiguration:
         Destinations:
           - CloudWatchLogsLogGroup:
-              FrameSteps
+              LogGroupArn: !Ref ahlLog
         IncludeExecutionData: true
         Level: ERROR
