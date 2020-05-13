@@ -149,7 +149,7 @@ Resources:
               Service:
                 - lambda.amazonaws.com
             Action:
-              - lambda:InvokeFunction
+              - 'sts:AssumeRole'
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AWSStepFunctionsConsoleFullAccess
       RoleName: frameWorkflowRole
