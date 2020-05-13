@@ -148,8 +148,8 @@ Resources:
             Principal:
               Service:
                 - lambda.amazonaws.com
-              Action:
-                - lambda:InvokeFunction
+            Action:
+              - lambda:InvokeFunction
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AWSStepFunctionsConsoleFullAccess
       RoleName: frameWorkflowRole
