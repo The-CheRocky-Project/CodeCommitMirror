@@ -145,10 +145,11 @@ Resources:
         Version: 2012-10-17
         Statement:
           - Effect: Allow
-            Action:
-              - "lambda:InvokeFunction"
-            Resource: "*"
-      Description: The role for the step function
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+              Action:
+                - lambda:InvokeFunction
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AWSStepFunctionsConsoleFullAccess
       RoleName: frameWorkflowRole
