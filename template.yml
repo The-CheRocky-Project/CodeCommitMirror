@@ -163,6 +163,7 @@ Resources:
       StateMachineType: STANDARD
       LoggingConfiguration:
         Destinations:
-          - FrameSteps
+          - CloudWatchLogsLogGroup:
+              FrameSteps
         IncludeExecutionData: true
         Level: ERROR
