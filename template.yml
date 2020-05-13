@@ -131,9 +131,31 @@ Resources:
 #      ContentBasedDeduplication: true
 #      FiFoQueue: true
 #      QueueName: editQueue.fifo
-  dbQueue:
-    Description: The SQS Queue to batch the recognizement DB insertion
-    DeletionPolicy: Delete
-    Type: AWS::SQS::Queue
+#  dbQueue:
+#    Description: The SQS Queue to batch the recognizement DB insertion
+#    DeletionPolicy: Delete
+#    Type: AWS::SQS::Queue
+#    Properties:
+#      QueueName: dbQueue
+  stepRole:
+    Description: The role for AWS Step Functions
+    Type: AWS::IAM::Role
     Properties:
-      QueueName: dbQueue
+      AssumeRolePolicy: {}
+      Description: The role for the step function
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AWSStepFunctionsConsoleFullAccess
+      RoleName: frameWorkflowRole
+  frameWorkflow:
+    Description: The step function that defines the frame workflow
+    Type: "AWS::StepFunctions::StateMachine"
+    Properties:
+      DefinitionString: Fn::Sub 'stateMachine.json'
+      RoleArn: !Ref stepRole
+      StateMachineName: ahlFrameWorkflow
+      StateMachineType: STANDARD
+      LoggingConfiguration:
+        Destinations:
+          - FrameSteps
+        IncludeExecutionData: true
+        Level: ERROR
