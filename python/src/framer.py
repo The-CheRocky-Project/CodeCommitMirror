@@ -40,8 +40,8 @@ def lambda_handler(event, context):
         bucket = record['bucket']['name']
         key = urllib.parse.unquote_plus(record['object']['key'], encoding='utf-8')
         full_qualifier = 's3://' + bucket + '/' + key
-        # ottenimento durata video
-        # TODO da verificare che funzioni
+        #ottenimento durata video
+        # TODO da sistemare
         video = s3.Object(bucket, 'resume.json')
         videoget = video.get()
         clip = VideoFileClip(videoget)
