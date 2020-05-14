@@ -164,7 +164,7 @@ Resources:
     Type: "AWS::StepFunctions::StateMachine"
     Properties:
       DefinitionString: Fn::Sub 'stateMachine.json'
-      RoleArn: !Ref stepFRole
+      RoleArn: !GetAtt stepFRole.Arn
       StateMachineName: ahlFrameWorkflow
       StateMachineType: STANDARD
       LoggingConfiguration:
