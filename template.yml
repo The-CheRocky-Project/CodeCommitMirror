@@ -163,7 +163,7 @@ Resources:
     Description: The step function that defines the frame workflow
     Type: "AWS::StepFunctions::StateMachine"
     Properties:
-      DefinitionString: Fn::Sub 'stateMachine.json'
+      DefinitionString: !Include VideoStateMachine.json
       RoleArn: !GetAtt stepFRole.Arn
       StateMachineName: ahlFrameWorkflow
       StateMachineType: STANDARD
