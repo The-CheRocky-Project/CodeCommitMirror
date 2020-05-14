@@ -12,6 +12,7 @@ phases:
     commands:
       # Install dependencies needed for running tests
       - npm install
+      - npm install --global cfn-include
 
       # Upgrade AWS CLI to the latest version
       - pip3 install --upgrade awscli
@@ -41,7 +42,8 @@ phases:
 
       # Install runtime dependencies
       - npm install --production
-      - aws cloudformation package --template template.yml --s3-bucket $S3_BUCKET --output-template-file template-export.yml
+      - python state_machine_injection.py -s VideoStateMachine.json -c template.yml -o template.complete.yml
+      - aws cloudformation package --template template.complete.yml --s3-bucket $S3_BUCKET --output-template-file template-export.yml
 
       # Do not remove this statement. This command is required for AWS CodeStar projects.
       # Update the AWS Partition, AWS Region, account ID and project ID in the project ARN on template-configuration.json file so AWS CloudFormation can tag project resources.
