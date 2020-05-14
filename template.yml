@@ -160,7 +160,7 @@ Resources:
         - arn:aws:iam::aws:policy/AWSStepFunctionsConsoleFullAccess
       RoleName: frameWorkflowRole
   frameWorkflow:
-    Description: The step function that defines the frame workflow
+    Description: The step function that defines the frame workflow in ahl
     Type: "AWS::StepFunctions::StateMachine"
     Properties:
       DefinitionString: Fn::Sub 'stateMachine.json'
