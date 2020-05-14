@@ -160,7 +160,8 @@ Resources:
       DefinitionString:
         !Sub |-
         ##{{STATEMACHINE_DEF}}
-      RoleArn: !GetAtt stepFRole.Arn
+      RoleArn:
+        Fn::GetAtt: [ stepFRole, 'Arn' ]
       StateMachineName: ahlFrameWorkflow
       StateMachineType: STANDARD
       LoggingConfiguration:
