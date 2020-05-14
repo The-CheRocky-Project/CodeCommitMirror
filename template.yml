@@ -160,13 +160,12 @@ Resources:
       DefinitionString:
         !Sub |-
         ##{{STATEMACHINE_DEF}}
-      RoleArn:
-        Fn::GetAtt: [ stepFRole, 'Arn' ]
+      RoleArn: !GetAtt stepFRole.Arn
       StateMachineName: ahlFrameWorkflow
       StateMachineType: STANDARD
       LoggingConfiguration:
         Destinations:
           - CloudWatchLogsLogGroup:
-              LogGroupArn: !Ref ahlLog
+              LogGroupArn: !GetAtt ahlLog.Arn
         IncludeExecutionData: true
         Level: ERROR
