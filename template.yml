@@ -145,20 +145,27 @@ Resources:
       RetentionInDays: 7
   stepFRole:
     Description: The role for AWS Step Functions
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: 2012-10-17
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service:
-                - lambda.amazonaws.com
-            Action:
-              - 'sts:AssumeRole'
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/AWSStepFunctionsConsoleFullAccess
-      RoleName: frameWorkflowRole
+    Type: "AWS::IAM::Role"
+      Properties:
+        RoleName: frameWorkflowRole
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                Service:
+                  - !Sub states.${AWS::Region}.amazonaws.com
+              Action: "sts:AssumeRole"
+        Path: "/"
+        Policies:
+          - PolicyName: StatesExecutionPolicy
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - "lambda:InvokeFunction"
+                  Resource: "*"
   frameWorkflow:
     Description: The step function that defines the frame workflow
     Type: "AWS::StepFunctions::StateMachine"
