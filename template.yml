@@ -202,7 +202,7 @@ Resources:
         Level: ERROR
   thumbfy:
     Description: The lambda that runs a Mediaconvert job to create thumbnail
-    Type: AWS::Serverless:Function
+    Type: AWS::Serverless::Function
     DeletionPolicy: Delete
     Properties:
       Handler: thumbfy.lambda_handler
