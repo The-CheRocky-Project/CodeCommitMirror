@@ -7,7 +7,7 @@ import os
 import boto3
 from moto import mock_s3
 import pytest
-from src.low_q_remover import lambda_handler
+from src.thumb_low_remover import lambda_handler
 
 
 
