@@ -6,9 +6,9 @@ const s3Wrap = require('../wrappers/s3Wrapper');
 const snsWrap = require('../wrappers/snsWrapper');
 
 // //sets up environment variables
-// const AWSregion = "us-east-2";
-// const userCode = "693949087897";
-//
+const AWSregion = "us-east-2";
+const userCode = "693949087897";
+
 //Rappresenta lo stato attuale del video in fase di lavorazione
 let actualVideoKey = {
     partialKey: "",
@@ -54,17 +54,17 @@ exports.getRecognizementList = async () =>{
  */
 //TODO snsWrap.message inesistente, sistemare tenendo conto di TopicPublisher.sendMessage in snsWrapper
 exports.setPreviewMode = async () =>{
-    // let topicPub=new snsWrap.TopicPublisher("videoModeTopic", AWSregion, userCode);
-    // let result = topicPub.sendMessage("setPreview","","");
-    // if(result){
-    //     actualVideoKey.original = false;
-    // }
-    // return result;
-    if(await snsWrap.message({
-        message: "setPreview"
-    })){
+    let topicPub=new snsWrap.TopicPublisher("videoModeTopic", AWSregion, userCode);
+    let result = topicPub.sendMessage("setPreview","","");
+    if(result){
         actualVideoKey.original = false;
     }
+    return result;
+    // if(await snsWrap.message({
+    //     message: "setPreview"
+    // })){
+    //     actualVideoKey.original = false;
+    // }
 };
 
 /**
@@ -73,17 +73,17 @@ exports.setPreviewMode = async () =>{
  */
 //TODO snsWrap.message inesistente, sistemare tenendo conto di TopicPublisher.sendMessage in snsWrapper
 exports.setOriginalMode = async () =>{
-    // let topicPub=new snsWrap.TopicPublisher("videoModeTopic", AWSregion, userCode);
-    // let result = topicPub.sendMessage("setOriginal","","");
-    // if(result){
-    //     actualVideoKey.original = true;
-    // }
-    // return result;
-    if(await snsWrap.message({
-        message: "setOriginal"
-    })){
+    let topicPub=new snsWrap.TopicPublisher("videoModeTopic", AWSregion, userCode);
+    let result = topicPub.sendMessage("setOriginal","","");
+    if(result){
         actualVideoKey.original = true;
     }
+    return result;
+    // if(await snsWrap.message({
+    //     message: "setOriginal"
+    // })){
+    //     actualVideoKey.original = true;
+    // }
 };
 
 /**
@@ -101,19 +101,19 @@ exports.getmodelLabels = async () =>{
  */
 //TODO snsWrap.message inesistente, sistemare tenendo conto di TopicPublisher.sendMessage in snsWrapper
 exports.addRow = async (params) =>{
-    // let data = {
-    //     start: params['start'],
-    //     duration: params['duration'],
-    //     label: params['labelModelIndex']
-    // }
-    // let topicPub=new snsWrap.TopicPublisher("videoSuggestionTopic", AWSregion, userCode);
-    // return result = topicPub.sendMessage("addRow",data,"json");
-    return await snsWrap.message({
-        target: "addRow",
+    let data = {
         start: params['start'],
         duration: params['duration'],
         label: params['labelModelIndex']
-    })
+    }
+    let topicPub=new snsWrap.TopicPublisher("videoSuggestionTopic", AWSregion, userCode);
+    return result = topicPub.sendMessage("addRow",data,"json");
+    // return await snsWrap.message({
+    //     target: "addRow",
+    //     start: params['start'],
+    //     duration: params['duration'],
+    //     label: params['labelModelIndex']
+    // })
 };
 
 /**
@@ -123,11 +123,11 @@ exports.addRow = async (params) =>{
  */
 //TODO snsWrap.message inesistente, sistemare tenendo conto di TopicPublisher.sendMessage in snsWrapper
 exports.sendConfirmation= ()=>{
-    // let topicPub=new snsWrap.TopicPublisher('videoSuggestionTopic', AWSregion, userCode);
-    // return topicPub.sendMessage("confirmTable","","");
-    return snsWrap.message({
-        message: "confirmTable"
-    })
+    let topicPub=new snsWrap.TopicPublisher('videoSuggestionTopic', AWSregion, userCode);
+    return topicPub.sendMessage("confirmTable","","");
+    // return snsWrap.message({
+    //     message: "confirmTable"
+    // })
 };
 
 /**
@@ -145,22 +145,22 @@ exports.isVideoTypeOriginal = ()=>{
  */
 //TODO snsWrap.message inesistente, sistemare tenendo conto di TopicPublisher.sendMessage in snsWrapper
 exports.updateRow = async (params)=>{
-    // let data = {
-    //     start: params.start,
-    //     index: params.index,
-    //     duration: params.duration,
-    //     label: params.labelModelIndex
-    // }
-    // let topicPub=new snsWrap.TopicPublisher('videoSuggestionTopic', AWSregion, userCode);
-    // return topicPub.sendMessage("updateRow",data,"json");
-
-    return await snsWrap.message({
-        message: "updateRow",
+    let data = {
         start: params.start,
         index: params.index,
         duration: params.duration,
         label: params.labelModelIndex
-    });
+    }
+    let topicPub=new snsWrap.TopicPublisher('videoSuggestionTopic', AWSregion, userCode);
+    return topicPub.sendMessage("updateRow",data,"json");
+
+    // return await snsWrap.message({
+    //     message: "updateRow",
+    //     start: params.start,
+    //     index: params.index,
+    //     duration: params.duration,
+    //     label: params.labelModelIndex
+    // });
 };
 
 /**
@@ -171,15 +171,15 @@ exports.updateRow = async (params)=>{
  */
 //TODO snsWrap.message inesistente, sistemare tenendo conto di TopicPublisher.sendMessage in snsWrapper
 exports.uncheckRow = async (index) =>{
-    // let data = {
-    //     target: index
-    // }
-    // let topicPub=new snsWrap.TopicPublisher('videoSuggestionTopic', AWSregion, userCode);
-    // return topicPub.sendMessage("uncheckRow",data,"json");
-    return await snsWrap.message({
-        message: "uncheckRow",
+    let data = {
         target: index
-    });
+    }
+    let topicPub=new snsWrap.TopicPublisher('videoSuggestionTopic', AWSregion, userCode);
+    return topicPub.sendMessage("uncheckRow",data,"json");
+    // return await snsWrap.message({
+    //     message: "uncheckRow",
+    //     target: index
+    // });
 };
 
 /**
@@ -189,13 +189,13 @@ exports.uncheckRow = async (index) =>{
  */
 //TODO snsWrap.message inesistente, sistemare tenendo conto di TopicPublisher.sendMessage in snsWrapper
 exports.checkRow = async (index) =>{
-    // let data = {
-    //     target: index
-    // }
-    // let topicPub=new snsWrap.TopicPublisher('videoSuggestionTopic', AWSregion, userCode);
-    // return topicPub.sendMessage("checkRow",data,"json");
-    return await snsWrap.message({
-        message: "checkRow",
+    let data = {
         target: index
-    });
+    }
+    let topicPub=new snsWrap.TopicPublisher('videoSuggestionTopic', AWSregion, userCode);
+    return topicPub.sendMessage("checkRow",data,"json");
+    // return await snsWrap.message({
+    //     message: "checkRow",
+    //     target: index
+    // });
 };

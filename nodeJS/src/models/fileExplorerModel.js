@@ -9,7 +9,7 @@ const snsWrap = require('../wrappers/snsWrapper');
 const topicName = 'processingTopic';
 const bucketName = "ahlconsolebucket";
 const AWSregion = "us-east-2";
-//const userCode = "693949087897";
+const userCode = "693949087897";
 
 /**
  * Asynchronously retrieves files from the S3 Wrapped bucket
@@ -32,13 +32,13 @@ exports.getThumbnailURL = (fileKey) =>{
  */
 //TODO snsWrap.message inesistente, sistemare tenendo conto di TopicPublisher.sendMessage in snsWrapper
 exports.processFile = (fileKey) =>{
-    // let topicPub=new snsWrap.TopicPublisher("processingTopic", AWSregion, userCode);
-    // return topicPub.sendMessage("startProcess",{toProcess: fileKey},'json');
-    return snsWrap.message({
-        message: "startProcess",
-        data: {toProcess: fileKey},
-        topic: topicName,
-        region: AWSregion
-        }
-    );
+    let topicPub=new snsWrap.TopicPublisher("processingTopic", AWSregion, userCode);
+    return topicPub.sendMessage("startProcess",{toProcess: fileKey},'json');
+    // return snsWrap.message({
+    //     message: "startProcess",
+    //     data: {toProcess: fileKey},
+    //     topic: topicName,
+    //     region: AWSregion
+    //     }
+    // );
 };

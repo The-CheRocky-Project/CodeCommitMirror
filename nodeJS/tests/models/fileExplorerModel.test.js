@@ -70,51 +70,29 @@ describe('testFileExplorerModel', () =>{
 
     it('Deve ritornare true se invia messaggio SNS', () => {
 
-      let messageSNSWrap = false;
-
-      mock('../../src/wrappers/snsWrapper', {
-        message: () => {
-          //console.log('printMockato');
-          messageSNSWrap = true;
-          return true;
-        }
-      });
-
       const fileKey = 'fileKeyMock';
 
-      const snsWrapperMock = require('../../src/wrappers/snsWrapper');
+      const snsWrapperMock = require('../wrappers/snsWrapperMockForTestTrue');
 
       fileExplorerModel.__set__('snsWrap', snsWrapperMock);
 
       let risultato = fileExplorerModel.processFile(fileKey);
 
       assert.equal(risultato, true);
-      assert.equal(messageSNSWrap, true);
 
     });
 
     it('Deve ritornare false se non invia messaggio SNS', () => {
 
-      let messageSNSWrap = false;
-
-      mock('../../src/wrappers/snsWrapper', {
-        message: () => {
-          //console.log('printMockato');
-          messageSNSWrap = true;
-          return false;
-        }
-      });
-
       const fileKey = 'fileKeyMock';
 
-      const snsWrapperMock = require('../../src/wrappers/snsWrapper');
+      const snsWrapperMock = require('../wrappers/snsWrapperMockForTestFalse');
 
       fileExplorerModel.__set__('snsWrap', snsWrapperMock);
 
        let risultato = fileExplorerModel.processFile(fileKey);
 
        assert.equal(risultato, false);
-       assert.equal(messageSNSWrap, true);
 
     });
 
