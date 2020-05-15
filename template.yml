@@ -200,3 +200,25 @@ Resources:
               LogGroupArn: !GetAtt ahlLog.Arn
         IncludeExecutionData: true
         Level: ERROR
+  thumbfy:
+    Description: The lambda that runs a Mediaconvert job to create thumbnail
+    Type: AWS::Serverless:Function
+    DeletionPolicy: Delete
+    Properties:
+      Handler: thumbfy.lambda_handler
+      Role: !GetAtt lambdaRole.Arn
+      Runtime: python3.7
+      CodeUri: ./python/src/
+      Events:
+        S3Event:
+          Type: S3
+          Properties:
+            Bucket: !Ref consoleBucket
+            Events: s3:ObjectCreated:*
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: prefix
+                    Value: origin/
+                  - Name: suffix
+                    Value: .mp4
