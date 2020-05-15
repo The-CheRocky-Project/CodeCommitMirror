@@ -1,10 +1,10 @@
 {
-    "Comment": "The typical video workflow step function",
-    "StartAt": "Split",
+    "Comment": "The typical video workflow",
+    "StartAt": "prepareData",
     "States": {
-      "Split": {
+      "prepareData": {
         "Type": "Task",
-        "Resource": "arn:aws:lambda:us-east-2:693949087897:function:ahlFramer",
+        "Resource": "arn:aws:lambda:us-east-2:693949087897:function:startMachine",
         "Next": "recNremove"
       },
       "recNremove": {
@@ -24,15 +24,11 @@
                     "Recognize": {
                       "Type": "Task",
                       "Resource": "arn:aws:lambda:us-east-2:693949087897:function:ahlFrameIdentifier",
-                      "Next": "Put"
-                    },
-                    "Put" :{
-                      "Type": "Pass",
-                      "Result": " Metto su DynamoDB",
                       "End": true
                     }
                   }
                 },
+                "ResultPath": "$.detail.items",
                 "End": true
               }
             }
@@ -50,8 +46,8 @@
         ]
       },
       "BatchPut": {
-        "Type": "Pass",
-        "Result": "All the frame infos are in DynamoDB",
+        "Type": "Task",
+        "Resource": "arn:aws:lambda:us-east-2:693949087897:function:dynamoInsertion",
         "Next": "CreateResume"
       },
       "CreateResume": {
