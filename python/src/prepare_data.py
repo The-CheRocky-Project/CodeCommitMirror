@@ -1,5 +1,5 @@
 # coding=utf-8
-"""clean_data lambda module
+"""prepare_data lambda module
 Questo modulo contiene tutti i metodi utili all'esecuzione della
 AWS Serverless Lambda clean_data
 
