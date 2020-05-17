@@ -151,7 +151,7 @@ Resources:
             Statement:
               - Effect: Allow
                 Action:
-                  - "lambda:InvokeFunction"
+                  - "lambda:*"
                   - "logs:*"
                 Resource: "*"
   basicLambdaRole:
