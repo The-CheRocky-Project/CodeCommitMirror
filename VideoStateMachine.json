@@ -4,7 +4,7 @@
     "States": {
       "prepareData": {
         "Type": "Task",
-        "Resource":  "!GetAtt prepareData.Arn",
+        "Resource":  "${prepareDataArn}",
         "Next": "Check"
       },
       "Check": {
@@ -20,7 +20,7 @@
       },
       "iteratorMaster": {
         "Type": "Task",
-        "Resource": "!GetAtt frameGrouping.Arn",
+        "Resource": "${frameGroupingArn}",
         "Next": "Iterate"
       },
       "Iterate": {
@@ -32,7 +32,7 @@
           "States": {
             "Recognize": {
               "Type": "Task",
-              "Resource": "!GetAtt recognizer.Arn",
+              "Resource": "${recognizerArn}",
               "End": true
             }
           }

@@ -276,8 +276,12 @@ Resources:
     Type: "AWS::StepFunctions::StateMachine"
     Properties:
       DefinitionString:
-        !Sub |-
-        ##{{STATEMACHINE_DEF}}
+        !Sub
+        - |-
+          ##{{STATEMACHINE_DEF}}
+        - {prepareDataArn: !GetAtt prepareData.Arn}
+        - {frameGroupingArn: !GetAtt frameGrouping.Arn}
+        - {recognizerArn: !GetAtt recognizer.Arn}
       RoleArn: !GetAtt stepFRole.Arn
       StateMachineName: ahlFrameWorkflow
       StateMachineType: STANDARD
