@@ -12,7 +12,7 @@
         "Choices":[
             {
                "Variable":"$.continue",
-               "StringEquals":"false",
+               "BooleanEquals": false,
                "Next":"iteratorMaster"
             }
          ],

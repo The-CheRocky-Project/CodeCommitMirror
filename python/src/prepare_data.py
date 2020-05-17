@@ -71,7 +71,7 @@ def lambda_handler(event, context):
         'detail': {
             'items': []
         },
-        'continue': "false"
+        'continue': False
     }
 
     return remaining_insertions
