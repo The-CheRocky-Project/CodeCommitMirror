@@ -4,7 +4,7 @@
     "States": {
       "prepareData": {
         "Type": "Task",
-        "Resource": { "Fn::GetAtt" : [ "prepareData", "Arn" ] },
+        "Resource":  "Fn::GetAtt" : [ "prepareData", "Arn" ],
         "Next": "Check"
       },
       "Check": {
@@ -20,7 +20,7 @@
       },
       "iteratorMaster": {
         "Type": "Task",
-        "Resource": { "Fn::GetAtt" : [ "frameGrouping", "Arn" ] },
+        "Resource": "Fn::GetAtt" : [ "frameGrouping", "Arn" ],
         "Next": "Iterate"
       },
       "Iterate": {
@@ -32,7 +32,7 @@
           "States": {
             "Recognize": {
               "Type": "Task",
-              "Resource": { "Fn::GetAtt" : [ "recognizer", "Arn" ] },
+              "Resource": "Fn::GetAtt" : [ "recognizer", "Arn" ],
               "End": true
             }
           }
