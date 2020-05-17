@@ -9,47 +9,155 @@ Contenuto:
 """
 
 # imports url and media manager layer
-import urllib.parse
+import json
 import boto3
-from moviepy.editor import VideoFileClip
-from src.layers import media_manager
-
-# definizione della risorsa s3
-s3 = boto3.resource('s3')
 
 
 def lambda_handler(event, context):
     """
-        Handler che riceve l'evento scaturante l'esecuzione che contiene
-        la key del video da frammentare, i cui frmmenti mantengono il nome
-        del video stesso
+    Handler che riceve l'evento scaturente l'esecuzione e che contiene
+    la key del video da frammentare, i cui frmmenti mantengono il nome
+    del video stesso
 
-        Args:
-            event: L'evento che ha fatto scaturire l'avvio dell'handler
-            context: Il dizionario rappresentante le variabili di contesto
-                d'esecuzione
+    Args:
+        event: L'evento che ha fatto scaturire l'avvio dell'handler
+        context: Il dizionario rappresentante le variabili di contesto
+            d'esecuzione
 
-        Returns:
-            id del job Elemental Media Convert oppure, False altrimenti
-
-        """
-    print('Executing :' + context['function_name'])
+    Returns:
+        true se l'avvio del job è stato effettuato correttamente, false altrimenti
+    """
     try:
-        # Preleva bucket name e key da event
-        record = event['Records'][0]['s3']
-        bucket = record['bucket']['name']
-        key = urllib.parse.unquote_plus(record['object']['key'], encoding='utf-8')
-        full_qualifier = 's3://' + bucket + '/' + key
-        #ottenimento durata video
-        # TODO da sistemare
-        video = s3.Object(bucket, 'resume.json')
-        videoget = video.get()
-        clip = VideoFileClip(videoget)
-        duration = clip.duration
-        # avvio job di creazione frame
-        job_id = media_manager.frame(full_qualifier, duration, 'console_mount')
-        return job_id
+        if event['Records'][0]['Sns']['Message'] == "videoEdit":
+            bucket = event['Records'][0]['Sns']['MessageAttributes']['bucket']['Value']
+            key = event['Records'][0]['Sns']['MessageAttributes']['key']['Value']
+            dest_folder = 'frames/'
+            media_settings = {
+                'OutputGroups': [
+                    {
+                        "Name": "frames",
+                        "OutputGroupSettings": {
+                            "Type": "FILE_GROUP_SETTINGS",
+                            "FileGroupSettings": {
+                                "Destination": 's3://' + bucket + '/' + dest_folder
+                            }
+                        },
+                        'Outputs': [
+                            # output dei frame da analizzare
+                            {
+                                "ContainerSettings": {
+                                    "Container": "RAW"
+                                },
+                                "Extension": ".jpg",
+                                "VideoDescription": {
+                                    "ScalingBehavior": "DEFAULT",
+                                    "TimecodeInsertion": "DISABLED",
+                                    "AntiAlias": "ENABLED",
+                                    "Sharpness": 50,
+                                    "CodecSettings": {
+                                        "Codec": "FRAME_CAPTURE",
+                                        "FrameCaptureSettings": {
+                                            "FramerateNumerator": 2,
+                                            "FramerateDenominator": 1,
+                                            "MaxCaptures": 10000000,
+                                            "Quality": 80
+                                        }
+                                    },
+                                    "DropFrameTimecode": "ENABLED",
+                                    "ColorMetadata": "INSERT"
+                                }
+                            },
+                            # output obbligatorio di almeno 1 video,
+                            # scelto volutamente di bassa qualità
+                            {
+                                'Extension': '.mp4',
+                                'NameModifier': '-low',
+                                "VideoDescription": {
+                                    "Width": 852,
+                                    "ScalingBehavior": "DEFAULT",
+                                    "Height": 480,
+                                    "TimecodeInsertion": "DISABLED",
+                                    "AntiAlias": "ENABLED",
+                                    "Sharpness": 50,
+                                    "CodecSettings": {
+                                        "Codec": "H_264",
+                                        "H264Settings": {
+                                            "InterlaceMode": "PROGRESSIVE",
+                                            "NumberReferenceFrames": 3,
+                                            "Syntax": "DEFAULT",
+                                            "Softness": 0,
+                                            "GopClosedCadence": 1,
+                                            "GopSize": 90,
+                                            "Slices": 1,
+                                            "GopBReference": "DISABLED",
+                                            "SlowPal": "DISABLED",
+                                            "SpatialAdaptiveQuantization": "ENABLED",
+                                            "TemporalAdaptiveQuantization": "ENABLED",
+                                            "FlickerAdaptiveQuantization": "DISABLED",
+                                            "EntropyEncoding": "CABAC",
+                                            "Bitrate": 3195,
+                                            "FramerateControl": "INITIALIZE_FROM_SOURCE",
+                                            "RateControlMode": "CBR",
+                                            "CodecProfile": "MAIN",
+                                            "Telecine": "NONE",
+                                            "MinIInterval": 0,
+                                            "AdaptiveQuantization": "HIGH",
+                                            "CodecLevel": "AUTO",
+                                            "FieldEncoding": "PAFF",
+                                            "SceneChangeDetect": "ENABLED",
+                                            "QualityTuningLevel": "SINGLE_PASS",
+                                            "FramerateConversionAlgorithm": "DUPLICATE_DROP",
+                                            "UnregisteredSeiTimecode": "DISABLED",
+                                            "GopSizeUnits": "FRAMES",
+                                            "ParControl": "INITIALIZE_FROM_SOURCE",
+                                            "NumberBFramesBetweenReferenceFrames": 2,
+                                            "RepeatPps": "DISABLED",
+                                            "DynamicSubGop": "STATIC"
+                                        }
+                                    },
+                                    "AfdSignaling": "NONE",
+                                    "DropFrameTimecode": "ENABLED",
+                                    "RespondToAfd": "NONE",
+                                    "ColorMetadata": "INSERT"
+                                },
+                                "ContainerSettings": {
+                                    "Container": "MP4",
+                                    "Mp4Settings": {
+                                        "CslgAtom": "INCLUDE",
+                                        "CttsVersion": 0,
+                                        "FreeSpaceBox": "EXCLUDE",
+                                        "MoovPlacement": "PROGRESSIVE_DOWNLOAD"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ],
+                'Inputs': [
+                    {
+                        'FileInput': 's3://' + bucket + '/' + key,
+                        # inserire un clipping permette di evitare di prelevare il primo frame (blackscreen)
+                        'InputClippings': [
+                            {
+                                'StartTimecode': '00:00:00:00'
+                            }
+                        ],
+                        'TimecodeSource': 'SPECIFIEDSTART',
+                        'TimecodeStart': '00:00:00:00'
+                    }
+                ]
+            }
+            result = mediaConv.create_job(
+                Role="arn:aws:iam::693949087897:role/mediaRole",
+                AccelerationSettings={
+                    'Mode': 'DISABLED'
+                },
+                StatusUpdateInterval='SECONDS_60',
+                Priority=0,
+                Settings=media_settings,
+                Queue='arn:aws:mediaconvert:us-east-2:693949087897:queues/Default'
+            )
+            return result['Job']['Id']
+        return false
     except Exception as err:
         print(err)
-        print('Impossibile frammentare il video di ' + full_qualifier)
-        raise err
