@@ -329,10 +329,10 @@ Resources:
       CodeUri: ./python/src/
   recognizer:
     Description: The lambda that calculates frame grouping before recognizements
-      Type: AWS::Serverless::Function
-      DeletionPolicy: Delete
-      Properties:
-        Handler: recognize.lambda_handler
-        Role: !GetAtt sagemakerDynamoLambdaRole.Arn
-        Runtime: python3.7
-        CodeUri: ./python/src/
+    Type: AWS::Serverless::Function
+    DeletionPolicy: Delete
+    Properties:
+      Handler: recognize.lambda_handler
+      Role: !GetAtt sagemakerDynamoLambdaRole.Arn
+      Runtime: python3.7
+      CodeUri: ./python/src/
