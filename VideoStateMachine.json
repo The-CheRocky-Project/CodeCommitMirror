@@ -4,12 +4,7 @@
     "States": {
       "prepareData": {
         "Type": "Task",
-        "Resource": "arn:aws:lambda:us-east-2:693949087897:function:startMachine",
-        "Next": "removeLow"
-      },
-      "removeLow": {
-        "Type": "Task",
-        "Resource": "arn:aws:lambda:us-east-2:693949087897:function:lowRemove",
+        "Resource": { "Fn::GetAtt" : [ "prepareData", "Arn" ] },
         "Next": "Check"
       },
       "Check": {
