@@ -224,6 +224,53 @@ Resources:
                 Action:
                   - "dynamodb:*"
                 Resource: "*"
+  sagemakerDynamoLambdaRole:
+    Description: The role for AWS Lambda Functions
+    Type: "AWS::IAM::Role"
+    Properties:
+      RoleName: ahlDynamoLambdaRole
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - "lambda.amazonaws.com"
+            Action: "sts:AssumeRole"
+      Path: "/"
+      Policies:
+        - PolicyName: AWSLambdaBasicExecutionRole
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "logs:*"
+                Resource: "*"
+        - PolicyName: AmazonS3FullAccess
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "s3:*"
+                Resource: "*"
+        - PolicyName: AmazonDynamoDBFullAccess
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "dynamodb:*"
+                Resource: "*"
+        - PolicyName: runtime_InvokeEndpoint
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "sagemaker:InvokeEndpoint"
+                Resource: "*"
   frameWorkflow:
     Description: The step function that defines the frame workflow
     Type: "AWS::StepFunctions::StateMachine"
@@ -280,3 +327,12 @@ Resources:
       Role: !GetAtt basicLambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/
+  recognizer:
+    Description: The lambda that calculates frame grouping before recognizements
+      Type: AWS::Serverless::Function
+      DeletionPolicy: Delete
+      Properties:
+        Handler: recognize.lambda_handler
+        Role: !GetAtt sagemakerDynamoLambdaRole.Arn
+        Runtime: python3.7
+        CodeUri: ./python/src/
