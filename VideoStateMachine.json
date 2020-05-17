@@ -5,50 +5,45 @@
       "prepareData": {
         "Type": "Task",
         "Resource": "arn:aws:lambda:us-east-2:693949087897:function:startMachine",
-        "Next": "recNremove"
+        "Next": "removeLow"
       },
-      "recNremove": {
-        "Type": "Parallel",
-        "Next": "BatchPut",
-        "Branches": [
-          {
-            "StartAt": "Iterate",
-            "States": {
-              "Iterate": {
-                "Type": "Map",
-                "InputPath": "$.detail",
-                "ItemsPath": "$.items",
-                "Iterator": {
-                  "StartAt": "Recognize",
-                  "States": {
-                    "Recognize": {
-                      "Type": "Task",
-                      "Resource": "arn:aws:lambda:us-east-2:693949087897:function:ahlFrameIdentifier",
-                      "End": true
-                    }
-                  }
-                },
-                "ResultPath": "$.detail.items",
-                "End": true
-              }
+      "removeLow": {
+        "Type": "Task",
+        "Resource": "arn:aws:lambda:us-east-2:693949087897:function:lowRemove",
+        "Next": "Check"
+      },
+      "Check": {
+        "Type": "Choice",
+        "Choices":[
+            {
+               "Variable":"$.continue",
+               "StringEquals":"false",
+               "Next":"iteratorMaster"
             }
-          },
-          {
-            "StartAt": "RemoveLow",
-            "States": {
-              "RemoveLow": {
-                "Type": "Task",
-                "Resource": "arn:aws:lambda:us-east-2:693949087897:function:lowRemove",
-                "End": true
-              }
+         ],
+         "Default":"CreateResume"
+      },
+      "iteratorMaster": {
+        "Type": "Task",
+        "Resource": "arn:aws:lambda:us-east-2:693949087897:function:prepareForReconize",
+        "Next": "Iterate"
+      },
+      "Iterate": {
+        "Type": "Map",
+        "InputPath": "$.detail",
+        "ItemsPath": "$.items",
+        "Iterator": {
+          "StartAt": "Recognize",
+          "States": {
+            "Recognize": {
+              "Type": "Task",
+              "Resource": "arn:aws:lambda:us-east-2:693949087897:function:ahlFrameIdentifier",
+              "End": true
             }
           }
-        ]
-      },
-      "BatchPut": {
-        "Type": "Task",
-        "Resource": "arn:aws:lambda:us-east-2:693949087897:function:dynamoInsertion",
-        "Next": "CreateResume"
+        },
+        "ResultPath": "$.detail.items",
+        "Next":"Check"
       },
       "CreateResume": {
         "Type": "Pass",
