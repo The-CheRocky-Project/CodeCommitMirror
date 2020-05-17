@@ -1,49 +1,49 @@
 {
-    "Comment": "The typical video workflow",
-    "StartAt": "prepareData",
-    "States": {
-      "prepareData": {
-        "Type": "Task",
-        "Resource":  "${prepareDataArn}",
-        "Next": "Check"
-      },
-      "Check": {
-        "Type": "Choice",
-        "Choices":[
-            {
-               "Variable":"$.continue",
-               "BooleanEquals": false,
-               "Next":"iteratorMaster"
-            }
-         ],
-         "Default":"CreateResume"
-      },
-      "iteratorMaster": {
-        "Type": "Task",
-        "Resource": "${frameGroupingArn}",
-        "Next": "Iterate"
-      },
-      "Iterate": {
-        "Type": "Map",
-        "InputPath": "$.detail",
-        "ItemsPath": "$.items",
-        "Iterator": {
-          "StartAt": "Recognize",
-          "States": {
-            "Recognize": {
-              "Type": "Task",
-              "Resource": "${recognizerArn}",
-              "End": true
-            }
+  "Comment": "The typical video workflow",
+  "StartAt": "prepareData",
+  "States": {
+    "prepareData": {
+      "Type": "Task",
+      "Resource":  "${prepareDataArn}",
+      "Next": "Check"
+    },
+    "Check": {
+      "Type": "Choice",
+      "Choices":[
+          {
+             "Variable":"$.continue",
+             "BooleanEquals": false,
+             "Next":"iteratorMaster"
           }
-        },
-        "ResultPath": "$.detail.items",
-        "Next":"Check"
+       ],
+       "Default":"CreateResume"
+    },
+    "iteratorMaster": {
+      "Type": "Task",
+      "Resource": "${frameGroupingArn}",
+      "Next": "Iterate"
+    },
+    "Iterate": {
+      "Type": "Map",
+      "InputPath": "$.detail",
+      "ItemsPath": "$.items",
+      "Iterator": {
+        "StartAt": "Recognize",
+        "States": {
+          "Recognize": {
+            "Type": "Task",
+            "Resource": "${recognizerArn}",
+            "End": true
+          }
+        }
       },
-      "CreateResume": {
-        "Type": "Pass",
-        "Result": "Fetches info from dynamo and preceed creating the resume file",
-        "End": true
-      }
+      "ResultPath": "$.detail.items",
+      "Next":"Check"
+    },
+    "CreateResume": {
+      "Type": "Pass",
+      "Result": "Fetches info from dynamo and preceed creating the resume file",
+      "End": true
     }
   }
+}
