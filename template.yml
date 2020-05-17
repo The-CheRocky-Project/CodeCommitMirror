@@ -216,13 +216,13 @@ Resources:
                   - "s3:*"
                 Resource: "*"
         - PolicyName: AmazonDynamoDBFullAccess
-            PolicyDocument:
-              Version: "2012-10-17"
-              Statement:
-                - Effect: Allow
-                  Action:
-                    - "dynamodb:*"
-                  Resource: "*"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "dynamodb:*"
+                Resource: "*"
   frameWorkflow:
     Description: The step function that defines the frame workflow
     Type: "AWS::StepFunctions::StateMachine"
