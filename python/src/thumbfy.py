@@ -52,9 +52,9 @@ def lambda_handler(event, context):
         print('Executing :' + context['function_name'] + ' on ' + key)
         full_qualifier = 's3://' + bucket + '/' + key
         # checks if 'low' suffix exists
-        split = filename.split('-')
+        split = key.split('-')
         suffix = split[len(split) - 1]
-        if len(splited) == 1 or 'low' not in suffix:
+        if len(split) == 1 or 'low' not in suffix:
             # creates job
             media_settings = {
                 'OutputGroups': [
@@ -159,7 +159,7 @@ def lambda_handler(event, context):
                 ],
                 'Inputs': [
                     {
-                        'FileInput': input_key,
+                        'FileInput': key,
                         # inserire un clipping permette di evitare di prelevare il primo frame (blackscreen)
                         'InputClippings': [
                             {
@@ -171,7 +171,6 @@ def lambda_handler(event, context):
                     }
                 ]
             }
-            media_conv = client("mediaconvert")
             result = media_conv.create_job(
                 Role=env_settings['Role'],
                 Settings=media_settings,

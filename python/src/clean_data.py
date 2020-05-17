@@ -28,7 +28,11 @@ def lambda_handler(event, context):
     bucket = "ahlconsolebucket"
     dest_folder = "frames/"
 
-    table = dynamo_res.Table('rekognitions')
+    # fetches data from s3
+    img_list = s3_cli.list_objects_v2(
+        Bucket=bucket,
+        Prefix=dest_folder
+    )
 
     """
         sub-dimensioned key data that permits to perform packaged
@@ -43,14 +47,9 @@ def lambda_handler(event, context):
         frame = frame + splitted[i] + '.'
     frame = frame[:-1]
 
-    img_list = s3_cli.list_objects_v2(
-        Bucket=bucket,
-        Prefix=dest_folder
-    )
-
     # Creates the items that are going to be inserted in DynamoDB
     frames = []
-
+    table = dynamo_res.Table('rekognitions')
     for i in range(1, len(img_list['Contents'])):
         key = img_list['Contents'][i]['Key']
         splitted = key.split('/')
