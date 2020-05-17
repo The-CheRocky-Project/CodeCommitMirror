@@ -280,8 +280,8 @@ Resources:
           - |-
           ##{{STATEMACHINE_DEF}}
           - {prepareDataArn: !GetAtt [prepareData, Arn]}
-          - {frameGroupingArn: !GetAtt [frameGrouping, Arn]}
-          - {recognizerArn: !GetAtt [recognizer, Arn]}
+            {frameGroupingArn: !GetAtt [frameGrouping, Arn]}
+            {recognizerArn: !GetAtt [recognizer, Arn]}
       RoleArn: !GetAtt stepFRole.Arn
       StateMachineName: ahlFrameWorkflow
       StateMachineType: STANDARD
