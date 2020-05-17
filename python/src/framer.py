@@ -12,6 +12,19 @@ Contenuto:
 import json
 import boto3
 
+media_conv = boto3.client("mediaconvert",
+                          endpoint_url="https://" +
+                                      "fkuulejsc.mediaconvert.us-east-2.amazonaws.com")
+# le variabili di configurazione dell"ambiente
+env_settings = {
+    "AccelerationSettings": {
+        "Mode": "DISABLED"
+    },
+    "BillingTagsSource": "QUEUE",
+    "QueuePrefix": "arn:aws:mediaconvert:us-east-2:693949087897:queues/",
+    "Role": "arn:aws:iam::693949087897:role/mediaRole"
+}
+
 
 def lambda_handler(event, context):
     """
@@ -20,7 +33,7 @@ def lambda_handler(event, context):
     del video stesso
 
     Args:
-        event: L'evento che ha fatto scaturire l'avvio dell'handler
+        event: L"evento che ha fatto scaturire l'avvio dell'handler
         context: Il dizionario rappresentante le variabili di contesto
             d'esecuzione
 
@@ -28,21 +41,21 @@ def lambda_handler(event, context):
         true se l'avvio del job è stato effettuato correttamente, false altrimenti
     """
     try:
-        if event['Records'][0]['Sns']['Message'] == "videoEdit":
-            bucket = event['Records'][0]['Sns']['MessageAttributes']['bucket']['Value']
-            key = event['Records'][0]['Sns']['MessageAttributes']['key']['Value']
-            dest_folder = 'frames/'
+        if event["Records"][0]["Sns"]["Message"] == "videoEdit":
+            bucket = event["Records"][0]["Sns"]["MessageAttributes"]["bucket"]["Value"]
+            key = event["Records"][0]["Sns"]["MessageAttributes"]["key"]["Value"]
+            dest_folder = "frames/"
             media_settings = {
-                'OutputGroups': [
+                "OutputGroups": [
                     {
                         "Name": "frames",
                         "OutputGroupSettings": {
                             "Type": "FILE_GROUP_SETTINGS",
                             "FileGroupSettings": {
-                                "Destination": 's3://' + bucket + '/' + dest_folder
+                                "Destination": "s3://" + bucket + "/" + dest_folder
                             }
                         },
-                        'Outputs': [
+                        "Outputs": [
                             # output dei frame da analizzare
                             {
                                 "ContainerSettings": {
@@ -70,8 +83,8 @@ def lambda_handler(event, context):
                             # output obbligatorio di almeno 1 video,
                             # scelto volutamente di bassa qualità
                             {
-                                'Extension': '.mp4',
-                                'NameModifier': '-low',
+                                "Extension": ".mp4",
+                                "NameModifier": "-low",
                                 "VideoDescription": {
                                     "Width": 852,
                                     "ScalingBehavior": "DEFAULT",
@@ -133,31 +146,30 @@ def lambda_handler(event, context):
                         ]
                     }
                 ],
-                'Inputs': [
+                "Inputs": [
                     {
-                        'FileInput': 's3://' + bucket + '/' + key,
+                        "FileInput": "s3://" + bucket + "/" + key,
                         # inserire un clipping permette di evitare di prelevare il primo frame (blackscreen)
-                        'InputClippings': [
+                        "InputClippings": [
                             {
-                                'StartTimecode': '00:00:00:00'
+                                "StartTimecode": "00:00:00:00"
                             }
                         ],
-                        'TimecodeSource': 'SPECIFIEDSTART',
-                        'TimecodeStart': '00:00:00:00'
+                        "TimecodeSource": "SPECIFIEDSTART",
+                        "TimecodeStart": "00:00:00:00"
                     }
                 ]
             }
-            result = mediaConv.create_job(
-                Role="arn:aws:iam::693949087897:role/mediaRole",
-                AccelerationSettings={
-                    'Mode': 'DISABLED'
-                },
-                StatusUpdateInterval='SECONDS_60',
-                Priority=0,
+            media_conv = boto3.client
+            result = media_conv.create_job(
+                Role=env_settings["Role"],
                 Settings=media_settings,
-                Queue='arn:aws:mediaconvert:us-east-2:693949087897:queues/Default'
+                AccelerationSettings=env_settings["AccelerationSettings"],
+                StatusUpdateInterval="SECONDS_60",
+                Priority=0,
+                Queue="arn:aws:mediaconvert:us-east-2:693949087897:queues/framer"
             )
-            return result['Job']['Id']
-        return false
+            return result["Job"]["Id"]
+        return False
     except Exception as err:
         print(err)
