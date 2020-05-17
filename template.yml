@@ -261,7 +261,7 @@ Resources:
 #                    Value: origin/
 #                  - Name: suffix
 #                    Value: .mp4
-  clean_data:
+  cleanData:
     Description: The lambda that cleans data before processing frames
     Type: AWS::Serverless::Function
     DeletionPolicy: Delete
