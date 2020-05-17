@@ -228,7 +228,7 @@ Resources:
     Description: The role for AWS Lambda Functions
     Type: "AWS::IAM::Role"
     Properties:
-      RoleName: ahlDynamoLambdaRole
+      RoleName: ahlSagemakerDynamoLambdaRole
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
