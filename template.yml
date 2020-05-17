@@ -153,7 +153,7 @@ Resources:
                   - "lambda:InvokeFunction"
                   - "logs:*"
                 Resource: "*"
-  lambdaRole:
+  basicLambdaRole:
     Description: The role for AWS Lambda Functions
     Type: "AWS::IAM::Role"
     Properties:
@@ -184,6 +184,45 @@ Resources:
                 Action:
                   - "s3:*"
                 Resource: "*"
+  dynamoLambdaRole:
+    Description: The role for AWS Lambda Functions
+    Type: "AWS::IAM::Role"
+    Properties:
+      RoleName: ahlDynamoLambdaRole
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - "lambda.amazonaws.com"
+            Action: "sts:AssumeRole"
+      Path: "/"
+      Policies:
+        - PolicyName: AWSLambdaBasicExecutionRole
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "logs:*"
+                Resource: "*"
+        - PolicyName: AmazonS3FullAccess
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "s3:*"
+                Resource: "*"
+        - PolicyName: AmazonDynamoDBFullAccess
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - "dynamodb:*"
+                  Resource: "*"
   frameWorkflow:
     Description: The step function that defines the frame workflow
     Type: "AWS::StepFunctions::StateMachine"
@@ -209,16 +248,25 @@ Resources:
       Role: !GetAtt lambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/
-      Events:
-        S3Event:
-          Type: S3
-          Properties:
-            Bucket: !Ref consoleBucket
-            Events: s3:ObjectCreated:*
-            Filter:
-              S3Key:
-                Rules:
-                  - Name: prefix
-                    Value: origin/
-                  - Name: suffix
-                    Value: .mp4
+#      Events:
+#        S3Event:
+#          Type: S3
+#          Properties:
+#            Bucket: !Ref consoleBucket
+#            Events: s3:ObjectCreated:*
+#            Filter:
+#              S3Key:
+#                Rules:
+#                  - Name: prefix
+#                    Value: origin/
+#                  - Name: suffix
+#                    Value: .mp4
+  clean_data:
+    Description: The lambda that cleans data before processing frames
+    Type: AWS::Serverless::Function
+    DeletionPolicy: Delete
+    Properties:
+      Handler: clean_data.lambda_handler
+      Role: !GetAtt dynamoLamdbaRole.Arn
+      Runtime: python3.7
+      CodeUri: ./python/src/

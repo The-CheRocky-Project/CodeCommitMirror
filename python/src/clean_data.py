@@ -47,7 +47,7 @@ def lambda_handler(event, context):
         Bucket=bucket,
         Prefix=dest_folder
     )
-    
+
     # Creates the items that are going to be inserted in DynamoDB
     frames = []
 
