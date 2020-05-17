@@ -261,12 +261,12 @@ Resources:
 #                    Value: origin/
 #                  - Name: suffix
 #                    Value: .mp4
-  cleanData:
-    Description: The lambda that cleans data before processing frames
-    Type: AWS::Serverless::Function
-    DeletionPolicy: Delete
-    Properties:
-      Handler: clean_data.lambda_handler
-      Role: !GetAtt dynamoLambdaRole.Arn
-      Runtime: python3.7
-      CodeUri: ./python/src/
+#  cleanData:
+#    Description: The lambda that cleans data before processing frames
+#    Type: AWS::Serverless::Function
+#    DeletionPolicy: Delete
+#    Properties:
+#      Handler: clean_data.lambda_handler
+#      Role: !GetAtt dynamoLambdaRole.Arn
+#      Runtime: python3.7
+#      CodeUri: ./python/src/
