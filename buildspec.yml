@@ -57,3 +57,7 @@ reports:
     files:
       - '.nyc_output/**/*'
       - 'test-results.xml'
+cache:
+  paths:
+    - sonar-scanner-cli-3.3.0.1492-linux.zip
+    - ./sonar-scanner-3.3.0.1492-linux/**
