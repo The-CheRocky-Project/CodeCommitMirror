@@ -159,7 +159,7 @@ def lambda_handler(event, context):
                 ],
                 'Inputs': [
                     {
-                        'FileInput': key,
+                        'FileInput': full_qualifier,
                         # inserire un clipping permette di evitare di prelevare il primo frame (blackscreen)
                         'InputClippings': [
                             {
