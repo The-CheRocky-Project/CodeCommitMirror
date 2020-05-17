@@ -141,7 +141,7 @@ Resources:
           - Effect: "Allow"
             Principal:
               Service:
-                - !Sub states.${AWS::Region}.amazonaws.com
+                - states.amazonaws.com
             Action: "sts:AssumeRole"
       Path: "/"
       Policies:
@@ -153,6 +153,7 @@ Resources:
                 Action:
                   - "lambda:*"
                   - "logs:*"
+                  - "states:*"
                 Resource: "*"
   basicLambdaRole:
     Description: The role for AWS Lambda Functions
