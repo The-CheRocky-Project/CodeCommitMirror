@@ -366,17 +366,17 @@ Resources:
                       Value: thumbnails/
                     - Name: suffix
                       Value: -low.mp4
-        - S3Frames:
-            Properties:
-              Bucket: !Ref consoleBucket
-              Events: s3:ObjectCreated:*
-              Filer:
-                S3Key:
-                  Rules:
-                    - Name: prefix
-                      Value: frames/
-                    - Name: suffix
-                      Value: -low.mp4
+#        - S3Frames:
+#            Properties:
+#              Bucket: !Ref consoleBucket
+#              Events: s3:ObjectCreated:*
+#              Filer:
+#                S3Key:
+#                  Rules:
+#                    - Name: prefix
+#                      Value: frames/
+#                    - Name: suffix
+#                      Value: -low.mp4
   framer:
     Description: The Lambda that creates frames before processing
     Type: AWS::Serverless::Function
