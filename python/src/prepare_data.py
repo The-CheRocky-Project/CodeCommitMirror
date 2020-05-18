@@ -48,7 +48,6 @@ def lambda_handler(event, context):
     frame = frame[:-1]
 
     # Creates the items that are going to be inserted in DynamoDB
-    frames = []
     table = dynamo_res.Table('rekognitions')
     for i in range(1, len(img_list['Contents'])):
         key = img_list['Contents'][i]['Key']
@@ -56,7 +55,7 @@ def lambda_handler(event, context):
         frame = splitted[len(splitted) - 1]
         splitted = frame.split('.')
         number = splitted[len(splitted) - 2]
-        insertion = table.put_item(
+        table.put_item(
             Item={
                 'frame_key': img_list['Contents'][i]['Key'],
                 'tfs': 500 * int(number)
