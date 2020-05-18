@@ -301,19 +301,19 @@ Resources:
       Role: !GetAtt basicLambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/
-#      Events:
-#        S3Event:
-#          Type: S3
-#          Properties:
-#            Bucket: !Ref consoleBucket
-#            Events: s3:ObjectCreated:*
-#            Filter:
-#              S3Key:
-#                Rules:
-#                  - Name: prefix
-#                    Value: origin/
-#                  - Name: suffix
-#                    Value: .mp4
+      Events:
+        S3Thumbfy:
+          Type: S3
+          Properties:
+            Bucket: !Ref consoleBucket
+            Events: s3:ObjectCreated:*
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: prefix
+                    Value: origin/
+                  - Name: suffix
+                    Value: .mp4
   prepareData:
     Description: The lambda that cleans data before processing frames
     Type: AWS::Serverless::Function
