@@ -100,8 +100,6 @@ Resources:
         - !Ref "AWS::NoValue"
   consoleBucket:
     Description: The bucket containing videos from the console application
-    DependsOn:
-      - !Ref thumbfyPermission
     Type: AWS::S3::Bucket
     DeletionPolicy: Retain
     Properties:
