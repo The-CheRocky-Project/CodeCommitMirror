@@ -360,7 +360,7 @@ Resources:
                 S3Key:
                   Rules:
                     - Name: prefix
-                      Value: origin/
+                      Value: thumbnails/
                     - Name: suffix
                       Value: -low.mp4
         - S3Event:
