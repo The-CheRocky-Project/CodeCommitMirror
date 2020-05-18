@@ -351,7 +351,7 @@ Resources:
       Runtime: Python3.7
       CodeUri: ./python/src/
       Events:
-        - S3Event:
+        - S3Thumbnail:
             Type: S3
             Properties:
               Bucket: !Ref consoleBucket
@@ -363,7 +363,7 @@ Resources:
                       Value: thumbnails/
                     - Name: suffix
                       Value: -low.mp4
-        - S3Event:
+        - S3Frames:
             Properties:
               Bucket: !Ref consoleBucket
               Events: s3:ObjectCreated:*
