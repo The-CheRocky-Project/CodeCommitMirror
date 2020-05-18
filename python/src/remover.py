@@ -35,7 +35,7 @@ def lambda_handler(event, context):
         bucket = record['bucket']['name']
         key = urllib.parse.unquote_plus(record['object']['key'], encoding='utf-8')
 
-        # Controlla se il video è un .mp4 con suffisso "-low"
+        # call the remove via boto
         response = s3.delete_object(Bucket=bucket, Key=key)
         return True
     except Exception as err:
