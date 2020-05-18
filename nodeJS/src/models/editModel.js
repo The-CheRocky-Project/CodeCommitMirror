@@ -107,7 +107,7 @@ exports.addRow = async (params) =>{
         label: params['labelModelIndex']
     }
     let topicPub=new snsWrap.TopicPublisher("videoSuggestionTopic", AWSregion, userCode);
-    return result = topicPub.sendMessage("addRow",data,"json");
+    return topicPub.sendMessage("addRow",data,"json");
     // return await snsWrap.message({
     //     target: "addRow",
     //     start: params['start'],

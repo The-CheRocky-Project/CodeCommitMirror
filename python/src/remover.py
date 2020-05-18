@@ -36,7 +36,7 @@ def lambda_handler(event, context):
         key = urllib.parse.unquote_plus(record['object']['key'], encoding='utf-8')
 
         # call the remove via boto
-        response = s3.delete_object(Bucket=bucket, Key=key)
+        s3.delete_object(Bucket=bucket, Key=key)
         return True
     except Exception as err:
         print(err)
