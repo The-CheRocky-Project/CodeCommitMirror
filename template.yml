@@ -341,3 +341,36 @@ Resources:
       Role: !GetAtt sagemakerDynamoLambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/
+  remover:
+    Description: The lambda that deletes useless objects
+    Type: AWS::Serverless::Function
+    DeletionPolicy: Delete
+    Properties:
+      Handler: remover.lambda_handler
+      Role: !GetAtt basicLambdaRole.Arn
+      Runtime: Python3.7
+      CodeUri: ./python/src/
+      Events:
+        - S3Event:
+            Type: S3
+            Properties:
+              Bucket: !Ref consoleBucket
+              Events: s3:ObjectCreated:*
+              Filer:
+                S3Key:
+                  Rules:
+                    - Name: prefix
+                      Value: origin/
+                    - Name: suffix
+                      Value: -low.mp4
+        - S3Event:
+            Properties:
+              Bucket: !Ref consoleBucket
+              Events: s3:ObjectCreated:*
+              Filer:
+                S3Key:
+                  Rules:
+                    - Name: prefix
+                      Value: frames/
+                    - Name: suffix
+                      Value: -low.mp4
