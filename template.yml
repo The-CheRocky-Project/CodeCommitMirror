@@ -367,7 +367,7 @@ Resources:
     Properties:
       Handler: remover.lambda_handler
       Role: !GetAtt basicLambdaRole.Arn
-      Runtime: Python3.7
+      Runtime: python3.7
       CodeUri: ./python/src/
   framer:
     Description: The Lambda that creates frames before processing
@@ -376,5 +376,5 @@ Resources:
     Properties:
       Handler: framer.lambda_handler
       Role: !GetAtt basicLambdaRole.Arn
-      Runtime: Python3.7
+      Runtime: python3.7
       CodeUri: ./python/src/
