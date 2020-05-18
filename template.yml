@@ -35,6 +35,10 @@ Parameters:
     Type: String
     Description: The name for a project pipeline stage, such as Staging or Prod, for which resources are provisioned and deployed.
     Default: ''
+  OperationBucket:
+    Type: String
+    Description: The bucket where the application operates
+    Default: ahlconsolebucket
 Resources:
   EBApplication:
     Description: The AWS Elastic Beanstalk application, which is a container used to deploy the correct application configuration.
@@ -96,10 +100,24 @@ Resources:
         - !Ref "AWS::NoValue"
   consoleBucket:
     Description: The bucket containing videos from the console application
+    DependsOn: !Ref thumbfyPermission
     Type: AWS::S3::Bucket
     DeletionPolicy: Retain
     Properties:
-      BucketName: ahlconsolebucket
+      BucketName: "${OperationBucket}"
+      NotificationConfiguration:
+        LambdaConfigurations:
+          - Event: 's3:ObjectCreated:*'
+            Function: !GetAtt thumbfy.Arn
+  thumbfyPermission:
+    Description: The lambda permission to been invoked by an s3 event
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !Ref thumbfy
+      Principal: 's3.amazonaws.com'
+      SourceAccount: !Ref "AWS::AccountId"
+      SourceArn: !Sub "arn:aws:s3:::${OperationBucket}"
 #      NotificationConfiguration:
 #        LambdaConfiguration:
 #          - Event: s3::ObjectCreated:*
