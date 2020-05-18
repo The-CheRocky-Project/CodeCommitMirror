@@ -32,9 +32,8 @@ def lambda_handler(event, context):
     Handler che crea le
     thumbnail dei video caricati sul bucket
     "ahlconsolebucket" con prefisso origin
-    e avvia un job su transcoder che la produce
-    con Key e prefisso identici ma con suffisso aggiuntivo
-    ".jpg"
+    e avvia un job su transcoder che crea le thumbnail nella cartella
+    "thumbnails"
 
     Args:
         event: L'evento che ha fatto scaturire l'avvio dell'handler
@@ -44,143 +43,141 @@ def lambda_handler(event, context):
     Returns:
         string: job_id del lavoro avviato in Media Convert oppure false
     """
+    # Extract bucket and fileKey strings
+    record = event['Records'][0]['s3']
+    bucket = record['bucket']['name']
+    key = urllib.parse.unquote_plus(record['object']['key'], encoding='utf-8')
+    print('Executing :' + context['function_name'] + ' on ' + key)
+    full_qualifier = 's3://' + bucket + '/' + key
     try:
-        # Extract bucket and fileKey strings
-        record = event['Records'][0]['s3']
-        bucket = record['bucket']['name']
-        key = urllib.parse.unquote_plus(record['object']['key'], encoding='utf-8')
-        print('Executing :' + context['function_name'] + ' on ' + key)
-        full_qualifier = 's3://' + bucket + '/' + key
-        # checks if 'low' suffix exists
-        split = key.split('-')
-        suffix = split[len(split) - 1]
-        if len(split) == 1 or 'low' not in suffix:
-            # creates job
-            media_settings = {
-                'OutputGroups': [
-                    {
-                        "Name": "thumb",
-                        "OutputGroupSettings": {
-                            "Type": "FILE_GROUP_SETTINGS",
-                            "FileGroupSettings": {
-                                "Destination": "origin"
+        # sets up the job configuration
+        media_settings = {
+            'OutputGroups': [
+                {
+                    "Name": "thumb",
+                    "OutputGroupSettings": {
+                        "Type": "FILE_GROUP_SETTINGS",
+                        "FileGroupSettings": {
+                            "Destination": "thumbnails"
+                        }
+                    },
+                    'Outputs': [
+                        # output del frame da usare come thumbnail
+                        {
+                            "ContainerSettings": {
+                                "Container": "RAW"
+                            },
+                            "Extension": ".jpg",
+                            "VideoDescription": {
+                                "ScalingBehavior": "DEFAULT",
+                                "TimecodeInsertion": "DISABLED",
+                                "AntiAlias": "ENABLED",
+                                "Sharpness": 50,
+                                "CodecSettings": {
+                                    "Codec": "FRAME_CAPTURE",
+                                    "FrameCaptureSettings": {
+                                        "FramerateNumerator": 1,
+                                        "FramerateDenominator": 1,
+                                        "MaxCaptures": 1,
+                                        "Quality": 80
+                                    }
+                                },
+                                "DropFrameTimecode": "ENABLED",
+                                "ColorMetadata": "INSERT"
                             }
                         },
-                        'Outputs': [
-                            # output del frame da usare come thumbnail
-                            {
-                                "ContainerSettings": {
-                                    "Container": "RAW"
-                                },
-                                "Extension": ".jpg",
-                                "VideoDescription": {
-                                    "ScalingBehavior": "DEFAULT",
-                                    "TimecodeInsertion": "DISABLED",
-                                    "AntiAlias": "ENABLED",
-                                    "Sharpness": 50,
-                                    "CodecSettings": {
-                                        "Codec": "FRAME_CAPTURE",
-                                        "FrameCaptureSettings": {
-                                            "FramerateNumerator": 1,
-                                            "FramerateDenominator": 1,
-                                            "MaxCaptures": 1,
-                                            "Quality": 80
-                                        }
-                                    },
-                                    "DropFrameTimecode": "ENABLED",
-                                    "ColorMetadata": "INSERT"
-                                }
-                            },
-                            # output obbligatorio di almeno 1 video,
-                            # scelto volutamente di bassa qualità
-                            {
-                                'Extension': '.mp4',
-                                'NameModifier': '-low',
-                                "VideoDescription": {
-                                    "Width": 852,
-                                    "ScalingBehavior": "DEFAULT",
-                                    "Height": 480,
-                                    "TimecodeInsertion": "DISABLED",
-                                    "AntiAlias": "ENABLED",
-                                    "Sharpness": 50,
-                                    "CodecSettings": {
-                                        "Codec": "H_264",
-                                        "H264Settings": {
-                                            "InterlaceMode": "PROGRESSIVE",
-                                            "NumberReferenceFrames": 3,
-                                            "Syntax": "DEFAULT",
-                                            "Softness": 0,
-                                            "GopClosedCadence": 1,
-                                            "GopSize": 90,
-                                            "Slices": 1,
-                                            "GopBReference": "DISABLED",
-                                            "SlowPal": "DISABLED",
-                                            "SpatialAdaptiveQuantization": "ENABLED",
-                                            "TemporalAdaptiveQuantization": "ENABLED",
-                                            "FlickerAdaptiveQuantization": "DISABLED",
-                                            "EntropyEncoding": "CABAC",
-                                            "Bitrate": 3195,
-                                            "FramerateControl": "INITIALIZE_FROM_SOURCE",
-                                            "RateControlMode": "CBR",
-                                            "CodecProfile": "MAIN",
-                                            "Telecine": "NONE",
-                                            "MinIInterval": 0,
-                                            "AdaptiveQuantization": "HIGH",
-                                            "CodecLevel": "AUTO",
-                                            "FieldEncoding": "PAFF",
-                                            "SceneChangeDetect": "ENABLED",
-                                            "QualityTuningLevel": "SINGLE_PASS",
-                                            "FramerateConversionAlgorithm": "DUPLICATE_DROP",
-                                            "UnregisteredSeiTimecode": "DISABLED",
-                                            "GopSizeUnits": "FRAMES",
-                                            "ParControl": "INITIALIZE_FROM_SOURCE",
-                                            "NumberBFramesBetweenReferenceFrames": 2,
-                                            "RepeatPps": "DISABLED",
-                                            "DynamicSubGop": "STATIC"
-                                        }
-                                    },
-                                    "AfdSignaling": "NONE",
-                                    "DropFrameTimecode": "ENABLED",
-                                    "RespondToAfd": "NONE",
-                                    "ColorMetadata": "INSERT"
-                                },
-                                "ContainerSettings": {
-                                    "Container": "MP4",
-                                    "Mp4Settings": {
-                                        "CslgAtom": "INCLUDE",
-                                        "CttsVersion": 0,
-                                        "FreeSpaceBox": "EXCLUDE",
-                                        "MoovPlacement": "PROGRESSIVE_DOWNLOAD"
+                        # output obbligatorio di almeno 1 video,
+                        # scelto volutamente di bassa qualità
+                        {
+                            'Extension': '.mp4',
+                            'NameModifier': '-low',
+                            "VideoDescription": {
+                                "Width": 852,
+                                "ScalingBehavior": "DEFAULT",
+                                "Height": 480,
+                                "TimecodeInsertion": "DISABLED",
+                                "AntiAlias": "ENABLED",
+                                "Sharpness": 50,
+                                "CodecSettings": {
+                                    "Codec": "H_264",
+                                    "H264Settings": {
+                                        "InterlaceMode": "PROGRESSIVE",
+                                        "NumberReferenceFrames": 3,
+                                        "Syntax": "DEFAULT",
+                                        "Softness": 0,
+                                        "GopClosedCadence": 1,
+                                        "GopSize": 90,
+                                        "Slices": 1,
+                                        "GopBReference": "DISABLED",
+                                        "SlowPal": "DISABLED",
+                                        "SpatialAdaptiveQuantization": "ENABLED",
+                                        "TemporalAdaptiveQuantization": "ENABLED",
+                                        "FlickerAdaptiveQuantization": "DISABLED",
+                                        "EntropyEncoding": "CABAC",
+                                        "Bitrate": 3195,
+                                        "FramerateControl": "INITIALIZE_FROM_SOURCE",
+                                        "RateControlMode": "CBR",
+                                        "CodecProfile": "MAIN",
+                                        "Telecine": "NONE",
+                                        "MinIInterval": 0,
+                                        "AdaptiveQuantization": "HIGH",
+                                        "CodecLevel": "AUTO",
+                                        "FieldEncoding": "PAFF",
+                                        "SceneChangeDetect": "ENABLED",
+                                        "QualityTuningLevel": "SINGLE_PASS",
+                                        "FramerateConversionAlgorithm": "DUPLICATE_DROP",
+                                        "UnregisteredSeiTimecode": "DISABLED",
+                                        "GopSizeUnits": "FRAMES",
+                                        "ParControl": "INITIALIZE_FROM_SOURCE",
+                                        "NumberBFramesBetweenReferenceFrames": 2,
+                                        "RepeatPps": "DISABLED",
+                                        "DynamicSubGop": "STATIC"
                                     }
+                                },
+                                "AfdSignaling": "NONE",
+                                "DropFrameTimecode": "ENABLED",
+                                "RespondToAfd": "NONE",
+                                "ColorMetadata": "INSERT"
+                            },
+                            "ContainerSettings": {
+                                "Container": "MP4",
+                                "Mp4Settings": {
+                                    "CslgAtom": "INCLUDE",
+                                    "CttsVersion": 0,
+                                    "FreeSpaceBox": "EXCLUDE",
+                                    "MoovPlacement": "PROGRESSIVE_DOWNLOAD"
                                 }
                             }
-                        ]
-                    }
-                ],
-                'Inputs': [
-                    {
-                        'FileInput': full_qualifier,
-                        # inserire un clipping permette di evitare di prelevare il primo frame (blackscreen)
-                        'InputClippings': [
-                            {
-                                'StartTimecode': '00:00:10:00'
-                            }
-                        ],
-                        'TimecodeSource': 'SPECIFIEDSTART',
-                        'TimecodeStart': '00:00:00:00'
-                    }
-                ]
-            }
-            result = media_conv.create_job(
-                Role=env_settings['Role'],
-                Settings=media_settings,
-                AccelerationSettings=env_settings['AccelerationSettings'],
-                StatusUpdateInterval='SECONDS_60',
-                Priority=0,
-                Queue=env_settings["QueuePrefix" + "thumb"]
-            )
-            return result['Job']['Id']
+                        }
+                    ]
+                }
+            ],
+            'Inputs': [
+                {
+                    'FileInput': full_qualifier,
+                    # inserire un clipping permette di evitare di prelevare il primo frame (blackscreen)
+                    'InputClippings': [
+                        {
+                            'StartTimecode': '00:00:10:00'
+                        }
+                    ],
+                    'TimecodeSource': 'SPECIFIEDSTART',
+                    'TimecodeStart': '00:00:00:00'
+                }
+            ]
+        }
+        result = media_conv.create_job(
+            Role=env_settings['Role'],
+            Settings=media_settings,
+            AccelerationSettings=env_settings['AccelerationSettings'],
+            StatusUpdateInterval='SECONDS_60',
+            Priority=0,
+            Queue=env_settings["QueuePrefix" + "thumb"]
+        )
+        return result['Job']['Id']
     except Exception as err:
         print(err)
         print('Impossibile creare la thumbnail di ' + full_qualifier)
         raise err
+    finally:
+        return False
