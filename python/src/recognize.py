@@ -49,8 +49,6 @@ def lambda_handler(event, context):
                                        Body=payload)
     result = json.loads(response['Body'].read().decode())
 
-    formatted_result = []
-
     for i in range(len(result)):
         text = f"{result[i]:.6f}"
         result[i] = decimal.Decimal(text)
@@ -62,14 +60,14 @@ def lambda_handler(event, context):
             'frame_key': key
         }
     )
-    Item = response['Item']
+    item = response['Item']
 
     # update
     for i in range(len(result)):
-        Item[str(i)] = (result[i])
+        item[str(i)] = (result[i])
 
     # put (idempotent)
-    table.put_item(Item=Item)
+    table.put_item(Item=item)
 
     outForPut = {
         'succeded': True,
