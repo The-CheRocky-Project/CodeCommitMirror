@@ -14,7 +14,7 @@ import boto3
 
 media_conv = boto3.client("mediaconvert",
                           endpoint_url="https://" +
-                                      "fkuulejsc.mediaconvert.us-east-2.amazonaws.com")
+                                       "fkuulejsc.mediaconvert.us-east-2.amazonaws.com")
 # le variabili di configurazione dell"ambiente
 env_settings = {
     "AccelerationSettings": {
@@ -160,7 +160,7 @@ def lambda_handler(event, context):
                     }
                 ]
             }
-            media_conv = boto3.client
+            # sends the request
             result = media_conv.create_job(
                 Role=env_settings["Role"],
                 Settings=media_settings,
@@ -173,3 +173,4 @@ def lambda_handler(event, context):
         return False
     except Exception as err:
         print(err)
+        raise err

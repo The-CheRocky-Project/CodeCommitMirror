@@ -124,6 +124,9 @@ Resources:
     Type: AWS::SNS::Topic
     Properties:
       TopicName: confirmation
+      Subscription:
+        - Endpoint: !GetAtt framer.Arn
+          Protocol: lambda
   ahlLog:
     Description: The Autonomous HighLight Logging Group
     Type: AWS::Logs::LogGroup
@@ -374,3 +377,12 @@ Resources:
                       Value: frames/
                     - Name: suffix
                       Value: -low.mp4
+  framer:
+    Description: The Lambda that creates frames before processing
+    Type: AWS::Serverless::Function
+    DeletionPolicy: Delete
+    Properties:
+      Handler: framer.lambda_handler
+      Role: !GetAtt basicLambdaRole.Arn
+      Runtime: Python3.7
+      CodeUri: ./python/src/
