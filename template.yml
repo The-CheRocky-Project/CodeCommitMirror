@@ -104,6 +104,10 @@ Resources:
     DeletionPolicy: Retain
     Properties:
       BucketName: "ahlconsolebucket"
+      NotificationConfiguration:
+        LambdaConfigurations:
+          - Event: 's3:ObjectCreated:*'
+            Function: !GetAtt thumbfy.Arn
   thumbfyPermission:
     Description: The lambda permission to been invoked by an s3 event
     Type: AWS::Lambda::Permission
@@ -113,10 +117,6 @@ Resources:
       Principal: 's3.amazonaws.com'
       SourceAccount: !Ref "AWS::AccountId"
       SourceArn: !GetAtt consoleBucket.Arn
-#      NotificationConfiguration:
-#        LambdaConfigurations:
-#          - Event: 's3:ObjectCreated:*'
-#            Function: !GetAtt thumbfy.Arn
 #  thumbfyPermission:
 #    Description: The lambda permission to been invoked by an s3 event
 #    Type: AWS::Lambda::Permission
