@@ -16,7 +16,7 @@ import boto3
 s3 = boto3.resource('s3')
 media_conv = boto3.client('mediaconvert',
                           endpoint_url='https://' +
-                                      'fkuulejsc.mediaconvert.us-east-2.amazonaws.com')
+                                       'fkuulejsc.mediaconvert.us-east-2.amazonaws.com')
 # le variabili di configurazione dell'ambiente
 env_settings = {
     'AccelerationSettings': {
@@ -26,6 +26,7 @@ env_settings = {
     'QueuePrefix': "arn:aws:mediaconvert:us-east-2:693949087897:queues/",
     'Role': "arn:aws:iam::693949087897:role/mediaRole"
 }
+
 
 def lambda_handler(event, context):
     """
