@@ -174,10 +174,9 @@ def lambda_handler(event, context):
             Priority=0,
             Queue=env_settings["QueuePrefix" + "thumb"]
         )
-        return result['Job']['Id']
+        job_id = result['Job']['Id']
+        return job_id if job_id else False
     except Exception as err:
         print(err)
         print('Impossibile creare la thumbnail di ' + full_qualifier)
         raise err
-    finally:
-        return False
