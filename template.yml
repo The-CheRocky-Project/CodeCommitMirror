@@ -115,25 +115,24 @@ Resources:
                   - Name: suffix
                     Value: .mp4
             Function: !GetAtt thumbfy.Arn
-          - Event: 's3:ObjectCreated:*'
-            Filter:
-              S3Key:
-                Rules:
-                  - Name: prefix
-                    Value: thumbnails/
-                  - Name: suffix
-                    Value: -low.mp4
-            Function: !GetAtt remover.Arn
-          - Event: 's3:ObjectCreated:*'
-            Filter:
-              S3Key:
-                Rules:
-                  - Name: prefix
-                    Value: frames/
-                  - Name: suffix
-                    Value: -low.mp4
-            Function: !GetAtt remover.Arn
-
+#          - Event: 's3:ObjectCreated:*'
+#            Filter:
+#              S3Key:
+#                Rules:
+#                  - Name: prefix
+#                    Value: thumbnails/
+#                  - Name: suffix
+#                    Value: -low.mp4
+#            Function: !GetAtt remover.Arn
+#          - Event: 's3:ObjectCreated:*'
+#            Filter:
+#              S3Key:
+#                Rules:
+#                  - Name: prefix
+#                    Value: frames/
+#                  - Name: suffix
+#                    Value: -low.mp4
+#            Function: !GetAtt remover.Arn
   thumbfyPermission:
     Description: The lambda permission to been invoked by an s3 event
     Type: AWS::Lambda::Permission
@@ -152,44 +151,6 @@ Resources:
       Principal: 's3.amazonaws.com'
       SourceAccount: !Ref "AWS::AccountId"
       SourceArn: !GetAtt consoleBucket.Arn
-#  thumbfyPermission:
-#    Description: The lambda permission to been invoked by an s3 event
-#    Type: AWS::Lambda::Permission
-#    Properties:
-#      Action: 'lambda:InvokeFunction'
-#      FunctionName: !Ref thumbfy
-#      Principal: 's3.amazonaws.com'
-#      SourceAccount: !Ref "AWS::AccountId"
-#      SourceArn: !Sub "arn:aws:s3:::${OperationBucket}"
-#      NotificationConfiguration:
-#        LambdaConfiguration:
-#          - Event: s3::ObjectCreated:*
-#            Filter:
-#              S3Key:
-#                Rules:
-#                  - Name: prefix
-#                    Value: origin/
-#                  - Name: suffix
-#                    Value: .mp4
-#            Function: !GetAtt thumbfy.Arn
-#          - Event: s3::ObjectCreated:*
-#            Filter:
-#              S3Key:
-#                Rules:
-#                  - Name: prefix
-#                    Value: thumbnails/
-#                  - Name: suffix
-#                    Value: -low.mp4
-#            Function: !GetAtt remover.Arn
-#          - Event: s3::ObjectCreated:*
-#            Filter:
-#              S3Key:
-#                Rules:
-#                    - Name: prefix
-#                      Value: frames/
-#                    - Name: suffix
-#                      Value: -low.mp4
-#            Function: !GetAtt remover.Arn
   recoTopic:
     Description: The SNS Topic for recnognizement news messaging
     DeletionPolicy: Delete
