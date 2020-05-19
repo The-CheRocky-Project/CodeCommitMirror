@@ -107,6 +107,13 @@ Resources:
       NotificationConfiguration:
         LambdaConfigurations:
           - Event: 's3:ObjectCreated:*'
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: prefix
+                    Value: origin
+                  - Name: suffix
+                    Value: .mp4
             Function: !GetAtt thumbfy.Arn
   thumbfyPermission:
     Description: The lambda permission to been invoked by an s3 event
