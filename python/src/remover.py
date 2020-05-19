@@ -40,5 +40,4 @@ def lambda_handler(event, context):
         return True
     except Exception as err:
         print(err)
-    finally:
         return False
