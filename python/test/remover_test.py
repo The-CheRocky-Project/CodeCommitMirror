@@ -8,7 +8,7 @@ import boto3
 from mock import patch, call
 from moto import mock_s3
 import pytest
-from python.src.remover import lambda_handler
+from src.remover import lambda_handler
 
 
 
