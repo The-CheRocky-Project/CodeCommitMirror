@@ -400,3 +400,12 @@ Resources:
       Role: !GetAtt basicLambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/
+  framerQueue:
+    Description: The Media Convert Queue for framing jobs
+    Type: AWS::MediaConvert::Queue
+    DeletionPolicy: Delete
+    Properties:
+      Description: Queue for framing jobs
+      Name: framer
+      PricingPlan: ON_DEMAND
+      Status: ACTIVE
