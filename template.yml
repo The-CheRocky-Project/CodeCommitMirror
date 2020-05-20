@@ -409,3 +409,20 @@ Resources:
       Name: framer
       PricingPlan: ON_DEMAND
       Status: ACTIVE
+  framerStatusChange:
+    Description: The CloudWatch Event for Media Convert job changes
+    DeletionPolicy: Delete
+    Type: AWS::Events::Rule
+    Properties:
+      Description: Catches events from MediaConvert framer queue
+      EventPattern:
+        source:
+          - aws.mediaconvert
+        detail-type:
+          - MediaConvert Job State Change
+        detail:
+          status:
+            - COMPLETE
+          queue:
+            - !GetAtt framerQueue.Arn
+      Name: framerFinish
