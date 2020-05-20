@@ -27,6 +27,7 @@ const s3Defaults ={
     region: "us-east-2"
 }
 
+//TODO manca getVideoType(), bisogna aggiungerlo e bisogna anche fare relativi test di unità
 
 /**
  * Effettua la comunicazione di impostare il video in modalità preview.

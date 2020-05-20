@@ -42,7 +42,8 @@ exports.changeVideoMode = (toOriginal) => {
  */
 exports.updateVideoFrame = (res) => {
     const videoEndpoint = model.getVideoEndpoint();
-    const isOriginal = model.getVideoType();
+    //TODO commentata perchè NON ESISTE
+    const isOriginal = null;//model.getVideoType();
     view.generateVideoFrame(videoEndpoint, isOriginal, res);
 };
 
@@ -87,7 +88,7 @@ exports.changeRowValue = (index,start, duration, modelIndex) => {
  * @param {object} res - Rappresenta la risposta http
  */
 exports.updateLabelTable = (res) => {
-    const rekoList = model.getRecongnizementList();
+    const rekoList = model.getRecognizementList();
     view.generateTable(rekoList, res);
 };
 

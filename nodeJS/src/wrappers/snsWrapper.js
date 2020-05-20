@@ -49,14 +49,14 @@ class TopicPublisher{
      * @param {mimeType} dataFormat - Il formato del payload
      * @returns {Promise<Boolean>} - L'esito della richiesta
      */
-    //TODO aggiustare in caso si decida di utilizzare nel modello la funzione snsWrap.message
+    //TODO controlloare se correzioni fatte nelle altre funzioni che invoca sendMessage è corretto
     sendMessage(message, data, dataFormat){
         return publisher({
             Message: message,
             MessageAttributes: {
                 'data': {
                     DataType: dataFormat,
-                    BinaryValue: Buffer.from(data)
+                    BinaryValue: Buffer.from(JSON.stringify(data))
                 }
             },
             TopicArn: this.arn

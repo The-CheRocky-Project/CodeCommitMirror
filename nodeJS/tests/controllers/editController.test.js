@@ -55,7 +55,7 @@ describe('testEditController',() => {
   describe('#updateLabelTable()', () => {
     it("deve aggiornare il rendering della tabella dei riconoscimenti.", () => {
       let getRecongnizementListIsCalled = false;
-      mock('../../src/models/editModel', { getRecongnizementList: function() {
+      mock('../../src/models/editModel', { getRecognizementList: function() {
         getRecongnizementListIsCalled = true;
       }});
       let generateTableIsCalled = false;
@@ -105,15 +105,16 @@ describe('testEditController',() => {
   describe('#updateVideoFrame()', () => {
 
     it("deve generare e renderizzare il nuovo frame video", () => {
+      //TODO togliere commenti nel caso venga introdotta la funzione getVideoType()
       let getVideoEndpointIsCalled = false;
       let getVideoTypeIsCalled = false;
       mock('../../src/models/editModel', {
         getVideoEndpoint: function() {
           getVideoEndpointIsCalled = true;
-        },
-        getVideoType: function() {
-          getVideoTypeIsCalled = true;
-        }
+        }//,
+        // getVideoType: function() {
+        //   getVideoTypeIsCalled = true;
+        // }
       });
       let generateVideoFrameIsCalled = false;
       mock('../../src/views/editView', { generateVideoFrame: function(videoEndpoint, isOriginal, res) {
@@ -126,7 +127,7 @@ describe('testEditController',() => {
       var res = 'resMock';
       editController.updateVideoFrame(res);
       var expected = true;
-      var result = getVideoEndpointIsCalled && generateVideoFrameIsCalled && getVideoTypeIsCalled;
+      var result = getVideoEndpointIsCalled && generateVideoFrameIsCalled; //&& getVideoTypeIsCalled;
       assert.equal(result,expected);
     });
   });

@@ -39,10 +39,11 @@ exports.print = (params, res) => {
  */
 //TODO sostituire params con i valori corretti (i parametri della funzione?)
 exports.generateVideoFrame = (url, isOriginal, res)=>{
+  //TODO eliminato il parametro => endpoint: params.url, original: params.originalVideo,
     res.render('partials/videoFrame',
         {
-            endpoint: params.url,
-            original: params.originalVideo,
+            endpoint: url,
+            original: isOriginal,
             layout: false
         });
 };
