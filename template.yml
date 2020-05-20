@@ -196,6 +196,7 @@ Resources:
             Principal:
               Service:
                 - states.amazonaws.com
+                - events.amazonaws.com
             Action: "sts:AssumeRole"
       Path: "/"
       Policies:
@@ -427,5 +428,6 @@ Resources:
             - !GetAtt framerQueue.Arn
       Name: framerFinish
       Targets:
-        - Arn: !GetAtt frameWorkflow.Arn
-          Id: frameWorkFlow
+        - Arn: !Ref frameWorkflow
+          Id: frameWorkFlow_Target
+          RoleArn: !GetAtt stepFRole.Arn
