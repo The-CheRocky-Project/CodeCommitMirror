@@ -426,3 +426,6 @@ Resources:
           queue:
             - !GetAtt framerQueue.Arn
       Name: framerFinish
+      Targets:
+        - Arn: !GetAtt frameWorkflow.Arn
+          Id: frameWorkFlow
