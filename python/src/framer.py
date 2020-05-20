@@ -41,7 +41,7 @@ def lambda_handler(event, context):
         true se l'avvio del job è stato effettuato correttamente, false altrimenti
     """
     try:
-        if event["Records"][0]["Sns"]["Message"] == "videoEdit":
+        if event["Records"][0]["Sns"]["Message"] == "startProcess":
             bucket = event["Records"][0]["Sns"]["MessageAttributes"]["bucket"]["Value"]
             key = event["Records"][0]["Sns"]["MessageAttributes"]["key"]["Value"]
             dest_folder = "frames/"

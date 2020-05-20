@@ -32,8 +32,8 @@ exports.getThumbnailURL = (fileKey) =>{
  */
 //TODO snsWrap.message inesistente, sistemare tenendo conto di TopicPublisher.sendMessage in snsWrapper
 exports.processFile = (fileKey) =>{
-    let topicPub=new snsWrap.TopicPublisher("processingTopic", AWSregion, userCode);
-    return topicPub.sendMessage("startProcess",{toProcess: fileKey},'json');
+    let topicPub=new snsWrap.TopicPublisher("confirmation", AWSregion, userCode);
+    return topicPub.sendMessage("startProcess",{key: fileKey, bucket: bucketName},'json');
     // return snsWrap.message({
     //     message: "startProcess",
     //     data: {toProcess: fileKey},
