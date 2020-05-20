@@ -210,6 +210,10 @@ describe('test integrazione edit', () => {
 
     it('deve aggiornare il rendering della tabella dei riconoscimenti.', () => {
 
+      let response = {
+          Body: '{"campo1":"prova","campo2":"ciao"}'
+      }
+
       AWSMock.mock('S3', 'getObject', (params, callback) => {
           callback(null, response);
       });
