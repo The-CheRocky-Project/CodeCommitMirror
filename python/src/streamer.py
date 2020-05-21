@@ -1,4 +1,4 @@
-""" Streamer Lambda module
+""" Streamer Lambda module (NOT TO TEST!!!)
 
 Questo modulo contiene l'handler che effettua la creazione della notifica
 di pubblicazione del video appena creato
