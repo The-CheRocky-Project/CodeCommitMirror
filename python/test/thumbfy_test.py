@@ -4,6 +4,7 @@
 # import json
 # import os
 # import pytest
+# import unittest
 # import botocore
 # from mock import patch, call
 # from src.thumbfy import lambda_handler
@@ -26,7 +27,7 @@
 # }
 #
 #
-# class TestThumbfy:
+# class TestThumbfy(unittest.TestCase):
 #     """
 #     Classe di test per la lambda thubmfy
 #     """

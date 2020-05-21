@@ -4,6 +4,7 @@ Test module for json_splitter lambda
 """
 import json
 import os
+import unittest
 import pytest
 import boto3
 from moto import mock_s3
@@ -27,7 +28,7 @@ CONTEXT = {
 }
 
 
-class TestJsonSplitter:
+class TestJsonSplitter(unittest.TestCase):
     """
     Classe di test per il lambda_handler di json_splitter
     """

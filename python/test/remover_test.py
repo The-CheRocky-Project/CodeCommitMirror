@@ -8,6 +8,7 @@ import boto3
 from mock import patch, call
 from moto import mock_s3
 import pytest
+import unittest
 from src.remover import lambda_handler
 
 
@@ -31,7 +32,7 @@ CONTEXT = {
 }
 
 
-class TestRemover:
+class TestRemover(unittest.TestCase):
     """
     Classe di test per remover
     """

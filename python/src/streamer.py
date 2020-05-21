@@ -44,12 +44,12 @@ def lambda_handler(event, context):
             MessageStructure="json",
             MessageAttributes={
                 'bucket': {
-                    'DataType': 'string',
-                    'Stringvalue': bucket
+                    'DataType': 'String',
+                    'StringValue': bucket
                 },
                 'key': {
-                    'DataType': 'string',
-                    'Stringvalue': key
+                    'DataType': 'String',
+                    'StringValue': key
                 }
             }
         )
