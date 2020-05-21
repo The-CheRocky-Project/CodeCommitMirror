@@ -30,7 +30,6 @@ exports.getThumbnailURL = (fileKey) =>{
  * send a message by snsWrap to serverless application to launch the file elaboration
  * @fileKey URL video to elaborate
  */
-//TODO snsWrap.message inesistente, sistemare tenendo conto di TopicPublisher.sendMessage in snsWrapper
 exports.processFile = (fileKey) =>{
     let topicPub=new snsWrap.TopicPublisher("confirmation", AWSregion, userCode);
     return topicPub.sendMessage("startProcess",{key: fileKey, bucket: bucketName},'json');

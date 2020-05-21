@@ -30,32 +30,32 @@ describe('testEditView', () => {
         });
     });
     //ASPETTARE A FARE IL TEST CHE SI CORREGGA LA params dentro questo metodo che non esiste
-    // describe('#generateVideoFrame(url, isOriginal, mockRes)', () => {
+    describe('#generateVideoFrame(url, isOriginal, mockRes)', () => {
 
-    //     let mockRes;
+        let mockRes;
 
-    //     before(function() {
+        before(function() {
 
-    //         mockRes = {
-    //             viewName: "",
-    //             viewData: {},
-    //             render: function(viewName, viewData) {
-    //                 this.viewName = viewName;
-    //                 this.viewData = viewData;
-    //             }
-    //         };
+            mockRes = {
+                viewName: "",
+                viewData: {},
+                render: function(viewName, viewData) {
+                    this.viewName = viewName;
+                    this.viewData = viewData;
+                }
+            };
 
-    //     });
-    //     it("Deve printare partials/videoFrame", () =>{
+        });
+        it("Deve printare partials/videoFrame", () =>{
 
-    //         let url = '';
-    //         let isOriginal = {};
-    //         view.generateVideoFrame(url, isOriginal, mockRes);
-    //         assert.strictEqual(mockRes.viewName,"partials/videoFrame");
-    //         assert.ok(!mockRes.viewData.layout);
+            let url = '';
+            let isOriginal = {};
+            view.generateVideoFrame(url, isOriginal, mockRes);
+            assert.strictEqual(mockRes.viewName,"partials/videoFrame");
+            assert.ok(!mockRes.viewData.layout);
 
-    //     });
-    // });
+        });
+    });
 
     describe('#generateTable(params, res)', () => {
 

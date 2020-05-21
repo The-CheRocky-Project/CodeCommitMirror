@@ -88,18 +88,48 @@ describe('test integrazione fileExplorer', () => {
 
     });
 
+    afterEach(()=>{
+        AWSMock.restore('S3','listObjectsV2');
+    });
+
   });
 
-  // describe('#launchFileProcessing()', () => {
-  //
-  //   it('Ritorna true se va a buon fine', () => {
-  //
-  //     let fileKey = Array('test');
-  //
-  //     fileExplorerController.launchFileProcessing(fileKey);
-  //
-  //   });
-  //
-  // });
+  describe('#launchFileProcessing()', () => {
+
+    it('Ritorna true se va a buon fine', (done) => {
+
+      let fileKey = 'test';
+
+      AWSMock.mock('SNS', 'publish', (params, callback) => {
+        callback(null, 'success'); // Mocked response returns ‘success’ always
+      });
+
+      fileExplorerController.launchFileProcessing(fileKey).then((token) => {
+        assert.equal(token, true);
+        done();
+      });
+
+    });
+
+    it('Ritorna false se non va a buon fine', (done) => {
+
+      let fileKey = 'test';
+
+      AWSMock.mock('SNS', 'publish', (params, callback) => {
+        callback('err', null); // Mocked response returns error always
+      });
+
+      fileExplorerController.launchFileProcessing(fileKey).then((token) => {
+        assert.equal(token, false);
+        done();
+      }).catch((errOnAssert) => {done(new Error(errOnAssert));});
+
+    });
+
+    afterEach(()=>{
+      AWSMock.restore('SNS', 'publish');
+    });
+
+  });
 
 });
