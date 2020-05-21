@@ -44,7 +44,8 @@ exports.listObjects = (bucket, prefix) => {
 //TODO sostituire il metodo getAllkeys con uno esistente e aggiustare la chiamata ricorsiva
 async function getKeys(params, keys = []){
     const s3Client = new AWS.S3();
-    const response = await s3Client.listObjectsV2(params).promise().catch(error => console.log(error));
+    const response = await s3Client.listObjectsV2(params).promise()
+        .catch(error => console.log("Error #" + error.code + error.message));
     response.Contents.forEach(obj => keys.push(obj.Key));
 
     if (response.NextContinuationToken) {
@@ -77,7 +78,8 @@ exports.getJsonFile = (bucket,fileKey) =>{
  */
 async function getObject(params, fileContent = {}){
     const s3Client = new AWS.S3();
-    const response = await s3Client.getObject(params).promise().catch(error => console.log(error));
+    const response = await s3Client.getObject(params).promise()
+        .catch(error => console.log("Error #" + error.code + error.message));
     const deserialized = JSON.parse(response.Body.toString());
     const keys = Object.getOwnPropertyNames(deserialized).forEach( key => fileContent[key] = deserialized[key]);
     if (response.NextContinuationToken) {
