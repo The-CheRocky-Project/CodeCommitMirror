@@ -30,7 +30,7 @@ def lambda_handler(event, context):
     trunc_key = split_key[:-1]
     request_param = {
         TableName: 'recognitions',
-        KeyConditionExpression: 'source_key IN stored_key',
+        KeyConditionExpression: 'contains(stored_key, source_key)',
         ExpressionAttributeNames: {
             'stored_key': frame_key
         },

@@ -401,6 +401,15 @@ Resources:
       Role: !GetAtt basicLambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/
+  labelIndividuator:
+    Descrioption: The Lambda that analize records and find labels
+    Type: AWS::Serverless::Function
+    DeletionPolicy: Delete
+    Properties:
+      Handler: label_individuator.lambda_handler
+      Role: !GetAtt dynamoLambdaRole.Arn
+      Runtime: python3.7
+      CodeUri: ./python/src/
   framerQueue:
     Description: The Media Convert Queue for framing jobs
     Type: AWS::MediaConvert::Queue
