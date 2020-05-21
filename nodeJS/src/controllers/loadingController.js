@@ -15,8 +15,8 @@ exports.getBody = (res) => {
     view.print(res)
 }
 
-// /** TODO remove also from manual
-//  * Funzione per ​recuperare il livello di progressione tramite il
+//TODO remove also from manual
+// /** Funzione per ​recuperare il livello di progressione tramite il
 //  * loadingModel e produrre una nuova barra di progressione XHTML aggiornata
 //  * @param {object} res - Rappresenta un oggetto XHTML da ritornare
 //  */

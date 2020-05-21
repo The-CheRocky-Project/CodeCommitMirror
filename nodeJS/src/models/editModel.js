@@ -53,7 +53,6 @@ exports.getRecognizementList = async () =>{
  * Effettua la comunicazione di impostare il video in modalità preview.
  * @returns {boolean} true se la chiamata è stata effettuata con successo, false altrimenti.
  */
-//TODO snsWrap.message inesistente, sistemare tenendo conto di TopicPublisher.sendMessage in snsWrapper
 exports.setPreviewMode = async () =>{
     let topicPub=new snsWrap.TopicPublisher("videoModeTopic", AWSregion, userCode);
     let result = topicPub.sendMessage("setPreview","","");
@@ -72,7 +71,6 @@ exports.setPreviewMode = async () =>{
  * Effettua la comunicazione di impostare il video in modalità originale.
  * @returns {boolean} true se la chiamata è stata effettuata con successo, false altrimenti.
  */
-//TODO snsWrap.message inesistente, sistemare tenendo conto di TopicPublisher.sendMessage in snsWrapper
 exports.setOriginalMode = async () =>{
     let topicPub=new snsWrap.TopicPublisher("videoModeTopic", AWSregion, userCode);
     let result = topicPub.sendMessage("setOriginal","","");
@@ -100,7 +98,6 @@ exports.getmodelLabels = async () =>{
  * Effettua la richiesta di aggiunta di una riga al sistema secondo i parametri specificati dal dizionario json params.
  * @param {number} modelIndex - Rappresenta il dizionario Kson contenente tutte le specifiche della riga da inserire
  */
-//TODO snsWrap.message inesistente, sistemare tenendo conto di TopicPublisher.sendMessage in snsWrapper
 exports.addRow = async (params) =>{
     let data = {
         start: params['start'],
@@ -122,7 +119,6 @@ exports.addRow = async (params) =>{
  *  comunicando così l’intenzione di terminare il processo di editing.
  * @returns {boolean} ritorna true se la chiamata è stata effettuata correttamente, false altrimenti.
  */
-//TODO snsWrap.message inesistente, sistemare tenendo conto di TopicPublisher.sendMessage in snsWrapper
 exports.sendConfirmation= ()=>{
     let topicPub=new snsWrap.TopicPublisher('videoSuggestionTopic', AWSregion, userCode);
     return topicPub.sendMessage("confirmTable","","");
@@ -144,7 +140,6 @@ exports.isVideoTypeOriginal = ()=>{
  * @param {object} params - Rappresenta il dizionario Json contenente tutte le specifiche della riga da aggiornare
  * @returns {boolean} ritorna true se la chiamata è stata effettuata correttamente.
  */
-//TODO snsWrap.message inesistente, sistemare tenendo conto di TopicPublisher.sendMessage in snsWrapper
 exports.updateRow = async (params)=>{
     let data = {
         start: params.start,
@@ -170,7 +165,6 @@ exports.updateRow = async (params)=>{
  * @returns {boolean} ritorna true se la chiamata è stata effettuata correttamente.
  * @param {number} index - Rappresenta l'indice della riga da de-selezionare
  */
-//TODO snsWrap.message inesistente, sistemare tenendo conto di TopicPublisher.sendMessage in snsWrapper
 exports.uncheckRow = async (index) =>{
     let data = {
         target: index
@@ -188,7 +182,6 @@ exports.uncheckRow = async (index) =>{
  * @returns {boolean} ritorna true se la chiamata è stata effettuata correttamente.
  * @param {number} index - Rappresenta l'indice della riga da selezionare
  */
-//TODO snsWrap.message inesistente, sistemare tenendo conto di TopicPublisher.sendMessage in snsWrapper
 exports.checkRow = async (index) =>{
     let data = {
         target: index
