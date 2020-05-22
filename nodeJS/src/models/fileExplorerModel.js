@@ -27,7 +27,7 @@ exports.getThumbnailURL = (fileKey) =>{
         fileKey
             .replace("origin/","thumbnails/")
             .slice(0,-4)
-        + "0000000"
+        + ".0000000"
         + ".jpg",
         bucketName,
         AWSregion);
