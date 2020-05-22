@@ -23,7 +23,10 @@ exports.listFileKeys = async () => {
  * @param {String} fileKey - The video file key that has a thumbnail in the bucket
  */
 exports.getThumbnailURL = (fileKey) =>{
-    return s3Wrap.getObjectUrl(fileKey + ".jpg", bucketName, AWSregion);
+    return s3Wrap.getObjectUrl(
+        fileKey.replace("origin/","thumbnails/") + ".jpg",
+        bucketName,
+        AWSregion);
 }
 
 /**
