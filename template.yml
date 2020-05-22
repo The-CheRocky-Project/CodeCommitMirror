@@ -249,6 +249,14 @@ Resources:
                 Action:
                   - "iam:PassRole"
                 Resource: "*"
+        - PolicyName: MediaConvertFullAccess
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "mediaconvert:*"
+                Resource: "*"
   dynamoLambdaRole:
     Description: The role for AWS Lambda Functions
     Type: "AWS::IAM::Role"
