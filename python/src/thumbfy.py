@@ -59,7 +59,7 @@ def lambda_handler(event, context):
                     "OutputGroupSettings": {
                         "Type": "FILE_GROUP_SETTINGS",
                         "FileGroupSettings": {
-                            "Destination": "thumbnails"
+                            "Destination": "s3://thumbnails"
                         }
                     },
                     'Outputs': [
