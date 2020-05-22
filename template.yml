@@ -241,6 +241,14 @@ Resources:
                 Action:
                   - "s3:*"
                 Resource: "*"
+        - PolicyName: IAMPassRole
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "iam:PassRole"
+                Resource: "*"
   dynamoLambdaRole:
     Description: The role for AWS Lambda Functions
     Type: "AWS::IAM::Role"
