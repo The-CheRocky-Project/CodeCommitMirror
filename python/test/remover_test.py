@@ -9,6 +9,7 @@ from mock import patch, call
 from moto import mock_s3
 import pytest
 import unittest
+from aws_lambda_context import LambdaContext
 from src.remover import lambda_handler
 
 
@@ -27,9 +28,8 @@ file_path = absolute_path + '/../event/remover_event.json'
 with open(file_path, 'r') as f:
     event_json = json.load(f)
 
-CONTEXT = {
-    "function_name": "remover"
-}
+CONTEXT = LambdaContext()
+CONTEXT.function_name = 'remover'
 
 
 class TestRemover(unittest.TestCase):
