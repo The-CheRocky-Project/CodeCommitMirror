@@ -28,7 +28,7 @@ def lambda_handler(event, context):
             True se l'operazione è andata a buon fine, False altrimenti
 
         """
-    print('Executing :' + context['function_name'])
+    print('Executing :' + context.function_name)
     try:
         # Preleva bucket name e key da event
         # TODO da verificare che funzioni

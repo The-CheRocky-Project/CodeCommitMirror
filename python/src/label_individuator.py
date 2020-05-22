@@ -24,7 +24,7 @@ def lambda_handler(event, context):
     Returns:
         void TODO
     """
-    print('Executing ' + context['function_name'])
+    print('Executing ' + context.function_name)
     source_key = event['key']
     split_key = source_key.split('.')
     trunc_key = split_key[:-1]

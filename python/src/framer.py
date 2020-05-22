@@ -40,6 +40,7 @@ def lambda_handler(event, context):
     Returns:
         true se l'avvio del job è stato effettuato correttamente, false altrimenti
     """
+    print("Executing " + context.function_name)
     try:
         if event["Records"][0]["Sns"]["Message"] == "startProcess":
             bucket = event["Records"][0]["Sns"]["MessageAttributes"]["bucket"]["Value"]
