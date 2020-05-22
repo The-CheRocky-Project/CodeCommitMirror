@@ -151,6 +151,15 @@ Resources:
       Principal: 's3.amazonaws.com'
       SourceAccount: !Ref "AWS::AccountId"
       SourceArn: !GetAtt consoleBucket.Arn
+  framerPermission:
+    Description: The Lambda permission to been invoked by an s3 event
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !Ref remover
+      Principal: 'sns.amazonaws.com'
+      SourceAccount: !Ref "AWS::AccountId"
+      SourceArn: !GetAtt confirmTopic.Arn
   recoTopic:
     Description: The SNS Topic for recnognizement news messaging
     DeletionPolicy: Delete
