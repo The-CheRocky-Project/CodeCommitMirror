@@ -46,8 +46,8 @@ class TopicPublisher{
     /**
      * Funzione asincrona che invia un messaggio
      * @param {String} message - Il messaggio
-     * @param {dataFormat} data - Il payload del messaggio
-     * @param {mimeType} dataFormat - Il formato del payload
+     * @param {Object} data - Il payload del messaggio
+     * @param {String} dataFormat - Il formato del payload
      * @returns {Promise<Boolean>} - L'esito della richiesta
      */
     //TODO controlloare se correzioni fatte nelle altre funzioni che invoca sendMessage è corretto
@@ -56,7 +56,7 @@ class TopicPublisher{
             Message: message,
             MessageAttributes: {
                 'data': {
-                    DataType: dataFormat,
+                    DataType: dataFormat === 'application/json'?"Binary":"String",
                     BinaryValue: Buffer.from(JSON.stringify(data))
                 }
             },
