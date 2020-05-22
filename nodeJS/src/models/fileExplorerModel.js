@@ -24,7 +24,11 @@ exports.listFileKeys = async () => {
  */
 exports.getThumbnailURL = (fileKey) =>{
     return s3Wrap.getObjectUrl(
-        fileKey.replace("origin/","thumbnails/") + ".jpg",
+        fileKey
+            .replace("origin/","thumbnails/")
+            .slice(0,-4)
+        + "0000000"
+        + ".jpg",
         bucketName,
         AWSregion);
 }
