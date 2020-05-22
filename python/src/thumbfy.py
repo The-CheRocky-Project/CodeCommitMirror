@@ -173,7 +173,7 @@ def lambda_handler(event, context):
             AccelerationSettings=env_settings['AccelerationSettings'],
             StatusUpdateInterval='SECONDS_60',
             Priority=0,
-            Queue=env_settings["QueuePrefix" + "thumb"]
+            Queue=env_settings["QueuePrefix" + "Default"]
         )
         job_id = result['Job']['Id']
         return job_id if job_id else False
