@@ -151,15 +151,6 @@ Resources:
       Principal: 's3.amazonaws.com'
       SourceAccount: !Ref "AWS::AccountId"
       SourceArn: !GetAtt consoleBucket.Arn
-  framerPermission:
-    Description: The Lambda permission to been invoked by an s3 event
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: 'lambda:InvokeFunction'
-      FunctionName: !Ref remover
-      Principal: 'sns.amazonaws.com'
-      SourceAccount: !Ref "AWS::AccountId"
-      SourceArn: !GetAtt confirmTopic.Arn
   recoTopic:
     Description: The SNS Topic for recnognizement news messaging
     DeletionPolicy: Delete
@@ -187,6 +178,14 @@ Resources:
       Subscription:
         - Endpoint: !GetAtt framer.Arn
           Protocol: lambda
+  framerPermission:
+    Description: The policy for confirmTopic to invoke a lambda
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: 'lambdaInvokeFunction'
+      FunctionName: !Ref framer
+      Principal: 'sns.amazonaws.com'
+      SourceArn: !Ref confirmTopic
   ahlLog:
     Description: The Autonomous HighLight Logging Group
     Type: AWS::Logs::LogGroup
