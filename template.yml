@@ -182,9 +182,10 @@ Resources:
     Description: The policy for confirmTopic to invoke a lambda
     Type: AWS::Lambda::Permission
     Properties:
-      Action: 'lambdaInvokeFunction'
+      Action: 'lambda:InvokeFunction'
       FunctionName: !Ref framer
       Principal: 'sns.amazonaws.com'
+      SourceAccount: !Ref "AWS::AccountId"
       SourceArn: !Ref confirmTopic
   ahlLog:
     Description: The Autonomous HighLight Logging Group
