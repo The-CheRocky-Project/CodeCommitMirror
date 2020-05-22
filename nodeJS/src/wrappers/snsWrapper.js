@@ -6,8 +6,9 @@
 const Buffer = require('buffer').Buffer;
 
 //Richiede i moduli sdk necessari e ne crea un istanza
-
+process.env.AWS_REGION = "us-east-2";
 const AWS = require('aws-sdk');
+
 
 /**
  * Funzione ausiliaria che calcola l'arn di un topic
