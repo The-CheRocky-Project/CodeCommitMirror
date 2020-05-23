@@ -193,7 +193,7 @@ Resources:
             Effect: "Allow"
             Principal:
               AWS: !Ref "AWS::AccountId"
-            Action: "sns:*"
+            Action: "sns:Subscribe"
             Resource: "*"
       Topics:
         - !Ref confirmTopic
