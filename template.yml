@@ -189,12 +189,12 @@ Resources:
         Id: confirmFramerPolicy
         Version: "2012-10-17"
         Statement:
-          - Sid: lambdaInvoke
+          - Sid: confirmLambdaInvoke
             Effect: "Allow"
             Principal:
               AWS: !Ref "AWS::AccountId"
             Action: "sns:Subscribe"
-            Resource: "*"
+            Resource: !GetAtt framer.Arn
       Topics:
         - !Ref confirmTopic
   framerSubscription:
