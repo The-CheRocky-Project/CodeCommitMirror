@@ -212,7 +212,7 @@ Resources:
     Type: AWS::SNS::Subscription
     Properties:
       Endpoint: !GetAtt framer.Arn
-#      FilterPolicy: "{ \"Message\": [\"startProcess\"]}"
+      FilterPolicy: "{ \"Message\": [\"startProcess\"]}"
       Protocol: lambda
       TopicArn: !Ref confirmTopic
   framerPermission:
