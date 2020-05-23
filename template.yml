@@ -192,9 +192,18 @@ Resources:
           - Sid: confirmLambdaInvoke
             Effect: "Allow"
             Principal:
-              AWS: !Ref "AWS::AccountId"
-            Action: "sns:Subscribe"
-            Resource: !GetAtt framer.Arn
+              AWS: "*"
+            Action:
+              - "SNS:GetTopicAttributes"
+              - "SNS:SetTopicAttributes"
+              - "SNS:AddPermission"
+              - "SNS:RemovePermission"
+              - "SNS:DeleteTopic"
+              - "SNS:Subscribe"
+              - "SNS:ListSubscriptionsByTopic"
+              - "SNS:Publish"
+              - "SNS:Receive"
+            Resource: !Ref confirmTopic
       Topics:
         - !Ref confirmTopic
 #  framerSubscription:
