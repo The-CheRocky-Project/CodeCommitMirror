@@ -52,14 +52,16 @@ class TopicPublisher{
      */
     //TODO controlloare se correzioni fatte nelle altre funzioni che invoca sendMessage è corretto
     sendMessage(message, data, dataFormat){
+        let payload = Object();
+        Object.entries(data).forEach(([key, value]) => {
+            let record = Object();
+            record.DataType = "String";
+            record.StringValue = value;
+            payload[key] = record;
+        });
         return publisher({
             Message: message,
-            MessageAttributes: {
-                'data': {
-                    DataType: dataFormat === 'application/json'?"Binary":"String",
-                    BinaryValue: Buffer.from(JSON.stringify(data))
-                }
-            },
+            MessageAttributes: payload,
             TopicArn: this.arn
         });
     }
