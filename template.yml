@@ -193,7 +193,7 @@ Resources:
             Effect: "Allow"
             Principal:
               AWS: !Ref "AWS::AccountId"
-            Action: "lambda:InvokeFunction"
+            Action: "sns:*"
             Resource: "*"
       Topics:
         - !Ref confirmTopic
