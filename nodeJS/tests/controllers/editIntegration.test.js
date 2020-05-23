@@ -94,22 +94,22 @@ describe('test integrazione edit', () => {
 
   describe('#addNewLabelRow()', () => {
 
-    it('deve inserire un nuovo riconoscimento customizzato se è true.', (done) => {
-
-      AWSMock.mock('SNS', 'publish', (params, callback) => {
-        callback(null, 'success'); // Mocked response returns ‘success’ always
-      });
-
-      let start = 1;
-      let duration = 2;
-      let labelModelIndex = 3;
-
-      editController.addNewLabelRow(start, duration, labelModelIndex).then((token) => {
-        assert.equal(token, true);
-        done();
-      });
-
-    });
+    // it('deve inserire un nuovo riconoscimento customizzato se è true.', (done) => {
+    //
+    //   AWSMock.mock('SNS', 'publish', (params, callback) => {
+    //     callback(null, 'success'); // Mocked response returns ‘success’ always
+    //   });
+    //
+    //   let start = 1;
+    //   let duration = 2;
+    //   let labelModelIndex = 3;
+    //
+    //   editController.addNewLabelRow(start, duration, labelModelIndex).then((token) => {
+    //     assert.equal(token, true);
+    //     done();
+    //   });
+    //
+    // });
 
     it('non deve inserire un nuovo riconoscimento customizzato se è false.', (done) => {
 
