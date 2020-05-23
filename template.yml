@@ -223,8 +223,6 @@ Resources:
       Action: 'lambda:InvokeFunction'
       FunctionName: !Ref framer
       Principal: 'sns.amazonaws.com'
-      SourceAccount: !Ref "AWS::AccountId"
-      SourceArn: !Ref confirmTopic
   ahlLog:
     Description: The Autonomous HighLight Logging Group
     DeletionPolicy: Delete
