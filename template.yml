@@ -184,12 +184,14 @@ Resources:
     Type: AWS::SNS::TopicPolicy
     Properties:
       PolicyDocument:
+        Id: confirmFramerPolicy
         Version: "2012-10-17"
         Statement:
-          - Effect: "Allow"
-            Action:
-              - "lambda:InvokeFunction"
-            Resource: !GetAtt framer.Arn
+          - Sid: lambdaInvoke
+            Effect: "Allow"
+            Principal: !Ref "AWS::AccountId"
+            Action: "lambda:InvokeFunction"
+            Resource: "*"
       Topics:
         - !Ref confirmTopic
   framerSubscription:
