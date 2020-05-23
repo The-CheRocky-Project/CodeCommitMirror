@@ -178,14 +178,20 @@ Resources:
 #      Subscription:
 #        - Endpoint: !GetAtt framer.Arn
 #          Protocol: lambda
-#  confirmPolicy:
-#    Description: The confirmationTopic Policy to invoke Lambda
-#    DeletionPolicy: Delete
-#    Type: AWS::SNS::TopicPolicy
-#    Properties:
-#      PolicyDocument:
-#      Topics:
-#        - !Ref confirmTopic
+  confirmPolicy:
+    Description: The confirmationTopic Policy to invoke Lambda
+    DeletionPolicy: Delete
+    Type: AWS::SNS::TopicPolicy
+    Properties:
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Action:
+              - "lambda:InvokeFunction"
+            Resource: !GetAtt framer.Arn
+      Topics:
+        - !Ref confirmTopic
   framerSubscription:
     Description: The SNS subscription of the framer lambda
     Type: AWS::SNS::Subscription
