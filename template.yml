@@ -177,9 +177,9 @@ Resources:
     Type: AWS::SNS::Topic
     Properties:
       TopicName: confirmation
-      Subscription:
-        - Endpoint: !GetAtt framer.Arn
-          Protocol: lambda
+#      Subscription:
+#        - Endpoint: !GetAtt framer.Arn
+#          Protocol: lambda
   confirmPolicy:
     Description: The confirmationTopic Policy to invoke Lambda
     DeletionPolicy: Delete
@@ -206,15 +206,15 @@ Resources:
             Resource: !Ref confirmTopic
       Topics:
         - !Ref confirmTopic
-#  framerSubscription:
-#    Description: The SNS subscription of the framer lambda
-#    DeletionPolicy: Delete
-#    Type: AWS::SNS::Subscription
-#    Properties:
-#      Endpoint: !GetAtt framer.Arn
+  framerSubscription:
+    Description: The SNS subscription of the framer lambda
+    DeletionPolicy: Delete
+    Type: AWS::SNS::Subscription
+    Properties:
+      Endpoint: !GetAtt framer.Arn
 #      FilterPolicy: "{ \"Message\": [\"startProcess\"]}"
-#      Protocol: lambda
-#      TopicArn: !Ref confirmTopic
+      Protocol: lambda
+      TopicArn: !Ref confirmTopic
   framerPermission:
     Description: The policy for confirmTopic to invoke a lambda
     DeletionPolicy: Delete
