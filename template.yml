@@ -428,6 +428,7 @@ Resources:
       Role: !GetAtt dynamoLambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/
+      Timeout: 60
   frameGrouping:
     Description: The lambda that calculates frame grouping before recognizements
     Type: AWS::Serverless::Function
