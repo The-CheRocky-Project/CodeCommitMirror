@@ -177,9 +177,6 @@ Resources:
     Type: AWS::SNS::Topic
     Properties:
       TopicName: confirmation
-#      Subscription:
-#        - Endpoint: !GetAtt framer.Arn
-#          Protocol: lambda
   confirmPolicy:
     Description: The confirmationTopic Policy to invoke Lambda
     DeletionPolicy: Delete
