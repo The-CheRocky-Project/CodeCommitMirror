@@ -135,6 +135,7 @@ Resources:
             Function: !GetAtt remover.Arn
   thumbfyPermission:
     Description: The lambda permission to been invoked by an s3 event
+    DeletionPolicy: Delete
     Type: AWS::Lambda::Permission
     Properties:
       Action: 'lambda:InvokeFunction'
@@ -144,6 +145,7 @@ Resources:
       SourceArn: !GetAtt consoleBucket.Arn
   removerPermission:
     Description: The Lambda permission to been invoked by an s3 event
+    DeletionPolicy: Delete
     Type: AWS::Lambda::Permission
     Properties:
       Action: 'lambda:InvokeFunction'
@@ -178,24 +180,25 @@ Resources:
 #      Subscription:
 #        - Endpoint: !GetAtt framer.Arn
 #          Protocol: lambda
-  confirmPolicy:
-    Description: The confirmationTopic Policy to invoke Lambda
-    DeletionPolicy: Delete
-    Type: AWS::SNS::TopicPolicy
-    Properties:
-      PolicyDocument:
-        Id: confirmFramerPolicy
-        Version: "2012-10-17"
-        Statement:
-          - Sid: lambdaInvoke
-            Effect: "Allow"
-            Principal: !Ref "AWS::AccountId"
-            Action: "lambda:InvokeFunction"
-            Resource: "*"
-      Topics:
-        - !Ref confirmTopic
+#  confirmPolicy:
+#    Description: The confirmationTopic Policy to invoke Lambda
+#    DeletionPolicy: Delete
+#    Type: AWS::SNS::TopicPolicy
+#    Properties:
+#      PolicyDocument:
+#        Id: confirmFramerPolicy
+#        Version: "2012-10-17"
+#        Statement:
+#          - Sid: lambdaInvoke
+#            Effect: "Allow"
+#            Principal: !Ref "AWS::AccountId"
+#            Action: "lambda:InvokeFunction"
+#            Resource: "*"
+#      Topics:
+#        - !Ref confirmTopic
   framerSubscription:
     Description: The SNS subscription of the framer lambda
+    DeletionPolicy: Delete
     Type: AWS::SNS::Subscription
     Properties:
       Endpoint: !GetAtt framer.Arn
@@ -204,6 +207,7 @@ Resources:
       TopicArn: !Ref confirmTopic
   framerPermission:
     Description: The policy for confirmTopic to invoke a lambda
+    DeletionPolicy: Delete
     Type: AWS::Lambda::Permission
     Properties:
       Action: 'lambda:InvokeFunction'
@@ -213,12 +217,14 @@ Resources:
       SourceArn: !Ref confirmTopic
   ahlLog:
     Description: The Autonomous HighLight Logging Group
+    DeletionPolicy: Delete
     Type: AWS::Logs::LogGroup
     Properties:
       LogGroupName: ahlLogs
       RetentionInDays: 7
   stepFRole:
     Description: The role for AWS Step Functions
+    DeletionPolicy: Delete
     Type: "AWS::IAM::Role"
     Properties:
       RoleName: frameWorkflowRole
@@ -245,6 +251,7 @@ Resources:
                 Resource: "*"
   basicLambdaRole:
     Description: The role for AWS Lambda Functions
+    DeletionPolicy: Delete
     Type: "AWS::IAM::Role"
     Properties:
       RoleName: ahllambdaRole
@@ -292,6 +299,7 @@ Resources:
                 Resource: "*"
   dynamoLambdaRole:
     Description: The role for AWS Lambda Functions
+    DeletionPolicy: Delete
     Type: "AWS::IAM::Role"
     Properties:
       RoleName: ahlDynamoLambdaRole
@@ -331,6 +339,7 @@ Resources:
                 Resource: "*"
   sagemakerDynamoLambdaRole:
     Description: The role for AWS Lambda Functions
+    DeletionPolicy: Delete
     Type: "AWS::IAM::Role"
     Properties:
       RoleName: ahlSagemakerDynamoLambdaRole
@@ -378,6 +387,7 @@ Resources:
                 Resource: "*"
   frameWorkflow:
     Description: The step function that defines the frame workflow
+    DeletionPolicy: Delete
     Type: "AWS::StepFunctions::StateMachine"
     Properties:
       DefinitionString:
