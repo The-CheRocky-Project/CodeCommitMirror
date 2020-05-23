@@ -178,6 +178,14 @@ Resources:
       Subscription:
         - Endpoint: !GetAtt framer.Arn
           Protocol: lambda
+  framerSubscription:
+    Description: The SNS subscription of the framer lambda
+    Type: AWS::SNS::Subscription
+    Properties:
+      Endpoint: !GetAtt framer.Arn
+      FilterPolicy: "{ \"Message\": [\"startProcess\"]}"
+      Protocol: lambda
+      TopicArn: !Ref confirmTopic
   framerPermission:
     Description: The policy for confirmTopic to invoke a lambda
     Type: AWS::Lambda::Permission
