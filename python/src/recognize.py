@@ -34,12 +34,9 @@ def lambda_handler(event, context):
     basekey = event['key']
     tableName = 'rekognitions'
 
-    zeros = ""
+    formatted = f"{int(str(event['n'])):07d}"
 
-    for i in range(7 - len(str(event['n']))):
-        zeros = zeros + "0"
-
-    key = folder + '/' + basekey + '.' + zeros + str(event['n']) + '.jpg'
+    key = folder + '/' + basekey + '.' + formatted + '.jpg'
 
     image = s3R.Object(bucket, key)
     imageGet = image.get()

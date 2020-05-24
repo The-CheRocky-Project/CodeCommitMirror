@@ -428,7 +428,7 @@ Resources:
       Role: !GetAtt dynamoLambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/
-      Timeout: 60
+      Timeout: 120
   frameGrouping:
     Description: The lambda that calculates frame grouping before recognizements
     Type: AWS::Serverless::Function
@@ -447,6 +447,10 @@ Resources:
       Role: !GetAtt sagemakerDynamoLambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/
+      Environment:
+        Variables:
+          ENDPOINT_NAME: IC-completeDataset-1590073086
+      Timeout: 120
   remover:
     Description: The lambda that deletes useless objects
     Type: AWS::Serverless::Function
@@ -504,3 +508,38 @@ Resources:
         - Arn: !Ref frameWorkflow
           Id: frameWorkFlow_Target
           RoleArn: !GetAtt stepFRole.Arn
+  ahlMlBucket:
+    Description: The s3 Bucket where data is stored
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
+    Properties:
+      BucketName: ahlmlbucket
+  SageMakerExecutionRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - "sagemaker.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/AmazonSageMakerFullAccess"
+      Path: "/service-role/"
+      Policies:
+        - PolicyName: SageMakerS3BucketAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:*
+                Resource:
+                  - !Sub 'arn:aws:s3:::${ahlMlBucket}'
+                  - !Sub 'arn:aws:s3:::${ahlMlBucket}/*'
+  NotebookCloudWatchLogGroup:
+    Description: The SageMaker Log Group
+    DeletionPolicy: Delete
+    Type: AWS::Logs::LogGroup

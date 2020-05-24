@@ -30,44 +30,44 @@ def lambda_handler(event, context):
     dest_folder = "frames/"
 
     # fetches data from s3
-    img_list = s3_cli.list_objects_v2(
-        Bucket=bucket,
-        Prefix=dest_folder
-    )
+    # img_list = s3_cli.list_objects_v2(
+    #     Bucket=bucket,
+    #     Prefix=dest_folder
+    # )
 
-    """
-        sub-dimensioned key data that permits to perform packaged
-        parallel executions
-        """
-    key = img_list['Contents'][1]['Key']
+    last_processed = event['detail']['outputGroupDetails'][0]['outputDetails'][0]['outputFilePaths'][0]
+    splitted = last_processed.split('.')
+    string_frame_number = splitted[-2]
+    frame_number = int(string_frame_number)
+
+    # removes s3 prefix
+    key_array = last_processed.split('/')[3:]
+    key = key_array[0]
+    for i in range(1,len(key_array)):
+        key += '/' + key_array[i]
+
     splitted = key.split('.')
-
     # removes extension and framenumber
-    frame = ''
+    key_prefix = ''
     for i in range(len(splitted) - 2):
-        frame = frame + splitted[i] + '.'
-    frame = frame[:-1]
+        key_prefix = key_prefix + splitted[i] + '.'
+    key_prefix = key_prefix[:-1]
 
     # Creates the items that are going to be inserted in DynamoDB
     table = dynamo_res.Table('rekognitions')
-    for i in range(1, len(img_list['Contents'])):
-        key = img_list['Contents'][i]['Key']
-        splitted = key.split('/')
-        frame = splitted[len(splitted) - 1]
-        splitted = frame.split('.')
-        number = splitted[len(splitted) - 2]
+    for i in range(frame_number):
         table.put_item(
             Item={
-                'frame_key': img_list['Contents'][i]['Key'],
-                'tfs': 500 * int(number)
+                'frame_key': key_prefix + '.' + f"{i:07d}" + '.jpg',
+                'tfs': 250 * i
             }
         )
 
     # TODO remove from and put a decreasing count instead of to
     remaining_insertions = {
-        'key': frame,
+        'key': key_prefix,
         'from': 0,
-        'to': len(img_list['Contents']) - 1,
+        'to': frame_number,
         'detail': {
             'items': []
         },

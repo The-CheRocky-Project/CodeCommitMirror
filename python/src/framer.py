@@ -71,7 +71,7 @@ def lambda_handler(event, context):
                                     "CodecSettings": {
                                         "Codec": "FRAME_CAPTURE",
                                         "FrameCaptureSettings": {
-                                            "FramerateNumerator": 2,
+                                            "FramerateNumerator": 4,
                                             "FramerateDenominator": 1,
                                             "MaxCaptures": 10000000,
                                             "Quality": 80
