@@ -35,7 +35,7 @@ def lambda_handler(event, context):
     #     Prefix=dest_folder
     # )
 
-    last_processed = Event['Detail']['outputGroupDetail'][0]['outputDetails'][1]['outputFilePaths'][0]
+    last_processed = event['detail']['outputGroupDetails'][0]['outputDetails'][0]['outputFilePaths'][0]
     splitted = last_processed.split('.')
     string_frame_number = splitted[-2]
     frame_number = int(string_frame_number)
