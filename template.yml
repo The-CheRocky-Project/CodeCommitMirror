@@ -514,7 +514,6 @@ Resources:
     Properties:
       BucketName: ahlmlbucket
   SageMakerExecutionRole:
-    Condition: RoleArnEmpty
     Type: "AWS::IAM::Role"
     Properties:
       AssumeRolePolicyDocument:
