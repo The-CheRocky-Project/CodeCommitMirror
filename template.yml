@@ -447,6 +447,9 @@ Resources:
       Role: !GetAtt sagemakerDynamoLambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/
+      Environment:
+        Variables:
+          ENDPOINT_NAME: IC-completeDataset-1590073086
   remover:
     Description: The lambda that deletes useless objects
     Type: AWS::Serverless::Function
@@ -543,4 +546,3 @@ Resources:
     Description: The SageMaker Log Group
     DeletionPolicy: Delete
     Type: AWS::Logs::LogGroup
-  
