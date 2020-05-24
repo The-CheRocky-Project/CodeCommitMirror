@@ -529,18 +529,16 @@ Resources:
       Path: "/service-role/"
       Policies:
         Fn::If:
-        - S3BucketNotEmpty
-        -
           - PolicyName: SageMakerS3BucketAccess
-            PolicyDocument:
-              Version: '2012-10-17'
-              Statement:
-                - Effect: Allow
-                  Action:
-                    - s3:*
-                  Resource:
-                    !GetAtt ahlMlBucket.arn
-        - Ref: AWS:NoValue
+              PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                  - Effect: Allow
+                    Action:
+                      - s3:*
+                    Resource:
+                      - !Sub 'arn:aws:s3:::${ahlMlBucket}'
+                      - !Sub 'arn:aws:s3:::${ahlMlBucket}/*'
   NotebookCloudWatchLogGroup:
     Description: The SageMaker Log Group
     DeletionPolicy: Delete
