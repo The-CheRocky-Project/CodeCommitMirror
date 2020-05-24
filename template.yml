@@ -528,17 +528,16 @@ Resources:
         - "arn:aws:iam::aws:policy/AmazonSageMakerFullAccess"
       Path: "/service-role/"
       Policies:
-        Fn::If:
-          - PolicyName: SageMakerS3BucketAccess
-              PolicyDocument:
-                Version: '2012-10-17'
-                Statement:
-                  - Effect: Allow
-                    Action:
-                      - s3:*
-                    Resource:
-                      - !Sub 'arn:aws:s3:::${ahlMlBucket}'
-                      - !Sub 'arn:aws:s3:::${ahlMlBucket}/*'
+        - PolicyName: SageMakerS3BucketAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:*
+                Resource:
+                  - !Sub 'arn:aws:s3:::${ahlMlBucket}'
+                  - !Sub 'arn:aws:s3:::${ahlMlBucket}/*'
   NotebookCloudWatchLogGroup:
     Description: The SageMaker Log Group
     DeletionPolicy: Delete
