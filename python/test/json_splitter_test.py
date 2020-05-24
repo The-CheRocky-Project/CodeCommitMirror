@@ -8,6 +8,7 @@ import unittest
 import pytest
 import boto3
 from moto import mock_s3
+from aws_lambda_context import LambdaContext
 from src.json_splitter import lambda_handler
 
 # Percorso assouluto per caricare il file event.json
@@ -23,9 +24,8 @@ file_path = absolute_path + '/../event/json_splitter_event.json'
 with open(file_path, 'r') as f:
     event_json = json.load(f)
 
-CONTEXT = {
-    "function_name": "json_splitter"
-}
+CONTEXT = LambdaContext()
+CONTEXT.function_name = 'json_splitter'
 
 
 class TestJsonSplitter(unittest.TestCase):

@@ -23,7 +23,14 @@ exports.listFileKeys = async () => {
  * @param {String} fileKey - The video file key that has a thumbnail in the bucket
  */
 exports.getThumbnailURL = (fileKey) =>{
-    return s3Wrap.getObjectUrl(fileKey + ".jpg", bucketName, AWSregion);
+    return s3Wrap.getObjectUrl(
+        fileKey
+            .replace("origin/","thumbnails/")
+            .slice(0,-4)
+        + ".0000000"
+        + ".jpg",
+        bucketName,
+        AWSregion);
 }
 
 /**
@@ -32,7 +39,7 @@ exports.getThumbnailURL = (fileKey) =>{
  */
 exports.processFile = (fileKey) =>{
     let topicPub=new snsWrap.TopicPublisher("confirmation", AWSregion, userCode);
-    return topicPub.sendMessage("startProcess",{key: fileKey, bucket: bucketName},'json');
+    return topicPub.sendMessage("startProcess",{key: fileKey, bucket: bucketName},'application/json');
     // return snsWrap.message({
     //     message: "startProcess",
     //     data: {toProcess: fileKey},

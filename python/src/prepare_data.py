@@ -25,6 +25,7 @@ def lambda_handler(event, context):
     Returns:
         dict: I dati utili all'esecuzione della Step Function State Machine
     """
+    print('Executiong ' + context.function_name)
     bucket = "ahlconsolebucket"
     dest_folder = "frames/"
 

@@ -24,17 +24,17 @@ def lambda_handler(event, context):
     Returns:
         void TODO
     """
-    print('Executing ' + context['function_name'])
+    print('Executing ' + context.function_name)
     source_key = event['key']
     split_key = source_key.split('.')
     trunc_key = split_key[:-1]
     request_param = {
-        TableName: 'recognitions',
-        KeyConditionExpression: 'contains(stored_key, source_key)',
-        ExpressionAttributeNames: {
-            'stored_key': frame_key
+        'TableName': 'recognitions',
+        'KeyConditionExpression': 'contains(stored_key, source_key)',
+        'ExpressionAttributeNames': {
+            'stored_key': 'frame_key'
         },
-        ExpressionAttributeValues: {
+        'ExpressionAttributeValues': {
             'source_key': trunc_key
         }
     }

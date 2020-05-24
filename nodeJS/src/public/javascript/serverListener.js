@@ -80,6 +80,18 @@ $(document).ready(() => {
       updateFileList();
     });
 
+    $(".startBtn").click( (event) => {
+        const dataToSend = {
+            fileKey: event.target.getAttribute("id")
+        };
+        $.ajax({
+            type: "POST",
+            url: "./selectFile",
+            data: dataToSend
+        }).fail(() => {
+            alert("Impossibile elaborare il video " + dataToSend.fileKey);
+        });
+    })
 // FORSE UTILE PER TESTARE
     // $("#carica").click(() => {
     //     alert("Caricamento da interfaccia non ancora disponibile, utilizzare AWS CLI");

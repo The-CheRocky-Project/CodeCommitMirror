@@ -21,6 +21,7 @@ def lambda_handler(event, context):
     Returns:
         dict: I dati utili all'esecuzione del successivo step della State Machine
     """
+    print('Executiong ' + context.function_name)
     step = 200
 
     event['detail']['items'] = []

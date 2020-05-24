@@ -48,7 +48,7 @@ def lambda_handler(event, context):
     record = event['Records'][0]['s3']
     bucket = record['bucket']['name']
     key = urllib.parse.unquote_plus(record['object']['key'], encoding='utf-8')
-    print('Executing :' + context['function_name'] + ' on ' + key)
+    print('Executing :' + context.function_name + ' on ' + key)
     full_qualifier = 's3://' + bucket + '/' + key
     try:
         # sets up the job configuration
@@ -59,7 +59,7 @@ def lambda_handler(event, context):
                     "OutputGroupSettings": {
                         "Type": "FILE_GROUP_SETTINGS",
                         "FileGroupSettings": {
-                            "Destination": "thumbnails"
+                            "Destination": "s3://" + bucket + "/thumbnails/"
                         }
                     },
                     'Outputs': [
@@ -173,7 +173,7 @@ def lambda_handler(event, context):
             AccelerationSettings=env_settings['AccelerationSettings'],
             StatusUpdateInterval='SECONDS_60',
             Priority=0,
-            Queue=env_settings["QueuePrefix" + "thumb"]
+            Queue=env_settings['QueuePrefix'] + 'Default'
         )
         job_id = result['Job']['Id']
         return job_id if job_id else False

@@ -135,6 +135,7 @@ Resources:
             Function: !GetAtt remover.Arn
   thumbfyPermission:
     Description: The lambda permission to been invoked by an s3 event
+    DeletionPolicy: Delete
     Type: AWS::Lambda::Permission
     Properties:
       Action: 'lambda:InvokeFunction'
@@ -144,6 +145,7 @@ Resources:
       SourceArn: !GetAtt consoleBucket.Arn
   removerPermission:
     Description: The Lambda permission to been invoked by an s3 event
+    DeletionPolicy: Delete
     Type: AWS::Lambda::Permission
     Properties:
       Action: 'lambda:InvokeFunction'
@@ -175,17 +177,58 @@ Resources:
     Type: AWS::SNS::Topic
     Properties:
       TopicName: confirmation
-      Subscription:
-        - Endpoint: !GetAtt framer.Arn
-          Protocol: lambda
+  confirmPolicy:
+    Description: The confirmationTopic Policy to invoke Lambda
+    DeletionPolicy: Delete
+    Type: AWS::SNS::TopicPolicy
+    Properties:
+      PolicyDocument:
+        Id: confirmFramerPolicy
+        Version: "2012-10-17"
+        Statement:
+          - Sid: confirmLambdaInvoke
+            Effect: "Allow"
+            Principal:
+              AWS: "*"
+            Action:
+              - "SNS:GetTopicAttributes"
+              - "SNS:SetTopicAttributes"
+              - "SNS:AddPermission"
+              - "SNS:RemovePermission"
+              - "SNS:DeleteTopic"
+              - "SNS:Subscribe"
+              - "SNS:ListSubscriptionsByTopic"
+              - "SNS:Publish"
+              - "SNS:Receive"
+            Resource: !Ref confirmTopic
+      Topics:
+        - !Ref confirmTopic
+  framerSubscription:
+    Description: The SNS subscription of the framer lambda
+    DeletionPolicy: Delete
+    Type: AWS::SNS::Subscription
+    Properties:
+      Endpoint: !GetAtt framer.Arn
+      Protocol: lambda
+      TopicArn: !Ref confirmTopic
+  framerPermission:
+    Description: The policy for confirmTopic to invoke a lambda
+    DeletionPolicy: Delete
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !Ref framer
+      Principal: 'sns.amazonaws.com'
   ahlLog:
     Description: The Autonomous HighLight Logging Group
+    DeletionPolicy: Delete
     Type: AWS::Logs::LogGroup
     Properties:
       LogGroupName: ahlLogs
       RetentionInDays: 7
   stepFRole:
     Description: The role for AWS Step Functions
+    DeletionPolicy: Delete
     Type: "AWS::IAM::Role"
     Properties:
       RoleName: frameWorkflowRole
@@ -212,6 +255,7 @@ Resources:
                 Resource: "*"
   basicLambdaRole:
     Description: The role for AWS Lambda Functions
+    DeletionPolicy: Delete
     Type: "AWS::IAM::Role"
     Properties:
       RoleName: ahllambdaRole
@@ -241,8 +285,25 @@ Resources:
                 Action:
                   - "s3:*"
                 Resource: "*"
+        - PolicyName: IAMPassRole
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "iam:PassRole"
+                Resource: "*"
+        - PolicyName: MediaConvertFullAccess
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "mediaconvert:*"
+                Resource: "*"
   dynamoLambdaRole:
     Description: The role for AWS Lambda Functions
+    DeletionPolicy: Delete
     Type: "AWS::IAM::Role"
     Properties:
       RoleName: ahlDynamoLambdaRole
@@ -282,6 +343,7 @@ Resources:
                 Resource: "*"
   sagemakerDynamoLambdaRole:
     Description: The role for AWS Lambda Functions
+    DeletionPolicy: Delete
     Type: "AWS::IAM::Role"
     Properties:
       RoleName: ahlSagemakerDynamoLambdaRole
@@ -329,6 +391,7 @@ Resources:
                 Resource: "*"
   frameWorkflow:
     Description: The step function that defines the frame workflow
+    DeletionPolicy: Delete
     Type: "AWS::StepFunctions::StateMachine"
     Properties:
       DefinitionString:
@@ -361,10 +424,11 @@ Resources:
     Type: AWS::Serverless::Function
     DeletionPolicy: Delete
     Properties:
-      Handler: clean_data.lambda_handler
+      Handler: prepare_data.lambda_handler
       Role: !GetAtt dynamoLambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/
+      Timeout: 60
   frameGrouping:
     Description: The lambda that calculates frame grouping before recognizements
     Type: AWS::Serverless::Function

@@ -6,8 +6,9 @@
 const Buffer = require('buffer').Buffer;
 
 //Richiede i moduli sdk necessari e ne crea un istanza
-
+process.env.AWS_REGION = "us-east-2";
 const AWS = require('aws-sdk');
+
 
 /**
  * Funzione ausiliaria che calcola l'arn di un topic
@@ -45,20 +46,22 @@ class TopicPublisher{
     /**
      * Funzione asincrona che invia un messaggio
      * @param {String} message - Il messaggio
-     * @param {dataFormat} data - Il payload del messaggio
-     * @param {mimeType} dataFormat - Il formato del payload
+     * @param {Object} data - Il payload del messaggio
+     * @param {String} dataFormat - Il formato del payload
      * @returns {Promise<Boolean>} - L'esito della richiesta
      */
     //TODO controlloare se correzioni fatte nelle altre funzioni che invoca sendMessage è corretto
     sendMessage(message, data, dataFormat){
+        let payload = Object();
+        Object.entries(data).forEach(([key, value]) => {
+            let record = Object();
+            record.DataType = "String";
+            record.StringValue = value;
+            payload[key] = record;
+        });
         return publisher({
             Message: message,
-            MessageAttributes: {
-                'data': {
-                    DataType: dataFormat,
-                    BinaryValue: Buffer.from(JSON.stringify(data))
-                }
-            },
+            MessageAttributes: payload,
             TopicArn: this.arn
         });
     }

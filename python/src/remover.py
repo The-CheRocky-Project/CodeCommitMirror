@@ -29,7 +29,7 @@ def lambda_handler(event, context):
         bool: True se la rimozione è andata a buon fine False altrimenti
     """
     try:
-        print('Executing :' + context['function_name'])
+        print('Executing :' + context.function_name)
         # Preleva bucket name e key da event
         record = event['Records'][0]['s3']
         bucket = record['bucket']['name']
