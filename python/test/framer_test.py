@@ -12,7 +12,8 @@ from src.framer import lambda_handler
 
 # Percorso assouluto per caricare il file event.json
 absolute_path = os.path.dirname(os.path.abspath(__file__))
-file_path = absolute_path + '/../event/framer_event.json'
+file_path_true = absolute_path + '/../event/framer_event_start_process.json'
+file_path_false = absolute_path + '/../event/framer_event_not_start.json'
 
 # Carico il file json con l'evento di test
 """
@@ -21,9 +22,10 @@ file_path = absolute_path + '/../event/framer_event.json'
     - event["Records"][0]["Sns"]["MessageAttributes"]["bucket"]["Value"]
     - event["Records"][0]["Sns"]["MessageAttributes"]["key"]["Value"]
 """
-with open(file_path, 'r') as f:
-    event_json = json.load(f)
-
+with open(file_path_true, 'r') as f:
+    event_json_true = json.load(f)
+with open(file_path_false, 'r') as f:
+    event_json_false = json.load(f)
 
 CONTEXT = LambdaContext()
 CONTEXT.function_name = 'framer'
@@ -32,7 +34,7 @@ class TestFramer(unittest.TestCase):
     """
     Classe di test per il lambda_handler di framer
     """
-    def test_do_video_fragmentation(self):
+    def test_job_start_correctly(self):
         with patch('boto3.client') as mock:
             media_conv = mock.return_value
             media_conv.create_job.return_value = {\
@@ -41,5 +43,10 @@ class TestFramer(unittest.TestCase):
                 },\
             }
             expected = "string"
-            result = lambda_handler(event_json, CONTEXT)
-            assert expected == result
+            result = lambda_handler(event_json_true, CONTEXT)
+            self.assertEqual(expected, result)
+
+    def test_job_doesnt_start_correctly(self):
+        expected = False
+        result = lambda_handler(event_json_false, CONTEXT)
+        self.assertEqual(expected, result)
