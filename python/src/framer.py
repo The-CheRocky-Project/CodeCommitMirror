@@ -12,9 +12,6 @@ Contenuto:
 import json
 import boto3
 
-media_conv = boto3.client("mediaconvert",
-                          endpoint_url="https://" +
-                                       "fkuulejsc.mediaconvert.us-east-2.amazonaws.com")
 # le variabili di configurazione dell"ambiente
 env_settings = {
     "AccelerationSettings": {
@@ -41,6 +38,9 @@ def lambda_handler(event, context):
         true se l'avvio del job è stato effettuato correttamente, false altrimenti
     """
     print("Executing " + context.function_name)
+    media_conv = boto3.client("mediaconvert",
+                          endpoint_url="https://" +
+                                       "fkuulejsc.mediaconvert.us-east-2.amazonaws.com")
     try:
         if event["Records"][0]["Sns"]["Message"] == "startProcess":
             bucket = event["Records"][0]["Sns"]["MessageAttributes"]["bucket"]["Value"]
