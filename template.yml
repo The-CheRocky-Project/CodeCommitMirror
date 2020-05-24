@@ -428,7 +428,7 @@ Resources:
       Role: !GetAtt dynamoLambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/
-      Timeout: 60
+      Timeout: 120
   frameGrouping:
     Description: The lambda that calculates frame grouping before recognizements
     Type: AWS::Serverless::Function
@@ -450,6 +450,7 @@ Resources:
       Environment:
         Variables:
           ENDPOINT_NAME: IC-completeDataset-1590073086
+      Timeout: 120
   remover:
     Description: The lambda that deletes useless objects
     Type: AWS::Serverless::Function
