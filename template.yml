@@ -447,6 +447,9 @@ Resources:
       Role: !GetAtt sagemakerDynamoLambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/
+      Environment:
+        Variables:
+          ENDPOINT_NAME: IC-completeDataset-1590073086
   remover:
     Description: The lambda that deletes useless objects
     Type: AWS::Serverless::Function
@@ -504,3 +507,42 @@ Resources:
         - Arn: !Ref frameWorkflow
           Id: frameWorkFlow_Target
           RoleArn: !GetAtt stepFRole.Arn
+  ahlMlBucket:
+    Description: The s3 Bucket where data is stored
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
+    Properties:
+      BucketName: ahlmlbucket
+  SageMakerExecutionRole:
+    Condition: RoleArnEmpty
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - "sagemaker.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/AmazonSageMakerFullAccess"
+      Path: "/service-role/"
+      Policies:
+        Fn::If:
+        - S3BucketNotEmpty
+        -
+          - PolicyName: SageMakerS3BucketAccess
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - s3:*
+                  Resource:
+                    !GetAtt ahlMlBucket.arn
+        - Ref: AWS:NoValue
+  NotebookCloudWatchLogGroup:
+    Description: The SageMaker Log Group
+    DeletionPolicy: Delete
+    Type: AWS::Logs::LogGroup
