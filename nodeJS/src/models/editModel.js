@@ -102,7 +102,10 @@ exports.addRow = async (params) =>{
     let data = {
         start: params['start'],
         duration: params['duration'],
-        label: params['labelModelIndex']
+        // TODO:  non c'e nel json inviato dall'editController il campo 'labelModelIndex' ma solo 'label', ✅
+        // label: params['labelModelIndex']
+        label: params['label']
+
     }
     let topicPub=new snsWrap.TopicPublisher("videoSuggestionTopic", AWSregion, userCode);
     return topicPub.sendMessage("addRow",data,"application/json");
