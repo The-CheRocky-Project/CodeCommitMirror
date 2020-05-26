@@ -115,7 +115,7 @@ Resources:
       ServiceName: !Sub com.amazonaws.${AWS::Region}.sns
       PrivateDnsEnabled: true
       SecurityGroupIds:
-        - awseb-e-49mssig5c3-stack-AWSEBSecurityGroup-1U3CJ239K5EX
+        - sg-06d54e2975f918bcb
       SubnetIds:
         - !Ref 'SubnetId'
       VpcEndpointType: Interface
