@@ -26,14 +26,6 @@ def lambda_handler(event, context):
         dict: I dati utili all'esecuzione della Step Function State Machine
     """
     print('Executiong ' + context.function_name)
-    bucket = "ahlconsolebucket"
-    dest_folder = "frames/"
-
-    # fetches data from s3
-    # img_list = s3_cli.list_objects_v2(
-    #     Bucket=bucket,
-    #     Prefix=dest_folder
-    # )
 
     last_processed = event['detail']['outputGroupDetails'][0]['outputDetails'][0]['outputFilePaths'][0]
     splitted = last_processed.split('.')
