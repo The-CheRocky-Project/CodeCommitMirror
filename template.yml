@@ -98,6 +98,21 @@ Resources:
           OptionName: Subnets
           Value: !Ref 'SubnetId'
         - !Ref "AWS::NoValue"
+  snsConsoleEndpoint:
+    Description: The endpoint for sns communication with the console application
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      PolicyDocument: '{
+         "Version":"2012-10-17",
+         "Statement":[{
+           "Effect":"Allow",
+           "Principal": "*",
+           "Action":["sns:*"],
+           "Resource":["*"]
+         }]
+      }'
+      ServiceName: !Sub com.amazonaws.${AWS::Region}.sns
+      VpcId: !Ref 'VpcID'
   consoleBucket:
     Description: The bucket containing videos from the console application
     Type: AWS::S3::Bucket
