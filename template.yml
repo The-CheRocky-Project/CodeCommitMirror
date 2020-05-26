@@ -100,6 +100,7 @@ Resources:
         - !Ref "AWS::NoValue"
   snsConsoleEndpoint:
     Description: The endpoint for sns communication with the console application
+    DeletionPolicy: Delete
     Type: AWS::EC2::VPCEndpoint
     Properties:
       PolicyDocument: '{
@@ -112,6 +113,12 @@ Resources:
          }]
       }'
       ServiceName: !Sub com.amazonaws.${AWS::Region}.sns
+      PrivateDnsEnabled: true
+      SecurityGroupIds:
+        - awseb-e-49mssig5c3-stack-AWSEBSecurityGroup-1U3CJ239K5EX
+      SubnetIds:
+        - !Ref 'SubnetId'
+      VpcEndpointType: Interface
       VpcId: !Ref 'VpcId'
   consoleBucket:
     Description: The bucket containing videos from the console application
