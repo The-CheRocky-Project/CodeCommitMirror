@@ -38,7 +38,6 @@ class TestJsonSplitter(unittest.TestCase):
         Test di divisione
         :return:
         """
-        print(self)
         with mock_s3():
             s3_client = boto3.client('s3', region_name='us-east-2')
             s3_client.create_bucket(Bucket='ahlconsolebucket')
