@@ -15,11 +15,7 @@ phases:
       - npm install --global cfn-include
 
       # Upgrade AWS CLI to the latest version
-      - pip3 install --upgrade awscli
-      - pip install --update botocore
-      - pip install --update boto3
       - pip install --update pylint
-      - pip install --update moto
       - pip install --update moviepy
       - pip install --update pytest-cov
       - pip install --update aws-lambda-context
