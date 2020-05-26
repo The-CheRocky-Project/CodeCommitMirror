@@ -153,12 +153,12 @@ Resources:
       Principal: 's3.amazonaws.com'
       SourceAccount: !Ref "AWS::AccountId"
       SourceArn: !GetAtt consoleBucket.Arn
-  recoTopic:
-    Description: The SNS Topic for recnognizement news messaging
+  progressionTopic:
+    Description: The SNS Topic for progression news messaging
     DeletionPolicy: Delete
     Type: AWS::SNS::Topic
     Properties:
-      TopicName: recognizement
+      TopicName: progression
   trainTopic:
     Description: The SNS Topic for training news messaging
     DeletionPolicy: Delete
