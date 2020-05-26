@@ -16,11 +16,12 @@ phases:
       - npm install --global cfn-include
 
       # Upgrade AWS CLI to the latest version
-      - pip3 install moto
-      - pip3 install pylint
-      - pip3 install moviepy
-      - pip3 install pytest-cov
-      - pip3 install aws-lambda-context
+      - pip install wheel
+      - pip install moto --ignore-installed aws-sam-translator
+      - pip install pylint --ignore-installed aws-sam-translator
+      - pip install moviepy --ignore-installed aws-sam-translator
+      - pip install pytest-cov --ignore-installed aws-sam-translator
+      - pip install aws-lambda-context --ignore-installed aws-sam-translator
       #- nohup /usr/local/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://127.0.0.1:2375 --storage-driver=overlay2&
       #- timeout 15 sh -c "until docker info; do echo .; sleep 1; done"
       # Sonar scanner installation
