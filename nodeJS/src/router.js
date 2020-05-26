@@ -12,6 +12,7 @@ const exphbs = require('express-handlebars');
 var bodyParser = require('body-parser')
 // parse application/x-www-form-urlencoded
 ahl.use(bodyParser.urlencoded({ extended: false }))
+console.log(process.env);
 
 // parse application/json
 ahl.use(bodyParser.json())
