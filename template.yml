@@ -112,7 +112,7 @@ Resources:
          }]
       }'
       ServiceName: !Sub com.amazonaws.${AWS::Region}.sns
-      VpcId: !Ref 'VpcID'
+      VpcId: !Ref 'VpcId'
   consoleBucket:
     Description: The bucket containing videos from the console application
     Type: AWS::S3::Bucket
