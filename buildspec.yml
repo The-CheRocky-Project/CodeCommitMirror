@@ -16,7 +16,7 @@ phases:
       - npm install --global cfn-include
 
       # Upgrade AWS CLI to the latest version
-      - pip3 isntall --upgrade aws-sam-cli
+      - pip3 install --upgrade aws-sam-cli
       - pip3 install --upgrade moto
       - pip3 install --upgrade pylint
       - pip3 install --upgrade moviepy
