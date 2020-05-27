@@ -1,32 +1,32 @@
 # # -*- coding: utf-8 -*-
 # """ Modulo di test per la serverless Lambda Thumbfy
 # """
-# import json
-# import os
-# import pytest
-# import unittest
-# import botocore
-# from mock import patch, call
-# from src.thumbfy import lambda_handler
-#
-# # Percorso assouluto per caricare il file event.json
-# absolute_path = os.path.dirname(os.path.abspath(__file__))
-# file_path = absolute_path + '/../event/thumbfy_event.json'
-#
-# # Carico il file json con l'evento di test
-# """
-#     Campi importanti dell'event.json allo scopo di test:
-#     - Records[0].s3.bucket.name
-#     - Records[0].object.key
-# """
-# with open(file_path, 'r') as f:
-#     event_json = json.load(f)
-#
-# CONTEXT = {
-#     "function_name": "thumbfy"
-# }
-#
-#
+import json
+import os
+import pytest
+import unittest
+import botocore
+from mock import patch, call
+from src.thumbfy import lambda_handler
+from aws_lambda_context import LambdaContext
+
+# Percorso assouluto per caricare il file event.json
+absolute_path = os.path.dirname(os.path.abspath(__file__))
+file_path = absolute_path + '/../event/thumbfy_event.json'
+
+# Carico il file json con l'evento di test
+"""
+    Campi importanti dell'event.json allo scopo di test:
+    - Records[0].s3.bucket.name
+    - Records[0].object.key
+"""
+with open(file_path, 'r') as f:
+    event_json = json.load(f)
+
+CONTEXT = LambdaContext()
+CONTEXT.function_name = 'thumbfy'
+
+
 # class TestThumbfy(unittest.TestCase):
 #     """
 #     Classe di test per la lambda thubmfy
@@ -50,10 +50,10 @@
 #             assert output_folder_key == 's3://ahlconsolebucket/origin/partita_di_calcio.mp4.jpg'
 #             assert queue == 'console_thumbnail'
 #             return 10  # Fake job id
-#
+
 #         monkeypatch.setattr(media_manager, "create_thumbnail", create_thumbnail_mock)
 #         assert lambda_handler(event_json, CONTEXT) == 10
-#
+
 #     def test_negative_result(self, monkeypatch):
 #         """
 #         Classe di test per risultato negativo
@@ -70,8 +70,43 @@
 #             :return:
 #             """
 #             raise Exception('Some error')
-#
+
 #         monkeypatch.setattr(media_manager, "create_thumbnail", create_thumbnail_mock)
-#         # Controllo che sia stata lanciata un'eccezione
+#         Controllo che sia stata lanciata un'eccezione
 #         with pytest.raises(Exception):
 #             lambda_handler(event_json, CONTEXT)
+
+class TestThumbfy(unittest.TestCase):
+  """
+  Classe di test per il lambda_handler di framer
+  """
+  def test_job_creato_correttamente(self):
+    with patch('boto3.client') as mock:
+      media_conv = mock.return_value
+      media_conv.create_job.return_value = {\
+        'Job':{\
+          'Id': 'string'
+        },\
+      }
+      expected = "string"
+      result = lambda_handler(event_json, CONTEXT)
+      self.assertEqual(expected, result)
+      
+  def test_job_non_creato_correttamente(self):
+    with patch('boto3.client') as mock:
+      media_conv = mock.return_value
+      media_conv.create_job.return_value = {\
+        'Job':{\
+          'Id': ''
+        },\
+      }
+      expected = False
+      result = lambda_handler(event_json, CONTEXT)
+      self.assertEqual(expected, result)
+      
+      #TODO fare il test dell'eccezione lanciata
+  # def test_job_exception(self):
+  #   with patch('boto3.client') as mock:
+  #     media_conv = mock.return_value
+  #     media_conv.create_job.raiseError.side_effect = Exception('error')
+  #     self.assertRaises(Exception, lambda_handler, event_json, CONTEXT)

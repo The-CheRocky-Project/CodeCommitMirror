@@ -14,9 +14,7 @@ import urllib.parse
 import boto3
 
 s3 = boto3.resource('s3')
-media_conv = boto3.client('mediaconvert',
-                          endpoint_url='https://' +
-                                       'fkuulejsc.mediaconvert.us-east-2.amazonaws.com')
+
 # le variabili di configurazione dell'ambiente
 env_settings = {
     'AccelerationSettings': {
@@ -45,6 +43,9 @@ def lambda_handler(event, context):
         string: job_id del lavoro avviato in Media Convert oppure false
     """
     # Extract bucket and fileKey strings
+    media_conv = boto3.client('mediaconvert',
+                          endpoint_url='https://' +
+                                       'fkuulejsc.mediaconvert.us-east-2.amazonaws.com')
     record = event['Records'][0]['s3']
     bucket = record['bucket']['name']
     key = urllib.parse.unquote_plus(record['object']['key'], encoding='utf-8')
