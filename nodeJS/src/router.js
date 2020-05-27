@@ -9,7 +9,7 @@ const http = require('http').createServer(ahl);
 const port = process.env.PORT || 3000;
 const path = require('path');
 const exphbs = require('express-handlebars');
-var bodyParser = require('body-parser')
+let bodyParser = require('body-parser')
 // parse application/x-www-form-urlencoded
 ahl.use(bodyParser.urlencoded({ extended: false }))
 console.log(process.env);
@@ -278,13 +278,10 @@ ahl.post('/notifyNewVideoEndpoint', (req,res) => {
     res.send();
 });
 
-const bodyParser = require('body-parser');
-ahl.use(bodyParser.json());
-
 /**
  * API di test per token SNS
  */
 ahl.post('/sns', (req,res) => {
-   console.log(req.body);
+   console.log(req);
    res.send('');
 });
