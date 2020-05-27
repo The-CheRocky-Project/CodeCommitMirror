@@ -11,11 +11,11 @@ const path = require('path');
 const exphbs = require('express-handlebars');
 var bodyParser = require('body-parser')
 // parse application/x-www-form-urlencoded
-ahl.use(bodyParser.urlencoded({ extended: false }))
-console.log(process.env);
+ahl.use(bodyParser.urlencoded({ extended: true }))
 
 // parse application/json
 ahl.use(bodyParser.json())
+
 //creates a backport for the socket communication
 const backport = require('socket.io')(http);
 
@@ -285,5 +285,5 @@ ahl.post('/sns', (req,res) => {
     console.log(req)
     console.log(req.body);
     console.log("token: " + console.log(req.token));
-   res.send('');
+    res.send('');
 });
