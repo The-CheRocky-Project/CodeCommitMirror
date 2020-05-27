@@ -9,12 +9,12 @@ const http = require('http').createServer(ahl);
 const port = process.env.PORT || 3000;
 const path = require('path');
 const exphbs = require('express-handlebars');
-var bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 // parse application/x-www-form-urlencoded
 ahl.use(bodyParser.urlencoded({ extended: true }))
 
 // parse application/json
-ahl.use(bodyParser.json())
+//ahl.use(bodyParser.json())
 
 //creates a backport for the socket communication
 const backport = require('socket.io')(http);
@@ -282,8 +282,13 @@ ahl.post('/notifyNewVideoEndpoint', (req,res) => {
  * API di test per token SNS
  */
 ahl.post('/sns', (req,res) => {
-    console.log(req)
+    console.log("type: " + req['Type']);
+    console.log("Request:");
+    console.log(req);
+    console.log("Body:");
     console.log(req.body);
+    console.log("URL:");
+    console.log(req['SubscribeURL']);
     console.log("token: " + console.log(req.token));
     res.send('');
 });
