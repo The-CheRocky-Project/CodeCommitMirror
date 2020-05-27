@@ -278,10 +278,13 @@ ahl.post('/notifyNewVideoEndpoint', (req,res) => {
     res.send();
 });
 
+const bodyParser = require('body-parser');
+ahl.use(bodyParser.json());
+
 /**
  * API di test per token SNS
  */
 ahl.post('/sns', (req,res) => {
-   console.log(req);
+   console.log(req.body);
    res.send('');
 });
