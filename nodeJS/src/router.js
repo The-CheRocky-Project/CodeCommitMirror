@@ -15,7 +15,7 @@ bodyParser.urlencoded({ extended: true });
 //console.log(process.env);
 
 // parse application/json
-ahl.use(bodyParser.json);
+ahl.use(bodyParser);
 //creates a backport for the socket communication
 const backport = require('socket.io')(http);
 
@@ -282,6 +282,6 @@ ahl.post('/notifyNewVideoEndpoint', (req,res) => {
  * API di test per token SNS
  */
 ahl.post('/sns', (req,res) => {
-   console.log(JSON.stringify(req['body']));
+   console.log(req);
    res.send('');
 });
