@@ -9,13 +9,13 @@ const http = require('http').createServer(ahl);
 const port = process.env.PORT || 3000;
 const path = require('path');
 const exphbs = require('express-handlebars');
-let bodyParser = require('body-parser')
+var bodyParser = require('body-parser')
 // parse application/x-www-form-urlencoded
-bodyParser.urlencoded({ extended: true });
-//console.log(process.env);
+ahl.use(bodyParser.urlencoded({ extended: false }))
+console.log(process.env);
 
 // parse application/json
-ahl.use(bodyParser);
+ahl.use(bodyParser.json())
 //creates a backport for the socket communication
 const backport = require('socket.io')(http);
 
