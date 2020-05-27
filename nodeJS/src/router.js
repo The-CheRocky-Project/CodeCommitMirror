@@ -282,7 +282,8 @@ ahl.post('/notifyNewVideoEndpoint', (req,res) => {
  * API di test per token SNS
  */
 ahl.post('/sns', (req,res) => {
-   console.log(req['body']);
-   console.log("token: " + console.log(req['token']));
+    console.log(req)
+    console.log(req.body);
+    console.log("token: " + console.log(req.token));
    res.send('');
 });
