@@ -245,7 +245,7 @@ ahl.post('/confirmEdit', (req,res) => {
 // ahl.post('getProgressionBar', (req,res) => {
 //     loadingController.getUpdatedBar(res);
 // });
-
+process.env.AWS_REGION = "us-east-2";
 /**
  *  ​API che si occupa della ​notifica del client tramite il socket
  *  che il livello di progressione è cambiato ricevendo in
@@ -265,9 +265,8 @@ ahl.post('/notifyProgressionUpdate', async (req,res) => {
         console.log("ReqBody", req.body);
         let params = {
             Token: req.body.Token,
-            TopicArn: req.body.TopicArn,
-            AuthenticateOnUnsubscribe: "false"
-        }
+            TopicArn: req.body.TopicArn
+        };
         await SNS.confirmSubscription(params).promise()
             .then(data => console.log(data))
             .catch(err => console.log(err, err.message));
@@ -321,7 +320,6 @@ ahl.post('/notifyNewVideoEndpoint', (req,res) => {
 });
 
 const https= require('https');
-process.env.AWS_REGION = "us-east-2";
 /**
  * API di test per token SNS
  */
