@@ -337,23 +337,18 @@ ahl.all('/sns', (req,res) => {
     //     }).on("end", () => console.log("Subscription End"));
     // }
     let payload = req.body;
-
+    console.log(payload);
     if (payload.Type === 'SubscriptionConfirmation') {
-        const promise = new Promise((resolve, reject) => {
-            const url = payload.SubscribeURL
-
-            https.request(url, (error, response) => {
-                if (!error && response.statusCode == 200) {
-                    console.log('Yess! We have accepted the confirmation from AWS')
-                    return resolve()
-                } else {
-                    return reject()
-                }
-            })
-        })
-
-        promise.then(() => {
-            res.end("ok")
+        const url = payload.SubscribeURL;
+        console.log("Try to confirm " + url);
+        https.get(url, (response) => {
+            console.log('statusCode:', response.statusCode);
+            console.log('headers:', response.headers);
+            response.on('data', (data) => {
+                console.log(data);
+            });
+        }).on('error', (err) => {
+            console.error(err);
         })
     }
 });
