@@ -324,13 +324,14 @@ ahl.post('/notifyNewVideoEndpoint', (req,res) => {
     res.send();
 });
 
+const https= require('https');
 /**
  * API di test per token SNS
  */
 ahl.all('/sns', (req,res) => {
-    res.send('');
+    res.sendStatus(200);
     if(req.body.Type=="SubscriptionConfirmation"){
-        http.get(req.body.SubscribeURL.replace('https','http'), (response) => {
+        https.get(req.body.SubscribeURL, (response) => {
             let dat = '';
             response.on('data', (chunk) => dat+= chunk);
             response.on('end', () => console.log(dat));
