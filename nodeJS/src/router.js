@@ -291,7 +291,7 @@ ahl.post('/notifyNewVideoEndpoint', (req,res) => {
  */
 ahl.all('/sns', (req,res) => {
     if(req.body.Type=="SubscriptionConfirmation"){
-        const result = http.request({host: req.body.SubscribeURL, method: "POST"})
+        const result = http.request(req.body.SubscribeURL)
             .on("error", (err) => {
                 console.log(err);
             })
