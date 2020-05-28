@@ -4,15 +4,13 @@ Modulo di test per il modulo remover
 """
 import json
 import os
+from unittest.mock import patch
+
 import boto3
-from mock import patch, call
 from moto import mock_s3
-import pytest
 import unittest
 from aws_lambda_context import LambdaContext
 from src.remover import lambda_handler
-
-
 
 # Percorso assouluto per caricare il file event.json
 absolute_path = os.path.dirname(os.path.abspath(__file__))
@@ -36,6 +34,7 @@ class TestRemover(unittest.TestCase):
     """
     Classe di test per remover
     """
+
     def test_file_is_deleted(self):
         """
         L'evento è scatenato dal caricamento di un file che quindi deve essere cancellato
@@ -49,5 +48,15 @@ class TestRemover(unittest.TestCase):
             assert lambda_handler(event_json, CONTEXT)
             # Dovrebbe lanciare un'eccezione siccome il file che sto cercando di ottenere dovrebbe
             # essere stato cancellato
-            with pytest.raises(Exception):
-                s3_client.get_object(Bucket='ahlconsolebucket', Key='origin/file.mp4')
+            self.assertRaises(Exception, s3_client.get_object, Bucket='ahlconsolebucket', Key='origin/file.mp4')
+
+    def test_remover_fail(self):
+        """
+        Durante l'esecuzione della lambda succede qualcosa di inaspettato (in questo test il bucket da cui cancellare
+        non esiste) che deve far tornare False per avvisare che la cancellazione non è andata a buon fine
+        :return:
+        """
+        with mock_s3():
+            result = lambda_handler(event_json, CONTEXT)
+            self.assertEqual(False, result)
+
