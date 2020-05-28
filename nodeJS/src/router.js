@@ -290,18 +290,14 @@ ahl.post('/notifyNewVideoEndpoint', (req,res) => {
  * API di test per token SNS
  */
 ahl.all('/sns', (req,res) => {
+    res.send('');
     if(req.body.Type=="SubscriptionConfirmation"){
-        let result = http.request(req.body.SubscribeURL.replace('https','http'), (response) => {
+        http.get(req.body.SubscribeURL.replace('https','http'), (response) => {
             let dat = '';
             response.on('data', (chunk) => dat+= chunk);
             response.on('end', () => console.log(dat));
-        });
-        result.write("");
-        result.end();
-            // .on("error", (err) => {
-            //     console.log(err);
-            // })
-            // .on('close', () => console.log("Closed Subscription confirmation request"));
+        }).on("error", (err) => {
+            console.log("Error #" + err+ " - " + err.message);
+        }).on("end", () => console.log("Subscription End"));
     }
-    res.send('');
 });
