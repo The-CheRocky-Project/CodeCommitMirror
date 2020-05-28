@@ -4,8 +4,6 @@ Modulo di test per il modulo remover
 """
 import json
 import os
-from unittest.mock import patch
-
 import boto3
 from moto import mock_s3
 import unittest

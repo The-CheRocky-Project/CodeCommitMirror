@@ -3,10 +3,8 @@
 # """
 import json
 import os
-import pytest
 import unittest
-import botocore
-from mock import patch, call
+from mock import patch
 from src.thumbfy import lambda_handler
 from aws_lambda_context import LambdaContext
 
