@@ -31,18 +31,20 @@ with open(file_path_false, 'r') as f:
 CONTEXT = LambdaContext()
 CONTEXT.function_name = 'framer'
 
+
 class TestFramer(unittest.TestCase):
     """
     Classe di test per il lambda_handler di framer
     """
+
     def test_job_start_correctly(self):
         with patch('boto3.client') as mock:
             media_conv = mock.return_value
-            media_conv.create_job.return_value = {\
-                'Job':{\
-                     'Id': 'string'
-                },\
-            }
+            media_conv.create_job.return_value = { \
+                'Job': { \
+                    'Id': 'string'
+                }, \
+                }
             expected = "string"
             result = lambda_handler(event_json_true, CONTEXT)
             self.assertEqual(expected, result)
