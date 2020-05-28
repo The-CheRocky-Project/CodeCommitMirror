@@ -254,7 +254,7 @@ ahl.post('/confirmEdit', (req,res) => {
  * @param {object} req - Rappresenta la richiesta http contenente il valore intero progress
  * @param {object} res - Rappresenta la risposta http
  */
-ahl.post('/notifyProgressionUpdate', (req,res) => {
+ahl.post('/notifyProgressionUpdate', async (req,res) => {
   // TODO sistemare la funzione e testarla
     res.sendStatus(200);
     console.log("Notify start");
@@ -268,7 +268,7 @@ ahl.post('/notifyProgressionUpdate', (req,res) => {
             TopicArn: req.body.TopicArn,
             AuthenticateOnUnsubscribe: "false"
         }
-        SNS.confirmSubscription(params).promise()
+        await SNS.confirmSubscription(params).promise()
             .then(data => console.log(data))
             .catch(err => console.log(err, err.message));
         console.log("Confirmation Script terminated");
