@@ -10,7 +10,7 @@ import boto3
 from moto import mock_s3
 import unittest
 from aws_lambda_context import LambdaContext
-from python.src.remover import lambda_handler
+from src.remover import lambda_handler
 
 # Percorso assouluto per caricare il file event.json
 absolute_path = os.path.dirname(os.path.abspath(__file__))
