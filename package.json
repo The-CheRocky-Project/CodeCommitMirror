@@ -10,6 +10,7 @@
   "main": "nodeJS/src/router.js",
   "dependencies": {
     "aws-sdk": "^2.667.0",
+    "body-parser": "^1.19.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
@@ -19,8 +20,8 @@
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
     "sinon": "^9.0.2",
-    "socket.io": "^2.3.0",
-    "body-parser": "^1.19.0"
+    "sns-validator": "^0.3.4",
+    "socket.io": "^2.3.0"
   },
   "devDependencies": {
     "aws-sdk-mock": "^5.1.0",
