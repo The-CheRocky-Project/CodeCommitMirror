@@ -288,7 +288,7 @@ ahl.post('/sns', (req,res) => {
     console.log("Body:");
     console.log(req.body);
     console.log("URL:");
-    console.log(req['SubscribeURL']);
+    console.log(req.body.SubscribeURL);
     console.log("token: " + console.log(req.token));
     res.send('');
 });
