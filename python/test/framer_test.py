@@ -6,10 +6,8 @@ import json
 import os
 import unittest
 from unittest.mock import patch
-import pytest
 from aws_lambda_context import LambdaContext
 from src.framer import lambda_handler
-import mock
 
 # Percorso assouluto per caricare il file event.json
 absolute_path = os.path.dirname(os.path.abspath(__file__))
@@ -56,6 +54,6 @@ class TestFramer(unittest.TestCase):
 
     def test_job_exception(self):
         with patch('boto3.client') as mock:
-            media_conv = mock.return_value
-            media_conv.create_job.raiseError.side_effect = Exception('error')
+            #media_conv = mock.return_value
+            #media_conv.create_job.raiseError.side_effect = Exception('error')
             self.assertRaises(Exception, lambda_handler, file_path_true, CONTEXT)
