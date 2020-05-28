@@ -20,7 +20,8 @@
     "morgan": "~1.9.1",
     "sinon": "^9.0.2",
     "socket.io": "^2.3.0",
-    "body-parser": "^1.19.0"
+    "body-parser": "^1.19.0",
+    "request": "^2.88.2"
   },
   "devDependencies": {
     "aws-sdk-mock": "^5.1.0",

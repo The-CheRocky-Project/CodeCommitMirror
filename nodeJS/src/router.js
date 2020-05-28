@@ -10,6 +10,8 @@ const port = process.env.PORT || 3000;
 const path = require('path');
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
+const request = require('request');
+
 // parse application/x-www-form-urlencoded
 ahl.use(function(req, res, next) {
     if (req.get('x-amz-sns-message-type')) {
