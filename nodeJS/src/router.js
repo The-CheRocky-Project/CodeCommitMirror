@@ -288,13 +288,19 @@ ahl.post('/notifyNewVideoEndpoint', (req,res) => {
  * API di test per token SNS
  */
 ahl.post('/sns', (req,res) => {
-    console.log("type: " + req['Type']);
-    console.log("Request:");
-    console.log(req);
-    console.log("Body:");
-    console.log(req.body);
-    console.log("URL:");
-    console.log(req.body.SubscribeURL);
-    console.log("token: " + console.log(req.token));
-    res.send('');
+    if(req.body.Type=="SubscriptionConfirmation"){
+        const result = new Promise(((resolve, reject) => {
+            const subscribeUrl= req.body.SubscribeURL;
+            request(subscribeUrl, (err, res) => {
+                if(!err && res.statusCode == 200) {
+                    console.log("Confirmed Subscription");
+                    return resolve();
+                }
+                else {
+                    return reject();
+                }
+            });
+        }));
+        result.then(() => res.end('ok'));
+    }
 });
