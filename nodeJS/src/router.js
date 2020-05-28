@@ -11,10 +11,16 @@ const path = require('path');
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 // parse application/x-www-form-urlencoded
+ahl.use(function(req, res, next) {
+    if (req.get('x-amz-sns-message-type')) {
+        req.headers['content-type'] = 'application/json';
+    }
+    next();
+});
 ahl.use(bodyParser.urlencoded({ extended: true }))
 
 // parse application/json
-//ahl.use(bodyParser.json())
+ahl.use(bodyParser.json())
 
 //creates a backport for the socket communication
 const backport = require('socket.io')(http);
