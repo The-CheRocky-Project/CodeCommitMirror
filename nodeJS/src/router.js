@@ -256,7 +256,20 @@ ahl.post('/confirmEdit', (req,res) => {
  */
 ahl.post('notifyProgressionUpdate', (req,res) => {
   // TODO sistemare la funzione e testarla
-    res.send(backport.emit('progress',req.body['progress']));
+    if(req.body.Type == "SubscriptionConfirmation"){
+        const AWS = require('aws-sdk');
+        const SNS = new AWS.SNS();
+        let params = {
+            Token: req.body.Token,
+            TopicArn: req.body.TopicArn
+        }
+        SNS.confirmSubscription(params, (err, data) => {
+            if(err) console.log(err, err.stack);
+            else console.log(data);
+        });
+    }
+    backport.emit('progress',req.body['progress']);
+    res.send('');
     if (progression >= 100){
         activePage = pages.edit;
         backport.emit('refresh','');
