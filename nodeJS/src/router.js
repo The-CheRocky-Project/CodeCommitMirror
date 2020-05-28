@@ -5,7 +5,8 @@
 // requires all the modules dependencies
 const express = require('express');
 const ahl = express();
-const http = require('http').createServer(ahl);
+const http = require('http');
+const server = http.createServer(ahl);
 const port = process.env.PORT || 3000;
 const path = require('path');
 const exphbs = require('express-handlebars');
@@ -24,7 +25,7 @@ ahl.use(bodyParser.urlencoded({ extended: true }))
 ahl.use(bodyParser.json())
 
 //creates a backport for the socket communication
-const backport = require('socket.io')(http);
+const backport = require('socket.io')(server);
 
 //publish CSS, client JS and images
 ahl.use(express.static(path.join(__dirname,'/public')));
@@ -109,7 +110,7 @@ backport.on('connection', (socket) => {
 });
 
 //puts the server listening on the correct port
-http.listen(port, function(){
+server.listen(port, function(){
     console.log('listening on *:' + port);
 });
 
@@ -288,12 +289,13 @@ ahl.post('/notifyNewVideoEndpoint', (req,res) => {
 /**
  * API di test per token SNS
  */
-ahl.post('/sns', (req,res) => {
+ahl.all('/sns', (req,res) => {
     if(req.body.Type=="SubscriptionConfirmation"){
-        const result = http.get(req.body.SubscribeURL).on(
-            "error", (err) => {
+        const result = http.request({host: req.body.SubscribeURL, method: "POST"})
+            .on("error", (err) => {
                 console.log(err);
-            }
-        ).on('close', () => console.log("Closed Subscription confirmation request"));
+            })
+            .on('close', () => console.log("Closed Subscription confirmation request"));
     }
+    res.send('');
 });
