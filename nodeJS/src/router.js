@@ -326,13 +326,33 @@ const https= require('https');
  */
 ahl.all('/sns', (req,res) => {
     res.sendStatus(200);
-    if(req.body.Type=="SubscriptionConfirmation"){
-        https.get(req.body.SubscribeURL, (response) => {
-            let dat = '';
-            response.on('data', (chunk) => dat+= chunk);
-            response.on('end', () => console.log(dat));
-        }).on("error", (err) => {
-            console.log("Error #" + err+ " - " + err.message);
-        }).on("end", () => console.log("Subscription End"));
+    // if(req.body.Type=="SubscriptionConfirmation"){
+    //     https.get(req.body.SubscribeURL, (response) => {
+    //         let dat = '';
+    //         response.on('data', (chunk) => dat+= chunk);
+    //         response.on('end', () => console.log(dat));
+    //     }).on("error", (err) => {
+    //         console.log("Error #" + err+ " - " + err.message);
+    //     }).on("end", () => console.log("Subscription End"));
+    // }
+    let payload = req.body;
+
+    if (payload.Type === 'SubscriptionConfirmation') {
+        const promise = new Promise((resolve, reject) => {
+            const url = payload.SubscribeURL
+
+            https.request(url, (error, response) => {
+                if (!error && response.statusCode == 200) {
+                    console.log('Yess! We have accepted the confirmation from AWS')
+                    return resolve()
+                } else {
+                    return reject()
+                }
+            })
+        })
+
+        promise.then(() => {
+            res.end("ok")
+        })
     }
 });
