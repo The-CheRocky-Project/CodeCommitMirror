@@ -41,7 +41,6 @@ class TestRemover(unittest.TestCase):
         L'evento è scatenato dal caricamento di un file che quindi deve essere cancellato
         :return:
         """
-        print(self)
         with mock_s3():
             s3_client = boto3.client('s3', region_name='us-east-2')
             s3_client.create_bucket(Bucket='ahlconsolebucket')

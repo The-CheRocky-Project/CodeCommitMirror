@@ -27,55 +27,6 @@ CONTEXT = LambdaContext()
 CONTEXT.function_name = 'thumbfy'
 
 
-# class TestThumbfy(unittest.TestCase):
-#     """
-#     Classe di test per la lambda thubmfy
-#     """
-#     def test_positive_result(self, monkeypatch):
-#         """
-#         Classe di test per risultato positivo
-#         :param monkeypatch:
-#         :return:
-#         """
-#         print(self)
-#         def create_thumbnail_mock(input_key, output_folder_key, queue):
-#             """
-#             Mock della funzione create_thumbnail
-#             :param input_key:
-#             :param output_folder_key:
-#             :param queue:
-#             :return:
-#             """
-#             assert input_key == 's3://ahlconsolebucket/origin/partita_di_calcio.mp4'
-#             assert output_folder_key == 's3://ahlconsolebucket/origin/partita_di_calcio.mp4.jpg'
-#             assert queue == 'console_thumbnail'
-#             return 10  # Fake job id
-
-#         monkeypatch.setattr(media_manager, "create_thumbnail", create_thumbnail_mock)
-#         assert lambda_handler(event_json, CONTEXT) == 10
-
-#     def test_negative_result(self, monkeypatch):
-#         """
-#         Classe di test per risultato negativo
-#         :param monkeypatch:
-#         :return:
-#         """
-#         print(self)
-#         def create_thumbnail_mock(input_key, output_folder_key, queue):
-#             """
-#             Mock della funzione createThumbnail()
-#             :param input_key:
-#             :param output_folder_key:
-#             :param queue:
-#             :return:
-#             """
-#             raise Exception('Some error')
-
-#         monkeypatch.setattr(media_manager, "create_thumbnail", create_thumbnail_mock)
-#         Controllo che sia stata lanciata un'eccezione
-#         with pytest.raises(Exception):
-#             lambda_handler(event_json, CONTEXT)
-
 class TestThumbfy(unittest.TestCase):
   """
   Classe di test per il lambda_handler di framer
