@@ -265,7 +265,7 @@ ahl.post('/notifyProgressionUpdate', async (req,res) => {
         let params = {
             Token: req.body.Token,
             TopicArn: req.body.TopicArn,
-            AuthenticateOnUnsubscribe: false
+            AuthenticateOnUnsubscribe: "false"
         }
         await SNS.confirmSubscription(params).promise()
             .then(data => console.log(data)
