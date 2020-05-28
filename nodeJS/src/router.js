@@ -246,6 +246,7 @@ ahl.post('/confirmEdit', (req,res) => {
 //     loadingController.getUpdatedBar(res);
 // });
 
+const snsMW = require('express-sns-validator');
 /**
  *  ​API che si occupa della ​notifica del client tramite il socket
  *  che il livello di progressione è cambiato ricevendo in
@@ -254,26 +255,10 @@ ahl.post('/confirmEdit', (req,res) => {
  * @param {object} req - Rappresenta la richiesta http contenente il valore intero progress
  * @param {object} res - Rappresenta la risposta http
  */
-ahl.post('/notifyProgressionUpdate', async (req,res) => {
+ahl.post('/notifyProgressionUpdate', snsMW(), (req,res) => {
   // TODO sistemare la funzione e testarla
     console.log("Notify start");
-    const https = require('https'),
-        MessageValidator = require('sns-validator'),
-        validator = new MessageValidator();
-    validator.validate(req.body, function (err, message) {
-        console.log('validator Start');
-        if (err) {
-            console.error(err);
-            return;
-        }
-
-        if (message['Type'] === 'SubscriptionConfirmation') {
-            console.log("Subscription Start");
-            https.get(message['SubscribeURL'], function (res) {
-                console.log("You have confirmed your endpoint subscription");
-            });
-            console.log("Subscription End");
-        }
+    console.log(req.body);
             // if(req.body.Type == "SubscriptionConfirmation"){
             //     console.log("Confirmation Script");
             //     const AWS = require('aws-sdk');
@@ -289,7 +274,7 @@ ahl.post('/notifyProgressionUpdate', async (req,res) => {
             //     promise.catch(err => console.log(err, err.message));
             //     console.log("Confirmation Script terminated");
         // }
-        else {
+        // else {
             if (req.body.Type == "Notification") {
                 console.log("Notification Script");
                 backport.emit('progress', req.body.progress);
@@ -309,9 +294,9 @@ ahl.post('/notifyProgressionUpdate', async (req,res) => {
                 }
                 console.log("Dummy Script terminated");
             }
-        }
+        // }
         console.log("Validator End");
-    });
+    // });
     res.send('');
     console.log("notify End");
 });

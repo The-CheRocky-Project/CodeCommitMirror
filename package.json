@@ -15,12 +15,12 @@
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "express-handlebars": "^4.0.3",
+    "express-sns-validator": "^1.0.0",
     "hbs": "^4.1.1",
     "http": "0.0.0",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
     "sinon": "^9.0.2",
-    "sns-validator": "^0.3.4",
     "socket.io": "^2.3.0"
   },
   "devDependencies": {
