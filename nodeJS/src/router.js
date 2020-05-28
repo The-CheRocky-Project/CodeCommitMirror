@@ -10,7 +10,6 @@ const port = process.env.PORT || 3000;
 const path = require('path');
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
-const request = require('request');
 
 // parse application/x-www-form-urlencoded
 ahl.use(function(req, res, next) {
@@ -293,12 +292,13 @@ ahl.post('/sns', (req,res) => {
     if(req.body.Type=="SubscriptionConfirmation"){
         const result = new Promise(((resolve, reject) => {
             const subscribeUrl= req.body.SubscribeURL;
-            request(subscribeUrl, (err, res) => {
+            http.request({host: subscribeUrl, method: "POST"}, (err, res) => {
                 if(!err && res.statusCode == 200) {
                     console.log("Confirmed Subscription");
                     return resolve();
                 }
                 else {
+                    console.log("Rejected Subscription");
                     return reject();
                 }
             });
