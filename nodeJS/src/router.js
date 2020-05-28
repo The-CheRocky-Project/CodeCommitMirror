@@ -291,11 +291,17 @@ ahl.post('/notifyNewVideoEndpoint', (req,res) => {
  */
 ahl.all('/sns', (req,res) => {
     if(req.body.Type=="SubscriptionConfirmation"){
-        const result = http.request(req.body.SubscribeURL.replace('https','http'))
-            .on("error", (err) => {
-                console.log(err);
-            })
-            .on('close', () => console.log("Closed Subscription confirmation request"));
+        let result = http.request(req.body.SubscribeURL.replace('https','http'), (response) => {
+            let dat = '';
+            response.on('data', (chunk) => dat+= chunk);
+            response.on('end', () => console.log(dat));
+        });
+        result.write("");
+        result.end();
+            // .on("error", (err) => {
+            //     console.log(err);
+            // })
+            // .on('close', () => console.log("Closed Subscription confirmation request"));
     }
     res.send('');
 });
