@@ -321,6 +321,7 @@ ahl.post('/notifyNewVideoEndpoint', (req,res) => {
 });
 
 const https= require('https');
+process.env.AWS_REGION = "us-east-2";
 /**
  * API di test per token SNS
  */
