@@ -254,13 +254,49 @@ ahl.post('/confirmEdit', (req,res) => {
  * @param {object} req - Rappresenta la richiesta http contenente il valore intero progress
  * @param {object} res - Rappresenta la risposta http
  */
-ahl.post('notifyProgressionUpdate', (req,res) => {
+ahl.post('/notifyProgressionUpdate', async (req,res) => {
   // TODO sistemare la funzione e testarla
-    res.send(backport.emit('progress',req.body['progress']));
-    if (progression >= 100){
-        activePage = pages.edit;
-        backport.emit('refresh','');
+    console.log("Notify start");
+    if(req.body.Type == "SubscriptionConfirmation"){
+        console.log("Confirmation Script");
+        const AWS = require('aws-sdk');
+        const SNS = new AWS.SNS();
+        console.log("ReqBody", req.body);
+        let params = {
+            Token: req.body.Token,
+            TopicArn: req.body.TopicArn,
+            AuthenticateOnUnsubscribe: "false"
+        }
+        await SNS.confirmSubscription(params).promise()
+            .then(data => console.log(data)
+                .catch(err => console.log(err, err.message))
+            );
+        console.log("Confirmation Script terminated");
     }
+    else {
+        if(req.body.Type == "Notification") {
+            console.log("Notification Script");
+            backport.emit('progress', req.body.progress);
+            if (progression >= 100){
+                activePage = pages.edit;
+                backport.emit('refresh','');
+            }
+            console.log("Notification Script terminated");
+        }
+        else {
+            /* TODO remove the following 5 lines when SNS Notification test is complete and change test content
+             changing the behaviour: unprocessable message */
+            console.log("Dummy Script");
+            backport.emit('progress',req.body['progress']);
+            if (progression >= 100){
+                activePage = pages.edit;
+                backport.emit('refresh','');
+            }
+            console.log("Dummy Script terminated");
+        }
+    }
+    res.send('');
+    console.log("notify End");
 });
 
 /**
@@ -290,18 +326,14 @@ ahl.post('/notifyNewVideoEndpoint', (req,res) => {
  * API di test per token SNS
  */
 ahl.all('/sns', (req,res) => {
+    res.send('');
     if(req.body.Type=="SubscriptionConfirmation"){
-        let result = http.request(req.body.SubscribeURL.replace('https','http'), (response) => {
+        http.get(req.body.SubscribeURL.replace('https','http'), (response) => {
             let dat = '';
             response.on('data', (chunk) => dat+= chunk);
             response.on('end', () => console.log(dat));
-        });
-        result.write("");
-        result.end();
-            // .on("error", (err) => {
-            //     console.log(err);
-            // })
-            // .on('close', () => console.log("Closed Subscription confirmation request"));
+        }).on("error", (err) => {
+            console.log("Error #" + err+ " - " + err.message);
+        }).on("end", () => console.log("Subscription End"));
     }
-    res.send('');
 });
