@@ -264,12 +264,13 @@ ahl.post('/notifyProgressionUpdate', async (req,res) => {
         console.log("ReqBody", req.body);
         let params = {
             Token: req.body.Token,
-            TopicArn: req.body.TopicArn
+            TopicArn: req.body.TopicArn,
+            AuthenticateOnUnsubscribe: false
         }
-        await SNS.confirmSubscription(params, (err, data) => {
-            if(err) console.log(err, err.stack);
-            else console.log(data);
-        });
+        await SNS.confirmSubscription(params).promise()
+            .then(data => console.log(data)
+                .catch(err => console.log(err, err.message))
+            );
         console.log("Confirmation Script terminated");
     }
     else {
