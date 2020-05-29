@@ -213,15 +213,7 @@ Resources:
             Principal:
               AWS: "*"
             Action:
-              - "SNS:GetTopicAttributes"
-              - "SNS:SetTopicAttributes"
-              - "SNS:AddPermission"
-              - "SNS:RemovePermission"
-              - "SNS:DeleteTopic"
-              - "SNS:Subscribe"
-              - "SNS:ListSubscriptionsByTopic"
-              - "SNS:Publish"
-              - "SNS:Receive"
+              - "SNS:*"
             Resource: !Ref confirmTopic
       Topics:
         - !Ref confirmTopic
