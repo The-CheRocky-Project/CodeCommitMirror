@@ -254,7 +254,7 @@ process.env.AWS_REGION = "us-east-2";
  * @param {object} req - Rappresenta la richiesta http contenente il valore intero progress
  * @param {object} res - Rappresenta la risposta http
  */
-ahl.post('/notifyProgressionUpdate', async (req,res) => {
+ahl.post('/notifyProgressionUpdate', (req,res) => {
   // TODO sistemare la funzione e testarla
     res.sendStatus(200);
     console.log("Notify start");
@@ -267,9 +267,12 @@ ahl.post('/notifyProgressionUpdate', async (req,res) => {
             Token: req.body.Token,
             TopicArn: req.body.TopicArn
         };
-        await SNS.confirmSubscription(params).promise()
-            .then(data => console.log(data))
-            .catch(err => console.log(err, err.message));
+        SNS.confirmSubscription(params, (err, data) => {
+            if(err)
+                console.log(err,err.message);
+            else
+                console.log(data);
+        });
         console.log("Confirmation Script terminated");
     }
     else {
