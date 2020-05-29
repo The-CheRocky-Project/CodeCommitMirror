@@ -267,13 +267,10 @@ ahl.post('/notifyProgressionUpdate', (req,res) => {
             Token: req.body.Token,
             TopicArn: req.body.TopicArn
         };
-        SNS.confirmSubscription(params, (err, data) => {
-            if(err)
-                console.log(err,err.message);
-            else
-                console.log(data);
-            res.sendStatus(204);
-        });
+        let request = SNS.confirmSubscription(params);
+        request.on('success', response => console.log("Confirmation succeeded", response))
+            .on('error', (error, response) => console.log(error, response))
+            .send();
         console.log("Confirmation Script terminated");
     }
     else {
