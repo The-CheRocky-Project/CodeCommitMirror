@@ -256,7 +256,7 @@ process.env.AWS_REGION = "us-east-2";
  */
 ahl.post('/notifyProgressionUpdate', (req,res) => {
   // TODO sistemare la funzione e testarla
-    res.sendStatus(200);
+    res.sendStatus(202);
     console.log("Notify start");
     if(req.body.Type == "SubscriptionConfirmation"){
         console.log("Confirmation Script");
@@ -272,6 +272,7 @@ ahl.post('/notifyProgressionUpdate', (req,res) => {
                 console.log(err,err.message);
             else
                 console.log(data);
+            res.sendStatus(204);
         });
         console.log("Confirmation Script terminated");
     }
