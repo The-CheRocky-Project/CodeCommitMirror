@@ -48,17 +48,24 @@ subscriptionPromise.then((data) => {
     console.log("Subscription ARN: " + data.SubscriptionArn);
 }).catch((err) => console.log(err,err.stack));
 ahl.post('/snstopic',(req,res) => {
-    let confirmationParams = {
-        protocol: 'http',
-        TopicArn: snsParams.TopicArn,
-        Endpoint: snsParams.Endpoint,
-        ReturnSubscriptionArn: true
+    if(req.body.Type == "SubscriptionConfirmation" && req.body.TopicArn== snsParams.TopicArn) {
+        console.log(req.body)
+        let confirmationParams = {
+            protocol: 'http',
+            TopicArn: snsParams.TopicArn,
+            Endpoint: snsParams.Endpoint,
+            ReturnSubscriptionArn: true,
+            Token: req.body.Token
+        };
+        let confirmationPromise = new AWS.SNS({apiVersion: '2010-03-31'})
+            .confirmSubscription(confirmationParams)
+            .promise();
+        confirmationPromise.then((data) => {
+            console.log("Confirmation ARN: " + data.SubscriptionArn);
+        }).catch((err) => console.log(err,err.stack));
+        res.sendStatus(200);
     }
-    let confirmationpromise = new AWS.SNS({apiVersion: '2010-03-31'}).confirmSubscription(confirmationParams).promise();
-    confirmationpromise.then((data) => {
-        console.log("Confirmation ARN: " + data.SubscriptionArn);
-    }).catch((err) => console.log(err,err.stack));
-    res.sendStatus(200);
+    else res.sendStatus(400);
 });
 
 // sets up the handlebars view engine
