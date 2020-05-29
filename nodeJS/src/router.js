@@ -277,7 +277,7 @@ ahl.post('/notifyProgressionUpdate', (req,res) => {
         if (req.body.Type == "Notification") {
             console.log("Notification Script");
             backport.emit('progress', req.body.progress);
-            if (progression >= 100) {
+            if (req.body.progression >= 100) {
                 activePage = pages.edit;
                 backport.emit('refresh', '');
             }
@@ -286,8 +286,8 @@ ahl.post('/notifyProgressionUpdate', (req,res) => {
             /* TODO remove the following 5 lines when SNS Notification test is complete and change test content
              changing the behaviour: unprocessable message */
             console.log("Dummy Script");
-            backport.emit('progress', req.body['progress']);
-            if (progression >= 100) {
+            backport.emit('progress', req.body.progress);
+            if (req.body.progress >= 100) {
                 activePage = pages.edit;
                 backport.emit('refresh', '');
             }
