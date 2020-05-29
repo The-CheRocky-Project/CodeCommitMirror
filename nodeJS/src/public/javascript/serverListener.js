@@ -33,8 +33,12 @@ $(document).ready(() => {
      * @param {object} data - intero 0-100 che indica la percentuale di caricamento
      */
     socket.on('progress', (data) => {
+        alert(data);
+        alert(data.progression);
+        alert(data.Progression);
+        alert(data['progression']);
       if (document.getElementById("loadingProgressBar")) {
-        updateProgressBar(data);
+        updateProgressBar(data.progression);
       } else {
         goLoading();
       }
