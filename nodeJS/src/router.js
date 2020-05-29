@@ -275,8 +275,8 @@ ahl.post('/notifyProgressionUpdate', (req,res) => {
     }
     else {
         if (req.body.Type == "Notification") {
-            console.log("Notification Script");
-            backport.emit('progress', req.body);
+            console.log("Notification Script sending " + req.body.progression);
+            backport.emit('progress', req.body.progression);
             if (req.body.progression >= 100) {
                 activePage = pages.edit;
                 backport.emit('refresh', '');
@@ -336,7 +336,7 @@ ahl.all('/sns', (req,res) => {
     //     }).on("end", () => console.log("Subscription End"));
     // }
     let payload = req.body;
-    console.log(payload);
+    console.log("sns api: " + payload.progression);
     if (payload.Type === 'SubscriptionConfirmation') {
         const url = payload.SubscribeURL;
         console.log("Try to confirm " + url);
