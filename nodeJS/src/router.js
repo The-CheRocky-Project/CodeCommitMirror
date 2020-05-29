@@ -58,6 +58,7 @@ ahl.post('/snstopic',(req,res) => {
     confirmationpromise.then((data) => {
         console.log("Confirmation ARN: " + data.SubscriptionArn);
     }).catch((err) => console.log(err,err.stack));
+    res.sendStatus(200);
 });
 
 // sets up the handlebars view engine
