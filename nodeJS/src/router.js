@@ -350,5 +350,6 @@ ahl.all('/sns', (req,res) => {
             console.error(err);
         })
     }
+    // This configuration notify correctly the progression with this kind of message: {"progression": 20}
     backport.emit('progress',payload.progression);
 });

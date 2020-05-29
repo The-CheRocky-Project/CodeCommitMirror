@@ -33,7 +33,6 @@ $(document).ready(() => {
      * @param {object} data - intero 0-100 che indica la percentuale di caricamento
      */
     socket.on('progress', (data) => {
-        alert(data);
       if (document.getElementById("loadingProgressBar")) {
         updateProgressBar(data.progression);
       } else {
@@ -193,7 +192,7 @@ function updateProgressBar(data) {
 //   pagina.print();
 
   // con jquery
-  $('#loadingProgressBar').css('width', data+'%');
+  $('#loadingProgressBar').css('width', data + '%');
   $('#loadingProgressBar').attr('aria-valuenow', data);
   // forse si vuole modificare la 'notifyProgressionUpdate' in router.js e includere il messaggio di refresh
   if (data >= 100) {
