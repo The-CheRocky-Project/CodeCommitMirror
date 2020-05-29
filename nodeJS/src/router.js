@@ -40,7 +40,7 @@ const AWS = require('aws-sdk');
 AWS.config.update({region: 'us-east-2'});
 const snsParams = {
     Protocol: 'HTTP',
-    TopicArn: 'arn:aws:sns:us-east-2:693949087897:confirmation'
+    TopicArn: 'arn:aws:sns:us-east-2:693949087897:confirmation',
     Endpoint: 'http://ahlapp.eba-nr5hbp27.us-east-2.elasticbeanstalk.com/snstopic'
 };
 let subscriptionPromise = new new AWS.SNS({apiVersion: '2010-03-31'}).subscribe(snsParams).promise();
