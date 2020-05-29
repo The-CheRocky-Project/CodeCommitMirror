@@ -54,7 +54,7 @@ ahl.post('/snstopic',(req,res) => {
         Endpoint: snsParams.Endpoint,
         ReturnSubscriptionArn: true
     }
-    let confirmationpromise = AWS.SNS({apiVersion: '2010-03-31'}).confirmSubscription(confirmationParams).promise();
+    let confirmationpromise = new AWS.SNS({apiVersion: '2010-03-31'}).confirmSubscription(confirmationParams).promise();
     confirmationpromise.then((data) => {
         console.log("Confirmation ARN: " + data.SubscriptionArn);
     }).catch((err) => console.log(err,err.stack));
