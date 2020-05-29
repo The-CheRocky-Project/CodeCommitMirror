@@ -46,15 +46,13 @@ const snsParams = {
 let subscriptionPromise = new AWS.SNS({apiVersion: '2010-03-31'}).subscribe(snsParams).promise();
 subscriptionPromise.then((data) => {
     console.log("Subscription ARN: " + data.SubscriptionArn);
-}).catch((err) => console.log(err,err.stack));
+}).catch((err) => console.log("Errore chiamata sns  " + err,err.stack));
 ahl.post('/snstopic',(req,res) => {
+    console.log("Required snstopic with ",req.body);
     if(req.body.Type == "SubscriptionConfirmation" && req.body.TopicArn== snsParams.TopicArn) {
         console.log(req.body)
         let confirmationParams = {
-            protocol: 'http',
             TopicArn: snsParams.TopicArn,
-            Endpoint: snsParams.Endpoint,
-            ReturnSubscriptionArn: true,
             Token: req.body.Token
         };
         let confirmationPromise = new AWS.SNS({apiVersion: '2010-03-31'})
