@@ -11,6 +11,7 @@ const port = process.env.PORT || 3000;
 const path = require('path');
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
+const sns = require('./wrappers/snsWrapper');
 //const AWS = require('aws-sdk');
 
 // parse application/x-www-form-urlencoded
@@ -37,17 +38,17 @@ ahl.set('models',path.join(__dirname,'models'));
 ahl.set('views',path.join(__dirname,'views'));
 
 //sns configuration
-AWS.config.update({region: 'us-east-2'});
-const snsParams = {
-    Protocol: 'HTTP',
-    TopicArn: 'arn:aws:sns:us-east-2:693949087897:confirmation',
-    Endpoint: 'http://ahlapp.eba-nr5hbp27.us-east-2.elasticbeanstalk.com/snstopic'
-};
-let subscriptionPromise = new AWS.SNS({apiVersion: '2010-03-31'}).subscribe(snsParams).promise();
-subscriptionPromise.then((data) => {
-    console.log("###Subscription request ARN: " + data.SubscriptionArn);
-}).catch((err) => console.log("Errore chiamata sns  " + err,err.stack));
-const sns = require('./wrappers/snsWrapper');
+// AWS.config.update({region: 'us-east-2'});
+// const snsParams = {
+//     Protocol: 'HTTP',
+//     TopicArn: 'arn:aws:sns:us-east-2:693949087897:confirmation',
+//     Endpoint: 'http://ahlapp.eba-nr5hbp27.us-east-2.elasticbeanstalk.com/snstopic'
+// };
+// let subscriptionPromise = new AWS.SNS({apiVersion: '2010-03-31'}).subscribe(snsParams).promise();
+// subscriptionPromise.then((data) => {
+//     console.log("###Subscription request ARN: " + data.SubscriptionArn);
+// }).catch((err) => console.log("Errore chiamata sns  " + err,err.stack));
+
 ahl.post('/snstopic',(req,res) => {
     console.log("Required snstopic with ",req.body);
     if(req.body.Type == "SubscriptionConfirmation") {
@@ -58,6 +59,10 @@ ahl.post('/snstopic',(req,res) => {
     }
     else res.sendStatus(400);
 });
+
+sns.createTopicSubscription("confirmation",
+    'http://ahlapp.eba-nr5hbp27.us-east-2.elasticbeanstalk.com/snstopic',
+    "693949087897");
 
 // sets up the handlebars view engine
 const partialsLocation = path.join(__dirname,'views/partials');

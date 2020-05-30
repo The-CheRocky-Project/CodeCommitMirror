@@ -102,6 +102,25 @@ async function confirmRequest(requestBody) {
     return result
 }
 
+function createTopicSubscription(topicName,endpoint, userCode) {
+    const topicArn = this.getTopicArn(topicName,process.env.AWS_REGION,userCode)
+    return createSubscription("HTTP", topicArn, endpoint);
+}
+
+async function createSubscription(protocol, topicArn, endpoint) {
+    const snsClient = new AWS.SNS();
+    let result = false;
+    await snsClient.subscribe({
+        "Protocol": protocol,
+        "TopicArn": topicArn,
+        "Endpoint": endpoint
+    }).promise()
+        .then(data => result = true)
+        .catch(err => console.log("Errore di creazione subscription " + err, err.message));
+    return result;
+}
+
 exports.TopicPublisher = TopicPublisher;
 exports.getTopicArn = getTopicArn;
-exports.confirmTopic =confirmTopic;
+exports.confirmTopic = confirmTopic;
+exports.createTopicSubscription = createTopicSubscription;
