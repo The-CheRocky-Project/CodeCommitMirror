@@ -37,16 +37,16 @@ ahl.set('models',path.join(__dirname,'models'));
 ahl.set('views',path.join(__dirname,'views'));
 
 //sns configuration
-// AWS.config.update({region: 'us-east-2'});
-// const snsParams = {
-//     Protocol: 'HTTP',
-//     TopicArn: 'arn:aws:sns:us-east-2:693949087897:confirmation',
-//     Endpoint: 'http://ahlapp.eba-nr5hbp27.us-east-2.elasticbeanstalk.com/snstopic'
-// };
-// let subscriptionPromise = new AWS.SNS({apiVersion: '2010-03-31'}).subscribe(snsParams).promise();
-// subscriptionPromise.then((data) => {
-//     console.log("Subscription ARN: " + data.SubscriptionArn);
-// }).catch((err) => console.log("Errore chiamata sns  " + err,err.stack));
+AWS.config.update({region: 'us-east-2'});
+const snsParams = {
+    Protocol: 'HTTP',
+    TopicArn: 'arn:aws:sns:us-east-2:693949087897:confirmation',
+    Endpoint: 'http://ahlapp.eba-nr5hbp27.us-east-2.elasticbeanstalk.com/snstopic'
+};
+let subscriptionPromise = new AWS.SNS({apiVersion: '2010-03-31'}).subscribe(snsParams).promise();
+subscriptionPromise.then((data) => {
+    console.log("Subscription ARN: " + data.SubscriptionArn);
+}).catch((err) => console.log("Errore chiamata sns  " + err,err.stack));
 const sns = require('./wrappers/snsWrapper');
 ahl.post('/snstopic',(req,res) => {
     console.log("Required snstopic with ",req.body);
