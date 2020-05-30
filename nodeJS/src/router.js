@@ -45,7 +45,7 @@ const snsParams = {
 };
 let subscriptionPromise = new AWS.SNS({apiVersion: '2010-03-31'}).subscribe(snsParams).promise();
 subscriptionPromise.then((data) => {
-    console.log("Subscription ARN: " + data.SubscriptionArn);
+    console.log("###Subscription request ARN: " + data.SubscriptionArn);
 }).catch((err) => console.log("Errore chiamata sns  " + err,err.stack));
 const sns = require('./wrappers/snsWrapper');
 ahl.post('/snstopic',(req,res) => {
