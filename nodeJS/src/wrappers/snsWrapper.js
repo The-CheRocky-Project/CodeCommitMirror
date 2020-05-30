@@ -67,6 +67,14 @@ class TopicPublisher{
         });
     }
 }
+function confirmTopic(topicArn, Token) {
+    const data = {
+        "Token": Token,
+        "TopicArn": topicArn
+    }
+    return confirmRequest(data);
+}
+
 
 /**
  * Funzione ausiliaria asincrona che effettua la pubblicazione di un messaggio
@@ -84,5 +92,16 @@ async function publisher(params){
     return result;
 }
 
-exports.TopicPublisher= TopicPublisher;
-exports.getTopicArn= getTopicArn;
+async function confirmRequest(requestBody) {
+    const snsClient = new AWS.SNS();
+    let result = false;
+    await snsClient.confirmSubscription(requestBody)
+        .promise()
+        .then(data => result=true)
+        .catch(err => console.log("***Conf err " + err, err.message));
+    return result
+}
+
+exports.TopicPublisher = TopicPublisher;
+exports.getTopicArn = getTopicArn;
+exports.confirmTopic =confirmTopic;
