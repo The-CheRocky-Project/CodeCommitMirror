@@ -47,7 +47,7 @@ ahl.set('views',path.join(__dirname,'views'));
 // subscriptionPromise.then((data) => {
 //     console.log("Subscription ARN: " + data.SubscriptionArn);
 // }).catch((err) => console.log("Errore chiamata sns  " + err,err.stack));
-const sns = require('wrappers/snsWrapper')
+const sns = require('./wrappers/snsWrapper');
 ahl.post('/snstopic',(req,res) => {
     console.log("Required snstopic with ",req.body);
     if(req.body.Type == "SubscriptionConfirmation") {
