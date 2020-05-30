@@ -530,6 +530,9 @@ Resources:
         - Arn: !Ref frameWorkflow
           Id: frameWorkFlow_Target
           RoleArn: !GetAtt stepFRole.Arn
+        - Arn: !Ref progressionTopic
+          Id: mediaConvertProgressionTarget
+          Input: "{\"progression\": 10}"
   ahlMlBucket:
     Description: The s3 Bucket where data is stored
     Type: AWS::S3::Bucket
