@@ -37,6 +37,10 @@ ahl.set('controllers',path.join(__dirname,'controllers'));
 ahl.set('models',path.join(__dirname,'models'));
 ahl.set('views',path.join(__dirname,'views'));
 
+ahl.all('/printHostname', (req,res) => {
+    res.send(req.headers.host);
+});
+
 //sns configuration
 // AWS.config.update({region: 'us-east-2'});
 // const snsParams = {
