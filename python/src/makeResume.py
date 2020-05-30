@@ -78,7 +78,8 @@ def lambda_handler(event, context):
             'accuracy': top,
             'label': index,
             'start': 0,
-            'tfs': all_frames[i]['tfs']
+            'tfs': all_frames[i]['tfs'],
+            'auto' : False
         }
         succession.append(frame_info)
 
@@ -91,4 +92,10 @@ def lambda_handler(event, context):
 
     resume = compress_time(resume)
 
+    data = prepare_for_serialize(resume)
+
+    s3object = s3R.Object('ahlconsolebucket', 'tmp/resume.json')
+    s3object.put(Body=json.dumps(data))
+
+    #TODO aggiustare logica di ritorno in base alle esigenze
     return resume

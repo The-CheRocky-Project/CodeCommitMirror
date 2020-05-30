@@ -48,5 +48,6 @@ def lambda_handler(event, context):
     # aggiunta step parallelo per la creazione dei ritagli video
     # utilizzo del return per lo split oppure scegliere come fare
 
+    #TODO aggiustare logica di ritorno secondo le esigenze
     return all_frames
 

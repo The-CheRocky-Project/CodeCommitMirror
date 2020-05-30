@@ -91,10 +91,10 @@ def remove(to_remove, all_frames):
     """
 
     if type(to_remove) is int:
-        all_frames.pop(to_remove)
+        all_frames[to_remove]['show'] = "false";
     else:
         for i in range(len(to_remove)):
-            all_frames.pop(to_remove[i])
+            all_frames[to_remove[i]]['show'] = 'false';
     return all_frames
 
 def check_time(frames):
@@ -113,7 +113,8 @@ def check_time(frames):
 
     # controllo durata totale del resume file
     for i in range(len(frames)):
-        counter = counter + (frames[i]['tfs'] - frames[i]['start'])
+        if (frames[i]['show'] == "true"):
+            counter = counter + (int(frames[i]['tfs']) - int(frames[i]['start']))
 
     if counter <= limit:
         return True
@@ -132,18 +133,15 @@ def prioritize(frames):
             Indice dell'elemento da rimuovere
         """
 
-    to_remove = check_for_esult(frames)
+    label_in_order = ["2", "6", "8", "10", "7", "3"]
 
-    if to_remove == -1:
-        to_remove = check_for_puniz(frames)
-    if to_remove == -1:
-        to_remove = check_for_rigore(frames)
-    if to_remove == -1:
-        to_remove = check_for_yellow(frames)
-    if to_remove == -1:
-        to_remove = check_for_red(frames)
-    if to_remove == -1:
-        to_remove = check_for_goal(frames)
+    to_remove = -1
+    counter = 0
+
+    while to_remove == -1 and counter < len(label_in_order):
+        to_remove = check_for_label(frames, label_in_order[counter])
+        print(to_remove)
+        counter = counter + 1
 
     return to_remove
 
@@ -161,152 +159,56 @@ def remove_useless(all_frames):
 
     to_remove = []
     for i in range(len(all_frames)):
-        if all_frames[len(all_frames) - (1 + i)]['label'] == 0 or all_frames[len(all_frames) - (1 + i)]['label'] == 1:
+        if all_frames[len(all_frames) - (1 + i)]['label'] == "0" or all_frames[len(all_frames) - (1 + i)]['label'] == "1":
             to_remove.append(len(all_frames) - (1 + i))
-        if all_frames[len(all_frames) - (1 + i)]['label'] == 4 or all_frames[len(all_frames) - (1 + i)]['label'] == 5:
+        if all_frames[len(all_frames) - (1 + i)]['label'] == "4" or all_frames[len(all_frames) - (1 + i)]['label'] == "5":
             to_remove.append(len(all_frames) - (1 + i))
-        if all_frames[len(all_frames) - (1 + i)]['label'] == 9:
+        if all_frames[len(all_frames) - (1 + i)]['label'] == "9":
             to_remove.append(len(all_frames) - (1 + i))
     return to_remove
 
-def check_for_esult(frames):
+def check_for_label(frames, index):
     """Funzione che si occupa controllare se ci sono elementi corrispondenti
-        alla label 'esultanza'
+        alla label index
         "
         Args:
             frames: array di elementi
+            index: label corrispondente a quella dell'array all'interno della
+            funzione prioritize, in base alla priorità e all apresenza
 
         Returns:
-            Indice dell'ultimo elemento corrispondente alla label 'esultanza'
+            Indice dell'ultimo elemento corrispondente alla label index
             da rimuovere
         """
 
     find = False
-    counter = len(frames) - 1
-    while find == False and counter >= 0:
-        if frames[counter]['label'] == 2:
+    count = len(frames) - 1
+    while find == False and count >= 0:
+        # print(count)
+        if frames[count]['label'] == index:
             find = True
         else:
-            counter = counter - 1
-    return counter
+            count = count - 1
 
-def check_for_puniz(frames):
-    """Funzione che si occupa controllare se ci sono elementi corrispondenti
-        alla label 'punizione'
-        "
-        Args:
-            frames: array di elementi
-
-        Returns:
-            Indice dell'ultimo elemento corrispondente alla label 'punizione'
-            da rimuovere
-        """
-
-    find = False
-    counter = len(frames) - 1
-    while find == False and counter >= 0:
-        if frames[counter]['label'] == 2:
-            find = True
-        else:
-            counter = counter - 1
-    return counter
-
-def check_for_rigore(frames):
-    """Funzione che si occupa controllare se ci sono elementi corrispondenti
-        alla label 'rigore'
-        "
-        Args:
-            frames: array di elementi
-
-        Returns:
-            Indice dell'ultimo elemento corrispondente alla label 'rigore'
-            da rimuovere
-        """
-
-    find = False
-    counter = len(frames) - 1
-    while find == False and counter >= 0:
-        if frames[counter]['label'] == 2:
-            find = True
-        else:
-            counter = counter - 1
-    return counter
-
-def check_for_yellow(frames):
-    """Funzione che si occupa controllare se ci sono elementi corrispondenti
-        alla label 'yellowcard'
-        "
-        Args:
-            frames: array di elementi
-
-        Returns:
-            Indice dell'ultimo elemento corrispondente alla label 'yellowcard'
-            da rimuovere
-        """
-
-    find = False
-    counter = len(frames) - 1
-    while find == False and counter >= 0:
-        if frames[counter]['label'] == 2:
-            find = True
-        else:
-            counter = counter - 1
-    return counter
-
-def check_for_red(frames):
-    """Funzione che si occupa controllare se ci sono elementi corrispondenti
-        alla label 'redcard'
-        "
-        Args:
-            frames: array di elementi
-
-        Returns:
-            Indice dell'ultimo elemento corrispondente alla label 'redcard'
-            da rimuovere
-        """
-
-    find = False
-    counter = len(frames) - 1
-    while find == False and counter >= 0:
-        if frames[counter]['label'] == 2:
-            find = True
-        else:
-            counter = counter - 1
-    return counter
-
-def check_for_goal(frames):
-    """Funzione che si occupa controllare se ci sono elementi corrispondenti
-        alla label 'goal'
-        "
-        Args:
-            frames: array di elementi
-
-        Returns:
-            Indice dell'ultimo elemento corrispondente alla label 'goal'
-            da rimuovere
-        """
-
-    find = False
-    counter = len(frames) - 1
-    while find == False and counter >= 0:
-        if frames[counter]['label'] == 2:
-            find = True
-        else:
-            counter = counter - 1
-    return counter
+    return count
 
 
 def prepare_for_serialize(frames):
-    """Funzione che si occupa di trasformare il campo 'accuracy' del dizionario in stringa
-        in modo da permettere la corretta serializzazione del makeResume.json
+    """Funzione che si occupa di trasformare i campi 'accuracy', 'start', 'label'
+             e 'tfs' del dizionario in stringa in modo da permettere la corretta
+             serializzazione del makeResume.json
         "
         Args:
             frames: array di elementi
 
         Returns:
-            Array con il campo 'accuracy' sotto forma di stringa invece di Decimal
+            Array con il campo 'accuracy', 'start', 'label'
+             e 'tfs' sotto forma di stringa invece di Decimal
         """
 
-    for i in range(len(frames) - 1):
-        str(frames[i]['accuracy'])
+    for i in range(len(frames)):
+        frames[i]['accuracy'] = str(frames[i]['accuracy'])
+        frames[i]['start'] = str(frames[i]['start'])
+        frames[i]['label'] = str(frames[i]['label'])
+        frames[i]['tfs'] = str(frames[i]['tfs'])
     return frames
