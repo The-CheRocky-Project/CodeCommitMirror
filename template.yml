@@ -40,86 +40,86 @@ Parameters:
     Description: The bucket where the application operates
     Default: ahlconsolebucket
 Resources:
-  EBApplication:
-    Description: The AWS Elastic Beanstalk application, which is a container used to deploy the correct application configuration.
-    Type: AWS::ElasticBeanstalk::Application
-    Properties:
-      ApplicationName: !Sub '${ProjectId}app${Stage}'
-      Description: The name of the AWS Elastic Beanstalk application to be created for this project.
-  EBApplicationVersion:
-    Description: The version of the AWS Elastic Beanstalk application to be created for this project.
-    Type: AWS::ElasticBeanstalk::ApplicationVersion
-    Properties:
-      ApplicationName: !Ref 'EBApplication'
-      Description: The application version number.
-      SourceBundle: '.'
-  EBConfigurationTemplate:
-    Description: The AWS Elastic Beanstalk configuration template to be created for this project, which defines configuration settings used to deploy different versions of an application.
-    Type: AWS::ElasticBeanstalk::ConfigurationTemplate
-    Properties:
-      ApplicationName: !Ref 'EBApplication'
-      Description: The name of the sample configuration template.
-      OptionSettings:
-      - Namespace: aws:elasticbeanstalk:environment
-        OptionName: EnvironmentType
-        Value: SingleInstance
-      - Namespace: aws:elasticbeanstalk:environment
-        OptionName: ServiceRole
-        Value: !Ref 'EBTrustRole'
-      - Namespace: aws:elasticbeanstalk:healthreporting:system
-        OptionName: SystemType
-        Value: enhanced
-      SolutionStackName: !Ref 'SolutionStackName'
-  EBEnvironment:
-    Description: The AWS Elastic Beanstalk deployment group where the application is deployed, which is made up of the Amazon EC2 Linux instances launched for this project.
-    Type: AWS::ElasticBeanstalk::Environment
-    Properties:
-      ApplicationName: !Ref 'EBApplication'
-      EnvironmentName: !Ref 'EBApplication'
-      Description: The application to be deployed to the environment.
-      TemplateName: !Ref 'EBConfigurationTemplate'
-      VersionLabel: !Ref 'EBApplicationVersion'
-      OptionSettings:
-      - Namespace: aws:autoscaling:launchconfiguration
-        OptionName: IamInstanceProfile
-        Value: !Ref 'EBInstanceProfile'
-      - Namespace: aws:autoscaling:launchconfiguration
-        OptionName: InstanceType
-        Value: !Ref 'InstanceType'
-      - Namespace: aws:autoscaling:launchconfiguration
-        OptionName: EC2KeyName
-        Value: !Ref 'KeyPairName'
-      - Namespace: aws:ec2:vpc
-        OptionName: VPCId
-        Value: !Ref 'VpcId'
-      - !If
-        - UseSubnet
-        - Namespace: 'aws:ec2:vpc'
-          OptionName: Subnets
-          Value: !Ref 'SubnetId'
-        - !Ref "AWS::NoValue"
-  snsConsoleEndpoint:
-    Description: The endpoint for sns communication with the console application
-    DeletionPolicy: Delete
-    Type: AWS::EC2::VPCEndpoint
-    Properties:
-      PolicyDocument: '{
-         "Version":"2012-10-17",
-         "Statement":[{
-           "Effect":"Allow",
-           "Principal": "*",
-           "Action":["sns:*"],
-           "Resource":["*"]
-         }]
-      }'
-      ServiceName: !Sub com.amazonaws.${AWS::Region}.sns
-      PrivateDnsEnabled: true
-      SecurityGroupIds:
-        - sg-06d54e2975f918bcb
-      SubnetIds:
-        - !Ref 'SubnetId'
-      VpcEndpointType: Interface
-      VpcId: !Ref 'VpcId'
+#  EBApplication:
+#    Description: The AWS Elastic Beanstalk application, which is a container used to deploy the correct application configuration.
+#    Type: AWS::ElasticBeanstalk::Application
+#    Properties:
+#      ApplicationName: !Sub '${ProjectId}app${Stage}'
+#      Description: The name of the AWS Elastic Beanstalk application to be created for this project.
+#  EBApplicationVersion:
+#    Description: The version of the AWS Elastic Beanstalk application to be created for this project.
+#    Type: AWS::ElasticBeanstalk::ApplicationVersion
+#    Properties:
+#      ApplicationName: !Ref 'EBApplication'
+#      Description: The application version number.
+#      SourceBundle: '.'
+#  EBConfigurationTemplate:
+#    Description: The AWS Elastic Beanstalk configuration template to be created for this project, which defines configuration settings used to deploy different versions of an application.
+#    Type: AWS::ElasticBeanstalk::ConfigurationTemplate
+#    Properties:
+#      ApplicationName: !Ref 'EBApplication'
+#      Description: The name of the sample configuration template.
+#      OptionSettings:
+#      - Namespace: aws:elasticbeanstalk:environment
+#        OptionName: EnvironmentType
+#        Value: SingleInstance
+#      - Namespace: aws:elasticbeanstalk:environment
+#        OptionName: ServiceRole
+#        Value: !Ref 'EBTrustRole'
+#      - Namespace: aws:elasticbeanstalk:healthreporting:system
+#        OptionName: SystemType
+#        Value: enhanced
+#      SolutionStackName: !Ref 'SolutionStackName'
+#  EBEnvironment:
+#    Description: The AWS Elastic Beanstalk deployment group where the application is deployed, which is made up of the Amazon EC2 Linux instances launched for this project.
+#    Type: AWS::ElasticBeanstalk::Environment
+#    Properties:
+#      ApplicationName: !Ref 'EBApplication'
+#      EnvironmentName: !Ref 'EBApplication'
+#      Description: The application to be deployed to the environment.
+#      TemplateName: !Ref 'EBConfigurationTemplate'
+#      VersionLabel: !Ref 'EBApplicationVersion'
+#      OptionSettings:
+#      - Namespace: aws:autoscaling:launchconfiguration
+#        OptionName: IamInstanceProfile
+#        Value: !Ref 'EBInstanceProfile'
+#      - Namespace: aws:autoscaling:launchconfiguration
+#        OptionName: InstanceType
+#        Value: !Ref 'InstanceType'
+#      - Namespace: aws:autoscaling:launchconfiguration
+#        OptionName: EC2KeyName
+#        Value: !Ref 'KeyPairName'
+#      - Namespace: aws:ec2:vpc
+#        OptionName: VPCId
+#        Value: !Ref 'VpcId'
+#      - !If
+#        - UseSubnet
+#        - Namespace: 'aws:ec2:vpc'
+#          OptionName: Subnets
+#          Value: !Ref 'SubnetId'
+#        - !Ref "AWS::NoValue"
+#  snsConsoleEndpoint:
+#    Description: The endpoint for sns communication with the console application
+#    DeletionPolicy: Delete
+#    Type: AWS::EC2::VPCEndpoint
+#    Properties:
+#      PolicyDocument: '{
+#         "Version":"2012-10-17",
+#         "Statement":[{
+#           "Effect":"Allow",
+#           "Principal": "*",
+#           "Action":["sns:*"],
+#           "Resource":["*"]
+#         }]
+#      }'
+#      ServiceName: !Sub com.amazonaws.${AWS::Region}.sns
+#      PrivateDnsEnabled: true
+#      SecurityGroupIds:
+#        - sg-06d54e2975f918bcb
+#      SubnetIds:
+#        - !Ref 'SubnetId'
+#      VpcEndpointType: Interface
+#      VpcId: !Ref 'VpcId'
   consoleBucket:
     Description: The bucket containing videos from the console application
     Type: AWS::S3::Bucket
