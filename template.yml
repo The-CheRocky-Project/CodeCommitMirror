@@ -323,6 +323,14 @@ Resources:
                 Action:
                   - "mediaconvert:*"
                 Resource: "*"
+        - PolicyName: AmazonSNSFullAccess
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - "sns:*"
+                  Resource: "*"
   dynamoLambdaRole:
     Description: The role for AWS Lambda Functions
     DeletionPolicy: Delete
@@ -423,6 +431,7 @@ Resources:
         - prepareDataArn: !GetAtt [prepareData, Arn]
           frameGroupingArn: !GetAtt [frameGrouping, Arn]
           recognizerArn: !GetAtt [recognizer, Arn]
+          notifyProgressionArn: !GetAtt [notifyProgression, Arn]
       RoleArn: !GetAtt stepFRole.Arn
       StateMachineName: ahlFrameWorkflow
       StateMachineType: STANDARD
@@ -505,7 +514,7 @@ Resources:
     Type: AWS::Serverless::Function
     DeletionPolicy: Delete
     Properties:
-      Handler: label_individuator.lambda_handler
+      Handler: makeResume.lambda_handler
       Role: !GetAtt dynamoLambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/
@@ -514,7 +523,16 @@ Resources:
     Type: AWS::Serverless::Function
     DeletionPolicy: Delete
     Properties:
-      Handler: label_individuator.lambda_handler
+      Handler: checkNprioritize.lambda_handler
+      Role: !GetAtt basicLambdaRole.Arn
+      Runtime: python3.7
+      CodeUri: ./python/src/
+  notifyProgression:
+    Descrioption: The Lambda that notify the progression about recognizing
+    Type: AWS::Serverless::Function
+    DeletionPolicy: Delete
+    Properties:
+      Handler: notifyProgression.lambda_handler
       Role: !GetAtt basicLambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/

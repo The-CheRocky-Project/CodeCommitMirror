@@ -38,7 +38,12 @@
         }
       },
       "ResultPath": "$.detail.items",
-      "Next":"Check"
+      "Next":"notifyProgression"
+    },
+    "notifyProgression": {
+      "Type": "Task",
+      "Resource":  "${prepareDataArn}",
+      "Next": "Check"
     },
     "CreateResume": {
       "Type": "Pass",
