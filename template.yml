@@ -325,12 +325,12 @@ Resources:
                 Resource: "*"
         - PolicyName: AmazonSNSFullAccess
             PolicyDocument:
-              Version: "2012-10-17"
+              Version: 2012-10-17
               Statement:
                 - Effect: Allow
                   Action:
-                    - "sns:*"
-                  Resource: "*"
+                    - sns:*
+                  Resource: *
   dynamoLambdaRole:
     Description: The role for AWS Lambda Functions
     DeletionPolicy: Delete
