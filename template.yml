@@ -500,6 +500,24 @@ Resources:
       Role: !GetAtt dynamoLambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/
+  makeResume:
+    Descrioption: The Lambda that make the first prototipe fo resume file
+    Type: AWS::Serverless::Function
+    DeletionPolicy: Delete
+    Properties:
+      Handler: label_individuator.lambda_handler
+      Role: !GetAtt dynamoLambdaRole.Arn
+      Runtime: python3.7
+      CodeUri: ./python/src/
+  checkNprioritize:
+    Descrioption: The Lambda that make the first prototipe fo resume file
+    Type: AWS::Serverless::Function
+    DeletionPolicy: Delete
+    Properties:
+      Handler: label_individuator.lambda_handler
+      Role: !GetAtt basicLambdaRole.Arn
+      Runtime: python3.7
+      CodeUri: ./python/src/
   framerQueue:
     Description: The Media Convert Queue for framing jobs
     Type: AWS::MediaConvert::Queue

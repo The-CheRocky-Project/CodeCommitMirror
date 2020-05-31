@@ -45,9 +45,6 @@ def lambda_handler(event, context):
     s3object = s3R.Object('ahlconsolebucket', 'tmp/resume.json')
     s3object.put(Body=json.dumps(data))
 
-    # aggiunta step parallelo per la creazione dei ritagli video
-    # utilizzo del return per lo split oppure scegliere come fare
-
     #TODO aggiustare logica di ritorno secondo le esigenze
     return all_frames
 
