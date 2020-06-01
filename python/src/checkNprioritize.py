@@ -33,7 +33,12 @@ def lambda_handler(event, context):
 
     """
 
-    all_frames = event['Response']
+    key = event['key']
+
+    resumeJson = s3R.Object('ahlconsolebucket', key)
+    resumeRes = resumeJson.get()
+    all_frames = json.loads(resumeRes['Body'].read().decode('utf-8'))
+
 
     all_frames = remove(remove_useless(all_frames), all_frames)
     while (check_time(all_frames) == False):
@@ -45,6 +50,8 @@ def lambda_handler(event, context):
     s3object = s3R.Object('ahlconsolebucket', 'tmp/resume.json')
     s3object.put(Body=json.dumps(data))
 
-    #TODO aggiustare logica di ritorno secondo le esigenze
-    return all_frames
+    if len(data) !=0:
+        return all_frames
+    else
+        return False
 
