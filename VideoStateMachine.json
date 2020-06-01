@@ -53,6 +53,11 @@
     "prioritize": {
       "Type": "Task",
       "Resource":  "${prioritizeArn}",
+      "Next": "makeFinal"
+    },
+    "makeFinal": {
+      "Type": "Task",
+      "Resource":  "${makeFinalArn}",
       "End": true
     }
   }
