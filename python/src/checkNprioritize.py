@@ -11,12 +11,10 @@ Contenuto:
 # imports url utils and media management layer
 import json
 import boto3
-from python.src.layers import elaboration
+from layers import elaboration
 
 # Definisce la risorsa s3
 s3R = boto3.resource('s3')
-
-
 
 def lambda_handler(event, context):
     """
@@ -40,12 +38,12 @@ def lambda_handler(event, context):
     all_frames = json.loads(resumeRes['Body'].read().decode('utf-8'))
 
 
-    all_frames = remove(remove_useless(all_frames), all_frames)
-    while (check_time(all_frames) == False):
-        all_frames = remove(prioritize(all_frames), all_frames)
+    all_frames = elaboration.remove(remove_useless(all_frames), all_frames)
+    while elaboration.check_time(all_frames) == False:
+        all_frames = elaboration.remove(elaboration.prioritize(all_frames), all_frames)
 
     # Serializzazione in JSON
-    data = prepare_for_serialize(all_frames)
+    data = elaboration.(all_frames)
 
     s3object = s3R.Object('ahlconsolebucket', 'tmp/resume.json')
     s3object.put(Body=json.dumps(data))

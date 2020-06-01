@@ -432,6 +432,8 @@ Resources:
           frameGroupingArn: !GetAtt [frameGrouping, Arn]
           recognizerArn: !GetAtt [recognizer, Arn]
           notifyProgressionArn: !GetAtt [notifyProgression, Arn]
+          makeResumeArn: !GetAtt [makeResume, Arn]
+          prioritizeArn: !GetAtt [checkNprioritize, Arn]
       RoleArn: !GetAtt stepFRole.Arn
       StateMachineName: ahlFrameWorkflow
       StateMachineType: STANDARD

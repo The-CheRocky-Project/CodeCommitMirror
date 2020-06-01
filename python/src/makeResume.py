@@ -11,7 +11,7 @@ Contenuto:
 # imports url utils and media management layer
 import json
 import boto3
-from python.src.layers import elaboration
+from layers import elaboration
 
 # Definisce la risorsa s3
 
@@ -36,11 +36,8 @@ def lambda_handler(event, context):
         dizionario contenente i risultati dell'elaborazione
 
     """
-
-    folder = 'frames'
     bucket = 'ahlconsolebucket'
     basekey = event['key']
-    table_name = 'rekognitions'
 
     table = dynamo.Table('rekognitions')
 
@@ -88,17 +85,17 @@ def lambda_handler(event, context):
 
         for k in range(event['to'] - 1):
             if succession[k]['accuracy'] >= 0.80:
-                if find_trasholder(succession, succession[k], k, 11, event['to'] - 1):
+                if elaboration.find_trasholder(succession, succession[k], k, 11, event['to'] - 1):
                     resume.append(succession[k])
 
-        resume = compress_time(resume)
+        resume = elaboration.compress_time(resume)
 
-        data = prepare_for_serialize(resume)
+        data = elaboration.prepare_for_serialize(resume)
 
         s3object = s3R.Object('ahlconsolebucket', 'tmp/resume.json')
         s3object.put(Body=json.dumps(data))
 
-        key= 'ahlconsolebucket/tmp/resume.json'
+        key= 'tmp/resume.json'
         ret = {
             'key': key
         }

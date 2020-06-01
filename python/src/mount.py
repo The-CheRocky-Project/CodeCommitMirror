@@ -12,7 +12,7 @@ Contenuto:
 import json
 import urllib.parse
 import boto3
-from src.layers import media_manager
+from layers import media_manager
 
 # Definisce la risorsa s3
 s3 = boto3.resource('s3')

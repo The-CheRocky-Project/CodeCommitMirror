@@ -46,8 +46,13 @@
       "Next": "Check"
     },
     "CreateResume": {
-      "Type": "Pass",
-      "Result": "Fetches info from dynamo and preceed creating the resume file",
+      "Type": "Task",
+      "Resource":  "${makeResumeArn}",
+      "Next": "prioritize"
+    },
+    "prioritize": {
+      "Type": "Task",
+      "Resource":  "${prioritizeArn}",
       "End": true
     }
   }
