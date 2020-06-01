@@ -77,7 +77,8 @@ def lambda_handler(event, context):
                 'label': index,
                 'start': 0,
                 'tfs': all_frames[i]['tfs'],
-                'auto' : False
+                'type': "machine",
+                'show' : 'true'
             }
             succession.append(frame_info)
 

@@ -20,14 +20,14 @@ runtime = boto3.client('runtime.sagemaker')
 dynamodb = boto3.resource('dynamodb')
 
 # le variabili di configurazione dell'ambiente
-env_settings = {
-    'AccelerationSettings': {
-        'Mode': 'DISABLED'
-    },
-    'BillingTagsSource': 'QUEUE',
-    'QueuePrefix': "arn:aws:mediaconvert:us-east-2:693949087897:queues/",
-    'Role': "arn:aws:iam::693949087897:role/mediaRole"
-}
+    env_settings = {
+        'AccelerationSettings': {
+            'Mode': 'DISABLED'
+        },
+        'BillingTagsSource': 'QUEUE',
+        'QueuePrefix': "arn:aws:mediaconvert:us-east-2:693949087897:queues/",
+        'Role': "arn:aws:iam::693949087897:role/mediaRole"
+    }
 
 
 def create_thumbnail(input_key, output_folder_key, queue):
@@ -169,53 +169,23 @@ def create_thumbnail(input_key, output_folder_key, queue):
     return result['Job']['Id']
 
 
-def mount(input_file_key, piece_list, queue):
+def mount(input_file_key, destination_key, details_array,first_start, queue):
     """
     Effettua la creazione del lavoro di montaggio di alcuni spezzoni
     di un video indicato come input in base al contenuto della
     lista degli spezzoni sulla coda di lavori passata come parametro
     Args:
         input_file_key: la key del file da cui estrarre le parti
-        piece_list: l'array contenente inizio e durata di ogni spezzone
-        queue: il nome della queue da utilizzare per accodare il job
+        destination_key: la key della destinazione del nuovo file
+        con tutte le parti video inserite
+        details_array: lista contenente i tempi di inizio e fine del
+        clipping di tutti i pezzi video
+        first_start: tempo di inizio del primo pezzo da clippare
+        queue: postfisso della coda utilizzata per il montaggio video
 
     Returns:
         job_id se il lavoro è stato correttamente avviato, false altrimenti
     """
-
-    inputarray = []
-
-    for piece in piece_list:
-        inputarray.append(
-            {
-                "AudioSelectors": {
-                    "Audio Selector 1": {
-                        "Offset": 0,
-                        "DefaultSelection": "DEFAULT",
-                        "ProgramSelection": 1
-                    }
-                },
-                "VideoSelector": {
-                    "ColorSpace": "FOLLOW",
-                    "Rotate": "DEGREE_0",
-                    "AlphaBehavior": "DISCARD"
-                },
-                "FilterEnable": "AUTO",
-                "PsiControl": "USE_PSI",
-                "FilterStrength": 0,
-                "DeblockFilter": "DISABLED",
-                "DenoiseFilter": "DISABLED",
-                'FileInput': input_file_key,
-                'InputClippings': [
-                    {
-                        'StartTimecode': piece.start,
-                        'EndTimecode': piece.start + piece.duration
-                    }
-                ],
-                'TimecodeSource': 'SPECIFIEDSTART',
-                'TimecodeStart': '00:00:00:00'
-            }
-        )
 
     media_settings = {
         "OutputGroups": [
@@ -238,7 +208,7 @@ def mount(input_file_key, piece_list, queue):
                             "Height": 720,
                             "TimecodeInsertion": "DISABLED",
                             "AntiAlias": "ENABLED",
-                            "Sharpness": 50,
+                            "Sharpness": 100,
                             "CodecSettings": {
                                 "Codec": "H_264",
                                 "H264Settings": {
@@ -255,7 +225,7 @@ def mount(input_file_key, piece_list, queue):
                                     "TemporalAdaptiveQuantization": "ENABLED",
                                     "FlickerAdaptiveQuantization": "DISABLED",
                                     "EntropyEncoding": "CABAC",
-                                    "Bitrate": 10000,
+                                    "Bitrate": 1000000,
                                     "FramerateControl": "INITIALIZE_FROM_SOURCE",
                                     "RateControlMode": "CBR",
                                     "CodecProfile": "MAIN",
@@ -306,21 +276,43 @@ def mount(input_file_key, piece_list, queue):
                 "OutputGroupSettings": {
                     "Type": "FILE_GROUP_SETTINGS",
                     "FileGroupSettings": {
-                        "Destination": "s3://ahlconsolebucket/modify"
+                        "Destination": destination_key
                     }
                 }
             }
         ],
         "AdAvailOffset": 0,
-        "Inputs": inputarray,
+        "Inputs": [{
+            "AudioSelectors": {
+                "Audio Selector 1": {
+                    "Offset": 0,
+                    "DefaultSelection": "DEFAULT",
+                    "ProgramSelection": 1
+                }
+            },
+            "VideoSelector": {
+                "ColorSpace": "FOLLOW",
+                "Rotate": "DEGREE_0",
+                "AlphaBehavior": "DISCARD"
+            },
+            "FilterEnable": "AUTO",
+            "PsiControl": "USE_PSI",
+            "FilterStrength": 0,
+            "DeblockFilter": "DISABLED",
+            "DenoiseFilter": "DISABLED",
+            'FileInput': input_file_key,
+            "InputClippings": details_array,
+            'TimecodeSource': 'SPECIFIEDSTART',
+            'TimecodeStart': first_start
+        }]
     }
 
     media_conv = client("mediaconvert")
     result = media_conv.create_job(
-        Role=env_settings['Role'],
+        Role=env_settings["Role"],
         Settings=media_settings,
-        AccelerationSettings=env_settings['AccelerationSettings'],
-        StatusUpdateInterval='SECONDS_60',
+        AccelerationSettings=env_settings["AccelerationSettings"],
+        StatusUpdateInterval="SECONDS_60",
         Priority=0,
         Queue=env_settings["QueuePrefix" + queue]
     )

@@ -94,7 +94,7 @@ def remove(to_remove, all_frames):
         all_frames[to_remove]['show'] = "false";
     else:
         for i in range(len(to_remove)):
-            all_frames[to_remove[i]]['show'] = 'false';
+            all_frames[to_remove[i]]['show'] = "false";
     return all_frames
 
 def check_time(frames):
