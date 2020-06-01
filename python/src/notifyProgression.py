@@ -11,8 +11,8 @@ Contenuto:
 import json
 import boto3
 
-
 sns = boto3.client('sns')
+
 
 def lambda_handler(event, context):
     """
@@ -31,13 +31,12 @@ def lambda_handler(event, context):
     end = event['to']
     start = event['from']
 
-    message = (((end - start)/start)*75)+10
+    message = (((end - start) / start) * 75) + 10
     message = '{ progression: ' + str(message) + '}'
 
     response = sns.publish(
         TopicArn='arn:aws:sns:us-east-2:693949087897:progression',
-        Message= message,
-        }
+        Message=message
     )
 
     return event
