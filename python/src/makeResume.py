@@ -100,8 +100,8 @@ def lambda_handler(event, context):
             'key': key
         }
         if len(data) != 0:
-            return ret
-        else
+            return ret 
+        else:
             return False
     except Exception as err:
         print(err)

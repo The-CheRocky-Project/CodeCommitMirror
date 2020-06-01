@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """ Mount Lambda module
 
-Questo modulo contiene l'handler che elimina il video montato dalla lambda mount
+Questo modulo contiene l'handler che elimina il json tmp/resume.json
 Contenuto:
     * lambda_handler - l'handler principale per la lambda
 
@@ -17,8 +17,7 @@ s3 = boto3.client('s3')
 
 def lambda_handler(event, context):
     """
-    Handler che riceve l'evento scaturante l'esecuzione che contiene
-    la key del video da eliminare e il bucket che lo contiene
+    Handler che riceve l'evento scaturante l'esecuzione
     Args:
         event: L'evento che ha fatto scaturire l'avvio dell'handler
         context: Il dizionario rappresentante le variabili di contesto
@@ -31,8 +30,8 @@ def lambda_handler(event, context):
     print('Executing :' + context.function_name)
     try:
         # Preleva bucket name e key da event
-        bucket = event["Records"][0]["Sns"]["MessageAttributes"]["bucket"]["Value"]
-        key = event["Records"][0]["Sns"]["MessageAttributes"]["key"]["Value"]
+        bucket = 'ahlconsolebucket'
+        key = 'tmp/resume.json'
         s3.delete_object(
             Bucket=bucket,
             Key=key,
@@ -40,5 +39,5 @@ def lambda_handler(event, context):
         return True
     except Exception as err:
         print(err)
-        print('Impossibile eliminare il video')
+        print('Impossibile eliminare il file resume.json')
         return False
