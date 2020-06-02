@@ -14,8 +14,6 @@ import boto3
 from layers import elaboration
 
 # Definisce la risorsa s3
-
-
 s3R = boto3.resource('s3')
 #Definisce la risorsa dynamo DB
 dynamo = boto3.resource("dynamodb")
