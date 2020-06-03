@@ -523,7 +523,7 @@ Resources:
     Type: AWS::Serverless::Function
     DeletionPolicy: Delete
     Properties:
-      Handler: makeResume.lambda_handler
+      Handler: make_resume.lambda_handler
       Role: !GetAtt dynamoLambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/

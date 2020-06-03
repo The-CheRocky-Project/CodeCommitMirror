@@ -15,9 +15,8 @@ from layers import elaboration
 
 # Definisce la risorsa s3
 s3R = boto3.resource('s3')
-#Definisce la risorsa dynamo DB
+# Definisce la risorsa dynamo DB
 dynamo = boto3.resource("dynamodb")
-
 
 
 def lambda_handler(event, context):
@@ -34,8 +33,9 @@ def lambda_handler(event, context):
         dizionario contenente i risultati dell'elaborazione
 
     """
+    print('Executing: ' + context.function_name)
     bucket = 'ahlconsolebucket'
-    basekey = event['key']
+    base_key = event['key']
 
     table = dynamo.Table('rekognitions')
 
@@ -47,13 +47,9 @@ def lambda_handler(event, context):
 
     try:
         for i in range(event['to']):
-            zeros = ""
-            for k in range(7 - len(str(i))):
-                zeros = zeros + "0"
-            key = basekey + '.' + zeros + str(i) + '.jpg'
             response = table.get_item(
                 Key={
-                    'frame_key': key
+                    'frame_key': base_key + '.' + f"{i:07d}" + str(i) + '.jpg'
                 }
             )
             all_frames.append(response['Item'])
@@ -76,7 +72,7 @@ def lambda_handler(event, context):
                 'start': 0,
                 'tfs': all_frames[i]['tfs'],
                 'type': "machine",
-                'show' : 'true'
+                'show': 'true'
             }
             succession.append(frame_info)
 
@@ -84,12 +80,12 @@ def lambda_handler(event, context):
 
         for k in range(event['to'] - 1):
             if succession[k]['accuracy'] >= 0.80 and elaboration.find_trasholder(
-            succession,
-            succession[k],
-            k,
-            11,
-            event['to'] - 1):
-                    resume.append(succession[k])
+                    succession,
+                    succession[k],
+                    k,
+                    11,
+                    event['to'] - 1):
+                resume.append(succession[k])
 
         resume = elaboration.compress_time(resume)
 
@@ -98,16 +94,10 @@ def lambda_handler(event, context):
         s3object = s3R.Object('ahlconsolebucket', 'tmp/resume.json')
         s3object.put(Body=json.dumps(data))
 
-        key= 'tmp/resume.json'
-        ret = {
-            'key': key
-        }
-        if len(data) != 0:
-            return ret
-        else:
+        if len(data) == 0:
             return False
+        return {'key': 'tmp/resume.json'}
     except Exception as err:
         print(err)
         print('Impossibile recuperare i dati dal DB')
         raise err
-
