@@ -8,14 +8,14 @@ import unittest
 from aws_lambda_context import LambdaContext
 from moto import mock_s3
 import boto3
-from src.recoJsonCleaner import lambda_handler
+from src.reco_json_cleaner import lambda_handler
 
 CONTEXT = LambdaContext()
-CONTEXT.function_name = 'recoJsonCleaner'
+CONTEXT.function_name = 'reco_json_cleaner'
 
 # Percorso assouluto per caricare il file event.json
 absolute_path = os.path.dirname(os.path.abspath(__file__))
-file_path = absolute_path + '/../event/final_video_cleaner_event.json'
+file_path = absolute_path + '/../event/reco_json_cleaner_event.json'
 
 with open(file_path, 'r') as f:
     event_json = json.load(f)

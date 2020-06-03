@@ -8,7 +8,7 @@ import unittest
 from aws_lambda_context import LambdaContext
 from moto import mock_s3
 import boto3
-from src.finalVideoCleaner import lambda_handler
+from src.final_video_cleaner import lambda_handler
 
 # Percorso assouluto per caricare il file event.json
 absolute_path = os.path.dirname(os.path.abspath(__file__))
@@ -25,7 +25,7 @@ with open(file_path, 'r') as f:
     event_json = json.load(f)
 
 CONTEXT = LambdaContext()
-CONTEXT.function_name = 'finalVideoCleaner'
+CONTEXT.function_name = 'final_video_cleaner'
 
 
 class TestFinalVideoCleaner(unittest.TestCase):
