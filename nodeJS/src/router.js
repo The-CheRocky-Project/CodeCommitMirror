@@ -288,45 +288,35 @@ process.env.AWS_REGION = "us-east-2";
  */
 ahl.post('/notifyProgressionUpdate', (req,res) => {
   // TODO sistemare la funzione e testarla
-    res.sendStatus(202);
-    console.log("Notify start");
     if(req.body.Type == "SubscriptionConfirmation"){
-        console.log("Confirmation Script");
-        const SNS = new AWS.SNS();
-        console.log("ReqBody", req.body);
-        let params = {
-            Token: req.body.Token,
-            TopicArn: req.body.TopicArn
-        };
-        let request = SNS.confirmSubscription(params);
-        request.on('success', response => console.log("Confirmation succeeded", response))
-            .on('error', (error, response) => console.log(error, response))
-            .send();
-        console.log("Confirmation Script terminated");
-    }
-    else {
-        if (req.body.Type == "Notification") {
-            console.log("Notification Script sending " + req.body.progression);
-            //backport.emit('progress', req.body.progression);
-            if (req.body.progression >= 100) {
-                activePage = pages.edit;
-                backport.emit('refresh', '');
-            }
-            console.log("Notification Script terminated");
-        } else {
-            /* TODO remove the following 5 lines when SNS Notification test is complete and change test content
-             changing the behaviour: unprocessable message */
-            console.log("Dummy Script");
-            //backport.emit('progress', req.body);
-            if (req.body.progression >= 100) {
-                activePage = pages.edit;
-                backport.emit('refresh', '');
-            }
-            console.log("Dummy Script terminated");
+        if(sns.confirmTopic(req.body.TopicArn, req.body.Token)){
+            console.log("Confirmed subscription " + req.body.TopicArn);
+            res.sendStatus(200);
         }
+        else
+            res.sendStatus(422);
     }
-    console.log("notify End");
+    else{
+        if(req.body.Type == "Notification"){
+            backport.emit('progress',req.body.progression);
+            res.sendStatus(200);
+            if(req.body.progression >= 100){
+                activePage = pages.edit;
+                backport.emit('refresh','');
+            }
+        }
+        else
+            res.sendStatus(418);
+    }
 });
+//creates the subscription
+let progressionPromise = new AWS.SNS.subscribe({
+    Protocol: 'HTTP',
+    TopicArn: sns.getTopicArn('progression',AWS.config.region,AWS.STS.GetCallerIdentity().Account),
+    Endpoint: this.endpointName + "notifyProgressionUpdate"
+}).promise();
+fileNotifyPromise.then( data => console.log("Requested subscription ",data)).catch(err => console.log(
+    "Subscription Error " + err,err.stack));
 
 /**
  * All'accesso all'API getFileList() la function restituisce l’oggetto XHTML
