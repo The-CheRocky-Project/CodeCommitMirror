@@ -25,7 +25,7 @@ def lambda_handler(event, context):
     Returns:
         dict: I dati utili all'esecuzione della Step Function State Machine
     """
-    print('Executiong ' + context.function_name)
+    print('Executing ' + context.function_name)
 
     last_processed = event['detail']['outputGroupDetails'][0]['outputDetails'][0]['outputFilePaths'][0]
     splitted = last_processed.split('.')
