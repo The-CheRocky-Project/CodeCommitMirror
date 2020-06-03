@@ -12,7 +12,11 @@ const path = require('path');
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 const sns = require('./wrappers/snsWrapper');
-//const AWS = require('aws-sdk');
+const AWS = require('aws-sdk');
+
+const endpointName = "http://ahlapp.eba-6iceedzt.us-east-2.elasticbeanstalk.com/";
+//sns configuration
+AWS.config.update({region: 'us-east-2'});
 
 // parse application/x-www-form-urlencoded
 ahl.use(function(req, res, next) {
@@ -40,33 +44,6 @@ ahl.set('views',path.join(__dirname,'views'));
 ahl.all('/printHostname', (req,res) => {
     res.send(req.headers.host);
 });
-
-//sns configuration
-// AWS.config.update({region: 'us-east-2'});
-// const snsParams = {
-//     Protocol: 'HTTP',
-//     TopicArn: 'arn:aws:sns:us-east-2:693949087897:confirmation',
-//     Endpoint: 'http://ahlapp.eba-nr5hbp27.us-east-2.elasticbeanstalk.com/snstopic'
-// };
-// let subscriptionPromise = new AWS.SNS({apiVersion: '2010-03-31'}).subscribe(snsParams).promise();
-// subscriptionPromise.then((data) => {
-//     console.log("###Subscription request ARN: " + data.SubscriptionArn);
-// }).catch((err) => console.log("Errore chiamata sns  " + err,err.stack));
-
-ahl.post('/snstopic',(req,res) => {
-    console.log("Required snstopic with ",req.body);
-    if(req.body.Type == "SubscriptionConfirmation") {
-        if(sns.confirmTopic(req.body.TopicArn, req.body.Token))
-            res.sendStatus(200);
-        else
-            res.sendStatus(404);
-    }
-    else res.sendStatus(400);
-});
-
-sns.createTopicSubscription("confirmation",
-    'http://ahlapp.eba-nr5hbp27.us-east-2.elasticbeanstalk.com/snstopic',
-    "693949087897");
 
 // sets up the handlebars view engine
 const partialsLocation = path.join(__dirname,'views/partials');
@@ -252,9 +229,32 @@ ahl.post('/notifyEditingFinish', (req,res) => {
  * @param {object} res - Rappresenta la risposta http
  */
 ahl.post('/notifyChangedFileList', (req,res) => {
-    backport.emit('changeFile','');
-    res.send();
+    if(req.body.Type == "SubscriptionConfirmation"){
+        if(sns.confirmTopic(req.body.TopicArn, req.body.Token)){
+            console.log("Confirmed subscription " + req.body.TopicArn);
+            res.sendStatus(200);
+        }
+        else
+            res.sendStatus(422);
+    }
+    else{
+        if(req.body.Type == "Notification"){
+            backport.emit('changeFile','');
+            res.sendStatus(200);
+        }
+        else
+            res.sendStatus(418);
+    }
 });
+
+//creates the subscription
+let fileNotifyPromise = new AWS.SNS.subscribe({
+        Protocol: 'HTTP',
+        TopicArn: sns.getTopicArn('files',AWS.config.region,AWS.STS.GetCallerIdentity().Account),
+        Endpoint: this.endpointName + "notifyChangedFileList"
+    }).promise();
+fileNotifyPromise.then( data => console.log("Requested subscription ",data)).catch(err => console.log(
+    "Subscription Error " + err,err.stack));
 
 /**
  *  ​API che si occupa dell'inoltro della richiesta di conferma
