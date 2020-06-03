@@ -434,7 +434,7 @@ Resources:
           notifyProgressionArn: !GetAtt [notifyProgression, Arn]
           makeResumeArn: !GetAtt [makeResume, Arn]
           prioritizeArn: !GetAtt [checkNprioritize, Arn]
-          makeFinalArn: !GetAtt [make_final_video, Arn]
+          makeFinalArn: !GetAtt [makeFinalVideo, Arn]
       RoleArn: !GetAtt stepFRole.Arn
       StateMachineName: ahlFrameWorkflow
       StateMachineType: STANDARD
@@ -539,7 +539,7 @@ Resources:
       Role: !GetAtt basicLambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/
-  make_final_video:
+  makeFinalVideo:
     Descrioption: The Lambda that notify the progression about recognizing
     Type: AWS::Serverless::Function
     DeletionPolicy: Delete
