@@ -433,7 +433,7 @@ Resources:
       DefinitionString:
         !Sub
         - |-
-          ##{{STATEMACHINE_DEF}}
+          ##{{STATEMACHINE_DEF}} VideoStateMachine.json
         - prepareDataArn: !GetAtt [prepareData, Arn]
           frameGroupingArn: !GetAtt [frameGrouping, Arn]
           recognizerArn: !GetAtt [recognizer, Arn]

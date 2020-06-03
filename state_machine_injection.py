@@ -12,7 +12,7 @@ def usage():
 
 def main(argv):
     parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--state-machine-file', required=True, dest='state_machine')
+    parser.add_argument('-s', '--state-machine-file', required=False, dest='state_machine')
     parser.add_argument('-c', '--cfn-file', required=True, dest='cfn_template')
     parser.add_argument('-o', '--output-file', dest='output', default="complete.yaml")
     args = parser.parse_args()
@@ -20,10 +20,6 @@ def main(argv):
     s_file = vars(args)['state_machine']
     c_file = vars(args)['cfn_template']
     o_file = vars(args)['output']
-
-    if not os.path.isfile(s_file):
-        print("Error: can't find file: " + s_file)
-        sys.exit(1)
 
     if not os.path.isfile(c_file):
         print("Error: can't find file: " + c_file)
@@ -33,11 +29,15 @@ def main(argv):
         with open(o_file, "w") as fout:
             for line in raw_template:
                 if STATE_MACHINE_PLACEHOLDER_PATTERN in line:
+                    s_file = line.replace(STATE_MACHINE_PLACEHOLDER_PATTERN, "").strip()
+                    if not os.path.isfile(s_file):
+                        print("Error: can't find file: " + s_file)
+                        sys.exit(1)
                     state_machine_def = open(s_file, "r")
                     for state_machine_line in state_machine_def:
                         fout.write('            ' + state_machine_line)
                     fout.write('\n')
-                    print("placeholder pattern found and replaced.")
+                    print(s_file + " placeholder pattern found and replaced.")
                 else:
                     fout.write(line)
 
