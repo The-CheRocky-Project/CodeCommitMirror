@@ -253,14 +253,14 @@ ahl.post('/notifyChangedFileList', (req,res) => {
 console.log("Configuring sns with params :", {
     Protocol: 'HTTP',
     TopicArn: sns.getTopicArn('files',AWS.config.region,"693949087897"),
-    Endpoint: this.endpointName + "notifyChangedFileList"
+    Endpoint: endpointName + "notifyChangedFileList"
 });
 
 //creates the subscription
 let fileNotifyPromise = SNS.subscribe({
         Protocol: 'HTTP',
         TopicArn: sns.getTopicArn('files',AWS.config.region,"693949087897"),
-        Endpoint: this.endpointName + "notifyChangedFileList"
+        Endpoint: endpointName + "notifyChangedFileList"
     }).promise();
 fileNotifyPromise.then( data => console.log("Requested subscription ",data)).catch(err => console.log(
     "Subscription Error " + err,err.stack));
@@ -320,13 +320,13 @@ ahl.post('/notifyProgressionUpdate', (req,res) => {
 console.log("Configuring SNS notifyProgression", {
     Protocol: 'HTTP',
     TopicArn: sns.getTopicArn('progression',AWS.config.region,"693949087897"),
-    Endpoint: this.endpointName + "notifyProgressionUpdate"
+    Endpoint: endpointName + "notifyProgressionUpdate"
 });
 //creates the subscription
 let progressionPromise = SNS.subscribe({
     Protocol: 'HTTP',
     TopicArn: sns.getTopicArn('progression',AWS.config.region,"693949087897"),
-    Endpoint: this.endpointName + "notifyProgressionUpdate"
+    Endpoint: endpointName + "notifyProgressionUpdate"
 }).promise();
 fileNotifyPromise.then( data => console.log("Requested subscription ",data)).catch(err => console.log(
     "Subscription Error " + err,err.stack));
