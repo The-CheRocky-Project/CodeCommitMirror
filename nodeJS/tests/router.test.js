@@ -268,8 +268,8 @@ describe('testRouter',() => {
       request(ahl).post('/notifyChangedFileList')
       .send({done: 'john'})
       .set('Accept', 'application/json')
-      .expect(200, done);
-
+      .expect(418, done);
+      //TODO correct all the notify request expectation with correct sns notify http package
     });
   });
 
