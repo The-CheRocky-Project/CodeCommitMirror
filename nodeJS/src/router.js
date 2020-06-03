@@ -19,7 +19,7 @@ const endpointName = "http://ahlapp.eba-6iceedzt.us-east-2.elasticbeanstalk.com/
 //AWS configuration
 AWS.config.update({region: 'us-east-2'});
 process.env.AWS_REGION = "us-east-2";
-const SNS = new AWS.SNS();
+const SNS = new AWS.SNS({apiVersion: '2010-03-31'});
 
 // parse application/x-www-form-urlencoded
 ahl.use(function(req, res, next) {
@@ -251,14 +251,14 @@ ahl.post('/notifyChangedFileList', (req,res) => {
     }
 });
 console.log("Configuring sns with params :", {
-    Protocol: 'HTTP',
+    Protocol: 'http',
     TopicArn: sns.getTopicArn('files',AWS.config.region,"693949087897"),
     Endpoint: endpointName + "notifyChangedFileList"
 });
 
 //creates the subscription
 let fileNotifyPromise = SNS.subscribe({
-        Protocol: 'HTTP',
+        Protocol: 'http',
         TopicArn: sns.getTopicArn('files',AWS.config.region,"693949087897"),
         Endpoint: endpointName + "notifyChangedFileList"
     }).promise();
@@ -318,13 +318,13 @@ ahl.post('/notifyProgressionUpdate', (req,res) => {
     }
 });
 console.log("Configuring SNS notifyProgression", {
-    Protocol: 'HTTP',
+    Protocol: 'http',
     TopicArn: sns.getTopicArn('progression',AWS.config.region,"693949087897"),
     Endpoint: endpointName + "notifyProgressionUpdate"
 });
 //creates the subscription
 let progressionPromise = SNS.subscribe({
-    Protocol: 'HTTP',
+    Protocol: 'http',
     TopicArn: sns.getTopicArn('progression',AWS.config.region,"693949087897"),
     Endpoint: endpointName + "notifyProgressionUpdate"
 }).promise();
