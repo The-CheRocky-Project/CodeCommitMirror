@@ -8,7 +8,7 @@ from src.dbRecordsCleaner import lambda_handler
 
 # Percorso assouluto per caricare il file event.json
 absolute_path = os.path.dirname(os.path.abspath(__file__))
-file_path = absolute_path + '/../event/db_records_cleaner.json'
+file_path = absolute_path + '/../event/db_records_cleaner_event.json'
 
 # Carico il file json con l'evento di test
 """
