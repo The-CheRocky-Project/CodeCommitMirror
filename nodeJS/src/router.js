@@ -14,9 +14,11 @@ const bodyParser = require('body-parser');
 const sns = require('./wrappers/snsWrapper');
 const AWS = require('aws-sdk');
 
+//TODO Add dynamic enpoint over cloudformation environment variables
 const endpointName = "http://ahlapp.eba-6iceedzt.us-east-2.elasticbeanstalk.com/";
-//sns configuration
+//AWS configuration
 AWS.config.update({region: 'us-east-2'});
+process.env.AWS_REGION = "us-east-2";
 
 // parse application/x-www-form-urlencoded
 ahl.use(function(req, res, next) {
@@ -277,7 +279,6 @@ ahl.post('/confirmEdit', (req,res) => {
 // ahl.post('getProgressionBar', (req,res) => {
 //     loadingController.getUpdatedBar(res);
 // });
-process.env.AWS_REGION = "us-east-2";
 /**
  *  ​API che si occupa della ​notifica del client tramite il socket
  *  che il livello di progressione è cambiato ricevendo in
