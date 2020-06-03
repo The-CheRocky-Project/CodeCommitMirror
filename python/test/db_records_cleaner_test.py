@@ -4,11 +4,11 @@ import unittest
 from aws_lambda_context import LambdaContext
 from moto import mock_dynamodb2
 import boto3
-from src.dbRecordsCleaner import lambda_handler
+from src.db_records_cleaner import lambda_handler
 
 # Percorso assouluto per caricare il file event.json
 absolute_path = os.path.dirname(os.path.abspath(__file__))
-file_path = absolute_path + '/../event/db_records_cleaner.json'
+file_path = absolute_path + '/../event/db_records_cleaner_event.json'
 
 # Carico il file json con l'evento di test
 """
@@ -19,7 +19,7 @@ with open(file_path, 'r') as f:
     event_json = json.load(f)
 
 CONTEXT = LambdaContext()
-CONTEXT.function_name = 'dbRecordsCleaner'
+CONTEXT.function_name = 'db_records_cleaner'
 
 
 class TestDbRecordsCleaner(unittest.TestCase):

@@ -1,19 +1,13 @@
 # -*- coding: utf-8 -*-
 """ Mount Lambda module
 
-Questo modulo contiene l'handler che elimina il video montato dalla lambda mount
+Questo modulo contiene l'handler che pulisce i records creati su DynamoDB da frame_identifier
 Contenuto:
     * lambda_handler - l'handler principale per la lambda
 
 """
 
-# imports url utils and media management layer
 import json
-# import urllib.parse
-# import boto3
-# from layers import media_manager
-
-#Definisce la risorsa s3
 import boto3
 from boto3.dynamodb.conditions import Attr
 
@@ -22,14 +16,21 @@ dynamodb = boto3.resource('dynamodb')
 def lambda_handler(event, context):
     """
     Handler che riceve l'evento scaturante l'esecuzione che contiene
-    la key del video da eliminare e il bucket che lo contiene
+    la key del video eliminato ed elimina i corrispondenti records
+    presenti nella tabella rekognitions e contenenti come parte della
+    primary key il nome del video eliminato.
+    N.B: La lambda NON verifica che ad esempio se si vogliono cancellare
+    i records di una partita che si chiama roma, non vengano cancellat
+    anche i records di un'altra partita che chiama roma-fiorentina. Tiene
+    in conto che i nomi delle partite siano abbastanza identificativi.
+    
     Args:
         event: L'evento che ha fatto scaturire l'avvio dell'handler
         context: Il dizionario rappresentante le variabili di contesto
             d'esecuzione
 
     Returns:
-        True se il video è stato eliminato con successo, False altrimenti
+        True se i records sono stati eliminati con successo, False altrimenti
 
     """
     print('Executing :' + context.function_name)
@@ -44,7 +45,6 @@ def lambda_handler(event, context):
             FilterExpression=Attr('frame_key').contains(key)
         )
         items = response['Items']
-        print(len(items))
         
         for single_item in items:
             table.delete_item(Key=single_item)
