@@ -41,3 +41,21 @@ Contenuto:
 #         print(err)
 #         print('Impossibile eliminare il video')
 #         return False
+
+
+import boto3
+from boto3.dynamodb.conditions import Key, Attr
+
+# Get the service resource.
+dynamodb = boto3.resource('dynamodb')
+
+# Prendo la tabella in base al nome
+table = dynamodb.Table('rekognitions')
+
+response = table.scan(
+    FilterExpression=Attr('frame_key').contains('metaxas-keller-Bell-1')
+)
+items = response['Items']
+print(len(items))
+for single_item in items:
+    print(single_item["frame_key"])
