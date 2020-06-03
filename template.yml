@@ -199,6 +199,12 @@ Resources:
     Type: AWS::SNS::Topic
     Properties:
       TopicName: confirmation
+  filesTopic:
+    Description: The SNS Topic for file news messaging
+    DeletionPolicy: Delete
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: file
   confirmPolicy:
     Description: The confirmationTopic Policy to invoke Lambda
     DeletionPolicy: Delete
