@@ -44,6 +44,7 @@ ahl.set('controllers',path.join(__dirname,'controllers'));
 ahl.set('models',path.join(__dirname,'models'));
 ahl.set('views',path.join(__dirname,'views'));
 
+//TODO remove this function
 ahl.all('/printHostname', (req,res) => {
     res.send(req.headers.host);
 });
@@ -311,6 +312,11 @@ ahl.post('/notifyProgressionUpdate', (req,res) => {
             res.sendStatus(418);
     }
 });
+console.log("Configuring SNS notifyProgression", {
+    Protocol: 'HTTP',
+    TopicArn: sns.getTopicArn('progression',AWS.config.region,"693949087897"),
+    Endpoint: this.endpointName + "notifyProgressionUpdate"
+})
 //creates the subscription
 let progressionPromise = SNS.subscribe({
     Protocol: 'HTTP',
@@ -341,38 +347,4 @@ ahl.post('getFileList', (req,res) => {
 ahl.post('/notifyNewVideoEndpoint', (req,res) => {
     backport.emit('newEndpoint', req.body['done'])
     res.send();
-});
-
-const https= require('https');
-/**
- * API di test per token SNS
- */
-ahl.all('/sns', (req,res) => {
-    res.sendStatus(200);
-    // if(req.body.Type=="SubscriptionConfirmation"){
-    //     https.get(req.body.SubscribeURL, (response) => {
-    //         let dat = '';
-    //         response.on('data', (chunk) => dat+= chunk);
-    //         response.on('end', () => console.log(dat));
-    //     }).on("error", (err) => {
-    //         console.log("Error #" + err+ " - " + err.message);
-    //     }).on("end", () => console.log("Subscription End"));
-    // }
-    let payload = req.body;
-    console.log("sns api: " + payload.progression);
-    if (payload.Type === 'SubscriptionConfirmation') {
-        const url = payload.SubscribeURL;
-        console.log("Try to confirm " + url);
-        https.get(url, (response) => {
-            console.log('statusCode:', response.statusCode);
-            console.log('headers:', response.headers);
-            response.on('data', (data) => {
-                console.log(data);
-            });
-        }).on('error', (err) => {
-            console.error(err);
-        })
-    }
-    // This configuration notify correctly the progression with this kind of message: {"progression": 20}
-    backport.emit('progress',payload.progression);
 });
