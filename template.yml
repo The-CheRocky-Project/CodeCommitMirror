@@ -204,7 +204,7 @@ Resources:
     DeletionPolicy: Delete
     Type: AWS::SNS::Topic
     Properties:
-      TopicName: file
+      TopicName: files
   confirmPolicy:
     Description: The confirmationTopic Policy to invoke Lambda
     DeletionPolicy: Delete
