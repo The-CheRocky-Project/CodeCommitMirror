@@ -83,8 +83,12 @@ def lambda_handler(event, context):
         resume = []
 
         for k in range(event['to'] - 1):
-            if succession[k]['accuracy'] >= 0.80:
-                if elaboration.find_trasholder(succession, succession[k], k, 11, event['to'] - 1):
+            if succession[k]['accuracy'] >= 0.80 and elaboration.find_trasholder(
+            succession,
+            succession[k],
+            k,
+            11,
+            event['to'] - 1):
                     resume.append(succession[k])
 
         resume = elaboration.compress_time(resume)
@@ -99,7 +103,7 @@ def lambda_handler(event, context):
             'key': key
         }
         if len(data) != 0:
-            return ret 
+            return ret
         else:
             return False
     except Exception as err:
