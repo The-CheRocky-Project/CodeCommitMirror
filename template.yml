@@ -546,7 +546,7 @@ Resources:
       Runtime: python3.7
       CodeUri: ./python/src/
   makeFinalVideo:
-    Descrioption: The Lambda that notify the progression about recognizing
+    Descrioption: The Lambda that mount the final video
     Type: AWS::Serverless::Function
     DeletionPolicy: Delete
     Properties:
