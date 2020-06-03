@@ -32,8 +32,8 @@ def lambda_handler(event, context):
     start = event['from']
 
     progression = (((end - start) / start) * 75) + 10
-
-    response = sns.publish(
+    # TODO add try catch block
+    sns.publish(
         TopicArn='arn:aws:sns:us-east-2:693949087897:progression',
         Message='{ progression: ' + int(progression) + '}'
     )
