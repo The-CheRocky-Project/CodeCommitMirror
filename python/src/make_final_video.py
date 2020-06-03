@@ -80,5 +80,5 @@ def lambda_handler(event, context):
         return job_id
     except Exception as err:
         print(err)
-        print('Impossibile creare il video di ' + full_qualifier)
+        print('Impossibile creare il video')
         raise err
