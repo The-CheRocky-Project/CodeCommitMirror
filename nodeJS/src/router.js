@@ -250,6 +250,11 @@ ahl.post('/notifyChangedFileList', (req,res) => {
             res.sendStatus(418);
     }
 });
+console.log("Configuring sns with params :", {
+    Protocol: 'HTTP',
+    TopicArn: sns.getTopicArn('files',AWS.config.region,"693949087897"),
+    Endpoint: this.endpointName + "notifyChangedFileList"
+});
 
 //creates the subscription
 let fileNotifyPromise = SNS.subscribe({
@@ -316,7 +321,7 @@ console.log("Configuring SNS notifyProgression", {
     Protocol: 'HTTP',
     TopicArn: sns.getTopicArn('progression',AWS.config.region,"693949087897"),
     Endpoint: this.endpointName + "notifyProgressionUpdate"
-})
+});
 //creates the subscription
 let progressionPromise = SNS.subscribe({
     Protocol: 'HTTP',
