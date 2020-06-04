@@ -5,7 +5,7 @@ indicata dall'utente
 Contenuto:
     * lambda_handler - l'handler principale per la lambda
 """
-
+# TODO resource out of template (@Gotta, va tolta?)
 # imports url
 import urllib.parse
 import json

@@ -1,3 +1,4 @@
+# TODO  maybe this has to be REMOVED (unused)
 """ frame_identifier Lambda module
 
 Questo modulo contiene l'handler che effettua la richiesta di riconoscimento

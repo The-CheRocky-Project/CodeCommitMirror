@@ -12,7 +12,7 @@ Contenuto:
 import json
 import boto3
 from layers import elaboration
-
+# TODO resource out of template
 # Definisce la risorsa s3
 s3R = boto3.resource('s3')
 

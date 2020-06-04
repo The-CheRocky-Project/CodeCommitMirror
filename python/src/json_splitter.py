@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# TODO resource out of template (missing initial training)
 """  json_splitter Lambda module
 Questo modulo contiene tutti i layer utili all'esecuzione della
 AWS Serverless Lambda thumbfy
