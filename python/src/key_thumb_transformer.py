@@ -21,9 +21,9 @@ def lambda_handler(event, context):
     Returns:
         event: evento di input per la lambda remover
     """
-    print("Executing " + context.funcion_name)
+    print("Executing " + context.function_name)
     record = event['Records'][0]['s3']
-    key = urllib.parse.uniquote_plus(
+    key = urllib.parse.unquote_plus(
         record['object']['key'],
         encoding='utf-8'
     )
