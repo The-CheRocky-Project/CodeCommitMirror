@@ -243,6 +243,7 @@ ahl.post('/notifyChangedFileList', (req,res) => {
     }
     else{
         if(req.body.Type == "Notification"){
+            console.log(req.body);
             backport.emit('changeFile','');
             res.sendStatus(200);
         }
