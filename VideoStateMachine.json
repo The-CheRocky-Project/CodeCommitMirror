@@ -42,7 +42,7 @@
     },
     "notifyProgression": {
       "Type": "Task",
-      "Resource":  "${prepareDataArn}",
+      "Resource":  "${notifyProgressionArn}",
       "Next": "Check"
     },
     "CreateResume": {
