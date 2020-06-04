@@ -600,6 +600,11 @@ Resources:
       Role: !GetAtt basicLambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/
+      EventInvokeConfig:
+        DestinationComfig:
+          OnSuccess:
+            Destination: !GetAtt remover.Arn
+            Type: Lambda
   framerQueue:
     Description: The Media Convert Queue for framing jobs
     Type: AWS::MediaConvert::Queue
