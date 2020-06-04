@@ -301,6 +301,7 @@ ahl.post('/notifyProgressionUpdate', (req,res) => {
     }
     else{
         if(req.body.Type == "Notification"){
+            console.log(req.body);
             backport.emit('progress',req.body.progression);
             res.sendStatus(200);
             if(req.body.progression >= 100){

@@ -34,7 +34,7 @@ $(document).ready(() => {
      */
     socket.on('progress', (data) => {
       if (document.getElementById("loadingProgressBar")) {
-        updateProgressBar(data.progression);
+        updateProgressBar(data);
       } else {
         goLoading();
       }
