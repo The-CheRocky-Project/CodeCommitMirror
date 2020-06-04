@@ -33,9 +33,10 @@ def lambda_handler(event, context):
         print('Executing :' + context.function_name)
         # Preleva bucket name e key da event
         record = {}
-        if event['timestamp']:
+        try:
             record = event['responsePayload']['Records'][0]['s3']
-        else:
+            print("Chained Lambda Call")
+        except:
             record = event['Records'][0]['s3']
         bucket = record['bucket']['name']
         key = urllib.parse.unquote_plus(
