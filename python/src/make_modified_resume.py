@@ -17,7 +17,6 @@ from layers import elaboration
 s3R = boto3.resource('s3')
 
 
-
 def lambda_handler(event, context):
     """
     Handler che riceve l'evento scaturante l'esecuzione che contiene
@@ -39,9 +38,9 @@ def lambda_handler(event, context):
 
     data = elaboration.prepare_for_serialize(all_frames)
 
-    s3object = s3R.Object('ahlconsolebucket', 'tmp/modified-resume.json');
-    s3object.put(Body=json.dumps(data));
+    s3object = s3R.Object('ahlconsolebucket', 'tmp/modified-resume.json')
+    s3object.put(Body=json.dumps(data))
 
-    #TODO decidere se ritornare e utilizzare una step function oppure se usare sns
+    # TODO decidere se ritornare e utilizzare
+    # una step function oppure se usare sns
     return 'tmp/modified-resume.json'
-

@@ -26,8 +26,8 @@ def lambda_handler(event, context):
         dict: I dati utili all'esecuzione della Step Function State Machine
     """
     print('Executing ' + context.function_name)
-
-    last_processed = event['detail']['outputGroupDetails'][0]['outputDetails'][0]['outputFilePaths'][0]
+    output_group = event['detail']['outputGroupDetails'][0]
+    last_processed = output_group['outputDetails'][0]['outputFilePaths'][0]
     splitted = last_processed.split('.')
     string_frame_number = splitted[-2]
     frame_number = int(string_frame_number)
@@ -35,7 +35,7 @@ def lambda_handler(event, context):
     # removes s3 prefix
     key_array = last_processed.split('/')[3:]
     key = key_array[0]
-    for i in range(1,len(key_array)):
+    for i in range(1, len(key_array)):
         key += '/' + key_array[i]
 
     splitted = key.split('.')

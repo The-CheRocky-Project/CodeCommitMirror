@@ -25,7 +25,8 @@ def lambda_handler(event, context):
             d'esecuzione
 
     Returns:
-        dizionario contenente i risultati dell'elaborazione della lambda precedente
+        dizionario contenente i risultati dell'elaborazione
+        della lambda precedente
 
     """
     end = event['to']

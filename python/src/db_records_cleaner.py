@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """ Mount Lambda module
-
-Questo modulo contiene l'handler che pulisce i records creati su DynamoDB da frame_identifier
+Questo modulo contiene l'handler che pulisce i records
+creati su DynamoDB da frame_identifier
 Contenuto:
     * lambda_handler - l'handler principale per la lambda
 
@@ -13,6 +13,7 @@ from boto3.dynamodb.conditions import Attr
 
 dynamodb = boto3.resource('dynamodb')
 
+
 def lambda_handler(event, context):
     """
     Handler che riceve l'evento scaturante l'esecuzione che contiene
@@ -23,7 +24,7 @@ def lambda_handler(event, context):
     i records di una partita che si chiama roma, non vengano cancellat
     anche i records di un'altra partita che chiama roma-fiorentina. Tiene
     in conto che i nomi delle partite siano abbastanza identificativi.
-    
+
     Args:
         event: L'evento che ha fatto scaturire l'avvio dell'handler
         context: Il dizionario rappresentante le variabili di contesto
@@ -31,7 +32,6 @@ def lambda_handler(event, context):
 
     Returns:
         True se i records sono stati eliminati con successo, False altrimenti
-
     """
     print('Executing :' + context.function_name)
     try:
@@ -45,7 +45,7 @@ def lambda_handler(event, context):
             FilterExpression=Attr('frame_key').contains(key)
         )
         items = response['Items']
-        
+
         for single_item in items:
             table.delete_item(Key=single_item)
 

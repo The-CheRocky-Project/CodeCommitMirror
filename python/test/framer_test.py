@@ -38,11 +38,11 @@ class TestFramer(unittest.TestCase):
     def test_job_start_correctly(self):
         with patch('boto3.client') as mock:
             media_conv = mock.return_value
-            media_conv.create_job.return_value = { \
-                'Job': { \
+            media_conv.create_job.return_value = {
+                'Job': {
                     'Id': 'string'
-                }, \
-                }
+                },
+            }
             expected = "string"
             result = lambda_handler(event_json_true, CONTEXT)
             self.assertEqual(expected, result)
@@ -54,6 +54,10 @@ class TestFramer(unittest.TestCase):
 
     def test_job_exception(self):
         with patch('boto3.client') as mock:
-            #media_conv = mock.return_value
-            #media_conv.create_job.raiseError.side_effect = Exception('error')
-            self.assertRaises(Exception, lambda_handler, file_path_true, CONTEXT)
+            # media_conv = mock.return_value
+            # media_conv.create_job.raiseError.side_effect = Exception('error')
+            self.assertRaises(
+                Exception,
+                lambda_handler,
+                file_path_true,
+                CONTEXT)

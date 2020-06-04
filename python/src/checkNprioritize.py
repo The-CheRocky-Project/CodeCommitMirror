@@ -16,6 +16,7 @@ from layers import elaboration
 # Definisce la risorsa s3
 s3R = boto3.resource('s3')
 
+
 def lambda_handler(event, context):
     """
     Handler che riceve l'evento scaturante l'esecuzione che contiene
@@ -33,23 +34,21 @@ def lambda_handler(event, context):
 
     key = event['key']
 
-    resumeJson = s3R.Object('ahlconsolebucket', key)
-    resumeRes = resumeJson.get()
-    all_frames = json.loads(resumeRes['Body'].read().decode('utf-8'))
+    resume_json = s3R.Object('ahlconsolebucket', key)
+    resume_res = resume_json.get()
+    all_frames = json.loads(resume_res['Body'].read().decode('utf-8'))
 
-
-    all_frames = elaboration.remove(remove_useless(all_frames), all_frames)
-    while elaboration.check_time(all_frames) == False:
-        all_frames = elaboration.remove(elaboration.prioritize(all_frames), all_frames)
+    all_frames = elaboration.remove(
+        elaboration.remove_useless(all_frames),
+        all_frames)
+    while not elaboration.check_time(all_frames):
+        all_frames = elaboration.remove(
+            elaboration.prioritize(all_frames),
+            all_frames)
 
     # Serializzazione in JSON
     data = elaboration.(all_frames)
 
     s3object = s3R.Object('ahlconsolebucket', 'tmp/resume.json')
     s3object.put(Body=json.dumps(data))
-
-    if len(data) !=0:
-        return all_frames
-    else
-        return False
-
+    return all_frames if len(data) != 0 else False

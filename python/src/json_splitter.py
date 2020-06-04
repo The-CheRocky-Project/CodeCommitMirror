@@ -36,7 +36,10 @@ def lambda_handler(event, context):
         # retrieves the file infos from event
         record = event['Records'][0]['s3']
         bucket = record['bucket']['name']
-        key = urllib.parse.unquote_plus(record['object']['key'], encoding='utf-8')
+        key = urllib.parse.unquote_plus(
+            record['object']['key'],
+            encoding='utf-8'
+        )
         destination_key_prefix = 'singles/'
 
         # fetches the object

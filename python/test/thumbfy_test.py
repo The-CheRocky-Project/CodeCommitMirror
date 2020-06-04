@@ -26,36 +26,37 @@ CONTEXT.function_name = 'thumbfy'
 
 
 class TestThumbfy(unittest.TestCase):
-  """
-  Classe di test per il lambda_handler di framer
-  """
-  def test_job_creato_correttamente(self):
-    with patch('boto3.client') as mock:
-      media_conv = mock.return_value
-      media_conv.create_job.return_value = {\
-        'Job':{\
-          'Id': 'string'
-        },\
-      }
-      expected = "string"
-      result = lambda_handler(event_json, CONTEXT)
-      self.assertEqual(expected, result)
-      
-  def test_job_non_creato_correttamente(self):
-    with patch('boto3.client') as mock:
-      media_conv = mock.return_value
-      media_conv.create_job.return_value = {\
-        'Job':{\
-          'Id': ''
-        },\
-      }
-      expected = False
-      result = lambda_handler(event_json, CONTEXT)
-      self.assertEqual(expected, result)
-      
-      #TODO fare il test dell'eccezione lanciata
-  # def test_job_exception(self):
-  #   with patch('boto3.client') as mock:
-  #     media_conv = mock.return_value
-  #     media_conv.create_job.raiseError.side_effect = Exception('error')
-  #     self.assertRaises(Exception, lambda_handler, event_json, CONTEXT)
+    """
+    Classe di test per il lambda_handler di framer
+    """
+
+    def test_job_creato_correttamente(self):
+        with patch('boto3.client') as mock:
+            media_conv = mock.return_value
+            media_conv.create_job.return_value = {
+                'Job': {
+                    'Id': 'string'
+                },
+            }
+            expected = "string"
+            result = lambda_handler(event_json, CONTEXT)
+            self.assertEqual(expected, result)
+
+    def test_job_non_creato_correttamente(self):
+        with patch('boto3.client') as mock:
+            media_conv = mock.return_value
+            media_conv.create_job.return_value = {
+                'Job': {
+                    'Id': ''
+                },
+            }
+            expected = False
+            result = lambda_handler(event_json, CONTEXT)
+            self.assertEqual(expected, result)
+
+            # TODO fare il test dell'eccezione lanciata
+    # def test_job_exception(self):
+    #   with patch('boto3.client') as mock:
+    #     media_conv = mock.return_value
+    #     media_conv.create_job.raiseError.side_effect = Exception('error')
+    #     self.assertRaises(Exception, lambda_handler, event_json, CONTEXT)

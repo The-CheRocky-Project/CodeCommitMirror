@@ -1,6 +1,7 @@
 # coding=utf-8
 """ recognize Lambda module
-Questo modulo contiene tutte le fuzioni utili all'esecuzione della serverless Lambda recognize
+Questo modulo contiene tutte le fuzioni utili
+all'esecuzione della serverless Lambda recognize
 
 Contenuto:
     * lambda_handler - l'handler principale per la lambda
@@ -26,7 +27,8 @@ def lambda_handler(event, context):
             d'esecuzione
 
     Returns:
-        dict: I dati utili all'esecuzione del successivo step della State Machine
+        dict: I dati utili all'esecuzione
+                del successivo step della State Machine
     """
     print('Executiong ' + context.function_name)
     folder = 'frames'

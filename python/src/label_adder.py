@@ -52,7 +52,8 @@ def lambda_handler(event, context):
         accuracy = message[5]
         checked = message[6]
 
-        # Tiene traccia se la chiave era già presente o meno nel file resume.json
+        # Tiene traccia se la chiave era già presente o meno
+        # nel file resume.json
         founded = False
 
         # Destinazione del video spezzone di highlight
@@ -61,7 +62,8 @@ def lambda_handler(event, context):
         # Se la label è già presente in resume.json, viene aggiornata
         for reco in resume_content:
             if reco['FrameName'] == name:
-                # Elimina il vecchio video spezzone di highlight dal bucket S3 ahlvideos/cuts
+                # Elimina il vecchio video spezzone di
+                # highlight dal bucket S3 ahlvideos/cuts
                 # TODO da verificare che funzioni
                 bucket.delete_key(new_key[:-4] + 'mp4')
                 # Aggiorna i dati del frame

@@ -20,14 +20,14 @@ runtime = boto3.client('runtime.sagemaker')
 dynamodb = boto3.resource('dynamodb')
 
 # le variabili di configurazione dell'ambiente
-    env_settings = {
-        'AccelerationSettings': {
-            'Mode': 'DISABLED'
-        },
-        'BillingTagsSource': 'QUEUE',
-        'QueuePrefix': "arn:aws:mediaconvert:us-east-2:693949087897:queues/",
-        'Role': "arn:aws:iam::693949087897:role/mediaRole"
-    }
+env_settings = {
+    'AccelerationSettings': {
+        'Mode': 'DISABLED'
+    },
+    'BillingTagsSource': 'QUEUE',
+    'QueuePrefix': "arn:aws:mediaconvert:us-east-2:693949087897:queues/",
+    'Role': "arn:aws:iam::693949087897:role/mediaRole"
+}
 
 
 def create_thumbnail(input_key, output_folder_key, queue):
@@ -78,7 +78,8 @@ def create_thumbnail(input_key, output_folder_key, queue):
                             "ColorMetadata": "INSERT"
                         }
                     },
-                    # output obbligatorio di almeno 1 video, scelto volutamente di bassa qualità
+                    # output obbligatorio di almeno 1 video,
+                    # scelto volutamente di bassa qualità
                     {
                         'Extension': '.mp4',
                         'NameModifier': '-low',
@@ -106,7 +107,8 @@ def create_thumbnail(input_key, output_folder_key, queue):
                                     "FlickerAdaptiveQuantization": "DISABLED",
                                     "EntropyEncoding": "CABAC",
                                     "Bitrate": 3195,
-                                    "FramerateControl": "INITIALIZE_FROM_SOURCE",
+                                    "FramerateControl":
+                                        "INITIALIZE_FROM_SOURCE",
                                     "RateControlMode": "CBR",
                                     "CodecProfile": "MAIN",
                                     "Telecine": "NONE",
@@ -116,7 +118,8 @@ def create_thumbnail(input_key, output_folder_key, queue):
                                     "FieldEncoding": "PAFF",
                                     "SceneChangeDetect": "ENABLED",
                                     "QualityTuningLevel": "SINGLE_PASS",
-                                    "FramerateConversionAlgorithm": "DUPLICATE_DROP",
+                                    "FramerateConversionAlgorithm":
+                                        "DUPLICATE_DROP",
                                     "UnregisteredSeiTimecode": "DISABLED",
                                     "GopSizeUnits": "FRAMES",
                                     "ParControl": "INITIALIZE_FROM_SOURCE",
@@ -146,7 +149,8 @@ def create_thumbnail(input_key, output_folder_key, queue):
         'Inputs': [
             {
                 'FileInput': input_key,
-                # inserire un clipping permette di evitare di prelevare il primo frame (blackscreen)
+                # inserire un clipping permette di evitare di
+                # prelevare il primo frame (blackscreen)
                 'InputClippings': [
                     {
                         'StartTimecode': '00:00:10:00'
@@ -169,7 +173,7 @@ def create_thumbnail(input_key, output_folder_key, queue):
     return result['Job']['Id']
 
 
-def mount(input_file_key, destination_key, details_array,first_start, queue):
+def mount(input_file_key, destination_key, details_array, first_start, queue):
     """
     Effettua la creazione del lavoro di montaggio di alcuni spezzoni
     di un video indicato come input in base al contenuto della
@@ -226,7 +230,8 @@ def mount(input_file_key, destination_key, details_array,first_start, queue):
                                     "FlickerAdaptiveQuantization": "DISABLED",
                                     "EntropyEncoding": "CABAC",
                                     "Bitrate": 1000000,
-                                    "FramerateControl": "INITIALIZE_FROM_SOURCE",
+                                    "FramerateControl":
+                                        "INITIALIZE_FROM_SOURCE",
                                     "RateControlMode": "CBR",
                                     "CodecProfile": "MAIN",
                                     "Telecine": "NONE",
@@ -236,7 +241,8 @@ def mount(input_file_key, destination_key, details_array,first_start, queue):
                                     "FieldEncoding": "PAFF",
                                     "SceneChangeDetect": "ENABLED",
                                     "QualityTuningLevel": "SINGLE_PASS",
-                                    "FramerateConversionAlgorithm": "DUPLICATE_DROP",
+                                    "FramerateConversionAlgorithm":
+                                        "DUPLICATE_DROP",
                                     "UnregisteredSeiTimecode": "DISABLED",
                                     "GopSizeUnits": "FRAMES",
                                     "ParControl": "INITIALIZE_FROM_SOURCE",
@@ -256,7 +262,8 @@ def mount(input_file_key, destination_key, details_array,first_start, queue):
                                 "CodecSettings": {
                                     "Codec": "AAC",
                                     "AacSettings": {
-                                        "AudioDescriptionBroadcasterMix": "NORMAL",
+                                        "AudioDescriptionBroadcasterMix":
+                                            "NORMAL",
                                         "Bitrate": 96000,
                                         "RateControlMode": "CBR",
                                         "CodecProfile": "LC",
@@ -372,7 +379,8 @@ def frame(input_file_key, duration, queue):
                                     "FramerateNumerator": 30,
                                     # nel caso da modificare a piacimento
                                     # TODO verificare il funzionamento
-                                    "FramerateDenominator": (duration * 30) / 10,
+                                    "FramerateDenominator": \
+                                    (duration * 30) / 10,
                                     "MaxCaptures": 10000000,
                                     "Quality": 80
                                 }

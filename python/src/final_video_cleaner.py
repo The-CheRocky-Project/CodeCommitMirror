@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 """ Mount Lambda module
-
-Questo modulo contiene l'handler che elimina il video montato dalla lambda mount
+Questo modulo contiene l'handler che elimina
+il video montato dalla lambda mount
 Contenuto:
     * lambda_handler - l'handler principale per la lambda
-
 """
 
 # imports url utils and media management layer
@@ -14,6 +13,7 @@ import boto3
 
 # Definisce la risorsa s3
 s3 = boto3.client('s3')
+
 
 def lambda_handler(event, context):
     """
@@ -31,8 +31,9 @@ def lambda_handler(event, context):
     print('Executing :' + context.function_name)
     try:
         # Preleva bucket name e key da event
-        bucket = event["Records"][0]["Sns"]["MessageAttributes"]["bucket"]["Value"]
-        key = event["Records"][0]["Sns"]["MessageAttributes"]["key"]["Value"]
+        message_attributes = event["Records"][0]["Sns"]["MessageAttributes"]
+        bucket = message_attributes["bucket"]["Value"]
+        key = message_attributes["key"]["Value"]
         s3.delete_object(
             Bucket=bucket,
             Key=key,

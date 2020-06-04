@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """ Framer Lambda module
-
-Questo modulo contiene l'handler che effettua la frammentazione di un video in input
+Questo modulo contiene l'handler che effettua
+la frammentazione di un video in input
 a seconda della sua durata
+
 Contenuto:
     * lambda_handler - l'handler principale per la lambda
-
 """
 
 # imports url and media manager layer
@@ -35,17 +35,40 @@ def lambda_handler(event, context):
             d'esecuzione
 
     Returns:
-        true se l'avvio del job è stato effettuato correttamente, false altrimenti
+        true se l'avvio del job è stato effettuato correttamente,
+        false altrimenti
     """
     print("Executing " + context.function_name)
-    media_conv = boto3.client("mediaconvert",
-                          endpoint_url="https://" +
-                                       "fkuulejsc.mediaconvert.us-east-2.amazonaws.com")
+    media_conv = boto3.client(
+        "mediaconvert",
+        endpoint_url="https://" +
+        "fkuulejsc.mediaconvert.us-east-2.amazonaws.com")
     try:
-        if event["Records"][0]["Sns"]["Message"] == "startProcess":
-            bucket = event["Records"][0]["Sns"]["MessageAttributes"]["bucket"]["Value"]
-            key = event["Records"][0]["Sns"]["MessageAttributes"]["key"]["Value"]
+        content = event["Records"][0]["Sns"]
+        if content["Message"] == "startProcess":
+            bucket = content["MessageAttributes"]["bucket"]["Value"]
+            key = content["MessageAttributes"]["key"]["Value"]
             dest_folder = "frames/"
+            H264 = dict(
+                InterlaceMode="PROGRESSIVE", NumberReferenceFrames=3,
+                Syntax="DEFAULT", Softness=0, GopClosedCadence=1,
+                GopSize=90, Slices=1, GopBReference="DISABLED",
+                SlowPal="DISABLED", SpatialAdaptiveQuantization="ENABLED",
+                TemporalAdaptiveQuantization="ENABLED",
+                FlickerAdaptiveQuantization="DISABLED",
+                EntropyEncoding="CABAC", Bitrate=3195,
+                FramerateControl="INITIALIZE_FROM_SOURCE",
+                RateControlMode="CBR", CodecProfile="MAIN",
+                Telecine="NONE", MinIInterval=0,
+                AdaptiveQuantization="HIGH", CodecLevel="AUTO",
+                FieldEncoding="PAFF", SceneChangeDetect="ENABLED",
+                QualityTuningLevel="SINGLE_PASS",
+                FramerateConversionAlgorithm="DUPLICATE_DROP",
+                UnregisteredSeiTimecode="DISABLED", GopSizeUnits="FRAMES",
+                ParControl="INITIALIZE_FROM_SOURCE",
+                NumberBFramesBetweenReferenceFrames=2,
+                RepeatPps="DISABLED", DynamicSubGop="STATIC"
+            )
             media_settings = {
                 "OutputGroups": [
                     {
@@ -53,7 +76,9 @@ def lambda_handler(event, context):
                         "OutputGroupSettings": {
                             "Type": "FILE_GROUP_SETTINGS",
                             "FileGroupSettings": {
-                                "Destination": "s3://" + bucket + "/" + dest_folder
+                                "Destination": "s3://" +
+                                               bucket + "/" +
+                                               dest_folder
                             }
                         },
                         "Outputs": [
@@ -95,39 +120,7 @@ def lambda_handler(event, context):
                                     "Sharpness": 50,
                                     "CodecSettings": {
                                         "Codec": "H_264",
-                                        "H264Settings": {
-                                            "InterlaceMode": "PROGRESSIVE",
-                                            "NumberReferenceFrames": 3,
-                                            "Syntax": "DEFAULT",
-                                            "Softness": 0,
-                                            "GopClosedCadence": 1,
-                                            "GopSize": 90,
-                                            "Slices": 1,
-                                            "GopBReference": "DISABLED",
-                                            "SlowPal": "DISABLED",
-                                            "SpatialAdaptiveQuantization": "ENABLED",
-                                            "TemporalAdaptiveQuantization": "ENABLED",
-                                            "FlickerAdaptiveQuantization": "DISABLED",
-                                            "EntropyEncoding": "CABAC",
-                                            "Bitrate": 3195,
-                                            "FramerateControl": "INITIALIZE_FROM_SOURCE",
-                                            "RateControlMode": "CBR",
-                                            "CodecProfile": "MAIN",
-                                            "Telecine": "NONE",
-                                            "MinIInterval": 0,
-                                            "AdaptiveQuantization": "HIGH",
-                                            "CodecLevel": "AUTO",
-                                            "FieldEncoding": "PAFF",
-                                            "SceneChangeDetect": "ENABLED",
-                                            "QualityTuningLevel": "SINGLE_PASS",
-                                            "FramerateConversionAlgorithm": "DUPLICATE_DROP",
-                                            "UnregisteredSeiTimecode": "DISABLED",
-                                            "GopSizeUnits": "FRAMES",
-                                            "ParControl": "INITIALIZE_FROM_SOURCE",
-                                            "NumberBFramesBetweenReferenceFrames": 2,
-                                            "RepeatPps": "DISABLED",
-                                            "DynamicSubGop": "STATIC"
-                                        }
+                                        "H264Settings": H264
                                     },
                                     "AfdSignaling": "NONE",
                                     "DropFrameTimecode": "ENABLED",
@@ -150,7 +143,8 @@ def lambda_handler(event, context):
                 "Inputs": [
                     {
                         "FileInput": "s3://" + bucket + "/" + key,
-                        # inserire un clipping permette di evitare di prelevare il primo frame (blackscreen)
+                        # inserire un clipping permette di evitare
+                        # di prelevare il primo frame (blackscreen)
                         "InputClippings": [
                             {
                                 "StartTimecode": "00:00:00:00"
@@ -168,7 +162,8 @@ def lambda_handler(event, context):
                 AccelerationSettings=env_settings["AccelerationSettings"],
                 StatusUpdateInterval="SECONDS_60",
                 Priority=0,
-                Queue="arn:aws:mediaconvert:us-east-2:693949087897:queues/framer"
+                Queue="arn:aws:mediaconvert:us-east-2:693949087897:queues/"
+                      + "framer"
             )
             return result["Job"]["Id"]
         return False

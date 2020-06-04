@@ -8,10 +8,13 @@ Contenuto:
 
 """
 
+
 def lambda_handler(event, context):
     """
-    Handler che crea gruppi di frame da riconoscere per alleggerire l'informazione scambiata
-    fra gli stati della Step Function State Machine che predispone la decisione sull'interruzione
+    Handler che crea gruppi di frame da riconoscere
+    per alleggerire l'informazione scambiata
+    fra gli stati della Step Function State Machine
+    che predispone la decisione sull'interruzione
     del processo
     Args:
         event: L'evento che ha fatto scaturire l'avvio dell'handler
@@ -19,7 +22,8 @@ def lambda_handler(event, context):
             d'esecuzione
 
     Returns:
-        dict: I dati utili all'esecuzione del successivo step della State Machine
+        dict: I dati utili all'esecuzione del successivo
+        step della State Machine
     """
     print('Executiong ' + context.function_name)
     step = 200

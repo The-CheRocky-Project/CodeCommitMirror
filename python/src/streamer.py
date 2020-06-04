@@ -16,6 +16,8 @@ s3 = boto3.resource('s3')
 sns = boto3.client('sns')
 # TODO add as a resource in template
 # TODO verify correctness
+
+
 def lambda_handler(event, context):
     """
     Handler che riceve l'evento scaturante l'esecuzione che contiene
@@ -35,7 +37,10 @@ def lambda_handler(event, context):
         # Preleva bucket name e key da event
         record = event['Records'][0]['s3']
         bucket = record['bucket']['name']
-        key = urllib.parse.unquote_plus(record['object']['key'], encoding='utf-8')
+        key = urllib.parse.unquote_plus(
+            record['object']['key'],
+            encoding='utf-8'
+        )
 
         message_id = sns.publish(
             TopicArn="arn:aws:sns:us-east-2:693949087897:ahlTopic",

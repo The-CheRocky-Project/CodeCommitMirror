@@ -21,7 +21,6 @@ s3 = boto3.resource('s3')
 ENDPOINT_NAME = os.environ['ENDPOINT_NAME']
 
 
-
 def lambda_handler(event, context):
     """
     Handler che riceve l'evento scaturante l'esecuzione che contiene
@@ -41,13 +40,15 @@ def lambda_handler(event, context):
         # Preleva bucket name e key da event
         record = event['Records'][0]['s3']
         bucket = record['bucket']['name']
-        key = urllib.parse.unquote_plus(record['object']['key'], encoding='utf-8')
+        key = urllib.parse.unquote_plus(
+            record['object']['key'],
+            encoding='utf-8')
         full_qualifier = 's3://' + bucket + '/' + key
         # ottenimento frame
         image = s3.Object(bucket, key)
         image_get = image.get()
         payload = bytearray(image_get['Body'].read())
-        #use endpoint
+        # use endpoint
         result = media_manager.get_frame_details(ENDPOINT_NAME, payload)
         label_json = s3.Object(bucket, '/utils/label.json')
         labelres = label_json.get()
@@ -55,11 +56,13 @@ def lambda_handler(event, context):
         label = label_content['labels'][result['index']]
 
         splitted = key.split('/')
-        newkey = splitted[len(splitted)-1]
+        newkey = splitted[len(splitted) - 1]
 
         job_id = media_manager.dynamo_insertion(result, label, newkey)
         return job_id
     except Exception as err:
         print(err)
-        print('Impossibile effettuare il riconoscimento del frame ' + full_qualifier)
+        print('Impossibile effettuare il riconoscimento del frame '
+              + full_qualifier
+              )
         raise err

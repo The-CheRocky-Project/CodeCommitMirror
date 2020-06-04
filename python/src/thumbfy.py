@@ -43,9 +43,11 @@ def lambda_handler(event, context):
         string: job_id del lavoro avviato in Media Convert oppure false
     """
     # Extract bucket and fileKey strings
-    media_conv = boto3.client('mediaconvert',
-                          endpoint_url='https://' +
-                                       'fkuulejsc.mediaconvert.us-east-2.amazonaws.com')
+    media_conv = boto3.client(
+        'mediaconvert',
+        endpoint_url='https://' +
+        'fkuulejsc.mediaconvert.us-east-2.amazonaws.com'
+    )
     record = event['Records'][0]['s3']
     bucket = record['bucket']['name']
     key = urllib.parse.unquote_plus(record['object']['key'], encoding='utf-8')
@@ -112,12 +114,16 @@ def lambda_handler(event, context):
                                         "Slices": 1,
                                         "GopBReference": "DISABLED",
                                         "SlowPal": "DISABLED",
-                                        "SpatialAdaptiveQuantization": "ENABLED",
-                                        "TemporalAdaptiveQuantization": "ENABLED",
-                                        "FlickerAdaptiveQuantization": "DISABLED",
+                                        "SpatialAdaptiveQuantization":
+                                            "ENABLED",
+                                        "TemporalAdaptiveQuantization":
+                                            "ENABLED",
+                                        "FlickerAdaptiveQuantization":
+                                            "DISABLED",
                                         "EntropyEncoding": "CABAC",
                                         "Bitrate": 3195,
-                                        "FramerateControl": "INITIALIZE_FROM_SOURCE",
+                                        "FramerateControl":
+                                            "INITIALIZE_FROM_SOURCE",
                                         "RateControlMode": "CBR",
                                         "CodecProfile": "MAIN",
                                         "Telecine": "NONE",
@@ -127,11 +133,13 @@ def lambda_handler(event, context):
                                         "FieldEncoding": "PAFF",
                                         "SceneChangeDetect": "ENABLED",
                                         "QualityTuningLevel": "SINGLE_PASS",
-                                        "FramerateConversionAlgorithm": "DUPLICATE_DROP",
+                                        "FramerateConversionAlgorithm":
+                                            "DUPLICATE_DROP",
                                         "UnregisteredSeiTimecode": "DISABLED",
                                         "GopSizeUnits": "FRAMES",
                                         "ParControl": "INITIALIZE_FROM_SOURCE",
-                                        "NumberBFramesBetweenReferenceFrames": 2,
+                                        "NumberBFramesBetweenReferenceFrames":
+                                            2,
                                         "RepeatPps": "DISABLED",
                                         "DynamicSubGop": "STATIC"
                                     }
@@ -157,7 +165,8 @@ def lambda_handler(event, context):
             'Inputs': [
                 {
                     'FileInput': full_qualifier,
-                    # inserire un clipping permette di evitare di prelevare il primo frame (blackscreen)
+                    # inserire un clipping permette di evitare
+                    # di prelevare il primo frame (blackscreen)
                     'InputClippings': [
                         {
                             'StartTimecode': '00:00:10:00'

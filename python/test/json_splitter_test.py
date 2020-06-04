@@ -59,14 +59,16 @@ class TestJsonSplitter(unittest.TestCase):
             s3_client.put_object(Bucket='ahlconsolebucket',
                                  Key='partita_di_calcio.json',
                                  Body=json.dumps(json_to_upload))
-            # Verifico che abbia ritornato True e quindi sia andato tutto a posto
+            # Verifico che abbia ritornato True
+            # e quindi sia andato tutto a posto
             assert lambda_handler(event_json, CONTEXT)
             # Verifico che nel bucket ci siano i json splittati
             # La key dei singoli json è così costruita:
             # labelIndex + progressiveNumber + fileKey + .json
-            body = s3_client.get_object(Bucket='ahlconsolebucket',
-                                        Key='singles/00partita_di_calcio.mp4.json')['Body'] \
-                .read() \
+            body = s3_client.get_object(
+                Bucket='ahlconsolebucket',
+                Key='singles/00partita_di_calcio.mp4.json')['Body']\
+                .read()\
                 .decode("utf-8")
             body_json = json.loads(body)
             expectedbody_json = {
@@ -105,7 +107,8 @@ class TestJsonSplitter(unittest.TestCase):
         with mock_s3():
             s3_client = boto3.client('s3', region_name='us-east-2')
             s3_client.create_bucket(Bucket='ahlconsolebucket')
-            # Json malformato (manca fileKey e labelIndex). Dovrebbe far interrompere la lambda.
+            # Json malformato (manca fileKey e labelIndex).
+            # Dovrebbe far interrompere la lambda.
             json_to_upload = {
                 "list": [
                     {
@@ -117,6 +120,7 @@ class TestJsonSplitter(unittest.TestCase):
             s3_client.put_object(Bucket='ahlconsolebucket',
                                  Key='partita_di_calcio.json',
                                  Body=json.dumps(json_to_upload))
-            # Controllo che sia stata lanciata un'eccezione perchè non ha avuto successo
+            # Controllo che sia stata lanciata
+            # un'eccezione perchè non ha avuto successo
             with pytest.raises(Exception):
                 lambda_handler(event_json, CONTEXT)

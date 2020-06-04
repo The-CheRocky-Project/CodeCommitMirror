@@ -18,7 +18,8 @@ s3 = boto3.client('s3')
 
 def lambda_handler(event, context):
     """
-        Handler che, ricevuto un evento s3, elimina l'oggetto che lo ha fatto scaturire
+        Handler che, ricevuto un evento s3,
+        elimina l'oggetto che lo ha fatto scaturire
 
     Args:
         event: L'evento che ha fatto scaturire l'avvio dell'handler
@@ -33,7 +34,9 @@ def lambda_handler(event, context):
         # Preleva bucket name e key da event
         record = event['Records'][0]['s3']
         bucket = record['bucket']['name']
-        key = urllib.parse.unquote_plus(record['object']['key'], encoding='utf-8')
+        key = urllib.parse.unquote_plus(
+            record['object']['key'],
+            encoding='utf-8')
 
         # call the remove via boto
         s3.delete_object(Bucket=bucket, Key=key)
