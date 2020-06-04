@@ -155,16 +155,16 @@ Resources:
                   - Name: suffix
                     Value: -low.mp4
             Function: !GetAtt remover.Arn
-#        TopicConfigurations:
-#          - Event: "s3:ObjectCreated:*"
-#            Filter:
-#              S3Key:
-#                Rules:
-#                  - Name: prefix
-#                    Value: thumbnails/
-#                  - Name: suffix
-#                    Value: .jpg
-#            Topic: !Ref filesTopic
+        TopicConfigurations:
+          - Event: "s3:ObjectCreated:*"
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: prefix
+                    Value: thumbnails/
+                  - Name: suffix
+                    Value: .jpg
+            Topic: !Ref filesTopic
   thumbfyPermission:
     Description: The lambda permission to been invoked by an s3 event
     DeletionPolicy: Delete
