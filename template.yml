@@ -597,7 +597,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: key_thumb_transformer.lambda_handler
-      Role: !GEtAtt basicLambdaRole.Arn
+      Role: !GetAtt basicLambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/
   framerQueue:
