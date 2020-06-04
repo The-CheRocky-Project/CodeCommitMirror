@@ -32,7 +32,11 @@ def lambda_handler(event, context):
     try:
         print('Executing :' + context.function_name)
         # Preleva bucket name e key da event
-        record = event['Records'][0]['s3']
+        record = {}
+        if event['timestamp']:
+            record = event['responsePayload']['Records'][0]['s3']
+        else:
+            record = event['Records'][0]['s3']
         bucket = record['bucket']['name']
         key = urllib.parse.unquote_plus(
             record['object']['key'],
