@@ -163,7 +163,7 @@ Resources:
                     Value: origin
                   - Name: suffix
                     Value: .mp4
-            Function: !GetAtt keyThumbTransform
+            Function: !GetAtt keyThumbTransform.Arn
         TopicConfigurations:
           - Event: "s3:ObjectCreated:*"
             Filter:
@@ -190,6 +190,16 @@ Resources:
     Properties:
       Action: 'lambda:InvokeFunction'
       FunctionName: !Ref thumbfy
+      Principal: 's3.amazonaws.com'
+      SourceAccount: !Ref "AWS::AccountId"
+      SourceArn: !GetAtt consoleBucket.Arn
+  keyThumbPermission:
+    Description: The lambda permission to been invoked by an s3 event
+    DeletionPolicy: Delete
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !Ref keyThumbTransform
       Principal: 's3.amazonaws.com'
       SourceAccount: !Ref "AWS::AccountId"
       SourceArn: !GetAtt consoleBucket.Arn
