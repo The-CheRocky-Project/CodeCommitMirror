@@ -155,15 +155,15 @@ Resources:
                   - Name: suffix
                     Value: -low.mp4
             Function: !GetAtt remover.Arn
-#          - Event: "s3:ObjectRemoved:*"
-#            Filter:
-#              S3Key:
-#                Rules:
-#                  - Name: prefix
-#                    Value: origin
-#                  - Name: suffix
-#                    Value: .mp4
-#            Function: !GetAtt keyThumbTransform.Arn
+          - Event: "s3:ObjectRemoved:*"
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: prefix
+                    Value: origin
+                  - Name: suffix
+                    Value: .mp4
+            Function: !GetAtt keyThumbTransform.Arn
         TopicConfigurations:
           - Event: "s3:ObjectCreated:*"
             Filter:
