@@ -155,6 +155,16 @@ Resources:
                   - Name: suffix
                     Value: -low.mp4
             Function: !GetAtt remover.Arn
+#        TopicConfigurations:
+#          - Event: "s3:ObjectCreated:*"
+#            Filter:
+#              S3Key:
+#                Rules:
+#                  - Name: prefix
+#                    Value: thumbnails/
+#                  - Name: suffix
+#                    Value: .jpg
+#            Topic: !GetAtt filesTopic.Arn
   thumbfyPermission:
     Description: The lambda permission to been invoked by an s3 event
     DeletionPolicy: Delete
@@ -165,6 +175,24 @@ Resources:
       Principal: 's3.amazonaws.com'
       SourceAccount: !Ref "AWS::AccountId"
       SourceArn: !GetAtt consoleBucket.Arn
+  filesTopicPermission:
+    Description: The sns permission to been invoked by an s3 event
+    DeletionPolicy: Delete
+    Type: AWS::SNS::TopicPolicy
+    Properties:
+      Topics:
+        - !GetAtt filesTopic.Arn
+      PolicyDocument:
+        Version: "2012-10-17"
+        Id: s3FilesTopic
+        Statement:
+          - Sid: s3SnsPublish
+            Effect: Allow
+            Principal:
+              Service: "s3.amazonaws.com"
+            Action:
+              - "SNS:Publish"
+            Resource: !GetAtt filesTopic.Arn
   removerPermission:
     Description: The Lambda permission to been invoked by an s3 event
     DeletionPolicy: Delete
