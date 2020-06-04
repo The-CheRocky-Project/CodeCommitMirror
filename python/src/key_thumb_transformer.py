@@ -28,7 +28,7 @@ def lambda_handler(event, context):
         encoding='utf-8'
     )
     event['Records'][0]['s3']['object']['key'] = key.replace(
-        ".mp4",
+        "mp4",
         "0000000.jpg"
     ).replace(
         "origin/",
