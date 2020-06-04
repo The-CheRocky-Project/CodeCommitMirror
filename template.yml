@@ -393,6 +393,14 @@ Resources:
                 Action:
                   - "sns:*"
                 Resource: "*"
+        - PolicyName: LambdaInvoke
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "lambda:invokeFunction"
+                Resource: "*"
   dynamoLambdaRole:
     Description: The role for AWS Lambda Functions
     DeletionPolicy: Delete
