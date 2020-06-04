@@ -1,0 +1,36 @@
+{
+  "Records": [
+    {
+      "eventVersion": "2.1",
+      "eventSource": "aws:s3",
+      "awsRegion": "us-east-2",
+      "eventTime": "2020-06-04T15:08:32.375Z",
+      "eventName": "ObjectRemoved:Delete",
+      "userIdentity": {
+        "principalId": "AWS:AIDA2DEUWYCMYU7DLRH4C"
+      },
+      "requestParameters": {
+        "sourceIPAddress": "92.246.119.124"
+      },
+      "responseElements": {
+        "x-amz-request-id": "95A211DEF1A68448",
+        "x-amz-id-2": "o3UG7u2VN7mnTAumHPojr8zeGTkV8HdaB4T1vmR94+WVOpoZV84j9fXYK8fnGUklwRF53eJig+qLsb3HZFUT1YuoFae2mnZqxwCGxNaWxdU="
+      },
+      "s3": {
+        "s3SchemaVersion": "1.0",
+        "configurationId": "9fe7da30-0b5f-4702-b2e1-ee4b395e3493",
+        "bucket": {
+          "name": "ahlconsolebucket",
+          "ownerIdentity": {
+            "principalId": "AJ15ZX91IW5CY"
+          },
+          "arn": "arn:aws:s3:::ahlconsolebucket"
+        },
+        "object": {
+          "key": "thumbnails/VideoSenzaThumbnail.0000000.jpg",
+          "sequencer": "005ED90E73223ABC83"
+        }
+      }
+    }
+  ]
+}
