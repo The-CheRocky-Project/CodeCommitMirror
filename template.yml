@@ -591,6 +591,15 @@ Resources:
       Role: !GetAtt basicLambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/
+  keyThumbTransform:
+    Description: The lambda that transforms a video key in thumbnail key
+    DeletionPolicy: Delete
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: key_thumb_transformer.lambda_handler
+      Role: !GEtAtt basicLambdaRole.Arn
+      Runtime: python3.7
+      CodeUri: ./python/src/
   framerQueue:
     Description: The Media Convert Queue for framing jobs
     Type: AWS::MediaConvert::Queue
