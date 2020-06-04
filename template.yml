@@ -399,7 +399,8 @@ Resources:
             Statement:
               - Effect: Allow
                 Action:
-                  - "lambda:invokeFunction"
+                  - "lambda:InvokeFunction"
+                  - "lambda:InvokeAsync"
                 Resource: "*"
   dynamoLambdaRole:
     Description: The role for AWS Lambda Functions
