@@ -79,7 +79,7 @@ def lambda_handler(event, context):
         resume = []
 
         for k in range(event['to'] - 1):
-            if succession[k]['accuracy'] >= 0.80 and elaboration.find_trasholder(
+            if succession[k]['accuracy'] >= 0.80 and elaboration.find_trashold(
                     succession,
                     succession[k],
                     k,
