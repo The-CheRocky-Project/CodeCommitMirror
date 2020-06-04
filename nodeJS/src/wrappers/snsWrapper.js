@@ -3,8 +3,6 @@
  * @module wrappers/snsWrapper
  */
 
-// TODO unused buffer
-const Buffer = require('buffer').Buffer;
 
 //Richiede i moduli sdk necessari e ne crea un istanza
 process.env.AWS_REGION = "us-east-2";
@@ -67,6 +65,7 @@ class TopicPublisher{
         });
     }
 }
+// TODO test
 function confirmTopic(topicArn, Token) {
     const data = {
         "Token": Token,
@@ -91,7 +90,7 @@ async function publisher(params){
         .catch(err => console.log("Errore SNS #" + err.code + ": " + err.message));
     return result;
 }
-
+// TODO test
 async function confirmRequest(requestBody) {
     const snsClient = new AWS.SNS();
     let result = false;
@@ -101,12 +100,12 @@ async function confirmRequest(requestBody) {
         .catch(err => console.log("***Conf err " + err, err.message));
     return result
 }
-
+// TODO test
 function createTopicSubscription(topicName,endpoint, userCode) {
     const topicArn = this.getTopicArn(topicName,process.env.AWS_REGION,userCode)
     return createSubscription("HTTP", topicArn, endpoint);
 }
-
+// TODO test
 async function createSubscription(protocol, topicArn, endpoint) {
     const snsClient = new AWS.SNS();
     let result = false;
