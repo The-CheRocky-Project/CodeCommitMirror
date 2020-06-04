@@ -560,7 +560,7 @@ Resources:
     Type: AWS::Serverless::Function
     DeletionPolicy: Delete
     Properties:
-      Handler: checkNprioritize.lambda_handler
+      Handler: check_n_prioritize.lambda_handler
       Role: !GetAtt basicLambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/
