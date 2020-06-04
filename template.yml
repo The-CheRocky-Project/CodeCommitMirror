@@ -164,7 +164,7 @@ Resources:
 #                    Value: thumbnails/
 #                  - Name: suffix
 #                    Value: .jpg
-#            Topic: !ref filesTopic
+#            Topic: !Ref filesTopic
   thumbfyPermission:
     Description: The lambda permission to been invoked by an s3 event
     DeletionPolicy: Delete
@@ -181,7 +181,7 @@ Resources:
     Type: AWS::SNS::TopicPolicy
     Properties:
       Topics:
-        - !ref filesTopic
+        - !Ref filesTopic
       PolicyDocument:
         Version: "2012-10-17"
         Id: s3FilesTopic
@@ -192,7 +192,7 @@ Resources:
               Service: "s3.amazonaws.com"
             Action:
               - "SNS:Publish"
-            Resource: !ref filesTopic
+            Resource: !Ref filesTopic
   removerPermission:
     Description: The Lambda permission to been invoked by an s3 event
     DeletionPolicy: Delete
