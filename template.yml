@@ -602,6 +602,7 @@ Resources:
       Role: !GetAtt basicLambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/
+      Timeout: 180
   notifyProgression:
     Descrioption: The Lambda that notify the progression about recognizing
     Type: AWS::Serverless::Function
@@ -620,6 +621,7 @@ Resources:
       Role: !GetAtt basicLambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/
+      Timeout: 180
   keyThumbTransform:
     Description: The lambda that transforms a video key in thumbnail key
     DeletionPolicy: Delete
