@@ -32,7 +32,7 @@ def lambda_handler(event, context):
     end = event['to']
     start = event['from']
 
-    progression = ((start / end) * 70) + 10
+    progression = ((start / end) * 80) + 10
     try:
         sns.publish(
             TopicArn='arn:aws:sns:us-east-2:693949087897:progression',
