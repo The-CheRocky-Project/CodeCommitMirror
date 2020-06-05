@@ -26,7 +26,7 @@ def lambda_handler(event, context):
         step della State Machine
     """
     print('Executiong ' + context.function_name)
-    step = 200
+    step = 50
 
     event['detail']['items'] = []
 
