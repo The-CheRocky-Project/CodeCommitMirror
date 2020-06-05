@@ -302,6 +302,10 @@ ahl.post('/notifyProgressionUpdate', (req,res) => {
     else{
         if(req.body.Type == "Notification"){
             const progr = JSON.parse(req.body.Message).progression;
+            if (activePage == pages.fileExplorer) {
+                activePage= pages.loading;
+                backport.emit('refresh','');
+            }
             backport.emit('progress',progr);
             res.sendStatus(200);
             if(progr >= 100){
