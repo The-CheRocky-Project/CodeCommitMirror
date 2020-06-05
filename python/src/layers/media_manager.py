@@ -26,7 +26,8 @@ env_settings = {
     },
     'BillingTagsSource': 'QUEUE',
     'QueuePrefix': "arn:aws:mediaconvert:us-east-2:693949087897:queues/",
-    'Role': "arn:aws:iam::693949087897:role/mediaRole"
+    'Role': "arn:aws:iam::693949087897:role/mediaRole",
+    'Endpoint': "https://fkuulejsc.mediaconvert.us-east-2.amazonaws.com"
 }
 
 
@@ -162,8 +163,7 @@ def create_thumbnail(input_key, output_folder_key, queue):
         ]
     }
     media_conv = client("mediaconvert",
-        endpoint_url="https://\
-        fkuulejsc.mediaconvert.us-east-2.amazonaws.com")
+        endpoint_url=env_settings['Endpoint'])
     result = media_conv.create_job(
         Role=env_settings['Role'],
         Settings=media_settings,
@@ -317,8 +317,7 @@ def mount(input_file_key, destination_key, details_array, first_start, queue):
     }
 
     media_conv = client("mediaconvert",
-        endpoint_url="https://\
-        fkuulejsc.mediaconvert.us-east-2.amazonaws.com")
+        endpoint_url=env_settings['Endpoint'])
     result = media_conv.create_job(
         Role=env_settings["Role"],
         Settings=media_settings,
@@ -408,8 +407,7 @@ def frame(input_file_key, duration, queue):
         'AdAvailOffset': 0,
     }
     media_conv = client("mediaconvert",
-        endpoint_url="https://\
-        fkuulejsc.mediaconvert.us-east-2.amazonaws.com")
+        endpoint_url=)
     result = media_conv.create_job(
         Role=env_settings['Role'],
         Settings=media_settings,
