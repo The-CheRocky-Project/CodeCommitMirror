@@ -37,7 +37,6 @@ def lambda_handler(event, context):
         sns.publish(
             TopicArn='arn:aws:sns:us-east-2:693949087897:progression',
             Message="{ \"progression\": " + str(int(progression)) + '}')
-    except Error as err:
+    except Exception as err:
         print(err)
-    finally:
-        return event
+    return event
