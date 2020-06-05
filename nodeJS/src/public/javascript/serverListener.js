@@ -14,6 +14,7 @@ $(document).ready(() => {
     socket.on('finish', (data) => {
       // faccio chiamata a api per settare la active page = .toFileExplorer
       if (data === 'done') {
+          // TODO fix
         // goIndex();
       } else {
         alert('Error on finish: ' + data);
