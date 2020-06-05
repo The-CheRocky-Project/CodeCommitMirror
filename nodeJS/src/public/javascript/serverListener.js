@@ -14,7 +14,7 @@ $(document).ready(() => {
     socket.on('finish', (data) => {
       // faccio chiamata a api per settare la active page = .toFileExplorer
       if (data === 'done') {
-        goIndex();
+        // goIndex();
       } else {
         alert('Error on finish: ' + data);
       }
@@ -47,7 +47,7 @@ $(document).ready(() => {
      * @param {object} data - parametro fittizio che non fa nulla
      */
     socket.on('newEndPoint', (data) => {
-      goEdit();
+      // TODO da sistemare
     });
 
     /**
@@ -136,12 +136,12 @@ function goIndex() {
       url: "./toFileExplorer"
   })
 }
-
-function goLoading() {
-  $.ajax({
-      url: "./toLoading"
-  })
-}
+// TODO remove: useless function
+// function goLoading() {
+//   $.ajax({
+//       url: "./toLoading"
+//   })
+// }
 
 function goEdit() {
   $.ajax({
@@ -195,9 +195,10 @@ function updateProgressBar(data) {
   $('#loadingProgressBar').css('width', data + '%');
   $('#loadingProgressBar').attr('aria-valuenow', data);
   // forse si vuole modificare la 'notifyProgressionUpdate' in router.js e includere il messaggio di refresh
-  if (data >= 100) {
-    $.ajax({
-      url: './toEdit'
-    });
-  }
+  //  TODO remove this code: single responibility
+  // if (data >= 100) {
+  //   $.ajax({
+  //     url: './toEdit'
+  //   });
+  // }
 }
