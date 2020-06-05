@@ -7,9 +7,9 @@ Contenuto:
 """
 
 import boto3
-import botocore
 
 s3 = boto3.client('s3')
+
 
 def lambda_handler(event, context):
     """
@@ -28,17 +28,12 @@ def lambda_handler(event, context):
         bucket = 'ahlconsolebucket'
         key = event["Records"][0]["Sns"]["MessageAttributes"]["key"]["Value"]
         key = key[:-4]
-        #key = "Football_Red_card_to_Top_Players_2019-1"
 
-        keys_to_delete=[]
         isTrunc = True
         while isTrunc:
-            response = s3.list_objects(Bucket=bucket, Prefix='frames/'+key)
+            response = s3.list_objects(Bucket=bucket, Prefix='frames/' + key)
             isTrunc = response['IsTruncated']
-            # for single_frame in response["Contents"]:
-            #     print(single_frame["Key"])
-            #     keys_to_delete.append(single_frame["Key"])
-            keys_to_delete = [{'Key':obj['Key']} for obj in response["Contents"]]
+            keys_to_delete = [{'Key': obj['Key']} for obj in response["Contents"]]
             s3.delete_objects(
                 Bucket=bucket,
                 Delete={
@@ -49,5 +44,3 @@ def lambda_handler(event, context):
     except Exception as err:
         print(err)
         return False
-
-        

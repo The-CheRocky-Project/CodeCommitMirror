@@ -36,34 +36,31 @@ class TestFinalVideoCleaner(unittest.TestCase):
             s3_client = boto3.client('s3', region_name='us-east-2')
             s3_client.create_bucket(Bucket='ahlconsolebucket')
             for i in range(1500):
-              s3_client.put_object(
-                  Bucket='ahlconsolebucket',
-                  Key='frames/file'+str(i)+'.jpg',
-                  Body="body")
+                s3_client.put_object(
+                    Bucket='ahlconsolebucket',
+                    Key='frames/file' + str(i) + '.jpg',
+                    Body="body")
             s3_client.put_object(Bucket='ahlconsolebucket',
-                  Key='frames/non_cancellare.jpg',
-                  Body="body")
-            
+                                 Key='frames/non_cancellare.jpg',
+                                 Body="body")
+
             # Dovrebbe ritornare true visto che
             # il file deve essere stato cancellato
-
             assert lambda_handler(event_json, CONTEXT)
-            # response = s3_client.list_objects(Bucket="ahlconsolebucket")
-            # for key in response['Contents']:
-            #   print(key['Key'])
+
             # Dovrebbe lanciare un'eccezione siccome il file che sto
             # cercando di ottenere dovrebbe essere stato cancellato
             try:
-              s3_client.get_object(Bucket='ahlconsolebucket', Key='frames/non_cancellare.jpg')
-              pass
+                s3_client.get_object(Bucket='ahlconsolebucket', Key='frames/non_cancellare.jpg')
+                pass
             except Exception:
-              self.fail('è stato cancellato un file da non cancellare')
+                self.fail('è stato cancellato un file da non cancellare')
             for i in range(1500):
-              self.assertRaises(
-                  Exception,
-                  s3_client.get_object,
-                  Bucket='ahlconsolebucket',
-                  Key='frames/file'+str(i)+'.jpg')
+                self.assertRaises(
+                    Exception,
+                    s3_client.get_object,
+                    Bucket='ahlconsolebucket',
+                    Key='frames/file' + str(i) + '.jpg')
 
     def test_delete_frames_fail(self):
         """
