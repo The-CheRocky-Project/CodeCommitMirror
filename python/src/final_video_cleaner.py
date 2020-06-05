@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-""" Mount Lambda module
+""" Final video cleaner Lambda module
 Questo modulo contiene l'handler che elimina
 il video montato dalla lambda mount
 Contenuto:

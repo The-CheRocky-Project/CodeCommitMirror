@@ -1,33 +1,46 @@
-# Funzione che dato in input un nomeFile e un estensione cancella tutti i file nomeFileX.estensione con X = 1,2,3... fermandosi quando non esiste
-# il prossimo file nomeFileX+1.estensione
+# -*- coding: utf-8 -*-
+"""  json_splitter Lambda module
+Questo modulo elimina tutti i frames inerenti al video in ingresso
+
+Contenuto:
+    * lambda_handler - l'handler principale per la lambda
+"""
 
 import boto3
-import botocore
 
-s3 = boto3.resource('s3')
+s3 = boto3.client('s3')
 
-bucket = 'provabucketaws'
-nomeFile = 'NomeVideo'  # da prendere in input dalla funzione
-estensione = 'json'  # da prendere in input dalla funzione
-# Non so se sia questo il modo di prendere dei parametri in input con le lambda, leggendo in internet se si usa il metodo invoke() per richiamare
-# questa lambda da un'altra lambda si può specificare dalla lambda chiamante un payload in cui si posso aggiungere dei campi custom al JSON
-#nomeFile = event['nomeFile']
-#estensione = event['estensione']
 
-i = 1
+def lambda_handler(event, context):
+    """
+    Handler che elimina i frames relativi al video in ingresso
 
-hasNext = True
+    Args:
+        event: L'evento che ha fatto scaturire l'avvio dell'handler
+        context: Il dizionario rappresentante le variabili di contesto
+            d'esecuzione
 
-while hasNext:
-    s3.Object(bucket, 'training/cut/'+nomeFile+str(i)+'.'+estensione).delete()
-    i = i+1
-    # Controllo se esiste il file nomeFile[i+1]
+    Returns:
+        string: true se l'eliminazione è andata a buon fine false altrimenti
+    """
+    print('Executing :' + context.function_name)
     try:
-        s3.Object(bucket, 'training/cut/'+nomeFile+str(i)+'.'+estensione).load()
-    except botocore.exceptions.ClientError as e:
-        if e.response['Error']['Code'] == "404":
-            # il file nomeFile[i+1] non esiste
-            hasNext = False
-        else:
-            # Qualcosa è andato storto
-            raise
+        bucket = 'ahlconsolebucket'
+        key = event["Records"][0]["Sns"]["MessageAttributes"]["key"]["Value"]
+        key = key[:-4]
+
+        isTrunc = True
+        while isTrunc:
+            response = s3.list_objects(Bucket=bucket, Prefix='frames/' + key)
+            isTrunc = response['IsTruncated']
+            keys_to_delete = [{'Key': obj['Key']} for obj in response["Contents"]]
+            s3.delete_objects(
+                Bucket=bucket,
+                Delete={
+                    'Objects': keys_to_delete
+                }
+            )
+        return True
+    except Exception as err:
+        print(err)
+        return False
