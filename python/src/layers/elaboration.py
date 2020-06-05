@@ -134,7 +134,7 @@ def check_time(frames):
     # controllo durata totale del resume file
     for i in range(len(frames)):
         if frames[i]['show'] == "true":
-            counter += int(frames[i]['tfs']) - frames[i]['start']
+            counter += int(frames[i]['tfs']) - int(frames[i]['start'])
 
     return counter <= limit
 
