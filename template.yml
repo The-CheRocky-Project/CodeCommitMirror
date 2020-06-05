@@ -592,6 +592,7 @@ Resources:
       Role: !GetAtt dynamoLambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/
+      Timeout: 120
   checkNprioritize:
     Descrioption: The Lambda that make the first prototipe fo resume file
     Type: AWS::Serverless::Function

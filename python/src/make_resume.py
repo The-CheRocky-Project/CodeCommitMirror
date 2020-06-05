@@ -49,7 +49,7 @@ def lambda_handler(event, context):
         for i in range(event['to']):
             response = table.get_item(
                 Key={
-                    'frame_key': base_key + '.' + f"{i:07d}" + str(i) + '.jpg'
+                    'frame_key': base_key + '.' + f"{i:07d}" + '.jpg'
                 }
             )
             all_frames.append(response['Item'])
