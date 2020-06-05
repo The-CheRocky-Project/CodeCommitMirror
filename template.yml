@@ -665,7 +665,7 @@ Resources:
           RoleArn: !GetAtt stepFRole.Arn
         - Arn: !Ref progressionTopic
           Id: mediaConvertProgressionTarget
-          Input: "{\"progression\": 10}"
+          Input: "{progression: 10}"
   ahlMlBucket:
     Description: The s3 Bucket where data is stored
     Type: AWS::S3::Bucket
