@@ -49,6 +49,9 @@ def lambda_handler(event, context):
     # Serializzazione in JSON
     data = elaboration.prepare_for_serialize(all_frames)
 
-    s3object = s3R.Object('ahlconsolebucket', 'tmp/resume.json')
+    file_param = {
+        'key': 'tmp/resume.json'
+    }
+    s3object = s3R.Object('ahlconsolebucket', file_param['key'])
     s3object.put(Body=json.dumps(data))
-    return all_frames if len(data) != 0 else False
+    return file_param if len(data) != 0 else False
