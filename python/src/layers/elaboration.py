@@ -33,7 +33,7 @@ def find_trashold(frame_list, frame, frame_number, how_much, n_frames):
     """
 
     limit = 0.70
-    amount = 0.0
+    amount = 0
     total = (how_much * 2) - 1
     for i in range(1, how_much):
         if (
