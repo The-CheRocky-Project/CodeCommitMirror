@@ -24,7 +24,7 @@ exports.print = (params, res) => {
                     labelIndexes: params.labels
                 },
             },
-            layout: true
+            layout: "main"
         });
     // generateVideoFrame(videoURL, true, res);
     // generateTable(listParams, res);
