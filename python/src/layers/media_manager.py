@@ -407,7 +407,7 @@ def frame(input_file_key, duration, queue):
         'AdAvailOffset': 0,
     }
     media_conv = client("mediaconvert",
-        endpoint_url=)
+        endpoint_url=env_settings['Endpoint'])
     result = media_conv.create_job(
         Role=env_settings['Role'],
         Settings=media_settings,
