@@ -59,13 +59,9 @@ exports.generateVideoFrame = (url, isOriginal, res)=>{
 exports.generateTable = (params, res)=>{
     res.render('partials/tableTemplate',{
         data:{
-            errorData:{
-                error: params.error
-            },
-            rowData: {
-                recognizement: params.list,
-                labelIndexes: params.labels
-            }
+            error: params.error,
+            recognizements: params.list,
+            labels:params.labels.labels
         },
         layout: false
     });
