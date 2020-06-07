@@ -15,69 +15,9 @@
     </tr>
     </thead>
     <tbody>
-        {{#each recognizements}}
-            {{> rowTemplate this }}
-        {{/each}}
-        <tr>
-        <td><input id="col1row2" type="checkbox" name="col1row1" checked="checked"/></td>
-        <td><input id="col2row2" type="text" name="col2row1" readonly="readonly" value="00:05:12.123"/></td>
-        <td><input id="col3row2" type="text" name="col3row1" readonly="readonly" value="00:05.30.934"/></td>
-        <td>
-            <select id="col4row2" disabled="readonly">
-                <option value="" disabled="disabled">Etichette disponibili</option>
-                <option value="1">Goal</option>
-                <option value="2">Falso Goal</option>
-                <option value="3">Cartellino rosso</option>
-                <option value="4">Falso cartellino rosso</option>
-                <option value="5" selected="selected">Cartellino giallo</option>
-                <option value="6">Falso cartellino giallo</option>
-                <option value="7">Cambio</option>
-                <option value="8">Falso cambio</option>
-                <option value="9">etc...</option>
-            </select>
-        </td>
-        <td>IA</td>
-    </tr>
-    <tr>
-        <td><input id="col1row3" type="checkbox" name="col1row1" checked="checked"/></td>
-        <td><input id="col2row3" type="text" name="col2row1" readonly="readonly" value="00:10:11.123"/></td>
-        <td><input id="col3row3" type="text" name="col3row1" readonly="readonly" value="00:11:01.934"/></td>
-        <td>
-            <select id="col4row3" disabled="readonly">
-                <option value="" disabled="disabled">Etichette disponibili</option>
-                <option value="1">Goal</option>
-                <option value="2">Falso Goal</option>
-                <option value="3" selected="selected">Cartellino rosso</option>
-                <option value="4">Falso cartellino rosso</option>
-                <option value="5">Cartellino giallo</option>
-                <option value="6">Falso cartellino giallo</option>
-                <option value="7">Cambio</option>
-                <option value="8">Falso cambio</option>
-                <option value="9">etc...</option>
-            </select>
-        </td>
-        <td>IA</td>
-    </tr>
-    <tr>
-        <td><input id="col1row4" type="checkbox" name="col1row1"/></td>
-        <td><input id="col2row4" type="text" name="col2row1" readonly="readonly"/></td>
-        <td><input id="col3row4" type="text" name="col3row1" readonly="readonly"/></td>
-        <td>
-            <select id="col4row4">
-                <option value="" disabled="disabled">Etichette disponibili</option>
-                <option value="1" selected="selected">Goal</option>
-                <option value="2">Falso Goal</option>
-                <option value="3">Cartellino rosso</option>
-                <option value="4">Falso cartellino rosso</option>
-                <option value="5">Cartellino giallo</option>
-                <option value="6">Falso cartellino giallo</option>
-                <option value="7">Cambio</option>
-                <option value="8">Falso cambio</option>
-                <option value="9">etc...</option>
-            </select>
-        </td>
-        <td>Umano</td>
-    </tr>
+    {{#each recognizements}}
+        {{> rowTemplate this }}
+    {{/each}}
     <tr>
         <td class="addElementRow" colspan="6">
             <!--Qui parte JavaScript che mi aggiunge una riga della tabella-->

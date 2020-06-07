@@ -1,17 +1,17 @@
 <tr>
     <td>
-        <input type="checkbox" {{#if checked}}checked="checked()"{{/if}}/>
+        <input type="checkbox" {{#if show}}checked="checked()"{{/if}}/>
     </td>
     <td>
         <input type="text" readonly="readonly" value="{{start}}"/>
     </td>
     <td>
-        <input type="text" readonly="readonly" value="{{end}}"/></td>
+        <input type="text" readonly="readonly" value="{{tfs}}"/></td>
     <td>
         <select id="col4row1">
-            {{#each labels}}
+            {{#each labelList}}
                 <option value="{{@index}}"
-                {{#eq @index modelIndex}}
+                {{#eq @index ../label}}
                     selected="selected()"
                 {{/eq}}
                 >
@@ -21,6 +21,6 @@
         </select>
     </td>
     <td>
-        <input type="checkbox" {{#if autonomous}}checked="checked()"{{/if}}/>
+        <input type="checkbox" {{#eq type "machine"}}checked="checked()"{{/eq}}/>
     </td>
 </tr>
