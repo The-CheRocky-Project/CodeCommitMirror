@@ -40,13 +40,13 @@ exports.getVideoEndpoint =  () =>{
         s3Defaults.region);
 };
 
-/**
+/** TODO fix doc description
  * Effettua la richiesta di selezione della riga di indice index al sistema.
  * @returns {boolean} ritorna true se la chiamata è stata effettuata correttamente.
  * @param {number} index - Rappresenta l'indice della riga da selezionare
  */
 exports.getRecognizementList = async () =>{
-    return s3Wrap.getJsonFile(s3Defaults.bucket, "tmp/resume.json");
+    return s3Wrap.getJsonFile(s3Defaults.bucket, "tmp/modified-resume.json");
 };
 
 /**
