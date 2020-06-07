@@ -10,10 +10,10 @@ const model = require('../models/editModel');
  * Effettua il rendering del body della pagina di visualizzazione dei risultati dell'elaborazione.
  * @param {object} res - Rappresenta la risposta http
  */
-exports.getBody = (res) => {
+exports.getBody = async (res) => {
     const videoEndpoint = model.getVideoEndpoint();
-    const recoList = model.getRecognizementList();
-    const labelList = model.getmodelLabels();
+    const recoList = await model.getRecognizementList();
+    const labelList = await model.getmodelLabels();
     const params = {
         url: videoEndpoint,
         originalVideo: model.isVideoTypeOriginal(),

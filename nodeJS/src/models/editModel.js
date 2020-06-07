@@ -46,7 +46,7 @@ exports.getVideoEndpoint =  () =>{
  * @param {number} index - Rappresenta l'indice della riga da selezionare
  */
 exports.getRecognizementList = async () =>{
-    return await s3Wrap.getJsonFile(s3Defaults.bucket,"tmp/resume.json");
+    return s3Wrap.getJsonFile(s3Defaults.bucket, "tmp/resume.json");
 };
 
 /**
@@ -90,7 +90,7 @@ exports.setOriginalMode = async () =>{
  * @returns {object} dizionario Json contenente le label impostate secondo le cartelle del modello.
  */
 exports.getmodelLabels = async () =>{
-    return await s3Wrap.getJsonFile(s3Defaults.bucket,"labelList.json");
+    return s3Wrap.getJsonFile(s3Defaults.bucket, "labelList.json");
 };
 
 
