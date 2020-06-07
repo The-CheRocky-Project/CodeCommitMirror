@@ -10,6 +10,9 @@
  * @param {Object} res - Rappresenta la risposta http
  */
 exports.print = (params, res) => {
+    for(let i =0; i<params.list.length; i++){
+        params.list[i]['labelList'] = params.labels.labels;
+    }
     res.render('layouts/editTemplate',
         {
             template: 'editTemplate',
@@ -20,8 +23,7 @@ exports.print = (params, res) => {
                 },
                 tableData:{
                     error: params.error,
-                    recognizements: params.list,
-                    labelIndexes: params.labels
+                    recognizements: params.list
                 },
             },
             layout: "main"
