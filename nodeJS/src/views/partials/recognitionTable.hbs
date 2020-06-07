@@ -10,13 +10,16 @@
         <th scope="col">Seleziona</th>
         <th scope="col">Inizio</th>
         <th scope="col">Fine</th>
+        <th scope="col">Accuratezza</th>
         <th scope="col">Etichetta</th>
-        <th scope="col">Identificato da:</th>
+        <th scope="col">Identificato da IA:</th>
     </tr>
     </thead>
     <tbody>
     {{#each recognizements}}
-        {{> rowTemplate this }}
+        {{#unless @last}}
+            {{> rowTemplate this}}
+        {{/unless}}
     {{/each}}
     <tr>
         <td class="addElementRow" colspan="6">

@@ -3,24 +3,28 @@
         <input type="checkbox" {{#if show}}checked="checked()"{{/if}}/>
     </td>
     <td>
-        <input type="text" readonly="readonly" value="{{start}}"/>
+        <input type="text" {{#eq type "machine"}}disabled{{/eq}} value="{{start}}"/>
     </td>
     <td>
-        <input type="text" readonly="readonly" value="{{tfs}}"/></td>
+        <input type="text" {{#eq type "machine"}}disabled{{/eq}} value="{{tfs}}"/>
+    </td>
     <td>
-        <select id="col4row1">
+        <input type="text" {{#eq type "machine"}}disabled value="{{#perc ../accuracy}}{{/perc}}"{{/eq}} {{#neq type "machine"}}disabled{{/neq}}/>
+    </td>
+    <td>
+        <select id="col4row1" {{#eq type "machine"}}disabled{{/eq}}>
             {{#each labelList}}
                 <option value="{{@index}}"
-                {{#eq @index ../label}}
-                    selected="selected()"
-                {{/eq}}
+                    {{#eq @index ../label}}
+                        selected="selected()"
+                    {{/eq}}
                 >
-                {{this}}
+                    {{this}}
                 </option>
             {{/each}}
         </select>
     </td>
     <td>
-        <input type="checkbox" {{#eq type "machine"}}checked="checked()"{{/eq}}/>
+        <input type="checkbox" disabled {{#eq type "machine"}}checked="checked()"{{/eq}}/>
     </td>
 </tr>
