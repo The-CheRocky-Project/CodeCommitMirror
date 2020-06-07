@@ -62,6 +62,14 @@ ahl.engine('.hbs', exphbs({
             if(op1 == op2)
                 return opt.fn(this);
             return opt.inverse(this);
+        },
+        neq: (op1, op2, opt) => {
+            if(op1 != op2)
+                return opt.fn(this);
+            return opt.inverse(this);
+        },
+        perc: (subject) => {
+            return parseFloat(subject).toFixed(3);
         }
     }
 }));
