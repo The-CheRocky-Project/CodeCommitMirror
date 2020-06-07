@@ -23,7 +23,8 @@ exports.print = (params, res) => {
                 },
                 tableData:{
                     error: params.error,
-                    recognizements: params.list
+                    recognizements: params.list,
+                    labels:params.labels.labels
                 },
             },
             layout: "main"

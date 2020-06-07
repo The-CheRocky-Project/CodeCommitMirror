@@ -20,6 +20,35 @@
         {{#unless @last}}
             {{> rowTemplate this}}
         {{/unless}}
+        {{#if @last}}
+            <tr>
+                <td>
+                    <input type="checkbox" hidden="hidden()"/>
+                </td>
+                <td>
+                    <input type="text"/>
+                </td>
+                <td>
+                    <input type="text"/>
+                </td>
+                <td>
+                    <input type="text" hidden="hidden()"/>
+                </td>
+                <td>
+                    <select id="col4row1" {{#eq type "machine"}}disabled{{/eq}}>
+                        {{#each ../labels}}
+                            <option value="{{@index}}">
+                                {{this}}
+                            </option>
+                        {{/each}}
+                    </select>
+                </td>
+                <td>
+                    <input type="checkbox" disabled/>
+                </td>
+            </tr>
+
+        {{/if}}
     {{/each}}
     <tr>
         <td class="addElementRow" colspan="6">
@@ -32,7 +61,7 @@
                     <path fill-rule="evenodd" d="M7.5 8a.5.5 0 01.5-.5h4a.5.5 0 010 1H8.5V12a.5.5 0 01-1 0V8z" clip-rule="evenodd"/>
                     <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/>
                 </svg>
-                Aggiungi Riga
+                Aggiungi Etichetta
             </button>
         </td>
     </tr>
