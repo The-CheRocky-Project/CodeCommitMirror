@@ -36,13 +36,13 @@ def lambda_handler(event, context):
     print('Executing :' + context.function_name)
     try:
         # Prendo la tabella in base al nome
-        key = event["key"]
-        key = key[:-4]
+        key = event["Cause"]['errorMessage'].lstrip('(').rstrip(')').strip('\'')
+        trimmed_key = key[:-4]
 
         table = dynamodb.Table('rekognitions')
 
         response = table.scan(
-            FilterExpression=Attr('frame_key').contains(key)
+            FilterExpression=Attr('frame_key').contains(trimmed_key)
         )
         items = response['Items']
 

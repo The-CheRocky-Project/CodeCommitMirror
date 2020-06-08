@@ -31,13 +31,14 @@ def lambda_handler(event, context):
     print('Executing :' + context.function_name)
     try:
         # Preleva bucket name e key da event
-        bucket = event["bucket"]
-        key = event["key"]
+        bucket = 'ahlconsolebucket'
+        key = event["Cause"]['errorMessage'].lstrip('(').rstrip(')').strip('\'')
+        trimmed_key = key[:-4]
         s3.delete_object(
             Bucket=bucket,
-            Key=key,
+            Key=trimmed_key,
         )
-        return {bucket: bucket, key: key}
+        return event
     except Exception as err:
         print(err)
         print('Impossibile eliminare il video')

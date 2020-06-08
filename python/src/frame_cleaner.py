@@ -25,13 +25,13 @@ def lambda_handler(event, context):
     """
     print('Executing :' + context.function_name)
     try:
-        bucket = event["bucket"]
-        key = event["key"]
-        key = key[:-4]
+        bucket = 'ahlconsolebucket'
+        key = event["Cause"]['errorMessage'].lstrip('(').rstrip(')').strip('\'')
+        trimmed_key = key[:-4]
 
         s3.delete_objects(
             Bucket=bucket,
-            key=key + '*'
+            key=trimmed_key + '*'
         )
         return event
 
