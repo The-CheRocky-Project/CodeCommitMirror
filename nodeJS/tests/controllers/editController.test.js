@@ -53,7 +53,7 @@ describe('testEditController',() => {
   });
 
   describe('#updateLabelTable()', () => {
-    it("deve aggiornare il rendering della tabella dei riconoscimenti.", () => {
+    it("deve aggiornare il rendering della tabella dei riconoscimenti.", (done) => {
       let getRecongnizementListIsCalled = false;
       mock('../../src/models/editModel', { getRecognizementList: function() {
         getRecongnizementListIsCalled = true;
@@ -67,10 +67,15 @@ describe('testEditController',() => {
       let res = 'resMock';
       editController.__set__('model', mMock);
       editController.__set__('view', vMock);
-      editController.updateLabelTable(res);
-      var expected = true;
-      var result = generateTableIsCalled && getRecongnizementListIsCalled;
-      assert.equal(result,expected);
+      editController.updateLabelTable(res).then(
+        (data) => {
+          var expected = true;
+          var result = generateTableIsCalled && getRecongnizementListIsCalled;
+          assert.equal(result,expected);
+          done();
+        }
+      );
+
     });
   });
 
@@ -205,9 +210,9 @@ describe('testEditController',() => {
     });
   });
 
-  /*TODO test errato
+
   describe('#getBody()', () => {
-    it("Deve effettuare il rendering del body della pagina di visualizzazione dei risultati dell'elaborazione.",()=>{
+    it("Deve effettuare il rendering del body della pagina di visualizzazione dei risultati dell'elaborazione.",(done)=>{
       let getVideoEndpointIsCalled = false;
       let getRecognizementListIsCalled = false;
       let getmodelLabelsIsCalled = false;
@@ -221,15 +226,13 @@ describe('testEditController',() => {
         getVideoEndpoint: function() {
           getVideoEndpointIsCalled = true;
         },
-        getRecognizementList: function() {
+        getRecognizementList: async function() {
           getRecognizementListIsCalled = true;
-          var recognizerList = Array(new single(24322), new single(2332121));
-          return recognizerList;
         },
-        getmodelLabels: function() {
+        getmodelLabels: async function() {
           getmodelLabelsIsCalled = true;
         },
-        isVideoTypeOriginal:function() {
+        isVideoTypeOriginal: function() {
           isVideoTypeOriginalIsCalled = true;
         }
       });
@@ -242,14 +245,19 @@ describe('testEditController',() => {
       editController.__set__('model', mMock);
       editController.__set__('view', vMock);
       var res = 'resMock';
-      editController.getBody(res);
-      var expected = true;
-      var result = getVideoEndpointIsCalled &&
-      getRecognizementListIsCalled &&
-      getmodelLabelsIsCalled &&
-      isVideoTypeOriginalIsCalled &&
-      printIsCalled;
-      assert.equal(result,expected);
+      editController.getBody(res).then(
+        (value) => {
+          var expected = true;
+          var result = getVideoEndpointIsCalled &&
+          getRecognizementListIsCalled &&
+          getmodelLabelsIsCalled &&
+          isVideoTypeOriginalIsCalled &&
+          printIsCalled;
+          assert.equal(result,expected);
+          done();
+        }
+      );
+
     });
-  });*/
+  });
 });

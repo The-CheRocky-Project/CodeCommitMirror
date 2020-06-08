@@ -87,8 +87,8 @@ exports.changeRowValue = (index,start, duration, modelIndex) => {
  * Aggiorna il rendering della tabella dei riconoscimenti.
  * @param {object} res - Rappresenta la risposta http
  */
-exports.updateLabelTable = (res) => {
-    const rekoList = model.getRecognizementList();
+exports.updateLabelTable = async (res) => {
+    const rekoList = await model.getRecognizementList();
     view.generateTable(rekoList, res);
 };
 

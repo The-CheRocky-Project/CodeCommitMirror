@@ -7,10 +7,10 @@ const AWSMock = require('aws-sdk-mock');
 
 describe('test integrazione edit', () => {
 
-  /*TODO test errato
+
   describe('#getBody()', () => {
 
-    it('Deve effettuare il rendering del body della pagina di visualizzazione dei risultati dell\'elaborazione.', () => {
+    it('Deve effettuare il rendering del body della pagina di visualizzazione dei risultati dell\'elaborazione.', (done) => {
 
       let mockRes = null;
       mockRes = {
@@ -31,8 +31,13 @@ describe('test integrazione edit', () => {
           callback(null, response);
       });
 
-      editController.getBody(mockRes);
-      assert.ok(mockRes.viewData.layout);
+      editController.getBody(mockRes).then(
+        (data) => {
+          assert.ok(mockRes.viewData.layout);
+          done();
+        }
+      );
+
 
     });
 
@@ -40,7 +45,7 @@ describe('test integrazione edit', () => {
         AWSMock.restore('S3','getObject');
     });
 
-  });*/
+  });
 
   describe('#changeVideoMode()', () => {
 
@@ -207,14 +212,19 @@ describe('test integrazione edit', () => {
 
   });
 
-  /*TODO test errato
+
   describe('#updateLabelTable()', () => {
 
-    it('deve aggiornare il rendering della tabella dei riconoscimenti.', () => {
+    it('deve aggiornare il rendering della tabella dei riconoscimenti.', (done) => {
 
-      let response = {
-          Body: '{"campo1":"prova","campo2":"ciao"}'
-      }
+      // let response = {
+      //     Body: '{"campo1":"prova","campo2":"ciao"}'
+      // }
+      object=[];
+      let val = {
+        Body: '{"url": "videoEndpoint","originalVideo": true,"error": false,"list": ["object"],"labels": {    "labels":[        "prima_label",        "seconda_label"    ]}}'
+      };
+      var response= val;
 
       AWSMock.mock('S3', 'getObject', (params, callback) => {
           callback(null, response);
@@ -230,8 +240,13 @@ describe('test integrazione edit', () => {
           }
       };
 
-      editController.updateLabelTable(mockRes);
-      assert.ok(!mockRes.viewData.layout);
+      editController.updateLabelTable(mockRes).then(
+        (data) => {
+          assert.ok(!mockRes.viewData.layout);
+          done();
+        }
+      );
+
 
     });
 
@@ -239,7 +254,7 @@ describe('test integrazione edit', () => {
       AWSMock.restore('S3','getObject');
     });
 
-  });*/
+  });
 
   describe('#confirmEditing()', () => {
 
