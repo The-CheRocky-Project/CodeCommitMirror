@@ -5,6 +5,7 @@ Questo modulo elimina tutti i frames inerenti al video in ingresso
 Contenuto:
     * lambda_handler - l'handler principale per la lambda
 """
+import json
 
 import boto3
 
@@ -26,7 +27,7 @@ def lambda_handler(event, context):
     print('Executing :' + context.function_name)
     try:
         bucket = 'ahlconsolebucket'
-        key = event["Cause"]['errorMessage'].lstrip('(').rstrip(')').strip('\'')
+        key = json.loads(event['Cause'])['errorMessage'].lstrip('(').rstrip(')').strip('\'')
         trimmed_key = key[:-4]
 
         s3.delete_objects(

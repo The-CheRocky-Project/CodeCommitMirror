@@ -36,7 +36,7 @@ def lambda_handler(event, context):
     print('Executing :' + context.function_name)
     try:
         # Prendo la tabella in base al nome
-        key = event["Cause"]['errorMessage'].lstrip('(').rstrip(')').strip('\'')
+        key = json.loads(event['Cause'])['errorMessage'].lstrip('(').rstrip(')').strip('\'')
         trimmed_key = key[:-4]
 
         table = dynamodb.Table('rekognitions')
