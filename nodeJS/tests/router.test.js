@@ -103,18 +103,19 @@ describe('testRouter',() => {
 
     });
   });
-
-  describe('#post/notifyLabelRowChange', () => {
-
-    it("deve inviare un json con una rowIndex", (done) => {
-
-      request(ahl).post('/notifyLabelRowChange')
-      .send({rowIndex: 'john'})
-      .set('Accept', 'application/json')
-      .expect(200, done);
-
-    });
-  });
+// TODO ogni messaggio che arriva alle notify deve avere un heading
+// come quello delle notifiche SNS
+  // describe('#post/notifyLabelRowChange', () => {
+  //
+  //   it("deve inviare un json con una rowIndex", (done) => {
+  //
+  //     request(ahl).post('/notifyLabelRowChange')
+  //     .send({rowIndex: 'john'})
+  //     .set('Accept', 'application/json')
+  //     .expect(200, done);
+  //
+  //   });
+  // });
 
   describe('#post/includeLabel', () => {
 
