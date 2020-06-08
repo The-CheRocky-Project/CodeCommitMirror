@@ -31,15 +31,14 @@ def lambda_handler(event, context):
     print('Executing :' + context.function_name)
     try:
         # Preleva bucket name e key da event
-        message_attributes = event["Records"][0]["Sns"]["MessageAttributes"]
-        bucket = message_attributes["bucket"]["Value"]
-        key = message_attributes["key"]["Value"]
+        bucket = event["bucket"]
+        key = event["key"]
         s3.delete_object(
             Bucket=bucket,
             Key=key,
         )
-        return True
+        return {bucket: bucket, key: key}
     except Exception as err:
         print(err)
         print('Impossibile eliminare il video')
-        return False
+        return event

@@ -36,7 +36,7 @@ def lambda_handler(event, context):
     print('Executing :' + context.function_name)
     try:
         # Prendo la tabella in base al nome
-        key = event["Records"][0]["Sns"]["MessageAttributes"]["key"]["Value"]
+        key = event["key"]
         key = key[:-4]
 
         table = dynamodb.Table('rekognitions')
@@ -49,7 +49,7 @@ def lambda_handler(event, context):
         for single_item in items:
             table.delete_item(Key=single_item)
 
-        return True
+        return event
     except Exception as err:
         print(err)
         print('Impossibile eliminare i records')

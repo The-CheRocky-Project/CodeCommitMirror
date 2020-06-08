@@ -5,7 +5,11 @@
     "prepareData": {
       "Type": "Task",
       "Resource":  "${prepareDataArn}",
-      "Next": "Check"
+      "Next": "Check",
+      "Catch": [{
+        "ErrorEquals": ["States.ALL"],
+        "Next": "cleanDb"
+      }]
     },
     "Check": {
       "Type": "Choice",
@@ -21,7 +25,11 @@
     "iteratorMaster": {
       "Type": "Task",
       "Resource": "${frameGroupingArn}",
-      "Next": "Iterate"
+      "Next": "Iterate",
+      "Catch": [{
+        "ErrorEquals": ["States.ALL"],
+        "Next": "cleanDb"
+      }]
     },
     "Iterate": {
       "Type": "Map",
@@ -37,17 +45,29 @@
           }
         }
       },
+      "Catch": [{
+        "ErrorEquals": ["States.ALL"],
+        "Next": "cleanDb"
+      }],
       "ResultPath": "$.detail.items",
       "Next":"notifyProgression"
     },
     "notifyProgression": {
       "Type": "Task",
       "Resource":  "${notifyProgressionArn}",
-      "Next": "Check"
+      "Next": "Check",
+      "Catch": [{
+        "ErrorEquals": ["States.ALL"],
+        "Next": "cleanDb"
+      }]
     },
     "CreateResume": {
       "Type": "Task",
       "Resource":  "${makeResumeArn}",
+      "Catch": [{
+        "ErrorEquals": ["States.ALL"],
+        "Next": "cleanResume"
+      }],
       "Next": "prioritize"
     },
     "prioritize": {
@@ -58,6 +78,29 @@
     "makeFinal": {
       "Type": "Task",
       "Resource":  "${makeFinalArn}",
+      "Catch": [{
+        "ErrorEquals": ["States.ALL"],
+        "Next": "cleanVideo"
+      }],
+      "End": true
+    },
+    "cleanVideo": {
+      "Type": "Task",
+      "Resource": "${finalVideoCleaner}",
+      "Next": "cleanResume"
+    },
+    "cleanResume": {
+      "Type": "Task",
+      "Resource": "${recoJsonCleaner}",
+      "Next": "cleanDb"
+    },
+    "cleanDb": {
+      "Type": "Pass",
+      "Next": "cleanFrames"
+    },
+    "cleanFrames": {
+      "Type": "Task",
+      "Resource": "${frameCleaner}",
       "End": true
     }
   }

@@ -25,22 +25,28 @@ def lambda_handler(event, context):
     """
     print('Executing :' + context.function_name)
     try:
-        bucket = 'ahlconsolebucket'
-        key = event["Records"][0]["Sns"]["MessageAttributes"]["key"]["Value"]
+        bucket = event["bucket"]
+        key = event["key"]
         key = key[:-4]
 
-        isTrunc = True
-        while isTrunc:
-            response = s3.list_objects(Bucket=bucket, Prefix='frames/' + key)
-            isTrunc = response['IsTruncated']
-            keys_to_delete = [{'Key': obj['Key']} for obj in response["Contents"]]
-            s3.delete_objects(
-                Bucket=bucket,
-                Delete={
-                    'Objects': keys_to_delete
-                }
-            )
-        return True
+        s3.delete_objects(
+            Bucket=bucket,
+            key=key + '*'
+        )
+        return event
+
+        # isTrunc = True
+        # while isTrunc:
+        #     response = s3.list_objects(Bucket=bucket, Prefix='frames/' + key)
+        #     isTrunc = response['IsTruncated']
+        #     keys_to_delete = [{'Key': obj['Key']} for obj in response["Contents"]]
+        #     s3.delete_objects(
+        #         Bucket=bucket,
+        #         Delete={
+        #             'Objects': keys_to_delete
+        #         }
+        #     )
+        # return True
     except Exception as err:
         print(err)
         return False

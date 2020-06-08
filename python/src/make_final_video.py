@@ -34,6 +34,7 @@ def lambda_handler(event, context):
 
     """
     print('Executing :' + context.function_name)
+    video_key = ''
     try:
         key = event['key']
 
@@ -56,16 +57,16 @@ def lambda_handler(event, context):
                 end_minute = round((int(all_frames[i]['tfs']) / 1000) / 60)
                 end_hours = round(end_minute / 60)
                 s = (
-                    str(start_hours).zfill(2) +
-                    ":" + str(start_minute).zfill(2) +
-                    ":" + str(start_seconds).zfill(2) +
-                    ":00"
+                        str(start_hours).zfill(2) +
+                        ":" + str(start_minute).zfill(2) +
+                        ":" + str(start_seconds).zfill(2) +
+                        ":00"
                 )
                 e = (
-                    str(end_hours).zfill(2) +
-                    ":" + str(end_minute).zfill(2) +
-                    ":" + str(end_seconds).zfill(2) +
-                    ":00"
+                        str(end_hours).zfill(2) +
+                        ":" + str(end_minute).zfill(2) +
+                        ":" + str(end_seconds).zfill(2) +
+                        ":00"
                 )
                 if not first:
                     first_start = (
@@ -106,4 +107,22 @@ def lambda_handler(event, context):
     except Exception as err:
         print(err)
         print('Impossibile creare il video')
-        raise err
+        raise VideoCreationError('ahlconsolebucket', 'modify/' + video_key)
+
+
+class VideoCreationError(Exception):
+    """
+    An error class containing information about the video bucket and key
+    that are causing the error
+    """
+    key: str
+    bucket: str
+
+    def __init__(self, bucket: str, key: str):
+        """
+        Constructor
+        :param key: the filekey that causes the error
+        :param bucket: the bucket where the file is contained
+        """
+        self.key = key
+        self.bucket = bucket

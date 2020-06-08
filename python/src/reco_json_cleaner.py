@@ -38,7 +38,7 @@ def lambda_handler(event, context):
             Bucket=bucket,
             Key=key,
         )
-        return True
+        return event
     except Exception as err:
         print(err)
         print('Impossibile eliminare il file resume.json')

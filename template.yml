@@ -506,6 +506,10 @@ Resources:
           makeResumeArn: !GetAtt [makeResume, Arn]
           prioritizeArn: !GetAtt [checkNprioritize, Arn]
           makeFinalArn: !GetAtt [makeFinalVideo, Arn]
+          finalVideoCleaner: !GetAtt [finalVideoCleaner, Arn]
+          recoJsonCleaner: !GetAtt [recoJsonCleaner, Arn]
+          frameCleaner: !GetAtt [frameCleaner, Arn]
+          dbCleaner: !GetAtt [dbCleaner, Arn]
       RoleArn: !GetAtt stepFRole.Arn
       StateMachineName: ahlFrameWorkflow
       StateMachineType: STANDARD
@@ -636,6 +640,42 @@ Resources:
           OnSuccess:
             Destination: !GetAtt remover.Arn
             Type: Lambda
+  recoJsonCleaner:
+    Description: The lamda that removes the resume.json file
+    DeletionPolicy: Delete
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: reco_json_cleaner.lambda_handler
+      Role: !GetAtt basicLambdaRole.Arn
+      Runtime: python3.7
+      CodeUri: ./python/src/
+  finalVideoCleaner:
+    Description: The lamda that removes the mounted video
+    DeletionPolicy: Delete
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: final_video_cleaner.lambda_handler
+      Role: !GetAtt basicLambdaRole.Arn
+      Runtime: python3.7
+      CodeUri: ./python/src/
+  frameCleaner:
+    Description: The lamda that removes frames used for recognitions
+    DeletionPolicy: Delete
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: frame_cleaner.lambda_handler
+      Role: !GetAtt basicLambdaRole.Arn
+      Runtime: python3.7
+      CodeUri: ./python/src/
+  dbCleaner:
+    Description: The lamda that removes records from db
+    DeletionPolicy: Delete
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: db_records_cleaner.lambda_handler
+      Role: !GetAtt dynamoLambdaRole.Arn
+      Runtime: python3.7
+      CodeUri: ./python/src/
   framerQueue:
     Description: The Media Convert Queue for framing jobs
     Type: AWS::MediaConvert::Queue
