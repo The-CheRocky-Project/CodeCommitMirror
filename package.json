@@ -3,6 +3,11 @@
   "version": "0.0.2",
   "desciption": "Autonomous Highlights Platform Web Console",
   "author": "The CheRocky Project",
+  "license": "GPL-3.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/The-CheRocky-Project/CodeCommitMirror"
+  },
   "scripts": {
     "start": "node nodeJS/src/router.js",
     "test": "nyc --reporter=lcov mocha nodeJS/tests --recursive --coverage --exit"

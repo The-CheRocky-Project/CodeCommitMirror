@@ -187,7 +187,7 @@ let labelsPromise = SNS.subscribe({
     TopicArn: sns.getTopicArn('editLabels',AWS.config.region,"693949087897"),
     Endpoint: endpointName + "notifyLabelRowChange"
 }).promise();
-fileNotifyPromise.then( data => console.log("Requested subscription ",data)).catch(err => console.log(
+labelsPromise.then( data => console.log("Requested subscription ",data)).catch(err => console.log(
     "Subscription Error " + err,err.stack));
 
 /**
@@ -354,7 +354,7 @@ let progressionPromise = SNS.subscribe({
     TopicArn: sns.getTopicArn('progression',AWS.config.region,"693949087897"),
     Endpoint: endpointName + "notifyProgressionUpdate"
 }).promise();
-fileNotifyPromise.then( data => console.log("Requested subscription ",data)).catch(err => console.log(
+progressionPromise.then( data => console.log("Requested subscription ",data)).catch(err => console.log(
     "Subscription Error " + err,err.stack));
 
 /**
