@@ -35,7 +35,7 @@ phases:
       #- $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
       #- REPOSITORY_URI=693949087897.dkr.ecr.us-east-2.amazonaws.com/ahlcontainer
       #- COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)
-      - pytest --cov-report xml --cov python/src
+      - pytest --cov-report xml --cov python/
       - sonar-scanner -Dsonar.login=$LOGIN -Dsonar.host.url=$HOST -Dsonar.projectKey=$Project -Dsonar.organization=$Organization
   post_build:
     commands:
