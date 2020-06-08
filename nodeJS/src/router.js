@@ -164,9 +164,31 @@ ahl.post('/selectFile', (req,res) => {
  * @param {object} res - Rappresenta la risposta http
  */
 ahl.post('/notifyLabelRowChange', (req,res) => {
-    backport.emit('changedRow',req.body['rowIndex']);
-    res.send();
+    if(req.body.Type == "SubscriptionConfirmation"){
+        if(sns.confirmTopic(req.body.TopicArn, req.body.Token)){
+            console.log("Confirmed subscription " + req.body.TopicArn);
+            res.sendStatus(200);
+        }
+        else
+            res.sendStatus(422);
+    }
+    else{
+        if(req.body.Type == "Notification"){
+            backport.emit('changedRow',req.body['rowIndex']);
+            res.sendStatus(200);
+        }
+        else
+            res.sendStatus(418);
+    }
 });
+
+let labelsPromise = SNS.subscribe({
+    Protocol: 'http',
+    TopicArn: sns.getTopicArn('editLabels',AWS.config.region,"693949087897"),
+    Endpoint: endpointName + "notifyLabelRowChange"
+}).promise();
+fileNotifyPromise.then( data => console.log("Requested subscription ",data)).catch(err => console.log(
+    "Subscription Error " + err,err.stack));
 
 /**
  *  Seleziona la label indicata tramite HTTP POST come
