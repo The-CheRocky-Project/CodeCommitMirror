@@ -667,6 +667,7 @@ Resources:
       Role: !GetAtt basicLambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/
+      Timeout: 100
   dbCleaner:
     Description: The lamda that removes records from db
     DeletionPolicy: Delete
@@ -676,6 +677,7 @@ Resources:
       Role: !GetAtt dynamoLambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/
+      Timeout: 240
   framerQueue:
     Description: The Media Convert Queue for framing jobs
     Type: AWS::MediaConvert::Queue
