@@ -107,7 +107,7 @@ def lambda_handler(event, context):
     except Exception as err:
         print(err)
         print('Impossibile creare il video')
-        raise VideoCreationError('ahlconsolebucket', video_key)
+        raise VideoCreationError(video_key)
 
 
 class VideoCreationError(Exception):
@@ -116,13 +116,10 @@ class VideoCreationError(Exception):
     that are causing the error
     """
     key: str
-    bucket: str
 
-    def __init__(self, bucket: str, key: str):
+    def __init__(self, key: str):
         """
         Constructor
         :param key: the filekey that causes the error
-        :param bucket: the bucket where the file is contained
         """
         self.key = key
-        self.bucket = bucket
