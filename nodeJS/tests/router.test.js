@@ -8,16 +8,25 @@ var ahl = router.__get__('ahl');
 
 describe('testRouter',() => {
 
-//   describe('#get/', () => {
-//
-//     it("deve invocare il getBody della pagina attiva", (done) => {
-//
-//       request(ahl).get('/').set('Accept', 'application/json')
-//         .expect('Content-Type', 'text/html; charset=utf-8')
-//         .expect(200, done);
-//
-//     });
-//   });
+  describe('#get/', () => {
+
+    before(() => {
+      var activePageMock = {
+        getBody : (res) => {
+          res.send()
+        }
+      }
+
+      router.__set__("activePage", activePageMock);
+    });
+
+    it("deve invocare il getBody della pagina attiva", (done) => {
+
+      request(ahl).get('/').set('Accept', 'application/json')
+        .expect(200, done);
+
+    });
+  });
 
   describe('#get/toFileExplorer', () => {
 
@@ -51,31 +60,30 @@ describe('testRouter',() => {
 
     });
   });
-  // describe('#post/getTable', () => {
-  //
-  //   before(() => {
-  //
-  //     mock('../src/controllers/editController', {
-  //        updateLabelTable: (res) => {
-  //          console.log('printMockato');
-  //          // return true;
-  //        }
-  //      });
-  //      const editControllerMock = require('../src/controllers/editController');
-  //      router.__set__('editController', editControllerMock);
-  //
-  //   });
-  //
-  //
-  //   it("deve inviare un niente per ricevere la tabella delle label aggiornata", (done) => {
-  //
-  //     request(ahl).post('/getTable')
-  //     // .send({fileKey: 'john'})
-  //     // .set('Accept', 'application/json')
-  //     .expect(200);
-  //
-  //   });
-  // });
+  describe('#post/getTable', () => {
+
+    before(() => {
+
+      mock('../src/controllers/editController', {
+         updateLabelTable: async (res) => {
+           res.send();
+           return true;
+         }
+       });
+       const editControllerMock = require('../src/controllers/editController');
+       router.__set__('editController', editControllerMock);
+
+    });
+
+
+    it("deve inviare un niente per ricevere la tabella delle label aggiornata", (done) => {
+
+      request(ahl).post('/getTable')
+      .send({fileKey: 'john'})
+      .set('Accept', 'application/json')
+      .expect(200,done);
+    });
+  });
 
 
   describe('#post/selectFile', () => {
@@ -84,8 +92,7 @@ describe('testRouter',() => {
 
       mock('../src/controllers/fileExplorerController', {
          launchFileProcessing: (res) => {
-           // console.log('printMockato');
-           // return true;
+           return true;
          }
        });
        const fileExplorerControllerMock = require('../src/controllers/fileExplorerController');
@@ -103,19 +110,22 @@ describe('testRouter',() => {
 
     });
   });
-// TODO ogni messaggio che arriva alle notify deve avere un heading
-// come quello delle notifiche SNS
-  // describe('#post/notifyLabelRowChange', () => {
-  //
-  //   it("deve inviare un json con una rowIndex", (done) => {
-  //
-  //     request(ahl).post('/notifyLabelRowChange')
-  //     .send({rowIndex: 'john'})
-  //     .set('Accept', 'application/json')
-  //     .expect(200, done);
-  //
-  //   });
-  // });
+
+  describe('#post/notifyLabelRowChange', () => {
+
+    it("deve inviare un json con una rowIndex", (done) => {
+
+      request(ahl).post('/notifyLabelRowChange')
+      .send({
+        Type : "SubscriptionConfirmation",
+        TopicArn: "john",
+        Token: "token"
+      })
+      .set('Accept', 'application/json')
+      .expect(200, done);
+
+    });
+  });
 
   describe('#post/includeLabel', () => {
 
@@ -124,7 +134,7 @@ describe('testRouter',() => {
       mock('../src/controllers/fileExplorerController', {
          checkLabel: (res) => {
            //console.log(res);
-           // return true;
+           return true;
          }
        });
        const fileExplorerControllerMock = require('../src/controllers/fileExplorerController');
@@ -168,30 +178,30 @@ describe('testRouter',() => {
     });
   });
 
-  // describe('#post/getVideoFrame', () => {
-  //
-  //   before(() => {
-  //
-  //     mock('../src/controllers/editController', {
-  //        updateVideoFrame: (res) => {
-  //          console.log(res);
-  //          // return true;
-  //        }
-  //      });
-  //      const editControllerMock = require('../src/controllers/editController');
-  //      router.__set__('editController', editControllerMock);
-  //
-  //   });
-  //
-  //   it("deve inviare un json con una rowIndex", (done) => {
-  //
-  //     request(ahl).post('/getVideoFrame')
-  //     // .send({rowIndex: 'john'})
-  //     // .set('Accept', 'application/json')
-  //     .expect(200, done);
-  //
-  //   });
-  // });
+  describe('#post/getVideoFrame', () => {
+
+    before(() => {
+
+      mock('../src/controllers/editController', {
+         updateVideoFrame: (res) => {
+           res.send();
+           return true;
+         }
+       });
+       const editControllerMock = require('../src/controllers/editController');
+       router.__set__('editController', editControllerMock);
+
+    });
+
+    it("deve inviare un json con una rowIndex", (done) => {
+
+      request(ahl).post('/getVideoFrame')
+      .send({rowIndex: 'john'})
+      .set('Accept', 'application/json')
+      .expect(200, done);
+
+    });
+  });
 
   describe('#post/addLabel', () => {
 
@@ -267,10 +277,13 @@ describe('testRouter',() => {
     it("inviare? un json quello che gli pare", (done) => {
 
       request(ahl).post('/notifyChangedFileList')
-      .send({done: 'john'})
+      .send({
+        Type : "SubscriptionConfirmation",
+        TopicArn: "john",
+        Token: "token"
+      })
       .set('Accept', 'application/json')
-      .expect(418, done);
-      //TODO correct all the notify request expectation with correct sns notify http package
+      .expect(200, done);
     });
   });
 
@@ -280,7 +293,7 @@ describe('testRouter',() => {
 
       mock('../src/controllers/editController', {
          confirmEditing: () => {
-           // return true;
+           return true;
          }
        });
        const editControllerMock = require('../src/controllers/editController');

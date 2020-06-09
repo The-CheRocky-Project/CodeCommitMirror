@@ -3,6 +3,7 @@ const snsWrap=require('../../src/wrappers/snsWrapper');
 var AWSMock = require('aws-sdk-mock');
 var rewire = require("rewire");
 var snsRewire = rewire("../../src/wrappers/snsWrapper.js");
+const mock = require('mock-require');
 
 describe('testSnsWrapper',() => {
 
@@ -11,6 +12,8 @@ describe('testSnsWrapper',() => {
     let region = 'us-east-2';
     let userCode = 'myCode';
   });
+
+
 
   describe('#getTopicArn()', () => {
 
@@ -73,5 +76,94 @@ describe('testSnsWrapper',() => {
       }).catch((errOnAssert) => {done(new Error(errOnAssert));});
       AWSMock.restore('SNS', 'publish');
     });
+  });
+
+  describe('#confirmTopic()', () => {
+
+    it("Confirm di un topic", (done) => {
+
+      AWSMock.mock('SNS', 'confirmSubscription', (params, callback) => {
+        callback(null, 'success'); // Mocked response returns error always
+      });
+
+      var topicARN = 'topicArn'
+      var token = 'token'
+
+      var result = snsWrap.confirmTopic(topicARN, token).then(
+        (data) => {
+          assert.strictEqual(data, true);
+          done();
+        }
+      );
+
+    });
+
+    it("Confirm di un topic", (done) => {
+
+      AWSMock.mock('SNS', 'confirmSubscription', (params, callback) => {
+        callback("error", null); // Mocked response returns error always
+      });
+
+      var topicARN = 'topicArn'
+      var token = 'token'
+
+      var result = snsWrap.confirmTopic(topicARN, token).then(
+        (data) => {
+          assert.strictEqual(data, false);
+          done();
+        }
+      ).catch((errOnAssert) => {done(new Error(errOnAssert));});
+
+    });
+
+    afterEach(()=>{
+      AWSMock.restore('SNS', 'confirmSubscription');
+    });
+
+  });
+  describe('#createTopicSubscription()', () => {
+
+    it("Create di un topic", (done) => {
+
+      AWSMock.mock('SNS', 'subscribe', (params, callback) => {
+        callback(null, 'success'); // Mocked response returns error always
+      });
+
+      var topicName = this.topic
+      var endpoint = 'endpoint'
+      var userCode = this.userCode
+
+      var result = snsWrap.createTopicSubscription(topicName,endpoint, userCode).then(
+        (data) => {
+          assert.strictEqual(data, true);
+          done();
+        }
+      );
+
+    });
+
+    it("Create di un topic wrong", (done) => {
+
+      AWSMock.mock('SNS', 'subscribe', (params, callback) => {
+        callback('ERRORE', null); // Mocked response returns error always
+      });
+
+      var topicName = this.topic
+      var endpoint = 'endpoint'
+      var userCode = this.userCode
+
+      var result = snsWrap.createTopicSubscription(topicName,endpoint, userCode).then(
+        (data) => {
+          assert.strictEqual(data, false);
+          done();
+        }
+      ).catch((errOnAssert) => {done(new Error(errOnAssert));});
+
+    });
+
+    afterEach(()=>{
+      AWSMock.restore('SNS', 'subscribe');
+    });
+
   });
 });
