@@ -28,9 +28,8 @@ def lambda_handler(event, context):
     try:
         bucket = 'ahlconsolebucket'
         key = json.loads(event['Cause'])['errorMessage'].lstrip('(').rstrip(')').strip('\'')
-        trimmed_key = key[:-4]
         bucket = s3.Bucket(bucket)
-        bucket.objects.filter(Prefix=trimmed_key).delete()
+        bucket.objects.filter(Prefix='frames/'+key).delete()
         return event
 
         # isTrunc = True

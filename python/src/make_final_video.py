@@ -88,7 +88,7 @@ def lambda_handler(event, context):
         splitted = all_frames[0]['frame_key'].split('/')
         name = splitted[-1]
         splitted = name.split('.')
-        video_key = splitted[-3]
+        video_key = splitted[:-2]
 
         input_file_key = 's3://ahlconsolebucket/origin/' + video_key + '.mp4'
         destination_key = "s3://ahlconsolebucket/modify/" + video_key
@@ -107,7 +107,7 @@ def lambda_handler(event, context):
     except Exception as err:
         print(err)
         print('Impossibile creare il video')
-        raise VideoCreationError('ahlconsolebucket', 'modify/' + video_key)
+        raise VideoCreationError('ahlconsolebucket', video_key)
 
 
 class VideoCreationError(Exception):

@@ -12,7 +12,7 @@ import urllib.parse
 import boto3
 
 # Definisce la risorsa s3
-s3 = boto3.client('s3')
+s3 = boto3.resource('s3')
 
 
 def lambda_handler(event, context):
@@ -33,11 +33,8 @@ def lambda_handler(event, context):
         # Preleva bucket name e key da event
         bucket = 'ahlconsolebucket'
         key = json.loads(event['Cause'])['errorMessage'].lstrip('(').rstrip(')').strip('\'')
-        trimmed_key = key[:-4]
-        s3.delete_object(
-            Bucket=bucket,
-            Key=trimmed_key,
-        )
+        bucket = s3.Bucket(bucket)
+        bucket.objects.filter(Prefix='modify/' + key).delete()
         return event
     except Exception as err:
         print(err)
