@@ -39,4 +39,4 @@ def lambda_handler(event, context):
     except Exception as err:
         print(err)
         print('Impossibile eliminare il video')
-        return event
+        return False

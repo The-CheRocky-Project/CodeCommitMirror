@@ -36,7 +36,7 @@ def lambda_handler(event, context):
         try:
             record = event['responsePayload']['Records'][0]['s3']
             print("Chained Lambda Call")
-        except:
+        except Exception:
             record = event['Records'][0]['s3']
         bucket = record['bucket']['name']
         key = urllib.parse.unquote_plus(
