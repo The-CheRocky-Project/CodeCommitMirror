@@ -46,7 +46,11 @@ def lambda_handler(event, context):
         items = response['Items']
 
         for single_item in items:
-            table.delete_item(Key=single_item)
+            table.delete_item(
+                Key={
+                    "frame_key": single_item["frame_key"]
+                }
+            )
 
         return event
     except Exception as err:

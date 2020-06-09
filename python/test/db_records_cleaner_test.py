@@ -75,9 +75,10 @@ class TestDbRecordsCleaner(unittest.TestCase):
                 'non_cancellare')
 
             for i in range(10):
-                response = table.get_item(Key={
-                    'frame_key': 'Football_Red_card_to_Top_Players_2019' + str(i)
-                }
+                response = table.get_item(
+                    Key={
+                        'frame_key': 'Football_Red_card_to_Top_Players_2019' + str(i)
+                    }
                 )
                 # se gli items sono presenti nella tabella dà errore,
                 # altrimenti il test viene superato
