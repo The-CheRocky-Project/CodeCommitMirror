@@ -9,7 +9,7 @@ import json
 
 import boto3
 
-s3 = boto3.client('s3')
+s3 = boto3.resource('s3')
 
 
 def lambda_handler(event, context):
@@ -29,11 +29,8 @@ def lambda_handler(event, context):
         bucket = 'ahlconsolebucket'
         key = json.loads(event['Cause'])['errorMessage'].lstrip('(').rstrip(')').strip('\'')
         trimmed_key = key[:-4]
-
-        s3.delete_objects(
-            Bucket=bucket,
-            key=trimmed_key + '*'
-        )
+        bucket = s3.Bucket(bucket)
+        bucket.objects.filter(Prefix=trimmed_key).delete()
         return event
 
         # isTrunc = True
