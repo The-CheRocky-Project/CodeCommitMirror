@@ -32,7 +32,7 @@ def lambda_handler(event, context):
     try:
         # Preleva bucket name e key da event
         bucket = 'ahlconsolebucket'
-        key = json.loads(event['Cause'])['errorMessage'].lstrip('(').rstrip(')').strip('\'')
+        key = json.loads(event['Cause'])['errorMessage'].lstrip('[').rstrip(']').strip('\'')
         bucket = s3.Bucket(bucket)
         bucket.objects.filter(Prefix='modify/' + key).delete()
         return event
