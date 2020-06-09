@@ -41,7 +41,8 @@ class TestRecoJsonCleaner(unittest.TestCase):
                 Body="body")
             # Dovrebbe ritornare true visto che il file
             # deve essere stato cancellato
-            assert lambda_handler(event_json, CONTEXT)
+            result = lambda_handler(event_json, CONTEXT)
+            self.assertNotEqual(result, False)
             # Dovrebbe lanciare un'eccezione siccome il file che sto cercando
             # di ottenere dovrebbe essere stato cancellato
             self.assertRaises(

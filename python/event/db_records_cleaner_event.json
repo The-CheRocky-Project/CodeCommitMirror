@@ -1,4 +1,4 @@
 {
   "Error": "VideoCreationError",
-  "Cause": "{\"errorMessage\": \"['Football_Red_card_to_Top_Players_2019-1']\", \"errorType\": \"VideoCreationError\", \"stackTrace\": [\"  File \\\"/var/task/make_final_video.py\\\", line 111, in lambda_handler\\n    raise VideoCreationError(video_key)\\n\"]}"
+  "Cause": "{\"errorMessage\": \"['Football_Red_card_to_Top_Players_2019']\", \"errorType\": \"VideoCreationError\", \"stackTrace\": [\"  File \\\"/var/task/make_final_video.py\\\", line 111, in lambda_handler\\n    raise VideoCreationError(video_key)\\n\"]}"
 }
