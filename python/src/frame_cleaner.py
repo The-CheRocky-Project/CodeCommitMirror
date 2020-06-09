@@ -31,19 +31,6 @@ def lambda_handler(event, context):
         bucket = s3.Bucket(bucket)
         bucket.objects.filter(Prefix='frames/'+key).delete()
         return event
-
-        # isTrunc = True
-        # while isTrunc:
-        #     response = s3.list_objects(Bucket=bucket, Prefix='frames/' + key)
-        #     isTrunc = response['IsTruncated']
-        #     keys_to_delete = [{'Key': obj['Key']} for obj in response["Contents"]]
-        #     s3.delete_objects(
-        #         Bucket=bucket,
-        #         Delete={
-        #             'Objects': keys_to_delete
-        #         }
-        #     )
-        # return True
     except Exception as err:
         print(err)
         return False

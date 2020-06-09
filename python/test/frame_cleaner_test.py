@@ -35,7 +35,7 @@ class TestFinalVideoCleaner(unittest.TestCase):
         with mock_s3():
             s3_client = boto3.client('s3', region_name='us-east-2')
             s3_client.create_bucket(Bucket='ahlconsolebucket')
-            for i in range(1500):
+            for i in range(20):
                 s3_client.put_object(
                     Bucket='ahlconsolebucket',
                     Key='frames/Football_Red_card_to_Top_Players_2019' + str(i) + '.jpg',
@@ -56,7 +56,7 @@ class TestFinalVideoCleaner(unittest.TestCase):
                 pass
             except Exception:
                 self.fail('è stato cancellato un file da non cancellare')
-            for i in range(1500):
+            for i in range(20):
                 self.assertRaises(
                     Exception,
                     s3_client.get_object,
