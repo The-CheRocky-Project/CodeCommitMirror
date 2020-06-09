@@ -239,3 +239,18 @@ def prepare_for_serialize(frames):
         frames[i]['label'] = str(frames[i]['label'])
         frames[i]['tfs'] = str(frames[i]['tfs'])
     return frames
+
+
+class VideoCreationError(Exception):
+    """
+    An error class containing information about the video bucket and key
+    that are causing the error
+    """
+    key: str
+
+    def __init__(self, key: str):
+        """
+        Constructor
+        :param key: the filekey that causes the error
+        """
+        self.key = key

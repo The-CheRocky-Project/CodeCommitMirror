@@ -12,6 +12,7 @@ Contenuto:
 import json
 import boto3
 from layers import media_manager
+from layers.elaboration import VideoCreationError
 
 # Definisce la risorsa s3
 s3R = boto3.resource('s3')
@@ -108,18 +109,3 @@ def lambda_handler(event, context):
         print(err)
         print('Impossibile creare il video')
         raise VideoCreationError(video_key)
-
-
-class VideoCreationError(Exception):
-    """
-    An error class containing information about the video bucket and key
-    that are causing the error
-    """
-    key: str
-
-    def __init__(self, key: str):
-        """
-        Constructor
-        :param key: the filekey that causes the error
-        """
-        self.key = key

@@ -10,6 +10,7 @@ import json
 import os
 import boto3
 import decimal
+from layers.elaboration import VideoCreationError
 
 s3R = boto3.resource('s3')
 dynamoR = boto3.resource('dynamodb')
@@ -35,42 +36,46 @@ def lambda_handler(event, context):
     bucket = 'ahlconsolebucket'
     basekey = event['key']
     tableName = 'rekognitions'
+    try:
 
-    formatted = f"{int(str(event['n'])):07d}"
+        formatted = f"{int(str(event['n'])):07d}"
 
-    key = folder + '/' + basekey + '.' + formatted + '.jpg'
+        key = folder + '/' + basekey + '.' + formatted + '.jpg'
 
-    image = s3R.Object(bucket, key)
-    imageGet = image.get()
-    payload = bytearray(imageGet['Body'].read())
+        image = s3R.Object(bucket, key)
+        imageGet = image.get()
+        payload = bytearray(imageGet['Body'].read())
 
-    response = runtime.invoke_endpoint(EndpointName=ENDPOINT_NAME,
-                                       ContentType='application/x-image',
-                                       Body=payload)
-    result = json.loads(response['Body'].read().decode())
+        response = runtime.invoke_endpoint(EndpointName=ENDPOINT_NAME,
+                                           ContentType='application/x-image',
+                                           Body=payload)
+        result = json.loads(response['Body'].read().decode())
 
-    for i in range(len(result)):
-        text = f"{result[i]:.6f}"
-        result[i] = decimal.Decimal(text)
+        for i in range(len(result)):
+            text = f"{result[i]:.6f}"
+            result[i] = decimal.Decimal(text)
 
-    table = dynamoR.Table(tableName)
+        table = dynamoR.Table(tableName)
 
-    response = table.get_item(
-        Key={
-            'frame_key': key
+        response = table.get_item(
+            Key={
+                'frame_key': key
+            }
+        )
+        item = response['Item']
+
+        # update
+        for i in range(len(result)):
+            item[str(i)] = (result[i])
+
+        # put (idempotent)
+        table.put_item(Item=item)
+
+        outForPut = {
+            'succeded': True,
         }
-    )
-    item = response['Item']
 
-    # update
-    for i in range(len(result)):
-        item[str(i)] = (result[i])
-
-    # put (idempotent)
-    table.put_item(Item=item)
-
-    outForPut = {
-        'succeded': True,
-    }
-
-    return outForPut
+        return outForPut
+    except Exception as err:
+        print(err)
+        raise VideoCreationError(event['key'])

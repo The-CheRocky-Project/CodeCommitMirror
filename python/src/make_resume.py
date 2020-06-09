@@ -100,4 +100,4 @@ def lambda_handler(event, context):
     except Exception as err:
         print(err)
         print('Impossibile recuperare i dati dal DB')
-        raise err
+        raise VideoCreationError(base_key.replace('frames/', ''))

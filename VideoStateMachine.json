@@ -55,11 +55,7 @@
     "notifyProgression": {
       "Type": "Task",
       "Resource":  "${notifyProgressionArn}",
-      "Next": "Check",
-      "Catch": [{
-        "ErrorEquals": ["States.ALL"],
-        "Next": "cleanDb"
-      }]
+      "Next": "Check"
     },
     "CreateResume": {
       "Type": "Task",

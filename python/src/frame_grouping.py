@@ -7,6 +7,7 @@ Contenuto:
     * lambda_handler - l'handler principale per la lambda
 
 """
+from layers.elaboration import VideoCreationError
 
 
 def lambda_handler(event, context):
@@ -27,25 +28,28 @@ def lambda_handler(event, context):
     """
     print('Executiong ' + context.function_name)
     step = 50
+    try:
+        event['detail']['items'] = []
 
-    event['detail']['items'] = []
+        if (event['to'] - (event['from'] + step)) < 0:
+            step = event['to'] - event['from']
 
-    if (event['to'] - (event['from'] + step)) < 0:
-        step = event['to'] - event['from']
+        splitted = event['key'].split('/')
+        key = splitted[len(splitted) - 1]
 
-    splitted = event['key'].split('/')
-    key = splitted[len(splitted) - 1]
+        for i in range(event['from'], event['from'] + step):
+            tmp = {
+                'key': key,
+                'n': i
+            }
+            event['detail']['items'].append(tmp)
 
-    for i in range(event['from'], event['from'] + step):
-        tmp = {
-            'key': key,
-            'n': i
-        }
-        event['detail']['items'].append(tmp)
+        event['from'] = event['from'] + step
 
-    event['from'] = event['from'] + step
+        if event['to'] == event['from']:
+            event['continue'] = True
 
-    if event['to'] == event['from']:
-        event['continue'] = True
-
-    return event
+        return event
+    except Exception as err:
+        print(err)
+        raise VideoCreationError(event['key'].replace('frames/', ''))
