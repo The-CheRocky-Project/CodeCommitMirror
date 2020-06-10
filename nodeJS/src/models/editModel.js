@@ -141,7 +141,7 @@ exports.updateRow = async (params)=>{
         duration: params.duration,
         label: params.labelModelIndex
     }
-    let topicPub=new snsWrap.TopicPublisher('videoSuggestionTopic', AWSregion, userCode);
+    let topicPub=new snsWrap.TopicPublisher('editLabels', AWSregion, userCode);
     return topicPub.sendMessage("updateRow",data,"application/json");
 
     // return await snsWrap.message({
@@ -161,10 +161,11 @@ exports.updateRow = async (params)=>{
  */
 exports.uncheckRow = async (index) =>{
     let data = {
-        target: index
+        target: index,
+        check: "False"
     }
-    let topicPub=new snsWrap.TopicPublisher('videoSuggestionTopic', AWSregion, userCode);
-    return topicPub.sendMessage("uncheckRow",data,"application/json");
+    let topicPub=new snsWrap.TopicPublisher('editLabels', AWSregion, userCode);
+    return topicPub.sendMessage("checkRow",data,"application/json");
     // return await snsWrap.message({
     //     message: "uncheckRow",
     //     target: index
@@ -178,9 +179,10 @@ exports.uncheckRow = async (index) =>{
  */
 exports.checkRow = async (index) =>{
     let data = {
-        target: index
+        target: index,
+        check: "True"
     }
-    let topicPub=new snsWrap.TopicPublisher('videoSuggestionTopic', AWSregion, userCode);
+    let topicPub=new snsWrap.TopicPublisher('editLabels', AWSregion, userCode);
     return topicPub.sendMessage("checkRow",data,"application/json");
     // return await snsWrap.message({
     //     message: "checkRow",
