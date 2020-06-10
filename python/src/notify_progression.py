@@ -1,4 +1,4 @@
-""" nitifyProgression Lambda module
+""" notifyProgression Lambda module
 
 Questo modulo contiene l'handler che effettua la notifica di progressione
 in base agli step della state machine.
