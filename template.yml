@@ -303,15 +303,15 @@ Resources:
       Action: 'lambda:InvokeFunction'
       FunctionName: !Ref framer
       Principal: 'sns.amazonaws.com'
-  addRowSubscription:
-    Description: The SNS subscription of the addRow lambda
+  addLabelSubscription:
+    Description: The SNS subscription of the addLabel lambda
     DeletionPolicy: Delete
     Type: AWS::SNS::Subscription
     Properties:
-      Endpoint: !GetAtt addRow.Arn
+      Endpoint: !GetAtt addLabel.Arn
       Protocol: lambda
       TopicArn: !Ref editTopic
-  addRowPermission:
+  addLabelPermission:
     Description: The policy for editLabel to invoke a lambda
     DeletionPolicy: Delete
     Type: AWS::Lambda::Permission
