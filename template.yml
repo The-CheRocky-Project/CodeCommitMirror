@@ -303,6 +303,14 @@ Resources:
       Action: 'lambda:InvokeFunction'
       FunctionName: !Ref framer
       Principal: 'sns.amazonaws.com'
+  addRowPermission:
+    Description: The policy for editLabel to invoke a lambda
+    DeletionPolicy: Delete
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !Ref addLabel
+      Principal: 'sns.amazonaws.com'
   ahlLog:
     Description: The Autonomous HighLight Logging Group
     DeletionPolicy: Delete
