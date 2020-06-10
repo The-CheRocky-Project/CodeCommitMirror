@@ -53,8 +53,8 @@ exports.updateVideoFrame = (res) => {
  * @param {number} labelModelIndex - Rappresenta l'indice associato ad una label
  * @returns {boolean} true se la richiesta di inserimento del nuovo riconoscimento è andata a buon fine, false altrimenti.
  */
-exports.addNewLabelRow = (start, duration, labelModelIndex) => {
-    return model.addRow({start:start,duration:duration,label:labelModelIndex});
+exports.addNewLabelRow = (start, end, labelModelIndex) => {
+    return model.addRow({start:start,end:end,label:labelModelIndex});
 };
 
 /**

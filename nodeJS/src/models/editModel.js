@@ -103,7 +103,7 @@ exports.addRow = async (params) =>{
         start: params['start'],
         end: params['end'],
         label: params['label']
-    }
+    };
     let topicPub=new snsWrap.TopicPublisher("editLabels", AWSregion, userCode);
     return topicPub.sendMessage("addRow",data,"application/json");
 };

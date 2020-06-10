@@ -48,18 +48,19 @@ def lambda_handler(event, context):
         # TODO da verificare che funzioni
         message = content['Message']
         if message == "addRow":
-            start = str(message['start'])
-            end = str(message['end'])
-            label = str(message['label'])
+            attributes = content['MessageAttributes']
+            start = int(attributes['start']['Value'])
+            end = int(attributes['end']['Value'])
+            label = int(attributes['label']['Value'])
             index = 0
-            while resume_content[index]['start'] <= start:
+            while index < len(resume_content) and resume_content[index]['start'] <= start:
                 index += 1
             resume_content.insert(index, {
                 'frame_key': '',
                 'accuracy': '0.0',
                 'label': label,
                 'start': start,
-                'tfs': end - start,
+                'tfs': str(end - start),
                 'type': 'user',
                 'show': 'true'
             })

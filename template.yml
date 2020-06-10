@@ -296,7 +296,7 @@ Resources:
       Protocol: lambda
       TopicArn: !Ref confirmTopic
   framerPermission:
-    Description: The policy for confirmTopic to invoke a lambda
+    Description: The policy for confirmTopic to invoke the framer lambda
     DeletionPolicy: Delete
     Type: AWS::Lambda::Permission
     Properties:
