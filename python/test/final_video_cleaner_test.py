@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Test module for json_splitter lambda
+Test module for final_video_cleaner lambda
 """
 import json
 import os
