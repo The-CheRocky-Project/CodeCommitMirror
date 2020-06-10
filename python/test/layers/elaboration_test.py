@@ -3,8 +3,7 @@
 Test module for elaboration lambda
 """
 import unittest
-from python.src.layers import elaboration
-from unittest.mock import patch
+from src.layers import elaboration
 
 
 class TestElaboration(unittest.TestCase):
