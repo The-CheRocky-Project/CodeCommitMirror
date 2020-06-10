@@ -42,24 +42,24 @@ class TestElaboration(unittest.TestCase):
         # self.assertTrue(result)
 
     def test_compress_time_array_returned(self):
-        arr=[{"frame_key": "frames/match.0000001.jpg","accuracy": "0.916056", "label": "6", "start": "3250", "tfs": 6250, "type": "machine", "show": "true"},
-        {"frame_key": "frames/match.0000002.jpg", "accuracy": "0.969301", "label": "6", "start": "4750", "tfs": 8750, "type": "machine", "show": "true"},
-        {"frame_key": "frames/match.0000015.jpg", "accuracy": "0.969301", "label": "6", "start": "4750", "tfs": 8750, "type": "machine", "show": "true"}]
+        arr=[{"frame_key": "frames/match.0000001.jpg","accuracy": "0.916056", "label": "6", "start": "3250", "tfs": "6250", "type": "machine", "show": "true"},
+        {"frame_key": "frames/match.0000002.jpg", "accuracy": "0.969301", "label": "6", "start": "4750", "tfs": "8750", "type": "machine", "show": "true"},
+        {"frame_key": "frames/match.0000015.jpg", "accuracy": "0.969301", "label": "6", "start": "4750", "tfs": "8750", "type": "machine", "show": "true"}]
         result = elaboration.compress_time(arr)
-        expected = [{'frame_key': 'frames/match.0000002.jpg', 'accuracy': '0.969301', 'label': '6', 'start': 8250, 'tfs': 8750, 'type': 'machine', 'show': 'true'}]
+        expected = [{'frame_key': 'frames/match.0000002.jpg', 'accuracy': '0.969301', 'label': '6', 'start': "8250", 'tfs': "8750", 'type': 'machine', 'show': 'true'}]
         self.assertTrue(expected, result)
     
     def test_remove_frame_int_to_remove(self):
-        arr=[{"frame_key": "frames/match.0000001.jpg","accuracy": "0.916056", "label": "6", "start": "3250", "tfs": 6250, "type": "machine", "show": "true"},
-        {"frame_key": "frames/match.0000002.jpg", "accuracy": "0.969301", "label": "6", "start": "4750", "tfs": 8750, "type": "machine", "show": "true"},
-        {"frame_key": "frames/match.0000015.jpg", "accuracy": "0.969301", "label": "6", "start": "4750", "tfs": 8750, "type": "machine", "show": "true"}]
+        arr=[{"frame_key": "frames/match.0000001.jpg","accuracy": "0.916056", "label": "6", "start": "3250", "tfs": "6250", "type": "machine", "show": "true"},
+        {"frame_key": "frames/match.0000002.jpg", "accuracy": "0.969301", "label": "6", "start": "4750", "tfs": "8750", "type": "machine", "show": "true"},
+        {"frame_key": "frames/match.0000015.jpg", "accuracy": "0.969301", "label": "6", "start": "4750", "tfs": "8750", "type": "machine", "show": "true"}]
         result_arr = elaboration.remove(2, arr)
         self.assertEqual('false', result_arr[2]['show'])
     
     def test_remove_frame_array_to_remove(self):
-        arr=[{"frame_key": "frames/match.0000001.jpg","accuracy": "0.916056", "label": "6", "start": "3250", "tfs": 6250, "type": "machine", "show": "true"},
-        {"frame_key": "frames/match.0000002.jpg", "accuracy": "0.969301", "label": "6", "start": "4750", "tfs": 8750, "type": "machine", "show": "true"},
-        {"frame_key": "frames/match.0000015.jpg", "accuracy": "0.969301", "label": "6", "start": "4750", "tfs": 8750, "type": "machine", "show": "true"}]
+        arr=[{"frame_key": "frames/match.0000001.jpg","accuracy": "0.916056", "label": "6", "start": "3250", "tfs": "6250", "type": "machine", "show": "true"},
+        {"frame_key": "frames/match.0000002.jpg", "accuracy": "0.969301", "label": "6", "start": "4750", "tfs": "8750", "type": "machine", "show": "true"},
+        {"frame_key": "frames/match.0000015.jpg", "accuracy": "0.969301", "label": "6", "start": "4750", "tfs": "8750", "type": "machine", "show": "true"}]
         result_arr = elaboration.remove([1,2], arr)
         self.assertEqual('false', result_arr[1]['show'])
         self.assertEqual('false', result_arr[2]['show'])
