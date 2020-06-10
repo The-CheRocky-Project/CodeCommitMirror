@@ -90,7 +90,7 @@ def compress_time(resume):
         if number == (next_number - 1):
             counter += 1
         else:
-            resume[i]['start'] = resume[i]['tfs'] - (500 * counter)
+            resume[i]['start'] = int(resume[i]['tfs']) - (500 * counter)
             compressed.append(resume[i])
             counter = 0
 

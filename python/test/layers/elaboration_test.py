@@ -4,7 +4,6 @@ Test module for elaboration lambda
 """
 import unittest
 from src.layers import elaboration
-from unittest.mock import patch
 
 
 class TestElaboration(unittest.TestCase):
