@@ -26,16 +26,16 @@
                     <input type="checkbox" hidden="hidden()"/>
                 </td>
                 <td>
-                    <input type="text"/>
+                    <input id="newStart" type="text"/>
                 </td>
                 <td>
-                    <input type="text"/>
+                    <input id="newEnd" type="text"/>
                 </td>
                 <td>
                     <input type="text" hidden="hidden()"/>
                 </td>
                 <td>
-                    <select id="col4row1" {{#eq type "machine"}}disabled{{/eq}}>
+                    <select id="newLabel" {{#eq type "machine"}}disabled{{/eq}}>
                         {{#each ../labels}}
                             <option value="{{@index}}">
                                 {{this}}

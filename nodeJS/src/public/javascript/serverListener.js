@@ -91,8 +91,30 @@ $(document).ready(() => {
         }).fail(() => {
             alert("Impossibile elaborare il video " + dataToSend.fileKey);
         });
-    })
+    });
+    /**
+     * Al click sul button di aggiunta label, invia una richiesta al router
+     * di inserire una nuovo record nella tabella
+     */
+    $("#addRow").click( (event) => {
+        const dataToSend = {
+            start: $("#newStart").val(),
+            end: $("#newEnd").val(),
+            modelIndex: $("#newLabel").prop('selectedIndex')
+        };
+        $.ajax({
+            type: "POST",
+            url: "./addLabel",
+            data: dataToSend
+        }).fail(() => {
+            console.log("Impossibile aggiungere una label");
+            $("#newStart").val("");
+            $("#newEnd").val("");
+        });
+    });
+
 // FORSE UTILE PER TESTARE
+//    TODO clean
     // $("#carica").click(() => {
     //     alert("Caricamento da interfaccia non ancora disponibile, utilizzare AWS CLI");
     // });

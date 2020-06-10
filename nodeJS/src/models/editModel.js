@@ -99,22 +99,13 @@ exports.getmodelLabels = async () =>{
  * @param {number} modelIndex - Rappresenta il dizionario Kson contenente tutte le specifiche della riga da inserire
  */
 exports.addRow = async (params) =>{
-    let data = {
+    const data = {
         start: params['start'],
-        duration: params['duration'],
-        // TODO:  non c'e nel json inviato dall'editController il campo 'labelModelIndex' ma solo 'label', ✅
-        // label: params['labelModelIndex']
+        end: params['end'],
         label: params['label']
-
     }
-    let topicPub=new snsWrap.TopicPublisher("videoSuggestionTopic", AWSregion, userCode);
+    let topicPub=new snsWrap.TopicPublisher("editLabels", AWSregion, userCode);
     return topicPub.sendMessage("addRow",data,"application/json");
-    // return await snsWrap.message({
-    //     target: "addRow",
-    //     start: params['start'],
-    //     duration: params['duration'],
-    //     label: params['labelModelIndex']
-    // })
 };
 
 /**
@@ -123,7 +114,7 @@ exports.addRow = async (params) =>{
  * @returns {boolean} ritorna true se la chiamata è stata effettuata correttamente, false altrimenti.
  */
 exports.sendConfirmation= ()=>{
-    let topicPub=new snsWrap.TopicPublisher('videoSuggestionTopic', AWSregion, userCode);
+    let topicPub=new snsWrap.TopicPublisher('confirmation', AWSregion, userCode);
     return topicPub.sendMessage("confirmTable","","");
     // return snsWrap.message({
     //     message: "confirmTable"

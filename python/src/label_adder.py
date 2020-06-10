@@ -34,66 +34,80 @@ def lambda_handler(event, context):
     try:
         # Preleva bucket name e key da event
         # TODO da verificare che funzioni
-        bucket = event['Records'][0]['s3']['bucket']['name']
-        key = urllib.parse.unquote_plus(
-            event['Records'][0]['s3']['object']['key'],
-            encoding='utf-8')
-        resume = s3.Object(bucket, 'resume.json')
+        # bucket = event['Records'][0]['s3']['bucket']['name']
+        # key = urllib.parse.unquote_plus(
+        #     event['Records'][0]['s3']['object']['key'],
+        #     encoding='utf-8')
+        content = event["Records"][0]["Sns"]
+
+        resume = s3.Object('ahlconsolebucket', 'tmp/modified-resume.json')
         resume_res = resume.get()
         resume_content = json.loads(resume_res['Body'].read().decode('utf-8'))
 
         # Preleva il messaggio ricevuto da SNS, e ne fa il parsing
         # TODO da verificare che funzioni
-        message = event['Records'][0]['SNS']['Message']
-        name = message[1]
-        start = message[2]
-        duration = message[3]
-        label = message[4]
-        accuracy = message[5]
-        checked = message[6]
-
-        # Tiene traccia se la chiave era già presente o meno
-        # nel file resume.json
-        founded = False
-
-        # Destinazione del video spezzone di highlight
-        new_key = 'cuts/' + key
-
-        # Se la label è già presente in resume.json, viene aggiornata
-        for reco in resume_content:
-            if reco['FrameName'] == name:
-                # Elimina il vecchio video spezzone di
-                # highlight dal bucket S3 ahlvideos/cuts
-                # TODO da verificare che funzioni
-                bucket.delete_key(new_key[:-4] + 'mp4')
-                # Aggiorna i dati del frame
-                reco['Start'] = start
-                reco['Duration'] = duration
-                reco['Label'] = label
-                reco['Accuracy'] = accuracy
-                reco['Checked'] = checked
-                founded = True
-        # se il frame non è presente in resume.json, viene aggiunto al file
-        if not founded:
-            resume_content.append(
-                dict(FrameName=name,
-                     Start=start,
-                     Duration=duration,
-                     Label=label,
-                     Accuracy=accuracy,
-                     Checked=checked)
-            )
-
-        # Sovrascrive il file resume.json aggiornandolo
-        b_to_write = json.dumps(resume_content)
-        resume.put(Body=b_to_write)
-
-        # Avvia job di ritaglio con chiave numerica corrispondente
-        # all'indice all'interno del file resume.json
-        # TODO da verificare che funzioni
-        job_id = media_manager.cutter(name, start, duration)
-        return job_id
+        message = content['Message']
+        if message == "addRow":
+            start = str(message['start'])
+            end = str(message['end'])
+            label = str(message['label'])
+            index = 0
+            while resume_content[index]['start'] <= start:
+                index += 1
+            resume_content.insert(index, {
+                'frame_key': '',
+                'accuracy': '0.0',
+                'label': label,
+                'start': start,
+                'tfs': end - start,
+                'type': 'user',
+                'show': 'true'
+            })
+            b_to_write = json.dumps(resume_content)
+            resume.put(Body=b_to_write)
+            # # Tiene traccia se la chiave era già presente o meno
+            # # nel file resume.json
+            # founded = False
+            #
+            # # Destinazione del video spezzone di highlight
+            # new_key = 'cuts/' + key
+            #
+            # # Se la label è già presente in resume.json, viene aggiornata
+            # for reco in resume_content:
+            #     if reco['FrameName'] == name:
+            #         # Elimina il vecchio video spezzone di
+            #         # highlight dal bucket S3 ahlvideos/cuts
+            #         # TODO da verificare che funzioni
+            #         bucket.delete_key(new_key[:-4] + 'mp4')
+            #         # Aggiorna i dati del frame
+            #         reco['Start'] = start
+            #         reco['Duration'] = duration
+            #         reco['Label'] = label
+            #         reco['Accuracy'] = accuracy
+            #         reco['Checked'] = checked
+            #         founded = True
+            # # se il frame non è presente in resume.json, viene aggiunto al file
+            # if not founded:
+            #     resume_content.append(
+            #         dict(FrameName=name,
+            #              Start=start,
+            #              Duration=duration,
+            #              Label=label,
+            #              Accuracy=accuracy,
+            #              Checked=checked)
+            #     )
+            #
+            # # Sovrascrive il file resume.json aggiornandolo
+            # b_to_write = json.dumps(resume_content)
+            # resume.put(Body=b_to_write)
+            #
+            # # Avvia job di ritaglio con chiave numerica corrispondente
+            # # all'indice all'interno del file resume.json
+            # # TODO da verificare che funzioni
+            # job_id = media_manager.cutter(name, start, duration)
+            return True
+        return False
     except Exception as err:
         print(err)
-        print('Impossibile aggiungere la label ' + name)
+        print('Impossibile aggiungere la label ')
         raise err
