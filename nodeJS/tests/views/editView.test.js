@@ -107,7 +107,7 @@ describe('testEditView', () => {
             });
             var params=JSON.parse(val);
             view.generateTable(params, mockRes);
-            assert.strictEqual(mockRes.viewName, "partials/tableTemplate");
+            assert.strictEqual(mockRes.viewName, "partials/recognitionTable");
             assert.ok(!mockRes.viewData.layout);
 
         });

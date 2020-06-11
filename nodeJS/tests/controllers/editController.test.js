@@ -54,23 +54,36 @@ describe('testEditController',() => {
 
   describe('#updateLabelTable()', () => {
     it("deve aggiornare il rendering della tabella dei riconoscimenti.", (done) => {
-      let getRecongnizementListIsCalled = false;
-      mock('../../src/models/editModel', { getRecognizementList: function() {
-        getRecongnizementListIsCalled = true;
+      let getRecognizementListIsCalled = false;
+      let getmodelLabelsIsCalled = false;
+      class single{
+        constructor(duration){
+          this.duration = duration;
+        }
+      }
+      mock('../../src/models/editModel', {
+        getRecognizementList: async function() {
+          getRecognizementListIsCalled = true;
+        },
+        getmodelLabels: async function() {
+          getmodelLabelsIsCalled = true;
+        }
+      });
+      let printIsCalled = false;
+      mock('../../src/views/editView', { generateTable: function(param, res) {
+        printIsCalled = true;
       }});
-      let generateTableIsCalled = false;
-      mock('../../src/views/editView', { generateTable: function(rekoList, res){
-        generateTableIsCalled = true;
-      }})
       let mMock = require('../../src/models/editModel');
       let vMock = require('../../src/views/editView');
-      let res = 'resMock';
       editController.__set__('model', mMock);
       editController.__set__('view', vMock);
+      const res = 'resMock';
       editController.updateLabelTable(res).then(
-        (data) => {
-          var expected = true;
-          var result = generateTableIsCalled && getRecongnizementListIsCalled;
+        (value) => {
+          const expected = true;
+          const result = getRecognizementListIsCalled &&
+              getmodelLabelsIsCalled &&
+              printIsCalled;
           assert.equal(result,expected);
           done();
         }
