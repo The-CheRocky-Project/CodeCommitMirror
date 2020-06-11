@@ -58,11 +58,13 @@ exports.generateVideoFrame = (url, isOriginal, res)=>{
  */
 exports.generateTable = (params, res)=>{
     res.render('partials/recognitionTable',{
+    res.render('layouts/tableLayout',{
+        template:'tableLayout',
         data:{
             error: params.error,
             recognizements: params.list,
             labels:params.labels.labels
         },
-        layout: false
+        layout: "tableLayout"
     });
 };

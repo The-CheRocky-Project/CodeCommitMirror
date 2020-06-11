@@ -206,7 +206,7 @@ function updateFileList() {
   }).done(function(data){
       // replace titleList con quella nuova(data)
       $('#tileList').replaceWith(data);
-  })
+  });
 }
 
 function updateTable() {
