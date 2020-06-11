@@ -66,7 +66,7 @@ $(document).ready(() => {
      * @param {object} msg - parametro fittizio che non fa nulla
      */
     socket.on('changedRow', (msg) => {
-      updateTable();
+        updateTable();
     });
 
     /**
