@@ -88,8 +88,14 @@ exports.changeRowValue = (index,start, duration, modelIndex) => {
  * @param {object} res - Rappresenta la risposta http
  */
 exports.updateLabelTable = async (res) => {
-    const rekoList = await model.getRecognizementList();
-    view.generateTable(rekoList, res);
+    const recoList = await model.getRecognizementList();
+    const labelList = await model.getmodelLabels();
+    const params = {
+        error: calculateOvertime(recoList),
+        list: recoList,
+        labels: labelList
+    }
+    view.generateTable(params, res);
 };
 
 /**

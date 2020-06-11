@@ -197,7 +197,7 @@ function updateTable() {
       url: "./getTable"
   }).done(function(data){
       // sostituisci la table con quella nuova(data)
-      $('table').replaceWith(data);
+      $('#labelTable').replaceWith(data);
   })
 }
 

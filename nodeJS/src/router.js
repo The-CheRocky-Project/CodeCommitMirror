@@ -173,8 +173,8 @@ ahl.post('/notifyLabelRowChange', (req,res) => {
             res.sendStatus(422);
     }
     else{
-        if(req.body.Type == "Notification"){
-            backport.emit('changedRow',req.body['rowIndex']);
+        if(req.body.Type == "Notification" && req.body.Message == "update"){
+            backport.emit('changedRow','');
             res.sendStatus(200);
         }
         else

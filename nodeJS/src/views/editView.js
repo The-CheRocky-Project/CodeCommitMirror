@@ -57,7 +57,7 @@ exports.generateVideoFrame = (url, isOriginal, res)=>{
  * @param {object} res - Rappresenta la risposta XHTML
  */
 exports.generateTable = (params, res)=>{
-    res.render('partials/tableTemplate',{
+    res.render('partials/recognitionTable',{
         data:{
             error: params.error,
             recognizements: params.list,
