@@ -80,6 +80,10 @@ $(document).ready(() => {
       updateFileList();
     });
 
+    /**
+     * Al click del button preleva la key corrispondente al file che si vuole elaborare e ne
+     * richiede l'elaborazione al router
+     */
     $(".startBtn").click( (event) => {
         const dataToSend = {
             fileKey: event.target.getAttribute("id")
@@ -92,6 +96,7 @@ $(document).ready(() => {
             alert("Impossibile elaborare il video " + dataToSend.fileKey);
         });
     });
+
     /**
      * Al click sul button di aggiunta label, invia una richiesta al router
      * di inserire una nuovo record nella tabella
@@ -110,6 +115,19 @@ $(document).ready(() => {
             console.log("Impossibile aggiungere una label");
             $("#newStart").val("");
             $("#newEnd").val("");
+        });
+    });
+
+    /**
+     * Ad ogni modifica dellos tato delle checkbox della tabella dei riconoscimenti,
+     * ne effettua la richiesta di modifica al router
+     */
+    $(".labelCheckbox").change( (event) => {
+        const index = event.target.getAttribute('id');
+        const state = event.target.getAttribute('checked');
+        $.ajax({
+            type: "POST",
+            url: "checkRoe"
         });
     });
 

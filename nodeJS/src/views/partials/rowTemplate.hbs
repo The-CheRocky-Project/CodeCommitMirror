@@ -1,6 +1,6 @@
 <tr>
     <td>
-        <input type="checkbox" {{#if show}}checked="checked()"{{/if}}/>
+        <input class="labelCheckbox" type="checkbox" value="{{@index}}" {{#if show}}checked="checked()"{{/if}}/>
     </td>
     <td>
         <input type="text" {{#eq type "machine"}}disabled{{/eq}} value="{{start}}"/>

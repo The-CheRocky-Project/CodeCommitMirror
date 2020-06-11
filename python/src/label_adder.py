@@ -54,7 +54,7 @@ def lambda_handler(event, context):
             end = int(attributes['end']['Value'])
             label = int(attributes['label']['Value'])
             index = 0
-            while index < len(resume_content) and resume_content[index]['start'] <= start:
+            while index < len(resume_content) and int(resume_content[index]['start']) <= start:
                 index += 1
             resume_content.insert(index, {
                 'frame_key': '',
