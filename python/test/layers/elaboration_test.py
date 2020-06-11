@@ -7,40 +7,6 @@ from src.layers import elaboration
 
 
 class TestElaboration(unittest.TestCase):
-    # def test_find_trashhold_true(self):
-    #     frame_list = [
-    #         {
-    #             "label": 0,
-    #             "accuracy": 0.7
-    #         },
-    #         {
-    #             "label": 1,
-    #             "accuracy": 0.7
-    #         },
-    #         {
-    #             "label": 2,
-    #             "accuracy": 0.7
-    #         },
-    #         {
-    #             "label": 3,
-    #             "accuracy": 0.7
-    #         },
-    #         {
-    #             "label": 4,
-    #             "accuracy": 0.7
-    #         }
-    #     ]
-    #     frame = {
-    #         "label": 0
-    #     }
-    #     frame_number = 3
-    #     how_much = 1
-    #     n_frames = 5
-    #     result = elaboration.find_trashold(frame_list, frame, frame_number, how_much, n_frames)
-    #     print(result)
-    #     self.assertFalse(True)
-        # self.assertTrue(result)
-
     def test_compress_time_array_returned(self):
         arr=[{"frame_key": "frames/match.0000001.jpg","accuracy": "0.916056", "label": "6", "start": "3250", "tfs": "6250", "type": "machine", "show": "true"},
         {"frame_key": "frames/match.0000002.jpg", "accuracy": "0.969301", "label": "6", "start": "4750", "tfs": "8750", "type": "machine", "show": "true"},

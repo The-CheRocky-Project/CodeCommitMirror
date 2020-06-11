@@ -113,18 +113,42 @@ describe('testRouter',() => {
 
   describe('#post/notifyLabelRowChange', () => {
 
-    it("deve inviare un json con una rowIndex", (done) => {
+      it("deve confermare l'avvenuta subcription sns", (done) => {
 
-      request(ahl).post('/notifyLabelRowChange')
-      .send({
-        Type : "SubscriptionConfirmation",
-        TopicArn: "john",
-        Token: "token"
-      })
-      .set('Accept', 'application/json')
-      .expect(200, done);
+          request(ahl).post('/notifyLabelRowChange')
+          .send({
+            Type : "SubscriptionConfirmation",
+            TopicArn: "john",
+            Token: "token"
+          })
+          .set('Accept', 'application/json')
+          .expect(200, done);
 
-    });
+      });
+
+      it("deve avvisare il socket che è cambiata una riga", (done) => {
+
+          request(ahl).post('/notifyLabelRowChange')
+              .send({
+                  Type : "Notification",
+                  Message: "update",
+              })
+              .set('Accept', 'application/json')
+              .expect(200, done);
+
+      });
+
+      it("deve avvisare con un 418 che la richiesta non è corretta", (done) => {
+
+          request(ahl).post('/notifyLabelRowChange')
+              .send({
+                  Type : "TipoSbagliato",
+                  Message: "update",
+              })
+              .set('Accept', 'application/json')
+              .expect(418, done);
+
+      });
   });
 
   describe('#post/includeLabel', () => {
@@ -274,17 +298,37 @@ describe('testRouter',() => {
 
   describe('#post/notifyChangedFileList', () => {
 
-    it("inviare? un json quello che gli pare", (done) => {
+      it("inviare? un json quello che gli pare", (done) => {
 
-      request(ahl).post('/notifyChangedFileList')
-      .send({
-        Type : "SubscriptionConfirmation",
-        TopicArn: "john",
-        Token: "token"
-      })
-      .set('Accept', 'application/json')
-      .expect(200, done);
-    });
+          request(ahl).post('/notifyChangedFileList')
+          .send({
+            Type : "SubscriptionConfirmation",
+            TopicArn: "john",
+            Token: "token"
+          })
+          .set('Accept', 'application/json')
+          .expect(200, done);
+      });
+
+      it("deve notificare il socket che è cambiata la lista dei file", (done) => {
+
+          request(ahl).post('/notifyChangedFileList')
+              .send({
+                  Type : "Notification",
+              })
+              .set('Accept', 'application/json')
+              .expect(200, done);
+      });
+
+      it("deve avvisare con un418 che la richiesta non è corretta", (done) => {
+
+          request(ahl).post('/notifyChangedFileList')
+              .send({
+                  Type : "TipoSbagliato",
+              })
+              .set('Accept', 'application/json')
+              .expect(418, done);
+      });
   });
 
   describe('#post/confirmEdit', () => {
