@@ -324,7 +324,7 @@ Resources:
     DeletionPolicy: Delete
     Type: AWS::SNS::Subscription
     Properties:
-      Endpoint: !GetAtt ChangeLabelStatus.Arn
+      Endpoint: !GetAtt changeLabelStatus.Arn
       Protocol: lambda
       TopicArn: !Ref editTopic
   changeLabelStatusPermission:
