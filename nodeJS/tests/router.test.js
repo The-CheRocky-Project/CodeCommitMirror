@@ -155,21 +155,20 @@ describe('testRouter',() => {
 
     before(() => {
 
-      mock('../src/controllers/fileExplorerController', {
-         checkLabel: (res) => {
-           //console.log(res);
+      mock('../src/controllers/editController', {
+          changeRowCheckBox: (index, checked) => {
            return true;
          }
        });
-       const fileExplorerControllerMock = require('../src/controllers/fileExplorerController');
-       router.__set__('fileExplorerController', fileExplorerControllerMock);
+       const editControllerMock = require('../src/controllers/editController');
+       router.__set__('editController', editControllerMock);
 
     });
 
     it("deve inviare un json con una rowIndex", (done) => {
 
       request(ahl).post('/includeLabel')
-      .send({rowIndex: 'john'})
+      .send({index: '16'})
       .set('Accept', 'application/json')
       .expect(200, done);
 
