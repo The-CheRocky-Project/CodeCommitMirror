@@ -43,8 +43,8 @@ def lambda_handler(event, context):
         message = content['Message']
         if message == "checkRow" or message == "uncheckRow":
             attributes = content['MessageAttributes']
-            index = int(attributes['index']['Value'])
-            resume_content[index]['show'] = "true" if message == "checkRow" else "false"
+            index = int(attributes['target']['Value'])
+            resume_content[index]['show'] = "true" if attributes['check']['Value'] == "True" else "false"
             b_to_write = json.dumps(resume_content)
             resume.put(Body=b_to_write)
 
