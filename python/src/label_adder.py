@@ -15,7 +15,7 @@ from layers import media_manager
 
 # definizione della risorsa s3
 s3 = boto3.resource('s3')
-sns = boto3.resource('sns')
+sns = boto3.client('sns')
 
 
 def lambda_handler(event, context):
@@ -70,9 +70,9 @@ def lambda_handler(event, context):
             resume.put(Body=b_to_write)
 
             # notifies of addLabel done status
-            topic = sns.publish(
+            result = sns.publish(
                 TopicArn='arn:aws:sns:us-east-2:693949087897:editLabels',
-                Messge='update'
+                Message='update'
             )
             # # Tiene traccia se la chiave era già presente o meno
             # # nel file resume.json
