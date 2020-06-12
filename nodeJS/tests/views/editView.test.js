@@ -89,7 +89,7 @@ describe('testEditView', () => {
 
         });
 
-        it("Deve printare partials/tableTemplate", () =>{
+        it("Deve printare layouts/tableLayout", () =>{
 
 
             object=[];
@@ -107,8 +107,8 @@ describe('testEditView', () => {
             });
             var params=JSON.parse(val);
             view.generateTable(params, mockRes);
-            assert.strictEqual(mockRes.viewName, "partials/recognitionTable");
-            assert.ok(!mockRes.viewData.layout);
+            assert.strictEqual(mockRes.viewName, "layouts/tableLayout");
+            // TODO assert.ok(!mockRes.viewData.layout);
 
         });
     });
