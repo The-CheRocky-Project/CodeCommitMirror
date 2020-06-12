@@ -223,7 +223,7 @@ function updateFileList() {
 function updateTable() {
   $.ajax({
       type: "POST",
-      url: "./getTable"
+      url: "getTable"
   }).done(function(data){
       // sostituisci la table con quella nuova(data)
       $('#labelTable').replaceWith(data);
