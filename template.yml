@@ -319,6 +319,14 @@ Resources:
       Action: 'lambda:InvokeFunction'
       FunctionName: !Ref addLabel
       Principal: 'sns.amazonaws.com'
+  changeLabelStatusSubscription:
+    Description: The SNS subscription of the changeLabelStatus lambda
+    DeletionPolicy: Delete
+    Type: AWS::SNS::Subscription
+    Properties:
+      Endpoint: !GetAtt ChangeLabelStatus.Arn
+      Protocol: lambda
+      TopicArn: !Ref editTopic
   changeLabelStatusPermission:
     Description: The policy for editLabel to invoke a lambda
     DeletionPolicy: Delete
