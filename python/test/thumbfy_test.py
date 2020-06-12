@@ -11,7 +11,6 @@ from aws_lambda_context import LambdaContext
 # Percorso assouluto per caricare il file event.json
 absolute_path = os.path.dirname(os.path.abspath(__file__))
 file_path = absolute_path + '/../event/thumbfy_event.json'
-file_path2 = absolute_path + '/../event/thumbfy_event_error.json'
 
 # Carico il file json con l'evento di test
 """
@@ -21,9 +20,6 @@ file_path2 = absolute_path + '/../event/thumbfy_event_error.json'
 """
 with open(file_path, 'r') as f:
     event_json = json.load(f)
-
-with open(file_path2, 'r') as f:
-    event_json_error = json.load(f)
 
 CONTEXT = LambdaContext()
 CONTEXT.function_name = 'thumbfy'
@@ -58,5 +54,9 @@ class TestThumbfy(unittest.TestCase):
             result = lambda_handler(event_json, CONTEXT)
             self.assertEqual(expected, result)
 
-    def test_job_exception(self):
-        self.assertRaises(Exception, lambda_handler, event_json_error, CONTEXT)
+            # TODO fare il test dell'eccezione lanciata
+    # def test_job_exception(self):
+    #   with patch('boto3.client') as mock:
+    #     media_conv = mock.return_value
+    #     media_conv.create_job.raiseError.side_effect = Exception('error')
+    #     self.assertRaises(Exception, lambda_handler, event_json, CONTEXT)
