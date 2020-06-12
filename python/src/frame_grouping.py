@@ -7,7 +7,7 @@ Contenuto:
     * lambda_handler - l'handler principale per la lambda
 
 """
-from layers.elaboration import VideoCreationError
+from src.layers.elaboration import VideoCreationError
 
 
 def lambda_handler(event, context):
