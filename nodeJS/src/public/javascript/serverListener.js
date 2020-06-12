@@ -94,6 +94,8 @@ $(document).ready(() => {
             data: dataToSend
         }).fail(() => {
             alert("Impossibile elaborare il video " + dataToSend.fileKey);
+        }).error((error) => {
+            alert(error);
         });
     });
 
@@ -131,6 +133,8 @@ $(document).ready(() => {
             type: "POST",
             url: url,
             data: data
+        }).error((error) => {
+            alert(error);
         });
     });
 
@@ -199,7 +203,9 @@ function updateStreaming() {
   }).done( (video) => {
     // sostituisci il tag video con quella nuova(data)
     $('#videoLabel').replaceWith(video);
-  })
+  }).error((error) => {
+      alert(error);
+  });
 }
 
 function updateFileList() {
@@ -209,6 +215,8 @@ function updateFileList() {
   }).done(function(data){
       // replace titleList con quella nuova(data)
       $('#tileList').replaceWith(data);
+  }).error((error) => {
+      alert(error);
   });
 }
 
@@ -219,7 +227,10 @@ function updateTable() {
   }).done(function(data){
       // sostituisci la table con quella nuova(data)
       $('#labelTable').replaceWith(data);
-  })
+      alert("TableUpdated");
+  }).error((error) => {
+      alert(error);
+  });
 }
 
   /**
