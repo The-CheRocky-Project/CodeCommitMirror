@@ -105,10 +105,10 @@ describe('testEditView', () => {
                     ]
                 }
             });
-            var params=JSON.parse(val);
+            let params=JSON.parse(val);
             view.generateTable(params, mockRes);
             assert.strictEqual(mockRes.viewName, "layouts/tableLayout");
-            // TODO assert.ok(!mockRes.viewData.layout);
+            assert.ok(mockRes.viewData.layout);
 
         });
     });
