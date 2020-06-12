@@ -213,13 +213,10 @@ describe('test integrazione edit', () => {
   });
 
 
-  describe('#updateLabelTable()', () => { //TODO sistemare questo test
+  describe('#updateLabelTable()', () => {
 
     it('deve aggiornare il rendering della tabella dei riconoscimenti.', (done) => {
 
-      // let response = {
-      //     Body: '{"campo1":"prova","campo2":"ciao"}'
-      // }
       object=[];
       let val = {
         Body: '{"url": "videoEndpoint","originalVideo": true,"error": false,"list": ["object"],"labels": {    "labels":[        "prima_label",        "seconda_label"    ]}}'
@@ -242,7 +239,6 @@ describe('test integrazione edit', () => {
 
       editController.updateLabelTable(mockRes).then(
         (data) => {
-          //TODO controllare che sia corretto dopo con gli altri
           assert.ok(mockRes.viewData.layout);
           done();
         }

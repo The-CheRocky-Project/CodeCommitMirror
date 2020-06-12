@@ -7,7 +7,7 @@ Contenuto:
     * lambda_handler - l'handler principale per la lambda
 
 """
-from layers.elaboration import VideoCreationError
+from src.layers.elaboration import VideoCreationError
 
 
 def lambda_handler(event, context):
@@ -26,7 +26,7 @@ def lambda_handler(event, context):
         dict: I dati utili all'esecuzione del successivo
         step della State Machine
     """
-    print('Executiong ' + context.function_name)
+    print('Execution ' + context.function_name)
     step = 50
     try:
         event['detail']['items'] = []
