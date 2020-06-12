@@ -90,7 +90,7 @@ $(document).ready(() => {
         };
         $.ajax({
             type: "POST",
-            url: "./selectFile",
+            url: "selectFile",
             data: dataToSend
         }).fail(() => {
             alert("Impossibile elaborare il video " + dataToSend.fileKey);
@@ -111,7 +111,7 @@ $(document).ready(() => {
         };
         $.ajax({
             type: "POST",
-            url: "./addLabel",
+            url: "addLabel",
             data: dataToSend
         }).fail(() => {
             console.log("Impossibile aggiungere una label");
@@ -128,7 +128,7 @@ $(document).ready(() => {
         const data = {
             index: event.target.getAttribute('value')
         }
-        const url = event.target.checked?"./includeLabel":"./excludeLabel";
+        const url = event.target.checked?"includeLabel":"excludeLabel";
         $.ajax({
             type: "POST",
             url: url,
@@ -180,7 +180,7 @@ $(document).ready(() => {
 
 function goIndex() {
   $.ajax({
-      url: "./toFileExplorer"
+      url: "toFileExplorer"
   })
 }
 // TODO remove: useless function
@@ -192,14 +192,14 @@ function goIndex() {
 
 function goEdit() {
   $.ajax({
-      url: "./toEdit"
+      url: "toEdit"
   })
 }
 
 function updateStreaming() {
   $.ajax({
       type: "POST",
-      url: "./getVideoFrame"
+      url: "getVideoFrame"
   }).done( (video) => {
     // sostituisci il tag video con quella nuova(data)
     $('#videoLabel').replaceWith(video);
@@ -211,7 +211,7 @@ function updateStreaming() {
 function updateFileList() {
   $.ajax({
       type: "POST",
-      url: "./getFileList"
+      url: "getFileList"
   }).done(function(data){
       // replace titleList con quella nuova(data)
       $('#tileList').replaceWith(data);
