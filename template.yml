@@ -319,6 +319,14 @@ Resources:
       Action: 'lambda:InvokeFunction'
       FunctionName: !Ref addLabel
       Principal: 'sns.amazonaws.com'
+  changeLabelStatusPermission:
+    Description: The policy for editLabel to invoke a lambda
+    DeletionPolicy: Delete
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !Ref changeLabelStatus
+      Principal: 'sns.amazonaws.com'
   ahlLog:
     Description: The Autonomous HighLight Logging Group
     DeletionPolicy: Delete
@@ -695,11 +703,21 @@ Resources:
       CodeUri: ./python/src/
       Timeout: 240
   addLabel:
-    Description: The lamda that removes records from db
+    Description: The lamda that add labels to resumefile
     DeletionPolicy: Delete
     Type: AWS::Serverless::Function
     Properties:
       Handler: label_adder.lambda_handler
+      Role: !GetAtt basicLambdaRole.Arn
+      Runtime: python3.7
+      CodeUri: ./python/src/
+      Timeout: 60
+  changeLabelStatus:
+    Description: The lamda that changes checking in resumefile
+    DeletionPolicy: Delete
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: change_label_status.lambda_handler
       Role: !GetAtt basicLambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/
