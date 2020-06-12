@@ -125,7 +125,7 @@ describe('testEditController',() => {
     it("deve generare e renderizzare il nuovo frame video", () => {
       //TODO togliere commenti nel caso venga introdotta la funzione getVideoType()
       let getVideoEndpointIsCalled = false;
-      let getVideoTypeIsCalled = false;
+      //let getVideoTypeIsCalled = false;
       mock('../../src/models/editModel', {
         getVideoEndpoint: function() {
           getVideoEndpointIsCalled = true;
