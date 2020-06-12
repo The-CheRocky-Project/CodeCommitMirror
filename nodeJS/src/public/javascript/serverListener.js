@@ -227,7 +227,6 @@ function updateTable() {
   }).done(function(data){
       // sostituisci la table con quella nuova(data)
       $('#labelTable').replaceWith(data);
-      alert("TableUpdated");
   }).error((error) => {
       alert(error);
   });
