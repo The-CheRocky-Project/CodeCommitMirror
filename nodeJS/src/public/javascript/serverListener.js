@@ -65,9 +65,9 @@ $(document).ready(() => {
      * il messaggio 'changedRow'
      * @param {object} msg - parametro fittizio che non fa nulla
      */
-    socket.on('changedRow', (msg) => {
+    /*socket.on('changedRow', (msg) => {
         updateTable();
-    });
+    });*/
 
     /**
      * Aggiorna la lista di video alla pagina fileExplorer
