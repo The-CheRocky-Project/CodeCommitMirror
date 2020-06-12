@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """ labelAdder Lambda module
 
 Questo modulo contiene l'handler che effettua l'aggiunta di una label
