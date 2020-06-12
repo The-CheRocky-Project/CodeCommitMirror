@@ -165,7 +165,7 @@ exports.uncheckRow = async (index) =>{
         check: "False"
     }
     let topicPub=new snsWrap.TopicPublisher('editLabels', AWSregion, userCode);
-    return topicPub.sendMessage("checkRow",data,"application/json");
+    return topicPub.sendMessage("uncheckRow",data,"application/json");
     // return await snsWrap.message({
     //     message: "uncheckRow",
     //     target: index
