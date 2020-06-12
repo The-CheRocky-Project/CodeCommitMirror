@@ -123,11 +123,14 @@ $(document).ready(() => {
      * ne effettua la richiesta di modifica al router
      */
     $(".labelCheckbox").change( (event) => {
-        const index = event.target.getAttribute('id');
-        const state = event.target.getAttribute('checked');
+        const data = {
+            index: event.target.getAttribute('value')
+        }
+        const url = event.target.checked?"./includeLabel":"./excludeLabel";
         $.ajax({
             type: "POST",
-            url: "checkRoe"
+            url: url,
+            data: data
         });
     });
 

@@ -198,7 +198,7 @@ labelsPromise.then( data => console.log("Requested subscription ",data)).catch(e
  * @param {object} res - Rappresenta la risposta http
  */
 ahl.post('/includeLabel', (req,res) => {
-    res.send(fileExplorerController.checkLabel(req.body['rowIndex']));
+    res.send(editController.changeRowCheckBox(req.body['index'], true));
 });
 
 /**
@@ -209,7 +209,7 @@ ahl.post('/includeLabel', (req,res) => {
  * @param {object} res - Rappresenta la risposta http
  */
 ahl.post('/excludeLabel', (req,res) => {
-    res.send(fileExplorerController.uncheckLabel(req.body['rowIndex']));
+    res.send(editController.changeRowCheckBox(req.body['index'], false));
 });
 
 /**
