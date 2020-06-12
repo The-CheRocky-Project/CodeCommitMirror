@@ -37,32 +37,37 @@ class TestLabelAdder(unittest.TestCase):
     """
     Classe di test per il lambda_handler di label_adder
     """
+
     @mock_s3
     def test_add_row(self):
         with patch('boto3.client') as mock:
-          s3 = boto3.resource('s3')
-          s3.create_bucket(Bucket='ahlconsolebucket')
-          resume = s3.Object('ahlconsolebucket', 'tmp/modified-resume.json')
-          arr=[{"frame_key": "frames/match.0000001.jpg","accuracy": "0.916056", "label": "6", "start": "3250", "tfs": "6250", "type": "machine", "show": "true"},
-          {"frame_key": "frames/match.0000002.jpg", "accuracy": "0.969301", "label": "6", "start": "4750", "tfs": "8750", "type": "machine", "show": "true"}]
-          resume.put(Body=json.dumps(arr))
-          snsMock = mock.return_value
-          snsMock.publish.return_value = {
-               'MessageId': 'string'
-          }
-          result = lambda_handler(event_json1, CONTEXT)
-          self.assertTrue(result)
+            s3 = boto3.resource('s3')
+            s3.create_bucket(Bucket='ahlconsolebucket')
+            resume = s3.Object('ahlconsolebucket', 'tmp/modified-resume.json')
+            arr = [{"frame_key": "frames/match.0000001.jpg", "accuracy": "0.916056", "label": "6", "start": "3250",
+                    "tfs": "6250", "type": "machine", "show": "true"},
+                   {"frame_key": "frames/match.0000002.jpg", "accuracy": "0.969301", "label": "6", "start": "4750",
+                    "tfs": "8750", "type": "machine", "show": "true"}]
+            resume.put(Body=json.dumps(arr))
+            snsMock = mock.return_value
+            snsMock.publish.return_value = {
+                'MessageId': 'string'
+            }
+            result = lambda_handler(event_json1, CONTEXT)
+            self.assertTrue(result)
 
     @mock_s3
     def test_not_add_row(self):
-      s3 = boto3.resource('s3')
-      s3.create_bucket(Bucket='ahlconsolebucket')
-      resume = s3.Object('ahlconsolebucket', 'tmp/modified-resume.json')
-      arr=[{"frame_key": "frames/match.0000001.jpg","accuracy": "0.916056", "label": "6", "start": "3250", "tfs": "6250", "type": "machine", "show": "true"},
-      {"frame_key": "frames/match.0000002.jpg", "accuracy": "0.969301", "label": "6", "start": "4750", "tfs": "8750", "type": "machine", "show": "true"}]
-      resume.put(Body=json.dumps(arr))
-      result = lambda_handler(event_json2, CONTEXT)
-      self.assertFalse(result)
-    
+        s3 = boto3.resource('s3')
+        s3.create_bucket(Bucket='ahlconsolebucket')
+        resume = s3.Object('ahlconsolebucket', 'tmp/modified-resume.json')
+        arr = [{"frame_key": "frames/match.0000001.jpg", "accuracy": "0.916056", "label": "6", "start": "3250",
+                "tfs": "6250", "type": "machine", "show": "true"},
+               {"frame_key": "frames/match.0000002.jpg", "accuracy": "0.969301", "label": "6", "start": "4750",
+                "tfs": "8750", "type": "machine", "show": "true"}]
+        resume.put(Body=json.dumps(arr))
+        result = lambda_handler(event_json2, CONTEXT)
+        self.assertFalse(result)
+
     def test_malformed_json(self):
-      self.assertRaises(Exception, lambda_handler, event_json3, CONTEXT)
+        self.assertRaises(Exception, lambda_handler, event_json3, CONTEXT)
