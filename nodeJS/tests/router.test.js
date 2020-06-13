@@ -375,7 +375,7 @@ describe('testRouter', () => {
             request(ahl).post('/notifyProgressionUpdate')
                 .send({
                     Type: "Notification",
-                    Message: '{"progression": 50}'
+                    Message: '{"progression": 100}'
                 })
                 .set('Accept', 'application/json')
                 .expect(200, done);
