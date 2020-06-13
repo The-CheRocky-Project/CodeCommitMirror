@@ -14,7 +14,6 @@ from layers.elaboration import VideoCreationError
 
 s3R = boto3.resource('s3')
 dynamoR = boto3.resource('dynamodb')
-runtime = boto3.client('runtime.sagemaker')
 ENDPOINT_NAME = os.environ['ENDPOINT_NAME']
 
 
@@ -36,6 +35,7 @@ def lambda_handler(event, context):
     bucket = 'ahlconsolebucket'
     basekey = event['key']
     tableName = 'rekognitions'
+    runtime = boto3.client('runtime.sagemaker')
     try:
 
         formatted = f"{int(str(event['n'])):07d}"

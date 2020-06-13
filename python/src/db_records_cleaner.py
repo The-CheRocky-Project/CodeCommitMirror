@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-""" Mount Lambda module
+""" Db records cleaner Lambda module
 Questo modulo contiene l'handler che pulisce i records
 creati su DynamoDB da frame_identifier
 Contenuto:
