@@ -125,6 +125,9 @@ $(document).ready(() => {
      * ne effettua la richiesta di modifica al router
      */
     $(".labelCheckbox").change( (event) => {
+        $.each($(".labelCheckbox"),(i, x) => {
+            x.setAttribute('disabled', 'disabled()');
+        });
         const data = {
             index: event.target.getAttribute('value')
         }
@@ -227,8 +230,14 @@ function updateTable() {
   }).done(function(data){
       // sostituisci la table con quella nuova(data)
       $('#labelTable').replaceWith(data);
+      $.each($(".labelCheckbox"),(i, x) => {
+          x.removeAttribute('disabled');
+      });
   }).error((error) => {
       alert(error);
+      $.each($(".labelCheckbox"),(i, x) => {
+          x.removeAttribute('disabled');
+      });
   });
 }
 
