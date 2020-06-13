@@ -120,6 +120,12 @@ $(document).ready(() => {
         });
     });
 
+    /**
+     * Ad ogni modifica dellos tato delle checkbox della tabella dei riconoscimenti,
+     * ne effettua la richiesta di modifica al router
+     */
+    $(".labelCheckbox").change( event => manageCheckboxState(event));
+
 // FORSE UTILE PER TESTARE
 //    TODO clean
     // $("#carica").click(() => {
@@ -160,11 +166,7 @@ $(document).ready(() => {
     // });
 });
 
-/**
- * Ad ogni modifica dellos tato delle checkbox della tabella dei riconoscimenti,
- * ne effettua la richiesta di modifica al router
- */
-$(".labelCheckbox").change( (event) => {
+function manageCheckboxState (event) {
     $.each($(".labelCheckbox"),(i, x) => {
         x.setAttribute('disabled', 'disabled()');
     });
@@ -179,7 +181,7 @@ $(".labelCheckbox").change( (event) => {
     }).error((error) => {
         alert(error);
     });
-});
+}
 
 function goIndex() {
   $.ajax({
@@ -230,6 +232,7 @@ function updateTable() {
   }).done(function(data){
       // sostituisci la table con quella nuova(data)
       $('#labelTable').replaceWith(data);
+      $(".labelCheckbox").change( event => manageCheckboxState(event));
       $.each($(".labelCheckbox"),(i, x) => {
           x.removeAttribute('disabled');
       });
