@@ -8,9 +8,8 @@ Contenuto:
 """
 import json
 import boto3
-from layers.elaboration import VideoCreationError
+from src.layers.elaboration import VideoCreationError
 
-s3_cli = boto3.client('s3')
 dynamo_res = boto3.resource('dynamodb')
 
 

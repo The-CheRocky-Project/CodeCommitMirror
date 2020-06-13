@@ -1,0 +1,15 @@
+{
+  "detail": {
+    "outputGroupDetails": [
+      {
+        "outputDetails": [
+          {
+            "outputFilePaths":[
+              "s3://ahlconsolebucket/frames/file.2.jpg"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
