@@ -1,0 +1,9 @@
+{
+  "Records": [
+    {
+      "EventSource": "aws:sns",
+      "EventVersion": "1.0",
+      "EventSubscriptionArn": "arn:aws:sns:us-east-2:{{{accountId}}}:ExampleTopic"
+    }
+  ]
+}
