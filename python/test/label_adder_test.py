@@ -7,7 +7,6 @@ import os
 import unittest
 from unittest.mock import patch
 from aws_lambda_context import LambdaContext
-import boto3
 from moto import mock_s3
 import boto3
 from src.label_adder import lambda_handler
