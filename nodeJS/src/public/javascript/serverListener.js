@@ -120,27 +120,6 @@ $(document).ready(() => {
         });
     });
 
-    /**
-     * Ad ogni modifica dellos tato delle checkbox della tabella dei riconoscimenti,
-     * ne effettua la richiesta di modifica al router
-     */
-    $(".labelCheckbox").change( (event) => {
-        $.each($(".labelCheckbox"),(i, x) => {
-            x.setAttribute('disabled', 'disabled()');
-        });
-        const data = {
-            index: event.target.getAttribute('value')
-        }
-        const url = event.target.checked?"includeLabel":"excludeLabel";
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: data
-        }).error((error) => {
-            alert(error);
-        });
-    });
-
 // FORSE UTILE PER TESTARE
 //    TODO clean
     // $("#carica").click(() => {
@@ -179,6 +158,27 @@ $(document).ready(() => {
     // $('#addRow').click(() => {
     //     alert("Non è ancora possibile aggiungere righe alla tabella dei riconoscimenti");
     // });
+});
+
+/**
+ * Ad ogni modifica dellos tato delle checkbox della tabella dei riconoscimenti,
+ * ne effettua la richiesta di modifica al router
+ */
+$(".labelCheckbox").change( (event) => {
+    $.each($(".labelCheckbox"),(i, x) => {
+        x.setAttribute('disabled', 'disabled()');
+    });
+    const data = {
+        index: event.target.getAttribute('value')
+    }
+    const url = event.target.checked?"includeLabel":"excludeLabel";
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: data
+    }).error((error) => {
+        alert(error);
+    });
 });
 
 function goIndex() {
