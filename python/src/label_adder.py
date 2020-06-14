@@ -25,7 +25,7 @@ def lambda_handler(event, context):
                 d'esecuzione
 
         Returns:
-            id del job Elemental Media Convert, False altrimenti
+            True se l'aggiunta è andata a buon fine, False altrimenti
 
         """
     print('Executing :' + context.function_name)
