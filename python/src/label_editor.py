@@ -41,7 +41,7 @@ def lambda_handler(event, context):
         if message == "updateRow":
             attributes = content['MessageAttributes']
             start = int(attributes['start']['Value'])
-            end = int(attributes['duration']['Value'])
+            duration = int(attributes['duration']['Value'])
             label = int(attributes['label']['Value'])
             index = int(attributes['index']['Value'])
             resume_content[index]['label'] = label
