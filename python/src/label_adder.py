@@ -60,7 +60,7 @@ def lambda_handler(event, context):
             resume.put(Body=b_to_write)
 
             # notifies of addLabel done status
-            result = sns.publish(
+            sns.publish(
                 TopicArn='arn:aws:sns:us-east-2:693949087897:editLabels',
                 Message='update'
             )

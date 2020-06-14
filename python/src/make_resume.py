@@ -12,6 +12,7 @@ Contenuto:
 import json
 import boto3
 from layers import elaboration
+from elaboration import VideoCreationError
 
 # Definisce la risorsa s3
 s3R = boto3.resource('s3')
