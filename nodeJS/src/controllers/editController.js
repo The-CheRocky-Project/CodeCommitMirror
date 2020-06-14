@@ -128,3 +128,11 @@ function calculateOvertime(recognizerList){
 exports.resetRecognizements = () => {
     return model.sendReset();
 }
+
+/**
+ * Tramite l'editModel, richiede la cancellazione del lavoro in atto
+ * @returns {Promise<Boolean>}
+ */
+export function cancelExecution() {
+    return model.sendJobCancellation();
+}

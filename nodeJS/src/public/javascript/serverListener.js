@@ -129,7 +129,18 @@ $(document).ready(() => {
     $(".editInput").change((event) => manageContentChange(event));
 
     $("#tableReset").click(event => resetTable(event));
+
+    $("#backLink").click(event => returnToFileExplorer(event));
 });
+
+function returnToFileExplorer(event) {
+    $.ajax({
+        type: "POST",
+        url: "cancelJob"
+    }).error((error) => {
+        alert(error);
+    });
+}
 
 function resetTable(event) {
     $.ajax({

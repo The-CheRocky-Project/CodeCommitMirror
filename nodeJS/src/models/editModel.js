@@ -198,3 +198,10 @@ exports.sendReset = () => {
     let topicPub = new snsWrap.TopicPublisher('editLabels',AWSregion,userCode);
     return topicPub.sendMessage('reset',{},"application/json");
 }
+
+
+export function sendJobCancellation() {
+    let topicPub = new snsWrap.TopicPublisher('confirmation',AWSregion,userCode);
+    return topicPub.sendMessage('cancelJob',{},"application/json");
+}
+

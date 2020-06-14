@@ -395,3 +395,10 @@ ahl.post('/changeRow', (req,res) => {
 ahl.post('/resetTable', (req, res) => {
     res.send(editController.resetRecognizements ());
 });
+
+/**
+ * API per la richiesta di cancellazione del lavoro in corso
+ */
+ahl.post('/cancelJob', (req,res) => {
+   res.send(editController.cancelExecution());
+});
