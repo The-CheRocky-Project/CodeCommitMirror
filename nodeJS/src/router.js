@@ -28,10 +28,10 @@ ahl.use(function(req, res, next) {
     }
     next();
 });
-ahl.use(bodyParser.urlencoded({ extended: true }))
+ahl.use(bodyParser.urlencoded({ extended: true }));
 
 // parse application/json
-ahl.use(bodyParser.json())
+ahl.use(bodyParser.json());
 
 //creates a backport for the socket communication
 const backport = require('socket.io')(server);
@@ -379,3 +379,12 @@ ahl.post('/notifyNewVideoEndpoint', (req,res) => {
     backport.emit('newEndpoint', req.body['done'])
     res.send();
 });
+
+
+/**
+ * API che inoltra la richiesta di modifica di una riga dei riconoscimenti all'editModel
+ */
+ahl.post('/changeRow', (req,res) => {
+    const data = req.body;
+    res.send(editController.changeRowValue(data.row, data.start, data.duration, data.label));
+})

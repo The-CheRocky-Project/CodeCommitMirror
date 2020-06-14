@@ -3,16 +3,16 @@
         <input class="labelCheckbox" type="checkbox" value="{{@index}}" {{#eq show "true"}}checked="checked()"{{/eq}}/>
     </td>
     <td>
-        <input type="text" {{#eq type "machine"}}disabled{{/eq}} value="{{start}}"/>
+        <input name="startText" type="text" class="editInput" {{#eq type "machine"}}disabled{{/eq}} value="{{start}}"/>
     </td>
     <td>
-        <input type="text" {{#eq type "machine"}}disabled{{/eq}} value="{{tfs}}"/>
+        <input name="endText" type="text" class="editInput" {{#eq type "machine"}}disabled{{/eq}} value="{{tfs}}"/>
     </td>
     <td>
         <input type="text" {{#eq type "machine"}}disabled value="{{#perc ../accuracy}}{{/perc}}"{{/eq}} {{#neq type "machine"}}disabled{{/neq}}/>
     </td>
     <td>
-        <select id="col4row1" {{#eq type "machine"}}disabled{{/eq}}>
+        <select name="labelSelect" id="col4row1" class="editInput" {{#eq type "machine"}}disabled{{/eq}}>
             {{#each labelList}}
                 <option value="{{@index}}"
                     {{#eq @index ../label}}

@@ -126,6 +126,8 @@ $(document).ready(() => {
      */
     $(".labelCheckbox").change( event => manageCheckboxState(event));
 
+    $(".editInput").change((event) => manageContentChange(event));
+
 // FORSE UTILE PER TESTARE
 //    TODO clean
     // $("#carica").click(() => {
@@ -183,6 +185,27 @@ function manageCheckboxState (event) {
     });
 }
 
+function manageContentChange(event) {
+    const row = $(event.target).parent().parent();
+    const index = row.index();
+    const start = row.find('input[name="startText"]').val();
+    const duration = row.find('input[name="endText"]').val();
+    const label = row.find('select[name="labelSelect"]').val();
+    const data = {
+        row: index,
+        start: start,
+        duration: duration,
+        label: label
+    }
+    $.ajax({
+        type: "POST",
+        url: "changeRow",
+        data: data
+    }).error((error) => {
+        alert(error);
+    });
+}
+
 function goIndex() {
   $.ajax({
       url: "toFileExplorer"
@@ -233,6 +256,7 @@ function updateTable() {
       // sostituisci la table con quella nuova(data)
       $('#labelTable').replaceWith(data);
       $(".labelCheckbox").change( event => manageCheckboxState(event));
+      $(".editInput").change((event) => manageContentChange(event));
       $.each($(".labelCheckbox"),(i, x) => {
           x.removeAttribute('disabled');
       });
