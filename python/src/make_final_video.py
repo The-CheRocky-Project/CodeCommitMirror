@@ -11,8 +11,8 @@ Contenuto:
 # imports url utils and media management layer
 import json
 import boto3
-from layers import media_manager
-from layers.elaboration import VideoCreationError
+from src.layers import media_manager
+from src.layers.elaboration import VideoCreationError
 
 # Definisce la risorsa s3
 s3R = boto3.resource('s3')
@@ -89,7 +89,9 @@ def lambda_handler(event, context):
         splitted = all_frames[0]['frame_key'].split('/')
         name = splitted[-1]
         splitted = name.split('.')
-        video_key = splitted[:-2]
+
+        #Before: video_key = splitted[-2:] . Modified for test (before line 96 was a TypeError)
+        video_key = splitted[-2]
 
         input_file_key = 's3://ahlconsolebucket/origin/' + video_key + '.mp4'
         destination_key = "s3://ahlconsolebucket/modify/" + video_key
