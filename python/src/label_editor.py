@@ -39,15 +39,14 @@ def lambda_handler(event, context):
 
         message = content['Message']
         if message == "updateRow":
-            print("entra dentro l'if")
             attributes = content['MessageAttributes']
             start = int(attributes['start']['Value'])
             end = int(attributes['duration']['Value'])
             label = int(attributes['label']['Value'])
             index = int(attributes['index']['Value'])
-            resume_content['label'] = label
-            resume_content['start'] = start
-            resume_content['tfs'] = duration
+            resume_content[index]['label'] = label
+            resume_content[index]['start'] = start
+            resume_content[index]['tfs'] = duration
             b_to_write = json.dumps(resume_content)
             resume.put(Body=b_to_write)
 
