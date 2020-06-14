@@ -189,3 +189,12 @@ exports.checkRow = async (index) =>{
     //     target: index
     // });
 };
+
+/**
+ * Effettua la richiesta di reset della tabella dei riconoscimenti
+ * @returns {Promise<Boolean>}
+ */
+exports.sendReset = () => {
+    let topicPub = new snsWrap.TopicPublisher('editLabels',AWSregion,userCode);
+    return topicPub.sendMessage('reset',{},"application/json");
+}

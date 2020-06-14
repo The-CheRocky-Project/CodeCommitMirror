@@ -387,4 +387,11 @@ ahl.post('/notifyNewVideoEndpoint', (req,res) => {
 ahl.post('/changeRow', (req,res) => {
     const data = req.body;
     res.send(editController.changeRowValue(data.row, data.start, data.duration, data.label));
-})
+});
+
+/**
+ * API che inoltra la richiesta di reset della tabella dei riconoscimenti
+ */
+ahl.post('/resetTable', (req, res) => {
+    res.send(editController.resetRecognizements ());
+});
