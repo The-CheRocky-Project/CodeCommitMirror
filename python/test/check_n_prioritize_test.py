@@ -5,7 +5,6 @@ Test module for final_video_cleaner lambda
 import json
 import os
 import unittest
-from unittest.mock import patch
 from aws_lambda_context import LambdaContext
 from moto import mock_s3
 import boto3
@@ -22,7 +21,7 @@ CONTEXT = LambdaContext()
 CONTEXT.function_name = 'check_n_prioritize'
 
 
-class TestLabelAdder(unittest.TestCase):
+class TestCheckNPrioritize(unittest.TestCase):
     """
     Classe di test per il lambda_handler di check_n_prioritize
     """
