@@ -232,7 +232,7 @@ ahl.post('/getVideoFrame', (req,res) => {
  */
 ahl.post('/addLabel', (req,res) => {
     const reqDict=req.body;
-    res.send(editController.addNewLabelRow(reqDict['start'],reqDict['end'],reqDict['modelIndex']));
+    res.send(editController.addNewLabelRow(reqDict['start'],reqDict['duration'],reqDict['modelIndex']));
 });
 
 /**

@@ -101,7 +101,7 @@ exports.getmodelLabels = async () =>{
 exports.addRow = async (params) =>{
     const data = {
         start: params['start'],
-        end: params['end'],
+        duration: params['duration'],
         label: params['label']
     };
     let topicPub=new snsWrap.TopicPublisher("editLabels", AWSregion, userCode);

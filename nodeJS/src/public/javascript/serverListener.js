@@ -106,7 +106,7 @@ $(document).ready(() => {
     $("#addRow").click( (event) => {
         const dataToSend = {
             start: $("#newStart").val(),
-            end: $("#newEnd").val(),
+            duration: $("#newEnd").val(),
             modelIndex: $("#newLabel").prop('selectedIndex')
         };
         $.ajax({
