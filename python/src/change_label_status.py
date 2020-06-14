@@ -13,7 +13,6 @@ import boto3
 
 # definizione della risorsa s3
 s3 = boto3.resource('s3')
-sns = boto3.client('sns')
 
 
 def lambda_handler(event, context):
@@ -31,6 +30,7 @@ def lambda_handler(event, context):
 
         """
     print('Executing :' + context.function_name)
+    sns = boto3.client('sns')
     try:
         # Preleva oggetto s3 contenente il resume
         content = event["Records"][0]["Sns"]

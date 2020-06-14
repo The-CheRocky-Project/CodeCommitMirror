@@ -7,7 +7,6 @@ import os
 import unittest
 import boto3
 from aws_lambda_context import LambdaContext
-# from moto import mock_s3
 from src.key_thumb_transformer import lambda_handler
 
 # Percorso assouluto per caricare il file event.json
