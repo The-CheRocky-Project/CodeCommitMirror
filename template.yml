@@ -711,6 +711,16 @@ Resources:
       Runtime: python3.7
       CodeUri: ./python/src/
       Timeout: 60
+  editLabel:
+    Description: The lamda that edit labels in resumefile
+    DeletionPolicy: Delete
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: label_editor.lambda_handler
+      Role: !GetAtt basicLambdaRole.Arn
+      Runtime: python3.7
+      CodeUri: ./python/src/
+      Timeout: 60
   changeLabelStatus:
     Description: The lamda that changes checking in resumefile
     DeletionPolicy: Delete
