@@ -38,7 +38,7 @@ def lambda_handler(event, context):
         resume_content = json.loads(resume_res['Body'].read().decode('utf-8'))
 
         message = content['Message']
-        if message == "addRow":
+        if message == "updateRow":
             print("entra dentro l'if")
             attributes = content['MessageAttributes']
             start = int(attributes['start']['Value'])
