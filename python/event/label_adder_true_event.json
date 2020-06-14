@@ -20,7 +20,7 @@
             "Type": "String",
             "Value": "3222"
           },
-          "end": {
+          "duration": {
             "Type": "String",
             "Value": "5555"
           },

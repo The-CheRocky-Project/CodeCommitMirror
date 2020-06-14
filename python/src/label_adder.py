@@ -42,7 +42,7 @@ def lambda_handler(event, context):
             print("entra dentro l'if")
             attributes = content['MessageAttributes']
             start = int(attributes['start']['Value'])
-            end = int(attributes['end']['Value'])
+            duration = int(attributes['duration']['Value'])
             label = int(attributes['label']['Value'])
             index = 0
             while index < len(resume_content) and int(resume_content[index]['start']) <= start:
@@ -52,7 +52,7 @@ def lambda_handler(event, context):
                 'accuracy': '0.0',
                 'label': label,
                 'start': start,
-                'tfs': str(end - start),
+                'tfs': duration,
                 'type': 'user',
                 'show': 'true'
             })
