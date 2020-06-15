@@ -60,6 +60,7 @@ async function getKeys(params, keys = []){
  *  @param {String} bucket - Il bucket di origine
  *  @param {String} fileKey - La fileKey da deserializzare
  *  @returns {Object} - Dizionario JSON con il contenuto di fileKey
+ *  TODO add rejection handling (volendo)
  */
 exports.getJsonFile = (bucket,fileKey) =>{
     const param ={
