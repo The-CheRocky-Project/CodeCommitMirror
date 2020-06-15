@@ -69,9 +69,6 @@ Resources:
       - Namespace: aws:elasticbeanstalk:healthreporting:system
         OptionName: SystemType
         Value: enhanced
-      - Namespace: aws:elasticbeanstalk:environment
-        OptionName: CleanStepFunctionArn
-        Value: !Ref cancelWorkflow
       SolutionStackName: !Ref 'SolutionStackName'
   EBEnvironment:
     Description: The AWS Elastic Beanstalk deployment group where the application is deployed, which is made up of the Amazon EC2 Linux instances launched for this project.
