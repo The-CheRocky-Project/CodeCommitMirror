@@ -11,7 +11,7 @@ Contenuto:
 # imports url utils and media management layer
 import json
 import boto3
-from layers import elaboration
+import layers.elaboration
 
 # TODO resource out of template
 # Definisce la risorsa s3
