@@ -8,7 +8,7 @@ Contenuto:
 """
 import json
 import boto3
-from layers.elaboration import VideoCreationError
+from src.layers import elaboration
 
 dynamo_res = boto3.resource('dynamodb')
 
@@ -69,4 +69,4 @@ def lambda_handler(event, context):
         return remaining_insertions
     except Exception as err:
         print(err)
-        raise VideoCreationError(key_prefix.replace('frames/', ''))
+        raise elaboration.VideoCreationError(key_prefix.replace('frames/', ''))

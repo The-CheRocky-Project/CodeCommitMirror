@@ -11,8 +11,7 @@ Contenuto:
 # imports url utils and media management layer
 import json
 import boto3
-from layers import elaboration
-from elaboration import VideoCreationError
+from src.layers import elaboration
 
 # Definisce la risorsa s3
 s3R = boto3.resource('s3')
@@ -101,4 +100,4 @@ def lambda_handler(event, context):
     except Exception as err:
         print(err)
         print('Impossibile recuperare i dati dal DB')
-        raise VideoCreationError(base_key.replace('frames/', ''))
+        raise elaboration.VideoCreationError(base_key.replace('frames/', ''))
