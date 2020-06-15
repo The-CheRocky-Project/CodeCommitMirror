@@ -10,7 +10,7 @@ import json
 import os
 import boto3
 import decimal
-import layers.elaboration
+from layers import elaboration
 
 s3R = boto3.resource('s3')
 dynamoR = boto3.resource('dynamodb')

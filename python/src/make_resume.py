@@ -11,7 +11,7 @@ Contenuto:
 # imports url utils and media management layer
 import json
 import boto3
-import layers.elaboration
+from layers import elaboration
 
 # Definisce la risorsa s3
 s3R = boto3.resource('s3')

@@ -11,8 +11,8 @@ Contenuto:
 # imports url utils and media management layer
 import json
 import boto3
-from src.layers import media_manager
-from src.layers.elaboration import VideoCreationError
+from layers import media_manager
+from layers import elaboration
 
 # Definisce la risorsa s3
 s3R = boto3.resource('s3')
@@ -110,4 +110,4 @@ def lambda_handler(event, context):
     except Exception as err:
         print(err)
         print('Impossibile creare il video')
-        raise VideoCreationError(video_key)
+        raise elaboration.VideoCreationError(video_key)

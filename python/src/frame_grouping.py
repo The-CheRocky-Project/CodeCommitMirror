@@ -7,7 +7,7 @@ Contenuto:
     * lambda_handler - l'handler principale per la lambda
 
 """
-import layers.elaboration
+from layers import elaboration
 
 
 def lambda_handler(event, context):
