@@ -11,6 +11,7 @@ import json
 import urllib.parse
 import boto3
 
+
 # Definisce la risorsa s3
 s3 = boto3.resource('s3')
 

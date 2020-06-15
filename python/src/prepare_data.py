@@ -8,7 +8,7 @@ Contenuto:
 """
 import json
 import boto3
-from src.layers import elaboration
+import layers.elaboration
 
 dynamo_res = boto3.resource('dynamodb')
 
