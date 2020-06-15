@@ -71,7 +71,7 @@ Resources:
         Value: enhanced
       - Namespace: aws:elasticbeanstalk:environment
         OptionName: CleanStepFunctionArn
-        Value: !Ref cancelFlow
+        Value: !Ref cancelWorkflow
       SolutionStackName: !Ref 'SolutionStackName'
   EBEnvironment:
     Description: The AWS Elastic Beanstalk deployment group where the application is deployed, which is made up of the Amazon EC2 Linux instances launched for this project.
@@ -565,7 +565,7 @@ Resources:
               LogGroupArn: !GetAtt ahlLog.Arn
         IncludeExecutionData: true
         Level: ERROR
-  cancelFlow:
+  cancelWorkflow:
     Description: The step function that cleans all job
     DeletionPolicy: Delete
     Type: "AWS::StepFunctions::StateMachine"
@@ -580,7 +580,7 @@ Resources:
           dbCleaner: !GetAtt [dbCleaner, Arn]
           cancelJob: !GetAtt [cleanJobs, Arn]
       RoleArn: !GetAtt stepFRole.Arn
-      StateMachineName: ahlCleanWorkflow
+      StateMachineName: clean
       StateMachineType: STANDARD
       LoggingConfiguration:
         Destinations:
@@ -845,7 +845,7 @@ Resources:
 #            - cancelJob
 #      Name: cleanCall
 #      Targets:
-#        - Arn: !Ref cancelFlow
+#        - Arn: !Ref cancelWorkflow
 #          Id: cleanWorkFlow_target
 #          RoleArn: !GetAtt stepFRole.Arn
   ahlMlBucket:
