@@ -34,7 +34,6 @@ def lambda_handler(event, context):
 
     """
     print('Executing :' + context.function_name)
-    sns = boto3.client('sns')
     video_key = ''
     try:
         key = event['key']

@@ -32,6 +32,7 @@ def lambda_handler(event, context):
 
     """
 
+    sns = boto3.client('sns')
     s3object = s3R.Object('ahlconsolebucket', 'tmp/modified-resume.json')
     origin = s3R.Object('ahlconsolebucket', 'tmp/resume.json')
     get_res = origin.get();
