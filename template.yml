@@ -795,6 +795,16 @@ Resources:
       Runtime: python3.7
       CodeUri: ./python/src
       Timeout: 20
+  notifyMountEnd:
+    Description: The lambda that notify the server with sns
+    DeletionPolicy: Delete
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: notify_mount_end.lambda_handler
+      Role: !GetAtt basicLambdaRole.Arn
+      Runtime: python3.7
+      CodeUri: ./python/src
+      Timeout: 20
   framerQueue:
     Description: The Media Convert Queue for framing jobs
     Type: AWS::MediaConvert::Queue
@@ -828,6 +838,27 @@ Resources:
         - Arn: !Ref progressionTopic
           Id: mediaConvertProgressionTarget
           Input: "{\"progression\": 10}"
+  mountStatusChange:
+    Description: The CloudWatch Event for Media Convert job changes on mount queue
+    DeletionPolicy: Delete
+    Type: AWS::Events::Rule
+    Properties:
+      Description: Catches events from MediaConvert mount queue
+      EventPattern:
+        source:
+          - aws.mediaconvert
+        detail-type:
+          - MediaConvert Job State Change
+        detail:
+          status:
+            - COMPLETE
+          queue:
+            - 'mount'
+      Name: mountFinish
+      Targets:
+        - Arn: !Ref notifyMountEnd
+          Id: notifier
+          RoleArn: !GetAtt basicLambdaRole
 #  cancellationRequiredRule:
 #    Description: A CloudWatch rule to trigger the cleaning step function
 #    DeletionPolicy: Delete

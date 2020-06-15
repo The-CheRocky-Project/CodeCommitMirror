@@ -90,7 +90,7 @@ def lambda_handler(event, context):
         splitted = name.split('.')
 
         #Before: video_key = splitted[-2:] . Modified for test (before line 96 was a TypeError)
-        video_key = splitted[-2]
+        video_key = splitted[-3]
 
         input_file_key = 's3://ahlconsolebucket/origin/' + video_key + '.mp4'
         destination_key = "s3://ahlconsolebucket/modify/" + video_key

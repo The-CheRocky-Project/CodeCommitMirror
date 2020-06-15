@@ -279,7 +279,7 @@ def mount(input_file_key, destination_key, details_array, first_start, queue):
                             }
                         ],
                         "Extension": ".mp4",
-                        "NameModifier": "-combination"
+                        "NameModifier": "-edit"
                     }
                 ],
                 "OutputGroupSettings": {

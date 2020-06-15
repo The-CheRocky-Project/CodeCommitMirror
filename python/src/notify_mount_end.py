@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """ notifyProgression Lambda module
 
 Questo modulo contiene l'handler che effettua la notifica di progressione
@@ -8,6 +9,7 @@ Contenuto:
 """
 
 # imports url utils and media management layer
+import json
 import boto3
 
 sns = boto3.client('sns')
@@ -28,14 +30,20 @@ def lambda_handler(event, context):
         della lambda precedente
 
     """
-    end = event['to']
-    start = event['from']
 
-    progression = ((start / end) * 80) + 10
     try:
+        output_group = event['detail']['outputGroupDetails'][0]
+        video_key = output_group['outputDetails'][0]['outputFilePaths'][0]
         sns.publish(
             TopicArn='arn:aws:sns:us-east-2:693949087897:progression',
-            Message="{ \"progression\": " + str(int(progression)) + '}')
+            Message="videoEndpoint",
+            MessageAttributes={
+                'key': {
+                    'StringValue': video_key,
+                    'DataType': 'String'
+                }
+            }
+        )
     except Exception as err:
         print(err)
     return event
