@@ -33,11 +33,23 @@ const s3Defaults ={
 
 /**
  * Effettua la comunicazione di impostare il video in modalità preview.
- * @returns {boolean} true se la chiamata è stata effettuata con successo, false altrimenti.
+ * @returns {string} true se la chiamata è stata effettuata con successo, false altrimenti.
  */
 exports.getVideoEndpoint =  () =>{
+    let key = actualVideoKey.key;
+    if(!actualVideoKey.original){
+        const split = key.split('.');
+        let destinationKey ="";
+        for( let section in split){
+            destinationKey = destinationKey + section + ".";
+            if(section == split[split.length-2])
+                destinationKey= destinationKey + "-edit.";
+        }
+        destinationKey.replace("-edit.mp4.","-edit.mp4");
+        key = destinationKey;
+    }
     return s3Wrap.getObjectUrl(
-        originalPrefixes[actualVideoKey.original] + actualVideoKey.key,
+        key,
         s3Defaults.bucket,
         s3Defaults.region);
 };
