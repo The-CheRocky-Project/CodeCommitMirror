@@ -98,28 +98,6 @@ Resources:
           OptionName: Subnets
           Value: !Ref 'SubnetId'
         - !Ref "AWS::NoValue"
-#  snsConsoleEndpoint:
-#    Description: The endpoint for sns communication with the console application
-#    DeletionPolicy: Delete
-#    Type: AWS::EC2::VPCEndpoint
-#    Properties:
-#      PolicyDocument: '{
-#         "Version":"2012-10-17",
-#         "Statement":[{
-#           "Effect":"Allow",
-#           "Principal": "*",
-#           "Action":["sns:*"],
-#           "Resource":["*"]
-#         }]
-#      }'
-#      ServiceName: !Sub com.amazonaws.${AWS::Region}.sns
-#      PrivateDnsEnabled: true
-#      SecurityGroupIds:
-#        - sg-06d54e2975f918bcb
-#      SubnetIds:
-#        - !Ref 'SubnetId'
-#      VpcEndpointType: Interface
-#      VpcId: !Ref 'VpcId'
   consoleBucket:
     Description: The bucket containing videos from the console application
     Type: AWS::S3::Bucket
@@ -583,6 +561,29 @@ Resources:
               LogGroupArn: !GetAtt ahlLog.Arn
         IncludeExecutionData: true
         Level: ERROR
+  cancelflow:
+    Description: The step function that cleans all job
+    DeletionPolicy: Delete
+    Type: "AWS::StepFunctions::StateMachine"
+    Properties:
+      DefinitionString:
+        !Sub
+        - |-
+          ##{{STATEMACHINE_DEF}} cleanJobs.json
+        - finalVideoCleaner: !GetAtt [finalVideoCleaner, Arn]
+          recoJsonCleaner: !GetAtt [recoJsonCleaner, Arn]
+          frameCleaner: !GetAtt [frameCleaner, Arn]
+          dbCleaner: !GetAtt [dbCleaner, Arn]
+          cancelJob: !GetAtt [cleanJobs, Arn]
+      RoleArn: !GetAtt stepFRole.Arn
+      StateMachineName: ahlCleanWorkflow
+      StateMachineType: STANDARD
+      LoggingConfiguration:
+        Destinations:
+          - CloudWatchLogsLogGroup:
+              LogGroupArn: !GetAtt ahlLog.Arn
+        IncludeExecutionData: true
+        Level: ERROR
   thumbfy:
     Description: The lambda that runs a Mediaconvert job to create thumbnail
     Type: AWS::Serverless::Function
@@ -773,6 +774,16 @@ Resources:
       Runtime: python3.7
       CodeUri: ./python/src/
       Timeout: 60
+  cleanJobs:
+    Description: The lamda that cleans all jobs
+    DeletionPolicy: Delete
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: job_cleaning.lambda_handler
+      Role: !GetAtt basicLambdaRole.Arn
+      Runtime: python3.7
+      CodeUri: ./python/src/
+      Timeout: 180
   framerQueue:
     Description: The Media Convert Queue for framing jobs
     Type: AWS::MediaConvert::Queue

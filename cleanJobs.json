@@ -1,0 +1,50 @@
+{
+    "Comment": "The cleaning routine",
+    "StartAt": "Filter",
+    "States": {
+        "Filter": {
+            "Type": "Choice",
+            "Choices": [
+                {
+                    "Variable": "$.Records[0].Sns.Message",
+                    "StringEquals": "cancelJob",
+                    "Next": "cancelJobStarter"
+                }
+            ],
+            "Default": "NonCleaning"
+        },
+        "cancelJobStarter": {
+            "Type": "Task",
+            "Resource": "${cancelJob}",
+            "Catch": [{
+                "ErrorEquals": ["States.ALL"],
+                "Next": "cleanVideo"
+            }],
+            "End": true
+        },
+        "cleanVideo": {
+            "Type": "Task",
+            "Resource": "${finalVideoCleaner}",
+            "Next": "cleanResume"
+        },
+        "cleanResume": {
+        "Type": "Task",
+        "Resource": "${recoJsonCleaner}",
+        "Next": "cleanDb"
+        },
+        "cleanDb": {
+        "Type": "Task",
+        "Resource": "${dbCleaner}",
+        "Next": "cleanFrames"
+        },
+        "cleanFrames": {
+        "Type": "Task",
+        "Resource": "${frameCleaner}",
+        "End": true
+        },
+        "NonCleaning": {
+            "Type": "Pass",
+            "End": true
+        }
+    }
+}
