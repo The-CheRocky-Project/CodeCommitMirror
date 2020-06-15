@@ -29,10 +29,7 @@ def lambda_handler(event, context):
 
         """
     print('Executing :' + context.function_name)
-    sns = boto3.client('sns')
     try:
-        content = event["Records"][0]["Sns"]
-
         resume = s3.Object('ahlconsolebucket', 'tmp/modified-resume.json')
         resume_res = resume.get()
         resume_content = json.loads(resume_res['Body'].read().decode('utf-8'))
