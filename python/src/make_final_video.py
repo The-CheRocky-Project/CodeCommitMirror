@@ -103,9 +103,6 @@ def lambda_handler(event, context):
             first_start,
             'videoMount'
         )
-        sns.publish(
-            TopicArn='arn:aws:sns:us-east-2:693949087897:progression',
-            Message="{ \"progression\": 100 }")
         return job_id
     except Exception as err:
         print(err)

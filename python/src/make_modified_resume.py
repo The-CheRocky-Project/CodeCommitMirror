@@ -38,5 +38,7 @@ def lambda_handler(event, context):
     body = get_res['Body']
     content = body.read()
     s3object.put(Body=content)
-
+    sns.publish(
+        TopicArn='arn:aws:sns:us-east-2:693949087897:progression',
+        Message="{ \"progression\": 100 }")
     return '{key: "tmp/modified-resume.json"}'
