@@ -139,7 +139,7 @@ exports.cancelExecution = () => {
 
 
 exports.changeVideo = (videoKey) => {
-    if(videoKey.endsWith("edit.mp4"))
+    if(videoKey.endsWith("-edit.mp4"))
         model.setPreviewMode();
     else
         model.setOriginalMode();

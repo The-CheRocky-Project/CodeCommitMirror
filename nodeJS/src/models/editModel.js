@@ -19,8 +19,8 @@ let actualVideoKey = {
 
 //Prefissi di default per la chiave video
 const originalPrefixes = {
-    true: "origin",
-    false: "preview"
+    true: "origin/",
+    false: "modify/"
 };
 
 //Bucket e region di default
@@ -36,10 +36,10 @@ const s3Defaults ={
  * @returns {string} true se la chiamata è stata effettuata con successo, false altrimenti.
  */
 exports.getVideoEndpoint =  () =>{
-    let key = actualVideoKey.key;
+    let key = s3Defaults[actualVideoKey.original] + actualVideoKey.key;
     if(!actualVideoKey.original){
         const split = key.split('.');
-        let destinationKey ="";
+        let destinationKey = s3Defaults[actualVideoKey.original];
         for( let section in split){
             destinationKey = destinationKey + section + ".";
             if(section == split[split.length-2])
