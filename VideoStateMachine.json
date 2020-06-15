@@ -78,6 +78,11 @@
         "ErrorEquals": ["States.ALL"],
         "Next": "cleanVideo"
       }],
+      "Next": "copyResume"
+    },
+    "copyResume": {
+      "Type": "Task",
+      "Resource": "${copyResumeArn}",
       "End": true
     },
     "cleanVideo": {

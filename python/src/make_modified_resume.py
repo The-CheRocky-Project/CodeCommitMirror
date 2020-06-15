@@ -31,16 +31,9 @@ def lambda_handler(event, context):
         dizionario contenente i risultati dell'elaborazione
 
     """
-    all_frames = event['Records'][0]['Sns']['MessageAttributes']['elements']
-
-    if not elaboration.check_time(all_frames):
-        return False
-
-    data = elaboration.prepare_for_serialize(all_frames)
 
     s3object = s3R.Object('ahlconsolebucket', 'tmp/modified-resume.json')
-    s3object.put(Body=json.dumps(data))
+    origin = s3R.Object('ahlconsolebucket', 'tmp/resume.json')
+    s3object.put(Body=origin.get()['body'].read())
 
-    # TODO decidere se ritornare e utilizzare
-    # una step function oppure se usare sns
-    return 'tmp/modified-resume.json'
+    return '{key: "tmp/modified-resume.json"}'
