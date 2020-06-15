@@ -858,24 +858,7 @@ Resources:
       Targets:
         - Arn: !Ref notifyMountEnd
           Id: notifier
-          RoleArn: !GetAtt basicLambdaRole
-#  cancellationRequiredRule:
-#    Description: A CloudWatch rule to trigger the cleaning step function
-#    DeletionPolicy: Delete
-#    Type: AWS::Events::Rule
-#    Properties:
-#      Description: Catch sns messages
-#      EventPattern:
-#        source:
-#          - aws.sns
-#        detail:
-#          Message:
-#            - cancelJob
-#      Name: cleanCall
-#      Targets:
-#        - Arn: !Ref cancelWorkflow
-#          Id: cleanWorkFlow_target
-#          RoleArn: !GetAtt stepFRole.Arn
+          RoleArn: !GetAtt basicLambdaRole.Arn
   ahlMlBucket:
     Description: The s3 Bucket where data is stored
     Type: AWS::S3::Bucket
