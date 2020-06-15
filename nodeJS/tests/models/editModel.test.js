@@ -123,33 +123,11 @@ describe('testEditModel', () => {
 
   describe('#setPreviewMode()', () => {
 
-    it('Ritorna true se ha avuto successo', (done) => {
+    it('Ritorna true se ha avuto successo', () => {
 
-      const snsWrapperMock = require('../wrappers/snsWrapperMockForTestTrue');
-
-      editModel.__set__('snsWrap', snsWrapperMock);
-
-      editModel.setPreviewMode().then((token) => {
-
-        assert.equal(token, true);
-        done();
-
-      });
-
-    });
-
-    it('Ritorna false se non ha avuto successo', (done) => {
-
-      const snsWrapperMock = require('../wrappers/snsWrapperMockForTestFalse');
-
-      editModel.__set__('snsWrap', snsWrapperMock);
-
-      editModel.setPreviewMode().then((token) => {
-
-        assert.equal(token, false);
-        done();
-
-      });
+      const result = editModel.setPreviewMode();
+      assert.equal(result,true);
+      assert.equal(!editModel.isVideoTypeOriginal(), true);
 
     });
 
@@ -157,33 +135,11 @@ describe('testEditModel', () => {
 
   describe('#setOriginalMode()', () => {
 
-    it('Ritorna true se ha avuto successo', (done) => {
+    it('Ritorna true se ha avuto successo', () => {
 
-      const snsWrapperMock = require('../wrappers/snsWrapperMockForTestTrue');
-
-      editModel.__set__('snsWrap', snsWrapperMock);
-
-      editModel.setOriginalMode().then((token) => {
-
-        assert.equal(token, true);
-        done();
-
-      });
-
-    });
-
-    it('Ritorna false se non ha avuto successo', (done) => {
-
-      const snsWrapperMock = require('../wrappers/snsWrapperMockForTestFalse');
-
-      editModel.__set__('snsWrap', snsWrapperMock);
-
-      editModel.setOriginalMode().then((token) => {
-
-        assert.equal(token, false);
-        done();
-
-      });
+      const result = editModel.setOriginalMode();
+      assert.equal(result,true);
+      assert.equal(editModel.isVideoTypeOriginal(), true);
 
     });
 

@@ -127,7 +127,7 @@ function calculateOvertime(recognizerList){
  */
 exports.resetRecognizements = () => {
     return model.sendReset();
-}
+};
 
 /**
  * Tramite l'editModel, richiede la cancellazione del lavoro in atto
@@ -135,4 +135,13 @@ exports.resetRecognizements = () => {
  */
 exports.cancelExecution = () => {
     return model.sendJobCancellation();
-}
+};
+
+
+exports.changeVideo = (videoKey) => {
+    if(videoKey.endsWith("edit.mp4"))
+        model.setPreviewMode();
+    else
+        model.setOriginalMode();
+    model.setVideoEndpoint(videoKey);
+};

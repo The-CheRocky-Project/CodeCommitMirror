@@ -47,39 +47,6 @@ describe('test integrazione edit', () => {
 
   });
 
-  describe('#changeVideoMode()', () => {
-
-    it('deve impostare la modalità di visualizzazione su original se è true', (done) => {
-
-      AWSMock.mock('SNS', 'publish', (params, callback) => {
-        callback(null, 'success'); // Mocked response returns ‘success’ always
-      });
-
-      editController.changeVideoMode(true).then((token) => {
-        assert.equal(token, true);
-        done();
-      });
-
-    });
-
-    it('non deve impostare la modalità di visualizzazione su original se è false', (done) => {
-
-      AWSMock.mock('SNS', 'publish', (params, callback) => {
-        callback('err', null); // Mocked response returns error always
-      });
-
-      editController.changeVideoMode(false).then((token) => {
-        assert.equal(token, false);
-        done();
-      }).catch((errOnAssert) => {done(new Error(errOnAssert));});
-
-    });
-
-    afterEach(()=>{
-        AWSMock.restore('SNS','publish');
-    });
-
-  });
 
   describe('#updateVideoFrame()', () => {
 

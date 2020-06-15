@@ -394,13 +394,29 @@ describe('testRouter', () => {
 
     describe('#post/notifyNewVideoEndpoint', () => {
 
-        it("deve inviare un json con un campo done", (done) => {
+        it("deve confermare l'avvenuta subcription sns", (done) => {
 
             request(ahl).post('/notifyNewVideoEndpoint')
-                .send({done: 'john'})
+                .send({
+                    Type: "SubscriptionConfirmation",
+                    TopicArn: "john",
+                    Token: "token"
+                })
                 .set('Accept', 'application/json')
                 .expect(200, done);
 
+        });
+
+        it("deve accettare notification", (done) => {
+
+            request(ahl).post('/notifyNewVideoEndpoint')
+                .send({
+                    Type: "Notification",
+                    Message: 'videoEndpoint',
+                    MessageAttributes: '{"key": "sport.mp4"}'
+                })
+                .set('Accept', 'application/json')
+                .expect(200, done);
         });
     });
 

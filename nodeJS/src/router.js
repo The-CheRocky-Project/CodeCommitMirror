@@ -338,10 +338,6 @@ ahl.post('/notifyProgressionUpdate', (req,res) => {
             }
             backport.emit('progress',progr);
             res.sendStatus(200);
-            if(progr >= 100){
-                activePage = pages.edit;
-                backport.emit('refresh','');
-            }
         }
         else
             res.sendStatus(418);
@@ -376,9 +372,38 @@ ahl.post('/getFileList', (req,res) => {
  * @param {object} res - Rappresenta la risposta http
  */
 ahl.post('/notifyNewVideoEndpoint', (req,res) => {
-    backport.emit('newEndpoint', req.body['done'])
-    res.send();
+    if(req.body.Type == "SubscriptionConfirmation"){
+        if(sns.confirmTopic(req.body.TopicArn, req.body.Token)){
+            console.log("Confirmed subscription " + req.body.TopicArn);
+            res.sendStatus(200);
+        }
+        else
+            res.sendStatus(422);
+    }
+    else{
+        if(req.body.Type == "Notification" && req.body.Message == 'videoEndpoint'){
+            res.sendStatus(200);
+            const videoKey = JSON.parse(req.body.MessageAttributes).key;
+            editController.changeVideo(videoKey);
+            if(activePage != pages.edit){
+                activePage = pages.edit;
+                backport.send('refresh','');
+            }
+            else {
+                backport.send('newVideo','');
+            }
+        }
+        else
+            res.sendStatus(418);
+    }
 });
+let endpointPromise = SNS.subscribe({
+    Protocol: 'http',
+    TopicArn: sns.getTopicArn('confirmation',AWS.config.region,"693949087897"),
+    Endpoint: endpointName + "notifyNewVideoEndpoint"
+}).promise();
+progressionPromise.then( data => console.log("Requested subscription ",data)).catch(err => console.log(
+    "Subscription Error " + err,err.stack));
 
 
 /**

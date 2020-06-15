@@ -55,36 +55,18 @@ exports.getRecognizementList = async () =>{
  * Effettua la comunicazione di impostare il video in modalità preview.
  * @returns {boolean} true se la chiamata è stata effettuata con successo, false altrimenti.
  */
-exports.setPreviewMode = async () =>{
-    let topicPub=new snsWrap.TopicPublisher("videoModeTopic", AWSregion, userCode);
-    let result = topicPub.sendMessage("setPreview","","");
-    if(result){
-        actualVideoKey.original = false;
-    }
-    return result;
-    // if(await snsWrap.message({
-    //     message: "setPreview"
-    // })){
-    //     actualVideoKey.original = false;
-    // }
+exports.setPreviewMode = () =>{
+    actualVideoKey.original = false;
+    return !actualVideoKey.original;
 };
 
 /**
  * Effettua la comunicazione di impostare il video in modalità originale.
  * @returns {boolean} true se la chiamata è stata effettuata con successo, false altrimenti.
  */
-exports.setOriginalMode = async () =>{
-    let topicPub=new snsWrap.TopicPublisher("videoModeTopic", AWSregion, userCode);
-    let result = topicPub.sendMessage("setOriginal","","");
-    if(result){
-        actualVideoKey.original = true;
-    }
-    return result;
-    // if(await snsWrap.message({
-    //     message: "setOriginal"
-    // })){
-    //     actualVideoKey.original = true;
-    // }
+exports.setOriginalMode =() =>{
+    actualVideoKey.original = true;
+    return actualVideoKey.original;
 };
 
 /**
@@ -205,7 +187,7 @@ exports.sendReset = () => {
 exports.sendJobCancellation = async () => {
     const params = {
         stateMachineArn: cleanMachineArn,
-        input: '{"action":"cancelJob"}'
+        input: '{"action":"cancelJob", "key":"' +  +'"}'
     }
     let result = false;
     let stepFunctions = new aws.StepFunctions();
@@ -216,3 +198,6 @@ exports.sendJobCancellation = async () => {
     return result;
 }
 
+exports.setVideoEndpoint = (videoKey) => {
+    actualVideoKey.partialKey = videoKey;
+}

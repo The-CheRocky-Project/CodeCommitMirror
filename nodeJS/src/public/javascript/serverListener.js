@@ -121,7 +121,7 @@ $(document).ready(() => {
 function returnToFileExplorer(event) {
     $.ajax({
         type: "POST",
-        url: "cancelJob"
+        url: "toFileExplorer"
     }).error((error) => {
         alert(error);
     });
