@@ -34,6 +34,9 @@ def lambda_handler(event, context):
 
     s3object = s3R.Object('ahlconsolebucket', 'tmp/modified-resume.json')
     origin = s3R.Object('ahlconsolebucket', 'tmp/resume.json')
-    s3object.put(Body=origin.get()['body'].read())
+    get_res = origin.get();
+    body = get_res['Body']
+    content = body.read()
+    s3object.put(Body=content)
 
     return '{key: "tmp/modified-resume.json"}'
