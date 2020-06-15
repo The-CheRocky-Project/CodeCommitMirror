@@ -39,7 +39,6 @@ def lambda_handler(event, context):
 
         message = content['Message']
         if message == "addRow":
-            print("entra dentro l'if")
             attributes = content['MessageAttributes']
             start = int(attributes['start']['Value'])
             duration = int(attributes['duration']['Value'])
