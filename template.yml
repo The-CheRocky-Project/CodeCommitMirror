@@ -780,7 +780,7 @@ Resources:
     DeletionPolicy: Delete
     Type: AWS::Serverless::Function
     Properties:
-      Handler: job_cleaning.lambda_handler
+      Handler: clean_job.lambda_handler
       Role: !GetAtt basicLambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/
