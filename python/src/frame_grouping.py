@@ -7,7 +7,7 @@ Contenuto:
     * lambda_handler - l'handler principale per la lambda
 
 """
-from src.layers.elaboration import VideoCreationError
+import layers.elaboration
 
 
 def lambda_handler(event, context):
@@ -52,4 +52,4 @@ def lambda_handler(event, context):
         return event
     except Exception as err:
         print(err)
-        raise VideoCreationError(event['key'].replace('frames/', ''))
+        raise elaboration.VideoCreationError(event['key'].replace('frames/', ''))
