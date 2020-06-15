@@ -10,7 +10,7 @@ import json
 import os
 import boto3
 import decimal
-from layers.elaboration import VideoCreationError
+import layers.elaboration
 
 s3R = boto3.resource('s3')
 dynamoR = boto3.resource('dynamodb')
@@ -78,4 +78,4 @@ def lambda_handler(event, context):
         return outForPut
     except Exception as err:
         print(err)
-        raise VideoCreationError(event['key'])
+        raise elaboration.VideoCreationError(event['key'])
