@@ -133,6 +133,6 @@ exports.resetRecognizements = () => {
  * Tramite l'editModel, richiede la cancellazione del lavoro in atto
  * @returns {Promise<Boolean>}
  */
-export function cancelExecution() {
+exports.cancelExecution = () => {
     return model.sendJobCancellation();
 }

@@ -200,7 +200,7 @@ exports.sendReset = () => {
 }
 
 
-export function sendJobCancellation() {
+exports.sendJobCancellation = () => {
     let topicPub = new snsWrap.TopicPublisher('confirmation',AWSregion,userCode);
     return topicPub.sendMessage('cancelJob',{},"application/json");
 }
