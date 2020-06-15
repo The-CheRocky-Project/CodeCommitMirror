@@ -6,7 +6,7 @@
             "Type": "Choice",
             "Choices": [
                 {
-                    "Variable": "$.Records[0].Sns.Message",
+                    "Variable": "$.action",
                     "StringEquals": "cancelJob",
                     "Next": "cancelJobStarter"
                 }

@@ -4,10 +4,12 @@
  */
 const s3Wrap = require('../wrappers/s3Wrapper');
 const snsWrap = require('../wrappers/snsWrapper');
+const aws = require("aws-sdk");
 
 // //sets up environment variables
 const AWSregion = "us-east-2";
 const userCode = "693949087897";
+const cleanMachineArn="arn:aws:states:us-east-2:693949087897:stateMachine:clean";
 
 //Rappresenta lo stato attuale del video in fase di lavorazione
 let actualVideoKey = {
@@ -200,8 +202,17 @@ exports.sendReset = () => {
 }
 
 
-exports.sendJobCancellation = () => {
-    let topicPub = new snsWrap.TopicPublisher('confirmation',AWSregion,userCode);
-    return topicPub.sendMessage('cancelJob',{},"application/json");
+exports.sendJobCancellation = async () => {
+    const params = {
+        stateMachineArn: cleanMachineArn,
+        input: '{"action":"cancelJob"}'
+    }
+    let result = false;
+    let stepFunctions = new aws.StepFunctions();
+    await stepFunctions.startExecution(params)
+        .promise()
+        .then(data => result=true)
+        .catch(error => console.log(error, error.message));
+    return result;
 }
 
