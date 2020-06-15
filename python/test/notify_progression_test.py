@@ -1,5 +1,5 @@
 # # -*- coding: utf-8 -*-
-# """ Modulo di test per la serverless Lambda Thumbfy
+# """ Modulo di test per la serverless Lambda notify_progression
 # """
 import json
 import os
@@ -21,7 +21,7 @@ CONTEXT = LambdaContext()
 CONTEXT.function_name = 'notify_progression'
 
 
-class TestThumbfy(unittest.TestCase):
+class TestNotifyProgression(unittest.TestCase):
     """
     Classe di test per il lambda_handler di notify_progression
     """
