@@ -103,22 +103,7 @@ $(document).ready(() => {
      * Al click sul button di aggiunta label, invia una richiesta al router
      * di inserire una nuovo record nella tabella
      */
-    $("#addRow").click( (event) => {
-        const dataToSend = {
-            start: $("#newStart").val(),
-            duration: $("#newEnd").val(),
-            modelIndex: $("#newLabel").prop('selectedIndex')
-        };
-        $.ajax({
-            type: "POST",
-            url: "addLabel",
-            data: dataToSend
-        }).fail(() => {
-            console.log("Impossibile aggiungere una label");
-            $("#newStart").val("");
-            $("#newEnd").val("");
-        });
-    });
+    $("#addRow").click(event => addRowManagement(event));
 
     /**
      * Ad ogni modifica dellos tato delle checkbox della tabella dei riconoscimenti,
@@ -126,7 +111,7 @@ $(document).ready(() => {
      */
     $(".labelCheckbox").change( event => manageCheckboxState(event));
 
-    $(".editInput").change((event) => manageContentChange(event));
+    $(".editInput").change(event => manageContentChange(event));
 
     $("#tableReset").click(event => resetTable(event));
 
@@ -240,6 +225,7 @@ function updateTable() {
       $('#labelTable').replaceWith(data);
       $(".labelCheckbox").change( event => manageCheckboxState(event));
       $(".editInput").change((event) => manageContentChange(event));
+      $("#addRow").click( (event) => addRowManagement(event));
       $.each($(".labelCheckbox"),(i, x) => {
           x.removeAttribute('disabled');
       });
@@ -273,4 +259,20 @@ function updateProgressBar(data) {
   //     url: './toEdit'
   //   });
   // }
+}
+function addRowManagement(event) {
+    const dataToSend = {
+        start: $("#newStart").val(),
+        duration: $("#newEnd").val(),
+        modelIndex: $("#newLabel").prop('selectedIndex')
+    };
+    $.ajax({
+        type: "POST",
+        url: "addLabel",
+        data: dataToSend
+    }).fail(() => {
+        console.log("Impossibile aggiungere una label");
+        $("#newStart").val("");
+        $("#newEnd").val("");
+    });
 }
