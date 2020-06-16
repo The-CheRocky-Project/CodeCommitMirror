@@ -858,7 +858,6 @@ Resources:
       Targets:
         - Arn: !GetAtt notifyMountEnd.Arn
           Id: notifier
-          RoleArn: !GetAtt basicLambdaRole.Arn
   ahlMlBucket:
     Description: The s3 Bucket where data is stored
     Type: AWS::S3::Bucket
