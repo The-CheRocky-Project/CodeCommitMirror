@@ -856,7 +856,7 @@ Resources:
             - 'mount'
       Name: mountFinish
       Targets:
-        - Arn: !Ref notifyMountEnd
+        - Arn: !GetAtt notifyMountEnd.Arn
           Id: notifier
           RoleArn: !GetAtt basicLambdaRole.Arn
   ahlMlBucket:
