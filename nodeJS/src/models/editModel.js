@@ -45,8 +45,7 @@ exports.getVideoEndpoint =  () =>{
             if(section == split[split.length-2])
                 destinationKey= destinationKey + "-edit.";
         }
-        destinationKey.replace("-edit.mp4.","-edit.mp4");
-        key = destinationKey;
+        key = destinationKey.replace("-edit.mp4.","-edit.mp4");
     }
     return s3Wrap.getObjectUrl(
         key,

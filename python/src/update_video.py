@@ -11,6 +11,7 @@ Contenuto:
 # imports url utils and media management layer
 import json
 import boto3
+import urllib
 from layers import media_manager
 from layers import elaboration
 
