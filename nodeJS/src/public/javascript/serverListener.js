@@ -119,6 +119,17 @@ $(document).ready(() => {
 
     $("#backLink").click(event => returnToFileExplorer(event));
 
+    $("#confirm").click(event => {
+        $("#confirm").setAttribute('disabled', 'disabled()');
+        $.ajax({
+            type: "POST",
+            url:"confirmEditing"
+        }).error((error) => {
+            alert(error, error.message);
+            $("#confirm").removeAttribute("disabled");
+        })
+    });
+
 
 });
 
