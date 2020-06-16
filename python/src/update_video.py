@@ -34,10 +34,13 @@ def lambda_handler(event, context):
 
     """
     print('Executing :' + context.function_name)
+    video_key = "resume"
     try:
-        key = event['key']
+        record = event['Records'][0]['s3']
+        bucket = record['bucket']['name']
+        key = urllib.parse.unquote_plus(record['object']['key'], encoding='utf-8')
 
-        resume_json = s3R.Object('ahlconsolebucket', key)
+        resume_json = s3R.Object(bucket, key)
         resume_res = resume_json.get()
         all_frames = json.loads(resume_res['Body'].read().decode('utf-8'))
 

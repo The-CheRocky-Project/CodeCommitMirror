@@ -142,6 +142,13 @@ Resources:
                   - Name: suffix
                     Value: .mp4
             Function: !GetAtt keyThumbTransform.Arn
+          - Event: 's3:ObjectCreated:Put'
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: prefix
+                    Value: tmp/modified-resume.json
+            Function: !GetAtt updateVideo.Arn
         TopicConfigurations:
           - Event: "s3:ObjectCreated:*"
             Filter:
@@ -161,6 +168,16 @@ Resources:
                   - Name: suffix
                     Value: .jpg
             Topic: !Ref filesTopic
+  updatePermission:
+    Description: The lambda permission to been invoked by an s3 event
+    DeletionPolicy: Delete
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !Ref updateVideo
+      Principal: 's3.amazonaws.com'
+      SourceAccount: !Ref "AWS::AccountId"
+      SourceArn: !GetAtt consoleBucket.Arn
   thumbfyPermission:
     Description: The lambda permission to been invoked by an s3 event
     DeletionPolicy: Delete
@@ -594,6 +611,16 @@ Resources:
       Role: !GetAtt basicLambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/
+  makeFinalVideo:
+    Description: The lambda that runs a Mediaconvert job to update videos
+    Type: AWS::Serverless::Function
+    DeletionPolicy: Delete
+    Properties:
+      Handler: make_final_video.lambda_handler
+      Role: !GetAtt basicLambdaRole.Arn
+      Runtime: python3.7
+      CodeUri: ./python/src/
+      Timeout: 120
   prepareData:
     Description: The lambda that cleans data before processing frames
     Type: AWS::Serverless::Function
@@ -673,12 +700,12 @@ Resources:
       Role: !GetAtt basicLambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/
-  makeFinalVideo:
-    Descrioption: The Lambda that mount the final video
+  updateVideo:
+    Descrioption: The Lambda that updates the final video
     Type: AWS::Serverless::Function
     DeletionPolicy: Delete
     Properties:
-      Handler: make_final_video.lambda_handler
+      Handler: update_video.lambda_handler
       Role: !GetAtt basicLambdaRole.Arn
       Runtime: python3.7
       CodeUri: ./python/src/
