@@ -353,14 +353,16 @@ ahl.post('/notifyProgressionUpdate', (req,res) => {
     }
     else{
         if(req.body.Type == "Notification" && req.body.Message.includes("progression")){
+            res.sendStatus(200);
             console.log("received message on notifyProgression:"+req.body.Message);
             const progr = JSON.parse(req.body.Message).progression;
             if (activePage == pages.fileExplorer) {
                 activePage= pages.loading;
                 backport.emit('refresh','');
+                setTimeout(() => backport.emit('progress',progr), 1000);
             }
-            backport.emit('progress',progr);
-            res.sendStatus(200);
+            else
+                backport.emit('progress',progr);
         }
         else
             res.sendStatus(418);
