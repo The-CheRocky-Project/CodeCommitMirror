@@ -80,6 +80,8 @@ $(document).ready(() => {
       updateFileList();
     });
 
+    socket.on('finish', (data) => window.location.reload());
+
     /**
      * Al click del button preleva la key corrispondente al file che si vuole elaborare e ne
      * richiede l'elaborazione al router
@@ -116,6 +118,8 @@ $(document).ready(() => {
     $("#tableReset").click(event => resetTable(event));
 
     $("#backLink").click(event => returnToFileExplorer(event));
+
+
 });
 
 function returnToFileExplorer(event) {

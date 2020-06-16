@@ -109,10 +109,6 @@ ahl.all('/toLoading',(req,res) => {
     activePage = pages.loading;
     res.send('');
     backport.emit('refresh','');
-    // setTimeout(() => {
-    //     activePage = pages.edit;
-    //     backport.emit('refresh','');
-    // },10000)
 });
 
 ahl.all('/toEdit',(req,res) => {
@@ -252,9 +248,32 @@ ahl.post('/setVideoMode', (req,res) => {
  * @param {object} res - Rappresenta la risposta http
  */
 ahl.post('/notifyEditingFinish', (req,res) => {
-    backport.emit('finish', req.body['done'])
-    res.send();
+    if(req.body.Type == "SubscriptionConfirmation"){
+        if(sns.confirmTopic(req.body.TopicArn, req.body.Token)){
+            console.log("Confirmed subscription " + req.body.TopicArn);
+            res.sendStatus(200);
+        }
+        else
+            res.sendStatus(422);
+    }
+    else{
+        if(req.body.Type == "Notification" && req.body.Message == "finish"){
+            activePage = pages.fileExplorer;
+            backport.emit('finish');
+            res.sendStatus(200);
+        }
+        else
+            res.sendStatus(418);
+    }
 });
+
+let finishPromise = SNS.subscribe({
+    Protocol: 'http',
+    TopicArn: sns.getTopicArn('confirmation',AWS.config.region,"693949087897"),
+    Endpoint: endpointName + "notifyEditingFinish"
+}).promise();
+fileNotifyPromise.then( data => console.log("Requested subscription ",data)).catch(err => console.log(
+    "Subscription Error " + err,err.stack));
 
 /**
  *  ​API che si occupa della notifica del client tramite il socket
