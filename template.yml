@@ -147,7 +147,7 @@ Resources:
               S3Key:
                 Rules:
                   - Name: prefix
-                    Value: "tmp/modified-resume.json"
+                    Value: "tmp/modified-resume"
             Function: !GetAtt updateVideo.Arn
         TopicConfigurations:
           - Event: "s3:ObjectCreated:*"
