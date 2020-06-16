@@ -272,7 +272,7 @@ let finishPromise = SNS.subscribe({
     TopicArn: sns.getTopicArn('confirmation',AWS.config.region,"693949087897"),
     Endpoint: endpointName + "notifyEditingFinish"
 }).promise();
-fileNotifyPromise.then( data => console.log("Requested subscription ",data)).catch(err => console.log(
+finishPromise.then( data => console.log("Requested subscription ",data)).catch(err => console.log(
     "Subscription Error " + err,err.stack));
 
 /**

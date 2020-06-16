@@ -285,13 +285,37 @@ describe('testRouter', () => {
 
     describe('#post/notifyEditingFinish', () => {
 
-        it("deve inviare un json con un campo done", (done) => {
+        it("inviare un json con la conferma di sottoscrizione", (done) => {
 
             request(ahl).post('/notifyEditingFinish')
-                .send({done: 'john'})
+                .send({
+                    Type: "SubscriptionConfirmation",
+                    TopicArn: "confirmationArn",
+                    Token: "token"
+                })
                 .set('Accept', 'application/json')
                 .expect(200, done);
+        });
 
+        it("deve notificare il socket è terminata l'esecuzione", (done) => {
+
+            request(ahl).post('/notifyEditingFinish')
+                .send({
+                    Type: "Notification",
+                    Message: "finish"
+                })
+                .set('Accept', 'application/json')
+                .expect(200, done);
+        });
+
+        it("deve avvisare con un 418 che la richiesta non è corretta", (done) => {
+
+            request(ahl).post('/notifyEditingFinish')
+                .send({
+                    Type: "TipoSbagliato",
+                })
+                .set('Accept', 'application/json')
+                .expect(418, done);
         });
     });
 
