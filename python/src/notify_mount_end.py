@@ -12,8 +12,6 @@ Contenuto:
 import json
 import boto3
 
-sns = boto3.client('sns')
-
 
 def lambda_handler(event, context):
     """
@@ -31,6 +29,7 @@ def lambda_handler(event, context):
 
     """
 
+    sns = boto3.client('sns')
     try:
         output_group = event['detail']['outputGroupDetails'][0]
         video_key = output_group['outputDetails'][0]['outputFilePaths'][0]

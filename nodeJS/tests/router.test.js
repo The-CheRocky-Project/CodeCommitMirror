@@ -1,4 +1,3 @@
-const assert = require('assert');
 var rewire = require('rewire');
 const request = require('supertest');
 var mock = require('mock-require');
@@ -431,13 +430,22 @@ describe('testRouter', () => {
 
         });
 
-        it("deve accettare notification", (done) => {
+        before(()=>{
+            mock('../src/controllers/editController', {
+                changeVideo: (videKey) => {
+                    return true;
+                }
+            });
+            const editControllerMock = require('../src/controllers/editController');
+            router.__set__('editController', editControllerMock);
+        })
 
+        it("deve accettare notification", (done) => {
             request(ahl).post('/notifyNewVideoEndpoint')
                 .send({
                     Type: "Notification",
                     Message: 'videoEndpoint',
-                    MessageAttributes: '{"key": "sport.mp4"}'
+                    MessageAttributes: {key:{ StringValue:"sport.mp4" }}
                 })
                 .set('Accept', 'application/json')
                 .expect(200, done);
