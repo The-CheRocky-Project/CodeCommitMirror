@@ -162,7 +162,7 @@ ahl.post('/selectFile', (req,res) => {
 ahl.post('/notifyLabelRowChange', (req,res) => {
     if(req.body.Type == "SubscriptionConfirmation"){
         if(sns.confirmTopic(req.body.TopicArn, req.body.Token)){
-            console.log("Confirmed subscription " + req.body.TopicArn);
+            console.log("Confirmed subscription of notifyLabelRowChange for " + req.body.TopicArn);
             res.sendStatus(200);
         }
         else
@@ -184,7 +184,7 @@ let labelsPromise = SNS.subscribe({
     TopicArn: sns.getTopicArn('editLabels',AWS.config.region,"693949087897"),
     Endpoint: endpointName + "notifyLabelRowChange"
 }).promise();
-labelsPromise.then( data => console.log("Requested subscription ",data)).catch(err => console.log(
+labelsPromise.then( data => console.log("Requested subscription of notifyLabelRowChange with ",data)).catch(err => console.log(
     "Subscription Error " + err,err.stack));
 
 /**
@@ -251,7 +251,7 @@ ahl.post('/setVideoMode', (req,res) => {
 ahl.post('/notifyEditingFinish', (req,res) => {
     if(req.body.Type == "SubscriptionConfirmation"){
         if(sns.confirmTopic(req.body.TopicArn, req.body.Token)){
-            console.log("Confirmed subscription " + req.body.TopicArn);
+            console.log("Confirmed subscription of notifyEditingFinish on" + req.body.TopicArn);
             res.sendStatus(200);
         }
         else
@@ -274,7 +274,7 @@ let finishPromise = SNS.subscribe({
     TopicArn: sns.getTopicArn('confirmation',AWS.config.region,"693949087897"),
     Endpoint: endpointName + "notifyEditingFinish"
 }).promise();
-finishPromise.then( data => console.log("Requested subscription ",data)).catch(err => console.log(
+finishPromise.then( data => console.log("Requested subscription for notifyEditingFinish with",data)).catch(err => console.log(
     "Subscription Error " + err,err.stack));
 
 /**
@@ -286,7 +286,7 @@ finishPromise.then( data => console.log("Requested subscription ",data)).catch(e
 ahl.post('/notifyChangedFileList', (req,res) => {
     if(req.body.Type == "SubscriptionConfirmation"){
         if(sns.confirmTopic(req.body.TopicArn, req.body.Token)){
-            console.log("Confirmed subscription " + req.body.TopicArn);
+            console.log("Confirmed subscription of notifyChangedFileList on " + req.body.TopicArn);
             res.sendStatus(200);
         }
         else
@@ -309,7 +309,7 @@ let fileNotifyPromise = SNS.subscribe({
         TopicArn: sns.getTopicArn('files',AWS.config.region,"693949087897"),
         Endpoint: endpointName + "notifyChangedFileList"
     }).promise();
-fileNotifyPromise.then( data => console.log("Requested subscription ",data)).catch(err => console.log(
+fileNotifyPromise.then( data => console.log("Requested subscription for notifyChangedFileList with",data)).catch(err => console.log(
     "Subscription Error " + err,err.stack));
 
 /**
@@ -345,7 +345,7 @@ ahl.post('/notifyProgressionUpdate', (req,res) => {
   // TODO sistemare la funzione e testarla
     if(req.body.Type == "SubscriptionConfirmation"){
         if(sns.confirmTopic(req.body.TopicArn, req.body.Token)){
-            console.log("Confirmed subscription " + req.body.TopicArn);
+            console.log("Confirmed subscription of notifyProgressionUpdate" + req.body.TopicArn);
             res.sendStatus(200);
         }
         else
@@ -375,7 +375,7 @@ let progressionPromise = SNS.subscribe({
     TopicArn: sns.getTopicArn('progression',AWS.config.region,"693949087897"),
     Endpoint: endpointName + "notifyProgressionUpdate"
 }).promise();
-progressionPromise.then( data => console.log("Requested subscription ",data)).catch(err => console.log(
+progressionPromise.then( data => console.log("Requested subscription notifyProgressionUpdate with",data)).catch(err => console.log(
     "Subscription Error " + err,err.stack));
 
 /**
@@ -393,13 +393,13 @@ ahl.post('/getFileList', (req,res) => {
 /**
  *  ​API che si occupa della notifica del client tramite il socket
  *  che è stato cambiato correttamente l'endpoint video.
- * @param {object} req - Rappresenta la richiesta http contenente il booleano done
+ * @param {object} req - Rappresenta la richiesta http contenente la key del video
  * @param {object} res - Rappresenta la risposta http
  */
 ahl.post('/notifyNewVideoEndpoint', (req,res) => {
     if(req.body.Type == "SubscriptionConfirmation"){
         if(sns.confirmTopic(req.body.TopicArn, req.body.Token)){
-            console.log("Confirmed subscription " + req.body.TopicArn);
+            console.log("Confirmed subscription notifyNewVideoEndpoint to" + req.body.TopicArn);
             res.sendStatus(200);
         }
         else
@@ -429,7 +429,7 @@ let endpointPromise = SNS.subscribe({
     TopicArn: sns.getTopicArn('confirmation',AWS.config.region,"693949087897"),
     Endpoint: endpointName + "notifyNewVideoEndpoint"
 }).promise();
-endpointPromise.then( data => console.log("Requested subscription ",data)).catch(err => console.log(
+endpointPromise.then( data => console.log("Requested subscription notifyNewVideoEndpoint with ",data)).catch(err => console.log(
     "Subscription Error " + err,err.stack));
 
 
