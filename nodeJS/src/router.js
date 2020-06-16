@@ -407,9 +407,9 @@ ahl.post('/notifyNewVideoEndpoint', (req,res) => {
     }
     else{
         if(req.body.Type == "Notification" && req.body.Message == 'videoEndpoint'){
-            console.log("received message on notifyNewVideoEndpoint:" + req.body.Message + JSON.stringify(req.body.MessageAttributes, null, 4));
+            console.log("received message on notifyNewVideoEndpoint:" + req.body.Message + JSON.stringify(req.body.MessageAttributes.key, null, 4));
             res.sendStatus(200);
-            const videoKey = req.body.key.StringValue;
+            const videoKey = req.body.MessageAtributes.key.Value;
             console.log("Received videoKey " + videoKey);
             editController.changeVideo(videoKey);
             if(activePage !== pages.edit){
