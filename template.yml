@@ -814,6 +814,15 @@ Resources:
       Name: framer
       PricingPlan: ON_DEMAND
       Status: ACTIVE
+  mountQueue:
+    Description: The Media Convert Queue for customer mounting jobs
+    Type: AWS::MediaConvert::Queue
+    DeletionPolicy: Delete
+    Properties:
+      Description: Queue for mounting jobs
+      Name: videoMount
+      PricingPlan: ON_DEMAND
+      Status: ACTIVE
   framerStatusChange:
     Description: The CloudWatch Event for Media Convert job changes
     DeletionPolicy: Delete
@@ -853,7 +862,7 @@ Resources:
           status:
             - COMPLETE
           queue:
-            - 'videoMount'
+            - !GetAtt mountQueue.Arn
       Name: mountFinish
       Targets:
         - Arn: !GetAtt notifyMountEnd.Arn
