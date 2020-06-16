@@ -35,7 +35,7 @@ def lambda_handler(event, context):
         output_group = event['detail']['outputGroupDetails'][0]
         video_key = output_group['outputDetails'][0]['outputFilePaths'][0]
         sns.publish(
-            TopicArn='arn:aws:sns:us-east-2:693949087897:progression',
+            TopicArn='arn:aws:sns:us-east-2:693949087897:confirmation',
             Message="videoEndpoint",
             MessageAttributes={
                 'key': {
