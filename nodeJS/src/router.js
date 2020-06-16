@@ -170,6 +170,7 @@ ahl.post('/notifyLabelRowChange', (req,res) => {
     }
     else{
         if(req.body.Type == "Notification" && req.body.Message == "update"){
+            console.log("received message on notifyLabelChange:"+req.body.Message);
             backport.emit('changedRow','');
             res.sendStatus(200);
         }
@@ -258,6 +259,7 @@ ahl.post('/notifyEditingFinish', (req,res) => {
     }
     else{
         if(req.body.Type == "Notification" && req.body.Message == "finish"){
+            console.log("received message on notifyEditingFinish:"+req.body.Message);
             activePage = pages.fileExplorer;
             backport.emit('finish');
             res.sendStatus(200);
@@ -292,6 +294,7 @@ ahl.post('/notifyChangedFileList', (req,res) => {
     }
     else{
         if(req.body.Type == "Notification"){
+            console.log("received message on notifyChangedFileList:"+req.body.Message);
             backport.emit('changeFile','');
             res.sendStatus(200);
         }
@@ -349,7 +352,8 @@ ahl.post('/notifyProgressionUpdate', (req,res) => {
             res.sendStatus(422);
     }
     else{
-        if(req.body.Type == "Notification"){
+        if(req.body.Type == "Notification" && req.body.Message.startsWith('{"progression":')){
+            console.log("received message on notifyProgression:"+req.body.Message);
             const progr = JSON.parse(req.body.Message).progression;
             if (activePage == pages.fileExplorer) {
                 activePage= pages.loading;
@@ -401,6 +405,7 @@ ahl.post('/notifyNewVideoEndpoint', (req,res) => {
     }
     else{
         if(req.body.Type == "Notification" && req.body.Message == 'videoEndpoint'){
+            console.log("received message on notifyNewVideoEndpoint:"+req.body.Message);
             res.sendStatus(200);
             const videoKey = req.body.MessageAttributes.key.StringValue;
             editController.changeVideo(videoKey);
@@ -422,7 +427,7 @@ let endpointPromise = SNS.subscribe({
     TopicArn: sns.getTopicArn('confirmation',AWS.config.region,"693949087897"),
     Endpoint: endpointName + "notifyNewVideoEndpoint"
 }).promise();
-progressionPromise.then( data => console.log("Requested subscription ",data)).catch(err => console.log(
+endpointPromise.then( data => console.log("Requested subscription ",data)).catch(err => console.log(
     "Subscription Error " + err,err.stack));
 
 
