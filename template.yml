@@ -853,7 +853,7 @@ Resources:
           status:
             - COMPLETE
           queue:
-            - 'mount'
+            - 'videoMount'
       Name: mountFinish
       Targets:
         - Arn: !GetAtt notifyMountEnd.Arn
