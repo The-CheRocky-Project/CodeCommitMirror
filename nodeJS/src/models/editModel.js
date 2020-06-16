@@ -37,15 +37,8 @@ const s3Defaults ={
  */
 exports.getVideoEndpoint =  () =>{
     let key = originalPrefixes[actualVideoKey.original] + actualVideoKey.partialKey;
-    if(!actualVideoKey.original){
-        const split = key.split('.');
-        let destinationKey = s3Defaults[actualVideoKey.original];
-        for( let section in split){
-            destinationKey = destinationKey + section + ".";
-            if(section == split[split.length-2])
-                destinationKey= destinationKey + "-edit.";
-        }
-        key = destinationKey.replace("-edit.mp4.","-edit.mp4");
+    if(actualVideoKey.original){
+        key = key.replace("-edit.mp4",".mp4");
     }
     return s3Wrap.getObjectUrl(
         key,
@@ -211,5 +204,4 @@ exports.sendJobCancellation = async () => {
 
 exports.setVideoEndpoint = (videoKey) => {
     actualVideoKey.partialKey = videoKey;
-    console.log("Model endpoint:" + this.exports.getVideoEndpoint());
 }

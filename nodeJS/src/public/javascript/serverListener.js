@@ -295,7 +295,7 @@ function manageVideoModeChange(event) {
     const option = $(event.target).children("option:selected");
     const data = {
         toOriginal: option.val() === "original"
-    }
+    };
     $.ajax({
         type: "POST",
         url: "setVideoMode",

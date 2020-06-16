@@ -139,7 +139,6 @@ exports.cancelExecution = () => {
 
 
 exports.changeVideo = (videoKey) => {
-    console.log(videoKey);
     model.setVideoEndpoint(videoKey);
 };
 
