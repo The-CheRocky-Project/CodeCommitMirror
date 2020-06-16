@@ -1,6 +1,7 @@
 const assert = require('assert');
 const rewire = require('rewire');
 const mock = require('mock-require');
+var AWSMock = require('aws-sdk-mock');
 const editModel = rewire('../../src/models/editModel.js');
 
 describe('testEditModel', () => {
@@ -10,6 +11,34 @@ describe('testEditModel', () => {
     it('Deve ritornare true se la chiamata è avvenuta con successo', () => {
 
       let getObjectUrlS3Wrap = false;
+
+      mock('../../src/wrappers/s3Wrapper', {
+        getObjectUrl: (fileKey, bucket, region) => {
+          getObjectUrlS3Wrap = true;
+          return true;
+        }
+      });
+
+      const fileKey = 'fileKeyMock';
+      const bucket = 'bucketMock';
+      const region = 'regionMock';
+
+      const s3wrapMock = require('../../src/wrappers/s3Wrapper');
+
+      editModel.__set__('s3Wrap', s3wrapMock);
+
+      let risultato = editModel.getVideoEndpoint();
+
+      assert.equal(risultato, true);
+      assert.equal(getObjectUrlS3Wrap, true);
+
+    });
+
+    it('Deve ritornare true se la chiamata è avvenuta con successo', () => {
+
+      let getObjectUrlS3Wrap = false;
+
+      let result= editModel.__get__("actualVideoKey");
 
       mock('../../src/wrappers/s3Wrapper', {
         getObjectUrl: (fileKey, bucket, region) => {
@@ -364,4 +393,47 @@ describe('testEditModel', () => {
 
   });
 
+  describe('#sendReset()', () => {
+
+    it('Deve effettuare la richiesta di reset della tabella dei riconoscimenti', () => {
+
+      const snsWrapperMock = require('../wrappers/snsWrapperMockForTestTrue');
+
+      editModel.__set__('snsWrap', snsWrapperMock);
+
+      result=editModel.sendReset();
+
+      assert.equal(result, true);
+
+    });
+
+  });
+
+  describe('#sendJobCancellation()', ()=> {
+
+    it("Avvia la cancellazione del Job", (done) => {
+      AWSMock.mock('StepFunctions', 'startExecution', (params,callback) => {
+        callback(null, 'success'); // Mocked response returns ‘success’ always
+      });
+      var expectedValue=true;
+      var result= editModel.sendJobCancellation();
+      result.then(function (res) {
+        assert.deepStrictEqual(res,expectedValue);
+        done();
+      }).catch(function (errOnAssert) {
+        done(new Error(errOnAssert));
+      })
+      AWSMock.restore('StepFunctions', 'startExecution');
+    });
+  });
+
+  describe('#setVideoEndpoint()', ()=> {
+
+    it("Imposta l'Endpoint con successo", () => {
+      let expectedValue="file";
+      editModel.setVideoEndpoint(expectedValue);
+      let result= editModel.__get__("actualVideoKey");
+      assert.equal(result.partialKey,expectedValue);
+    });
+  });
 });

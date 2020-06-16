@@ -273,4 +273,65 @@ describe('testEditController',() => {
 
     });
   });
+
+  describe('#resetRecognizements()', () => {
+    it("Deve utilizzare l'editModel per avviare la richiesta di reset della lista dei riconoscimenti",()=>{
+      let sendResetIsCalled = false;
+      mock('../../src/models/editModel', {
+        sendReset: function() {
+          sendResetIsCalled = true;
+        }
+      });
+      let mMock = require('../../src/models/editModel');
+      editController.__set__('model', mMock);
+      editController.resetRecognizements();
+      assert.ok(sendResetIsCalled);
+    });
+  });
+
+  describe('#cancelExecution()', () => {
+    it("Deve richiedere la cancellazione del lavoro in atto",()=>{
+      let sendJobCancellationIsCalled = false;
+      mock('../../src/models/editModel', {
+        sendJobCancellation: function() {
+          sendJobCancellationIsCalled = true;
+        }
+      });
+      let mMock = require('../../src/models/editModel');
+      editController.__set__('model', mMock);
+      editController.cancelExecution();
+      assert.ok(sendJobCancellationIsCalled);
+    });
+  });
+
+  describe('#changeVideo()', () => {
+    it("Deve cambiare il video visualizzato",()=>{
+      let setVideoEndpointIsCalled = false;
+      mock('../../src/models/editModel', {
+        setVideoEndpoint: function(videoK) {
+          setVideoEndpointIsCalled = true;
+        }
+      });
+      let mMock = require('../../src/models/editModel');
+      let videoK='str'
+      editController.__set__('model', mMock);
+      editController.changeVideo(videoK);
+      assert.ok(setVideoEndpointIsCalled);
+    });
+  });
+
+  describe('#isOriginalView()', () => {
+    it("Deve ritornare se il video visualizzato è quello originale",()=>{
+      let isVideoTypeOriginalIsCalled = false;
+      mock('../../src/models/editModel', {
+        isVideoTypeOriginal: function() {
+          isVideoTypeOriginalIsCalled = true;
+        }
+      });
+      let mMock = require('../../src/models/editModel');
+      editController.__set__('model', mMock);
+      editController.isOriginalView();
+      assert.ok(isVideoTypeOriginalIsCalled);
+    });
+  });
 });
