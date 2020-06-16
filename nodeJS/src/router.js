@@ -352,7 +352,7 @@ ahl.post('/notifyProgressionUpdate', (req,res) => {
             res.sendStatus(422);
     }
     else{
-        if(req.body.Type == "Notification" && req.body.Message.startsWith('{"progression":')){
+        if(req.body.Type == "Notification" && req.body.Message.includes("progression")){
             console.log("received message on notifyProgression:"+req.body.Message);
             const progr = JSON.parse(req.body.Message).progression;
             if (activePage == pages.fileExplorer) {

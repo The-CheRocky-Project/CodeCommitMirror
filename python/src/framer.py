@@ -43,7 +43,7 @@ def lambda_handler(event, context):
     sns = boto3.client('sns')
     sns.publish(
         TopicArn='arn:aws:sns:us-east-2:693949087897:progression',
-        Message="{ \"progression\": 2 }"
+        Message='{"progression": 2}'
     )
     media_conv = boto3.client(
         "mediaconvert",
