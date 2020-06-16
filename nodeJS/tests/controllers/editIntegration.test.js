@@ -61,7 +61,7 @@ describe('test integrazione edit', () => {
           }
       };
       editController.updateVideoFrame(mockRes);
-      assert.ok(!mockRes.viewData.layout);
+      assert.ok(mockRes.viewData.layout);
     });
   });
 

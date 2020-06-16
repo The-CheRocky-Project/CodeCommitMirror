@@ -42,8 +42,8 @@ exports.changeVideoMode = (toOriginal) => {
  */
 exports.updateVideoFrame = (res) => {
     const videoEndpoint = model.getVideoEndpoint();
-    //TODO commentata perchè NON ESISTE
-    const isOriginal = null;//model.getVideoType();
+    const isOriginal = model.isVideoTypeOriginal();
+    console.log(videoEndpoint, isOriginal);
     view.generateVideoFrame(videoEndpoint, isOriginal, res);
 };
 

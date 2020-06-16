@@ -36,7 +36,7 @@ const s3Defaults ={
  * @returns {string} true se la chiamata è stata effettuata con successo, false altrimenti.
  */
 exports.getVideoEndpoint =  () =>{
-    let key = s3Defaults[actualVideoKey.original] + actualVideoKey.key;
+    let key = originalPrefixes[actualVideoKey.original] + actualVideoKey.partialKey;
     if(!actualVideoKey.original){
         const split = key.split('.');
         let destinationKey = s3Defaults[actualVideoKey.original];

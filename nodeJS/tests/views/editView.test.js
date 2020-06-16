@@ -61,13 +61,13 @@ describe('testEditView', () => {
             };
 
         });
-        it("Deve printare partials/videoFrame", () =>{
+        it("Deve printare layouts/videoFrame", () =>{
 
             let url = '';
             let isOriginal = {};
             view.generateVideoFrame(url, isOriginal, mockRes);
-            assert.strictEqual(mockRes.viewName,"partials/videoFrame");
-            assert.ok(!mockRes.viewData.layout);
+            assert.strictEqual(mockRes.viewName,"layouts/videoLayout");
+            assert.ok(mockRes.viewData.layout);
 
         });
     });
