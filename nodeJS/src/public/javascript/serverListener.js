@@ -212,7 +212,6 @@ function updateStreaming() {
       type: "POST",
       url: "getVideoFrame"
   }).done( (video) => {
-    // sostituisci il tag video con quella nuova(data)
     $('#videoLabel').replaceWith(video);
   }).error((error) => {
       alert(error);
