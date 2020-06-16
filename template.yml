@@ -142,13 +142,13 @@ Resources:
                   - Name: suffix
                     Value: .mp4
             Function: !GetAtt keyThumbTransform.Arn
-          - Event: 's3:ObjectCreated:Put'
-            Filter:
-              S3Key:
-                Rules:
-                  - Name: prefix
-                    Value: tmp/modified-resume.json
-            Function: !GetAtt updateVideo.Arn
+#          - Event: "s3:ObjectCreated:*"
+#            Filter:
+#              S3Key:
+#                Rules:
+#                  - Name: prefix
+#                    Value: "tmp/modified-resume.json"
+#            Function: !GetAtt updateVideo.Arn
         TopicConfigurations:
           - Event: "s3:ObjectCreated:*"
             Filter:
