@@ -1,12 +1,9 @@
 
-<!--<video width="320" height="240" controls>
-<source src="$METTERELINK$" type="video/mp4"/>
+<video controls>
+<source src="{{endpoint}}" type="video/mp4"/>
 <source/>
 Il browser non supporta il tag video
-</video>--> <!--Questo TAG non va bene perchè il video deve essere caricato da dentro al server, il nostro video risiederà su S3 quindi non ho idea se può essere preso-->
-<!--QUI ANDRÀ cambiato la src e messo la src di S3 dove si trova il video originale-->
-<iframe id="videoLabel" src="{{endpoint}}">
-</iframe>
+</video>
 <div id="bar-width" class="input-group mb-3">
     <div class="input-group-prepend">
         <label class="input-group-text" for="inputGroupSelect01">Tipo di video</label>

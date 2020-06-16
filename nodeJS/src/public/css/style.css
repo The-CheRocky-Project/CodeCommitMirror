@@ -93,10 +93,10 @@ legend {
     display: none;
 }
 
-iframe {
+video {
     display: block;
-    height: 34.375em;
-    width: 100%;
+    width: 80%;
+    margin: auto;
     margin-bottom: 0.8em;
 }
 
