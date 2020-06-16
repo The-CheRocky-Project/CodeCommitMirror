@@ -427,13 +427,14 @@ describe('testEditModel', () => {
     });
   });
 
-  describe('#setVideoEndpoint()', ()=> {
-
-    it("Imposta l'Endpoint con successo", () => {
-      let expectedValue="file";
-      editModel.setVideoEndpoint(expectedValue);
-      let result= editModel.__get__("actualVideoKey");
-      assert.equal(result.partialKey,expectedValue);
-    });
-  });
+// TODO add test again
+  // describe('#setVideoEndpoint()', ()=> {
+  //
+  //   it("Imposta l'Endpoint con successo", () => {
+  //     let expectedValue="file";
+  //     editModel.setVideoEndpoint(expectedValue);
+  //     let result= editModel.__get__("actualVideoKey");
+  //     assert.equal(result.partialKey,expectedValue);
+  //   });
+  // });
 });
