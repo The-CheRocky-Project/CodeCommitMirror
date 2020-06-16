@@ -125,12 +125,11 @@ $(document).ready(() => {
             type: "POST",
             url:"confirmEditing"
         }).error((error) => {
-            alert(error, error.message);
+            alert(error);
             $("#confirm").removeAttribute("disabled");
         })
     });
-
-
+    $("#videoSelector").change(event => manageVideoModeChange(event));
 });
 
 function returnToFileExplorer(event) {
@@ -208,14 +207,15 @@ function goEdit() {
 }
 
 function updateStreaming() {
-  $.ajax({
-      type: "POST",
-      url: "getVideoFrame"
-  }).done( (video) => {
-    $('#videoLabel').replaceWith(video);
-  }).error((error) => {
-      alert(error);
-  });
+    $.ajax({
+        type: "POST",
+        url: "getVideoFrame"
+    }).done( (video) => {
+        $('#videoLabel').replaceWith(video);
+        $("#videoSelector").change(event => manageVideoModeChange(event));
+    }).error((error) => {
+        alert(error);
+    });
 }
 
 function updateFileList() {
@@ -289,4 +289,18 @@ function addRowManagement(event) {
         $("#newStart").val("");
         $("#newEnd").val("");
     });
+}
+
+function manageVideoModeChange(event) {
+    const option = $(event.target).children("option:selected");
+    const data = {
+        toOriginal: option.val() === "original"
+    }
+    $.ajax({
+        type: "POST",
+        url: "setVideoMode",
+        data: data
+    }).done(() => {
+        updateStreaming();
+    }).fail((error) => alert(error));
 }

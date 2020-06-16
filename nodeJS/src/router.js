@@ -409,7 +409,8 @@ ahl.post('/notifyNewVideoEndpoint', (req,res) => {
                 backport.send('refresh','');
             }
             else {
-                backport.send('newVideo','');
+                if(!editController.isOriginalView())
+                    backport.send('newVideo','');
             }
         }
         else
