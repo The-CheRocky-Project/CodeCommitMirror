@@ -211,5 +211,5 @@ exports.sendJobCancellation = async () => {
 
 exports.setVideoEndpoint = (videoKey) => {
     actualVideoKey.partialKey = videoKey;
-    console.log("Model endpoint:" + getVideoEndpoint());
+    console.log("Model endpoint:" + this.exports.getVideoEndpoint());
 }
