@@ -14,7 +14,7 @@ const cleanMachineArn="arn:aws:states:us-east-2:693949087897:stateMachine:clean"
 //Rappresenta lo stato attuale del video in fase di lavorazione
 let actualVideoKey = {
     partialKey: "",
-    original: true
+    original: false
 };
 
 //Prefissi di default per la chiave video
@@ -211,4 +211,5 @@ exports.sendJobCancellation = async () => {
 
 exports.setVideoEndpoint = (videoKey) => {
     actualVideoKey.partialKey = videoKey;
+    console.log("Model endpoint:" + getVideoEndpoint());
 }
