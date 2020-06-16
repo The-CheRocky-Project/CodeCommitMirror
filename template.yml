@@ -920,8 +920,7 @@ Resources:
                 Action:
                   - s3:*
                 Resource:
-                  - !Sub 'arn:aws:s3:::${ahlMlBucket}'
-                  - !Sub 'arn:aws:s3:::${ahlMlBucket}/*'
+                  - '*'
   NotebookCloudWatchLogGroup:
     Description: The SageMaker Log Group
     DeletionPolicy: Delete
