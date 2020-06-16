@@ -42,6 +42,7 @@ def lambda_handler(event, context):
     Returns:
         string: job_id del lavoro avviato in Media Convert oppure false
     """
+    print('Executing :' + context.function_name)
     # Extract bucket and fileKey strings
     media_conv = boto3.client(
         'mediaconvert',

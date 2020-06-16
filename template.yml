@@ -871,9 +871,6 @@ Resources:
         - Arn: !Ref frameWorkflow
           Id: frameWorkFlow_Target
           RoleArn: !GetAtt stepFRole.Arn
-        - Arn: !Ref progressionTopic
-          Id: mediaConvertProgressionTarget
-          Input: "{\"progression\": 10}"
   mountStatusChange:
     Description: The CloudWatch Event for Media Convert job changes on mount queue
     DeletionPolicy: Delete

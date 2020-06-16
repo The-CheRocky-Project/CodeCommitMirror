@@ -41,10 +41,6 @@ def lambda_handler(event, context):
     print("Executing " + context.function_name)
     # TODO add try catch block
     sns = boto3.client('sns')
-    sns.publish(
-        TopicArn='arn:aws:sns:us-east-2:693949087897:progression',
-        Message='{"progression": 2}'
-    )
     media_conv = boto3.client(
         "mediaconvert",
         endpoint_url="https://" +
@@ -52,6 +48,10 @@ def lambda_handler(event, context):
     try:
         content = event["Records"][0]["Sns"]
         if content["Message"] == "startProcess":
+            sns.publish(
+                TopicArn='arn:aws:sns:us-east-2:693949087897:progression',
+                Message='{"progression": 2}'
+            )
             bucket = content["MessageAttributes"]["bucket"]["Value"]
             key = content["MessageAttributes"]["key"]["Value"]
             dest_folder = "frames/"

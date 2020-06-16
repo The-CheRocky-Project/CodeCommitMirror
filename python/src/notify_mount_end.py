@@ -28,7 +28,7 @@ def lambda_handler(event, context):
         della lambda precedente
 
     """
-
+    print('Executing :' + context.function_name)
     sns = boto3.client('sns')
     try:
         output_group = event['detail']['outputGroupDetails'][0]

@@ -31,6 +31,7 @@ def lambda_handler(event, context):
         dizionario contenente i risultati dell'elaborazione
 
     """
+    print('Executing :' + context.function_name)
 
     sns = boto3.client('sns')
     s3object = s3R.Object('ahlconsolebucket', 'tmp/modified-resume.json')
