@@ -414,11 +414,11 @@ ahl.post('/notifyNewVideoEndpoint', (req,res) => {
             editController.changeVideo(videoKey);
             if(activePage !== pages.edit){
                 activePage = pages.edit;
-                backport.send('refresh','');
+                backport.emit('refresh','');
             }
             else {
                 if(!editController.isOriginalView())
-                    backport.send('newVideo','');
+                    backport.emit('newVideo','');
             }
         }
         else
@@ -454,4 +454,5 @@ ahl.post('/resetTable', (req, res) => {
  */
 ahl.post('/cancelJob', (req,res) => {
    res.send(editController.cancelExecution());
+   activePage = pages.fileExplorer;
 });
