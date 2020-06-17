@@ -53,10 +53,3 @@ class TestThumbfy(unittest.TestCase):
             expected = False
             result = lambda_handler(event_json, CONTEXT)
             self.assertEqual(expected, result)
-
-            # TODO fare il test dell'eccezione lanciata
-    # def test_job_exception(self):
-    #   with patch('boto3.client') as mock:
-    #     media_conv = mock.return_value
-    #     media_conv.create_job.raiseError.side_effect = Exception('error')
-    #     self.assertRaises(Exception, lambda_handler, event_json, CONTEXT)

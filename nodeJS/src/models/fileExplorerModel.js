@@ -40,11 +40,4 @@ exports.getThumbnailURL = (fileKey) =>{
 exports.processFile = (fileKey) =>{
     let topicPub=new snsWrap.TopicPublisher("confirmation", AWSregion, userCode);
     return topicPub.sendMessage("startProcess",{key: fileKey, bucket: bucketName},'application/json');
-    // return snsWrap.message({
-    //     message: "startProcess",
-    //     data: {toProcess: fileKey},
-    //     topic: topicName,
-    //     region: AWSregion
-    //     }
-    // );
 };

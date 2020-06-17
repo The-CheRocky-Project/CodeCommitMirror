@@ -1,9 +1,7 @@
-/*
+/**
  * snsWrapper module
  * @module wrappers/snsWrapper
  */
-
-
 //Richiede i moduli sdk necessari e ne crea un istanza
 process.env.AWS_REGION = "us-east-2";
 const AWS = require('aws-sdk');
@@ -49,7 +47,6 @@ class TopicPublisher{
      * @param {String} dataFormat - Il formato del payload
      * @returns {Promise<Boolean>} - L'esito della richiesta
      */
-
     sendMessage(message, data, dataFormat){
         let payload = Object();
         Object.entries(data).forEach(([key, value]) => {
@@ -66,6 +63,12 @@ class TopicPublisher{
     }
 }
 
+/**
+ * Funzione ausiliaria asincrona che effettua la conferma di una richiesta SNS
+ * @param {String} topicArn - L'arn del topic SNS
+ * @param {String} Token - Il token del topic SNS
+ * @returns {Boolean} - L'esito della richiesta di invio messaggio
+ */
 function confirmTopic(topicArn, Token) {
     const data = {
         "Token": Token,
@@ -91,6 +94,11 @@ async function publisher(params){
     return result;
 }
 
+/**
+ * Funzione ausiliaria asincrona che effettua la conferma di una richiesta SNS
+ * @param {{TopicArn: String, Token: String}} requestBody - I parametri di invio
+ * @returns {Boolean} - L'esito della richiesta di invio messaggio
+ */
 async function confirmRequest(requestBody) {
     const snsClient = new AWS.SNS();
     let result = false;
@@ -101,11 +109,25 @@ async function confirmRequest(requestBody) {
     return result
 }
 
+/**
+ * Funzione che effettua una sottoscrizione ad un topic SNS
+ * @param {String} topicName - Il topic a cui si ci vuole sottoscrivere
+ * @param {String} endpoint - L'endpoint del topic
+ * @param {String} userCode - Il codice utente AWS del proprietario del topic
+ * @returns {Boolean} - True se la sottoscrizione è andata a buon fine false altrimenti
+ */
 function createTopicSubscription(topicName,endpoint, userCode) {
     const topicArn = this.getTopicArn(topicName,process.env.AWS_REGION,userCode)
     return createSubscription("HTTP", topicArn, endpoint);
 }
 
+/**
+ * Funzione che crea effettivamente una sottoscrizione ad un topic SNS
+ * @param {String} protocol - Protocollo da utilizzare per lo scambio dei messaggi SNS
+ * @param {String} topicArn - L'arn del topic SNS
+ * @param {String} endpoint - L'endpoint del topic
+ * @returns {Boolean} - True se la sottoscrizione è andata a buon fine false altrimenti
+ */
 async function createSubscription(protocol, topicArn, endpoint) {
     const snsClient = new AWS.SNS();
     let result = false;

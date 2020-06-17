@@ -8,12 +8,10 @@ Contenuto:
 
 """
 
-# imports url utils and media management layer
 import json
 import boto3
 from layers import elaboration
 
-# TODO resource out of template
 # Definisce la risorsa s3
 s3R = boto3.resource('s3')
 
@@ -48,6 +46,4 @@ def lambda_handler(event, context):
     s3object = s3R.Object('ahlconsolebucket', 'tmp/training-resume.json')
     s3object.put(Body=json.dumps(data))
 
-    # TODO decidere se ritornare e utilizzare
-    # una step function oppure se usare sns
     return 'tmp/modified-resume.json'

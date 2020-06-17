@@ -115,8 +115,7 @@ function calculateOvertime(recognizerList){
     let sum=0;
     //console.log(recognizerList);
     for(const single in recognizerList) {
-        sum+=recognizerList[single].duration; //modificata perchè non andava per i test, TODO verificare che sia effetivamente corretta. Se è sbagliata rimettete come prima
-        //sum+=single.duration; versione precedente!!!!!!!!
+        sum+=recognizerList[single].duration;
     }
     return sum>300000
 }
@@ -137,12 +136,18 @@ exports.cancelExecution = () => {
     return model.sendJobCancellation();
 };
 
-
+/**
+ * Cambia il valore della key del video in stato di lavorazione
+ * @param {string} videoKey - Rappresenta la key del video in stato di lavorazione
+ */
 exports.changeVideo = (videoKey) => {
     model.setVideoEndpoint(videoKey);
 };
 
-
+/**
+ * Restuisce il tipo di video correntemente in esecuzione
+ * @returns {boolean} ritorna true se se il video in riproduzione è quello originale false altrimenti.
+ */
 exports.isOriginalView = () => {
     return model.isVideoTypeOriginal();
 };

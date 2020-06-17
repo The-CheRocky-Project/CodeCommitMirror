@@ -39,7 +39,6 @@ def lambda_handler(event, context):
         false altrimenti
     """
     print("Executing " + context.function_name)
-    # TODO add try catch block
     sns = boto3.client('sns')
     media_conv = boto3.client(
         "mediaconvert",

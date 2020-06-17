@@ -14,8 +14,6 @@ import boto3
 # Definisce la risorsa s3
 s3 = boto3.resource('s3')
 sns = boto3.client('sns')
-# TODO add as a resource in template
-# TODO verify correctness
 
 
 def lambda_handler(event, context):

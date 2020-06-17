@@ -55,7 +55,6 @@ def lambda_handler(event, context):
                 }
             )
 
-        # TODO remove from and put a decreasing count instead of to
         remaining_insertions = {
             'key': key_prefix,
             'from': 0,

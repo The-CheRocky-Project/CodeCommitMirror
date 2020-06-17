@@ -1,4 +1,4 @@
-/*
+/**
  * s3Wrapper module
  * @module wrappers/s3Wrapper
  */
@@ -7,17 +7,12 @@ const utils = require('util');
 //requires the s3 AWS object storage Service
 const AWS = require('aws-sdk');
 
-// /** TODO remove from DevManual
-//  *  Imposta il bucket desiderato all'interno del modulo
-//  * @param {String} bucketName - Rappresenta il bucket che deve essere impostato
-//  */
-// exports.setBucket = (bucketName) => {
-//     bucket=bucketName;
-// };
-
 /**
  *  Fornisce l'url pubblico di un particolare file tramite la sua fileKey.
- * @param {String} fileKey - Rappresenta la fileKey del quale deve essere fornito
+ * @param {String} fileKey - Rappresenta la fileKey del file del quale deve essere fornito l'url
+ * @param {String} bucket - Rappresenta il bucket in cui si trova il file
+ * @param {String} region - Rappresenta la regione in cui si trova il file
+ * @returns {string} l'url pubblico del file
  */
 exports.getObjectUrl = (fileKey, bucket, region) => {
     return utils.format('https://%s.s3.%s.amazonaws.com/%s',
@@ -27,7 +22,10 @@ exports.getObjectUrl = (fileKey, bucket, region) => {
 };
 
 /**
- *  Funzione asincrona che ritorna la lista dei files contenuti nel bucket settato nel modulo
+ *  Funzione asincrona che ritorna la lista dei files contenuti nel bucket
+ *  @param {String} bucket - Rappresenta il bucket dal quale ottenere la lista
+ *  @param {String} prefix - Il prefisso con cui filtrare la lista ritornata
+ *  @returns {Promise<Array>} array contente la lista di tutti i file
  */
 exports.listObjects = (bucket, prefix) => {
     const params = {
@@ -40,8 +38,10 @@ exports.listObjects = (bucket, prefix) => {
 
 /**
  *  Funzione ausiliaria che effettua il prelievo delle key da AWS s3 in maniera asincrona
+ *  @param {{Bucket: String, Prefix: String}} params - Rappresenta l'oggetto contenente le informazioni per la richiesta ad AWS
+ *  @param {Array} keys - Rappresenta l'array contente la lista delle keys (utilizzato per la chiamata ricorsiva)
+ *  @returns {Promise<Array>} array contente la lista di tutti i file
  */
-//TODO sostituire il metodo getAllkeys con uno esistente e aggiustare la chiamata ricorsiva
 async function getKeys(params, keys = []){
     const s3Client = new AWS.S3();
     const response = await s3Client.listObjectsV2(params).promise()
@@ -60,7 +60,6 @@ async function getKeys(params, keys = []){
  *  @param {String} bucket - Il bucket di origine
  *  @param {String} fileKey - La fileKey da deserializzare
  *  @returns {Object} - Dizionario JSON con il contenuto di fileKey
- *  TODO add rejection handling (volendo)
  */
 exports.getJsonFile = (bucket,fileKey) =>{
     const param ={
@@ -74,7 +73,7 @@ exports.getJsonFile = (bucket,fileKey) =>{
 
 /**
  *  Funzione ausiliaria che effettua il prelievo di un oggetto JSON da s3
- *  @param {Dict} params - Dizionario dei parametri per l'accesso al file
+ *  @param {{Bucket: String, ResponseContentType: string, Key: String}} params - Dizionario dei parametri per l'accesso al file
  *  @returns {Dict} fileContent - The parsing of the JSON file
  */
 async function getObject(params, fileContent = {}){

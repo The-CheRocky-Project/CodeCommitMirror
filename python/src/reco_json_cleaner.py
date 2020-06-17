@@ -6,9 +6,7 @@ Contenuto:
     * lambda_handler - l'handler principale per la lambda
 
 """
-# TODO useless function: see remover
 
-# imports url utils and media management layer
 import json
 import urllib.parse
 import boto3
