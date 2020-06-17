@@ -87,7 +87,7 @@ exports.setOriginalMode =() =>{
  * @returns {object} dizionario Json contenente le label impostate secondo le cartelle del modello.
  */
 exports.getmodelLabels = async () =>{
-    return s3Wrap.getJsonFile(s3Defaults.bucket, "labelList.json");
+    return s3Wrap.getJsonFile(s3Defaults.bucket, "utils/labels.json");
 };
 
 
