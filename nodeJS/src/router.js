@@ -216,7 +216,7 @@ ahl.post('/excludeLabel', (req,res) => {
  * @param {object} req - Rappresenta la richiesta http
  * @param {object} res - Rappresenta la risposta http
  */
-ahl.post('/getVideoFrame', (req,res) => {
+ahl.all('/getVideoFrame', (req,res) => {
   // TODO sistemare la funzione (res.send()?)
     editController.updateVideoFrame(res);
 });
@@ -238,8 +238,20 @@ ahl.post('/addLabel', (req,res) => {
  * @param {object} req - Rappresenta la richiesta http contenente il valore booleano toOriginal
  * @param {object} res - Rappresenta la risposta http
  */
-ahl.post('/setVideoMode', (req,res) => {
-    res.send(editController.changeVideoMode(req.body['toOriginal']));
+ahl.post('/setOriginalVideoMode', (req,res) => {
+    console.log("requested change video to original ");
+    res.send(editController.changeVideoMode(true));
+});
+
+/**
+ *  ​API che si occupa della notifica dell'intenzione da parte dell'utente di voler
+ *  cambiare la modalità di visualizzazione del video in base al parametro toOriginal
+ * @param {object} req - Rappresenta la richiesta http contenente il valore booleano toOriginal
+ * @param {object} res - Rappresenta la risposta http
+ */
+ahl.post('/setPreviewVideoMode', (req,res) => {
+    console.log("requested change video to preview ");
+    res.send(editController.changeVideoMode(false));
 });
 
 /**
@@ -386,7 +398,6 @@ progressionPromise.then( data => console.log("Requested subscription notifyProgr
  * @param {object} res - Rappresenta la risposta http
  */
 ahl.post('/getFileList', (req,res) => {
-  // TODO sistemare la funzione (res.send()?)
     fileExplorerController.getUpdatedFileList(res);
 });
 
