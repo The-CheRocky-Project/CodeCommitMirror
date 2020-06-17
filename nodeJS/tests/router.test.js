@@ -254,7 +254,7 @@ describe('testRouter', () => {
         });
     });
 
-    describe('#post/setVideoMode', () => {
+    describe('#post/setOriginalVideoMode', () => {
 
         before(() => {
 
@@ -269,12 +269,35 @@ describe('testRouter', () => {
 
         });
 
-        it("deve inviare un json con un campo toOriginal", (done) => {
+        it("deve accettare la richiesta", (done) => {
 
-            request(ahl).post('/setVideoMode')
-                .send({
-                    toOriginal: 2
-                })
+            request(ahl).post('/setOriginalVideoMode')
+                .send()
+                .set('Accept', 'application/json')
+                .expect(200, done);
+
+        });
+    });
+
+    describe('#post/setPreviewVideoMode', () => {
+
+        before(() => {
+
+            mock('../src/controllers/editController', {
+                changeVideoMode: (toOriginal) => {
+                    //console.log(toOriginal);
+                    // return true;
+                }
+            });
+            const editControllerMock = require('../src/controllers/editController');
+            router.__set__('editController', editControllerMock);
+
+        });
+
+        it("deve  accettare la richiesta", (done) => {
+
+            request(ahl).post('/setPreviewVideoMode')
+                .send()
                 .set('Accept', 'application/json')
                 .expect(200, done);
 
