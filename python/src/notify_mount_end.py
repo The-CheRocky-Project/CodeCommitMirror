@@ -33,12 +33,13 @@ def lambda_handler(event, context):
     try:
         output_group = event['detail']['outputGroupDetails'][0]
         video_key = output_group['outputDetails'][0]['outputFilePaths'][0]
+        key_suffix = video_key.replace('s3://ahlconsolebucket/modify/','')
         sns.publish(
             TopicArn='arn:aws:sns:us-east-2:693949087897:confirmation',
             Message="videoEndpoint",
             MessageAttributes={
                 'key': {
-                    'StringValue': video_key,
+                    'StringValue': key_suffix,
                     'DataType': 'String'
                 }
             }
