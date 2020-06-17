@@ -36,10 +36,17 @@ const s3Defaults ={
  * @returns {string} true se la chiamata è stata effettuata con successo, false altrimenti.
  */
 exports.getVideoEndpoint =  () =>{
-    let key = originalPrefixes[actualVideoKey.original] + actualVideoKey.partialKey;
+    let key = "";
+    if(actualVideoKey.original)
+        key = originalPrefixes[true];
+    else
+        key = originalPrefixes[false];
+    key += actualVideoKey.partialKey;
+    console.log("fetch" + key);
     if(actualVideoKey.original){
         key = key.replace("-edit.mp4",".mp4");
     }
+    console.log("newkey " + key);
     return s3Wrap.getObjectUrl(
         key,
         s3Defaults.bucket,
@@ -61,6 +68,7 @@ exports.getRecognizementList = async () =>{
  */
 exports.setPreviewMode = () =>{
     actualVideoKey.original = false;
+    console.log("set preview mode");
     return !actualVideoKey.original;
 };
 
@@ -70,6 +78,7 @@ exports.setPreviewMode = () =>{
  */
 exports.setOriginalMode =() =>{
     actualVideoKey.original = true;
+    console.log("set original mode");
     return actualVideoKey.original;
 };
 
