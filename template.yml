@@ -314,6 +314,14 @@ Resources:
       Action: 'lambda:InvokeFunction'
       FunctionName: !Ref addLabel
       Principal: 'sns.amazonaws.com'
+  copyFinalPermission:
+    Description: The policy for confirmation to invoke a lambda
+    DeletionPolicy: Delete
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !Ref copyFinal
+      Principal: 'sns.amazonaws.com'
   editLabelSubscription:
     Description: The SNS subscription of the editLabel lambda
     DeletionPolicy: Delete
@@ -772,6 +780,16 @@ Resources:
       Runtime: python3.7
       CodeUri: ./python/src/
       Timeout: 60
+  copyFinal:
+    Description: The lamda that copies the final video
+    DeletionPolicy: Delete
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: finish_elaboration.lambda_handler
+      Role: !GetAtt basicLambdaRole.Arn
+      Runtime: python3.7
+      CodeUri: ./python/src/
+      Timeout: 120
   editLabel:
     Description: The lamda that edit labels in resumefile
     DeletionPolicy: Delete
