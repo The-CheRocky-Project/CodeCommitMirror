@@ -29,8 +29,6 @@ exports.print = (params, res) => {
             },
             layout: "main"
         });
-    // generateVideoFrame(videoURL, true, res);
-    // generateTable(listParams, res);
 };
 
 /**
@@ -40,9 +38,7 @@ exports.print = (params, res) => {
  * @param {boolean} isOriginal - indica il tipo di video in riproduzione
  * @param {object} res - Rappresenta la risposta XHTML
  */
-//TODO sostituire params con i valori corretti (i parametri della funzione?)
 exports.generateVideoFrame = (url, isOriginal, res)=>{
-  //TODO eliminato il parametro => endpoint: params.url, original: params.originalVideo,
     res.render('layouts/videoLayout',
         {
             template: 'videoLayout',

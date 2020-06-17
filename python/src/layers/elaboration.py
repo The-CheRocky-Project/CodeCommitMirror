@@ -5,7 +5,6 @@ Il layer elaboration contiene tutte le funzioni ausiliarie
 utilizzate per l'elaborazione dei dati
 
 Contenuto:
-    # TODO sistemare contenuto
     * create_thumbnail - crea thumbnail a partire da video
 """
 

@@ -123,7 +123,6 @@ describe('testEditController',() => {
   describe('#updateVideoFrame()', () => {
 
     it("deve generare e renderizzare il nuovo frame video", () => {
-      //TODO togliere commenti nel caso venga introdotta la funzione getVideoType()
       let getVideoEndpointIsCalled = false;
       let isVideoTypeOriginalIsCalled = false;
       mock('../../src/models/editModel', {

@@ -29,8 +29,6 @@ const s3Defaults ={
     region: "us-east-2"
 }
 
-//TODO manca getVideoType(), bisogna aggiungerlo e bisogna anche fare relativi test di unità
-
 /**
  * Effettua la comunicazione di impostare il video in modalità preview.
  * @returns {string} true se la chiamata è stata effettuata con successo, false altrimenti.
@@ -53,7 +51,7 @@ exports.getVideoEndpoint =  () =>{
         s3Defaults.region);
 };
 
-/** TODO fix doc description
+/**
  * Effettua la richiesta di selezione della riga di indice index al sistema.
  * @returns {boolean} ritorna true se la chiamata è stata effettuata correttamente.
  * @param {number} index - Rappresenta l'indice della riga da selezionare
@@ -113,9 +111,6 @@ exports.addRow = async (params) =>{
 exports.sendConfirmation= ()=>{
     let topicPub=new snsWrap.TopicPublisher('confirmation', AWSregion, userCode);
     return topicPub.sendMessage("confirmTable",{key:actualVideoKey.partialKey},"application/json");
-    // return snsWrap.message({
-    //     message: "confirmTable"
-    // })
 };
 
 /**
@@ -140,14 +135,6 @@ exports.updateRow = async (params)=>{
     }
     let topicPub=new snsWrap.TopicPublisher('editLabels', AWSregion, userCode);
     return topicPub.sendMessage("updateRow",data,"application/json");
-
-    // return await snsWrap.message({
-    //     message: "updateRow",
-    //     start: params.start,
-    //     index: params.index,
-    //     duration: params.duration,
-    //     label: params.labelModelIndex
-    // });
 };
 
 /**
@@ -163,10 +150,6 @@ exports.uncheckRow = async (index) =>{
     }
     let topicPub=new snsWrap.TopicPublisher('editLabels', AWSregion, userCode);
     return topicPub.sendMessage("uncheckRow",data,"application/json");
-    // return await snsWrap.message({
-    //     message: "uncheckRow",
-    //     target: index
-    // });
 };
 
 /**
@@ -181,10 +164,6 @@ exports.checkRow = async (index) =>{
     }
     let topicPub=new snsWrap.TopicPublisher('editLabels', AWSregion, userCode);
     return topicPub.sendMessage("checkRow",data,"application/json");
-    // return await snsWrap.message({
-    //     message: "checkRow",
-    //     target: index
-    // });
 };
 
 /**

@@ -1,9 +1,7 @@
-/*
+/**
  * snsWrapper module
  * @module wrappers/snsWrapper
  */
-
-
 //Richiede i moduli sdk necessari e ne crea un istanza
 process.env.AWS_REGION = "us-east-2";
 const AWS = require('aws-sdk');

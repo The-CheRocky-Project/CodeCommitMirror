@@ -1,4 +1,4 @@
-/*
+/**
  * s3Wrapper module
  * @module wrappers/s3Wrapper
  */
@@ -6,14 +6,6 @@
 const utils = require('util');
 //requires the s3 AWS object storage Service
 const AWS = require('aws-sdk');
-
-// /** TODO remove from DevManual
-//  *  Imposta il bucket desiderato all'interno del modulo
-//  * @param {String} bucketName - Rappresenta il bucket che deve essere impostato
-//  */
-// exports.setBucket = (bucketName) => {
-//     bucket=bucketName;
-// };
 
 /**
  *  Fornisce l'url pubblico di un particolare file tramite la sua fileKey.
@@ -50,7 +42,6 @@ exports.listObjects = (bucket, prefix) => {
  *  @param {Array} keys - Rappresenta l'array contente la lista delle keys (utilizzato per la chiamata ricorsiva)
  *  @returns {Promise<Array>} array contente la lista di tutti i file
  */
-//TODO sostituire il metodo getAllkeys con uno esistente e aggiustare la chiamata ricorsiva
 async function getKeys(params, keys = []){
     const s3Client = new AWS.S3();
     const response = await s3Client.listObjectsV2(params).promise()
@@ -69,7 +60,6 @@ async function getKeys(params, keys = []){
  *  @param {String} bucket - Il bucket di origine
  *  @param {String} fileKey - La fileKey da deserializzare
  *  @returns {Object} - Dizionario JSON con il contenuto di fileKey
- *  TODO add rejection handling (volendo)
  */
 exports.getJsonFile = (bucket,fileKey) =>{
     const param ={

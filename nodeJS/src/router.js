@@ -14,7 +14,6 @@ const bodyParser = require('body-parser');
 const sns = require('./wrappers/snsWrapper');
 const AWS = require('aws-sdk');
 
-//TODO Add dynamic enpoint over cloudformation environment variables
 const endpointName = "http://ahlapp.eba-6iceedzt.us-east-2.elasticbeanstalk.com/";
 //AWS configuration
 AWS.config.update({region: 'us-east-2'});
@@ -43,11 +42,6 @@ ahl.use(express.static(path.join(__dirname,'/public')));
 ahl.set('controllers',path.join(__dirname,'controllers'));
 ahl.set('models',path.join(__dirname,'models'));
 ahl.set('views',path.join(__dirname,'views'));
-
-//TODO remove this function
-ahl.all('/printHostname', (req,res) => {
-    res.send(req.headers.host);
-});
 
 // sets up the handlebars view engine
 const partialsLocation = path.join(__dirname,'views/partials');
@@ -139,7 +133,6 @@ server.listen(port, function(){
  * @param {object} res - Rappresenta la risposta http
  */
 ahl.post('/getTable', (req,res) => {
-  // TODO sistemare la funzione (res.send()?)
     editController.updateLabelTable(res);
 });
 
@@ -334,16 +327,6 @@ ahl.post('/confirmEdit', (req,res) => {
     res.send(editController.confirmEditing());
 });
 
-// /** TODO remove from the Dev Manual
-//  * All'accesso all'API getProgressionBar() la function restituisce l’oggetto XHTML
-//  * rappresentante la  la progress bar aggiornata tramite la
-//  * funzione getUpdatedBar() del loadingController.
-//  * @param {object} req - Rappresenta la richiesta http
-//  * @param {object} res - Rappresenta la risposta http
-//  */
-// ahl.post('getProgressionBar', (req,res) => {
-//     loadingController.getUpdatedBar(res);
-// });
 /**
  *  ​API che si occupa della ​notifica del client tramite il socket
  *  che il livello di progressione è cambiato ricevendo in
@@ -353,7 +336,6 @@ ahl.post('/confirmEdit', (req,res) => {
  * @param {object} res - Rappresenta la risposta http
  */
 ahl.post('/notifyProgressionUpdate', (req,res) => {
-  // TODO sistemare la funzione e testarla
     if(req.body.Type == "SubscriptionConfirmation"){
         if(sns.confirmTopic(req.body.TopicArn, req.body.Token)){
             console.log("Confirmed subscription of notifyProgressionUpdate" + req.body.TopicArn);

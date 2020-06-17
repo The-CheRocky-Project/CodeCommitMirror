@@ -7,8 +7,6 @@ Contenuto:
     * lambda_handler - l'handler principale per la lambda
 
 """
-# TODO resource out of template (@GGotta, va tolta?)
-# imports url utils and media management layer
 import json
 import boto3
 from layers import elaboration

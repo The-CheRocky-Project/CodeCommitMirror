@@ -331,7 +331,6 @@ def mount(input_file_key, destination_key, details_array, first_start, queue):
 
 def frame(input_file_key, duration, queue):
     """
-    TODO
     :param input_file_key: la key del file di origine
     :param duration:
     :param queue:
@@ -381,7 +380,6 @@ def frame(input_file_key, duration, queue):
                                 "FrameCaptureSettings": {
                                     "FramerateNumerator": 30,
                                     # nel caso da modificare a piacimento
-                                    # TODO verificare il funzionamento
                                     "FramerateDenominator": \
                                     (duration * 30) / 10,
                                     "MaxCaptures": 10000000,
@@ -421,7 +419,7 @@ def frame(input_file_key, duration, queue):
 
 def get_frame_details(endpoint, payload):
     """
-    Funzione che recupera i dettagli di un frame TODO
+    Funzione che recupera i dettagli di un frame
     :param endpoint:
     :param payload:
     :return:
@@ -447,7 +445,7 @@ def get_frame_details(endpoint, payload):
 
 def dynamo_insertion(frame_info, label, name):
     """
-    Funzione per inserire su dynamo TODO
+    Funzione per inserire su dynamo
     :param frame_info:
     :param label:
     :param name:
@@ -466,7 +464,7 @@ def dynamo_insertion(frame_info, label, name):
 
 def cutter(name, start, duration):
     """
-    TODO funzione non implementata
+    funzione non implementata
     :param name:
     :param start:
     :param duration:

@@ -17,15 +17,9 @@ $(document).ready(() => {
     socket.on('finish', (data) => {
       // faccio chiamata a api per settare la active page = .toFileExplorer
       if (data === 'done') {
-          // TODO fix
-        // goIndex();
       } else {
         alert('Error on finish: ' + data);
       }
-    // // se il ruter prima del messaggio cambia la active page va bene questa versione
-    //       if (data === 'done') {
-    //         window.location.reload();
-    //       }
     });
 
     /**
@@ -50,7 +44,6 @@ $(document).ready(() => {
      * @param {object} data - parametro fittizio che non fa nulla
      */
     socket.on('newEndPoint', (data) => {
-      // TODO da sistemare
     });
 
     /**
@@ -227,21 +220,6 @@ function manageContentChange(event) {
 function goIndex() {
   $.ajax({
       url: "toFileExplorer"
-  })
-}
-// TODO remove: useless function
-// function goLoading() {
-//   $.ajax({
-//       url: "./toLoading"
-//   })
-// }
-
-/**
- * Richiede al router di ottenere la pagina "toEdit"
- */
-function goEdit() {
-  $.ajax({
-      url: "toEdit"
   })
 }
 
