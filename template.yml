@@ -314,6 +314,14 @@ Resources:
       Action: 'lambda:InvokeFunction'
       FunctionName: !Ref addLabel
       Principal: 'sns.amazonaws.com'
+  copyFinalSubscription:
+    Description: The SNS subscription of the copyFinal lambda
+    DeletionPolicy: Delete
+    Type: AWS::SNS::Subscription
+    Properties:
+      Endpoint: !GetAtt copyFinal.Arn
+      Protocol: lambda
+      TopicArn: !Ref confirmTopic
   copyFinalPermission:
     Description: The policy for confirmation to invoke a lambda
     DeletionPolicy: Delete
