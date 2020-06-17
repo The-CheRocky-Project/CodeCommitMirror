@@ -217,7 +217,6 @@ ahl.post('/excludeLabel', (req,res) => {
  * @param {object} res - Rappresenta la risposta http
  */
 ahl.all('/getVideoFrame', (req,res) => {
-  // TODO sistemare la funzione (res.send()?)
     editController.updateVideoFrame(res);
 });
 

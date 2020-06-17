@@ -46,47 +46,47 @@ def lambda_handler(event, context):
         all_frames = json.loads(resume_res['Body'].read().decode('utf-8'))
 
         details_array = []
-        first_start = ""
-        first = False
+        first_start = "00:00:00:00"
 
         for i in range(len(all_frames) - 1):
             if all_frames[i]['show'] == "true":
-                start_seconds = round(
-                    (int(all_frames[i]['start']) / 1000) % 60
-                )
-                start_minute = round((int(all_frames[i]['start']) / 1000) / 60)
-                start_hours = round(start_minute / 60)
-                end_seconds = round((int(all_frames[i]['tfs']) / 1000) % 60)
-                end_minute = round((int(all_frames[i]['tfs']) / 1000) / 60)
-                end_hours = round(end_minute / 60)
+                print("Record " + str(i))
+                start = int(all_frames[i]['start'])
+                start_ms = int(start % 1000)
+                rest = int((start - start_ms) / 1000)
+                start_seconds = int((rest % 60))
+                rest = int((rest - start_seconds) / 60)
+                start_minute = int(rest % 60)
+                start_hours = int((rest - start_minute) / 60)
+                end = int(all_frames[i]['tfs']) + int(all_frames[i]['start'])
+                print(end)
+                duration = int(all_frames[i]['tfs'])
+                end = start + duration
+                end_ms = int(end % 1000)
+                rest = int((end - end_ms) / 1000)
+                end_seconds = int((rest % 60))
+                rest = int((rest - end_seconds) / 60)
+                end_minute = int(rest % 60)
+                end_hours = int((rest - end_minute) / 60)
+
                 s = (
                         str(start_hours).zfill(2) +
                         ":" + str(start_minute).zfill(2) +
                         ":" + str(start_seconds).zfill(2) +
-                        ":00"
+                        ":" + str(start_ms).zfill(2)
                 )
+                print(s)
                 e = (
                         str(end_hours).zfill(2) +
                         ":" + str(end_minute).zfill(2) +
                         ":" + str(end_seconds).zfill(2) +
-                        ":00"
+                        ":" + str(end_ms).zfill(2)
                 )
-                if not first:
-                    first_start = (
-                            str(start_hours).zfill(2) +
-                            ":" + str(start_minute).zfill(2) +
-                            ":" + str(start_seconds).zfill(2) +
-                            ":00"
-                    )
-                    details_array.append({
-                        'EndTimecode': e
-                    })
-                    first = True
-                else:
-                    details_array.append({
-                        'EndTimecode': e,
-                        'StartTimecode': s
-                    })
+                print(e)
+                details_array.append({
+                    'StartTimecode': s,
+                    'EndTimecode': e
+                })
 
         splitted = all_frames[0]['frame_key'].split('/')
         name = splitted[-1]
