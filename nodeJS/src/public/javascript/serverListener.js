@@ -211,7 +211,7 @@ function updateStreaming() {
         type: "POST",
         url: "getVideoFrame"
     }).done( (video) => {
-        $('#videoLabel').replaceWith(video);
+        $('#videoDiv').replaceWith(video);
         $("#videoSelector").change(event => manageVideoModeChange(event));
     }).error((error) => {
         alert(error);
@@ -258,22 +258,10 @@ function updateTable() {
      * @param {object} data - intero 0-100 che indica il progresso
      */
 function updateProgressBar(data) {
-// // con handlebars ma probabilmente sbagliata
-//   var template = Handlebars.compile('progressBar.hbs');
-//   var pagina = template({progression: data});
-//   pagina.print();
-
-  // con jquery
   $('#loadingProgressBar').css('width', data + '%');
   $('#loadingProgressBar').attr('aria-valuenow', data);
-  // forse si vuole modificare la 'notifyProgressionUpdate' in router.js e includere il messaggio di refresh
-  //  TODO remove this code: single responibility
-  // if (data >= 100) {
-  //   $.ajax({
-  //     url: './toEdit'
-  //   });
-  // }
 }
+
 function addRowManagement(event) {
     const dataToSend = {
         start: $("#newStart").val(),
@@ -294,13 +282,22 @@ function addRowManagement(event) {
 function manageVideoModeChange(event) {
     const option = $(event.target).children("option:selected");
     const data = {
-        toOriginal: option.val() === "original"
+        toOriginal: option.val() == "original"
     };
-    $.ajax({
-        type: "POST",
-        url: "setVideoMode",
-        data: data
-    }).done(() => {
-        updateStreaming();
-    }).fail((error) => alert(error));
+    if(option.val() == "original"){
+        $.ajax({
+            type: "POST",
+            url: "setOriginalVideoMode"
+        }).done(() => {
+            updateStreaming();
+        }).fail((error) => alert(error));
+    }
+    else{
+        $.ajax({
+            type: "POST",
+            url: "setPreviewVideoMode"
+        }).done(() => {
+            updateStreaming();
+        }).fail((error) => alert(error));
+    }
 }
