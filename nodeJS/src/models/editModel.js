@@ -151,7 +151,7 @@ exports.updateRow = async (params)=>{
 };
 
 /**
- * *  Effettua la richiesta di de-selezione della riga di indice index al sistema.
+ * Effettua la richiesta di de-selezione della riga di indice index al sistema.
  * @returns {Generator<*, void, *>}
  * @returns {boolean} ritorna true se la chiamata è stata effettuata correttamente.
  * @param {number} index - Rappresenta l'indice della riga da de-selezionare
@@ -196,7 +196,10 @@ exports.sendReset = () => {
     return topicPub.sendMessage('reset',{},"application/json");
 }
 
-
+/**
+ * Richiede la cancellazione del lavoro in atto
+ * @returns {Promise<Boolean>}
+ */
 exports.sendJobCancellation = async () => {
     const params = {
         stateMachineArn: cleanMachineArn,
@@ -211,6 +214,10 @@ exports.sendJobCancellation = async () => {
     return result;
 }
 
+/**
+ * Imposta la key del video in stato di lavorazione con il parametro passato
+ * @param {string} videoKey - Rappresenta la key del video in stato di lavorazione
+ */
 exports.setVideoEndpoint = (videoKey) => {
     actualVideoKey.partialKey = videoKey;
 }

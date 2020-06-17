@@ -137,12 +137,18 @@ exports.cancelExecution = () => {
     return model.sendJobCancellation();
 };
 
-
+/**
+ * Cambia il valore della key del video in stato di lavorazione
+ * @param {string} videoKey - Rappresenta la key del video in stato di lavorazione
+ */
 exports.changeVideo = (videoKey) => {
     model.setVideoEndpoint(videoKey);
 };
 
-
+/**
+ * Restuisce il tipo di video correntemente in esecuzione
+ * @returns {boolean} ritorna true se se il video in riproduzione è quello originale false altrimenti.
+ */
 exports.isOriginalView = () => {
     return model.isVideoTypeOriginal();
 };

@@ -1,6 +1,9 @@
 //serverListener module
 var socket = io();
 $(document).ready(() => {
+    /**
+     * Quando viene ricevuto il messaggio 'refresh' ricarica la pagina dal server
+     */
     socket.on('refresh',() => {
         window.location.reload();
     });
@@ -108,17 +111,33 @@ $(document).ready(() => {
     $("#addRow").click(event => addRowManagement(event));
 
     /**
-     * Ad ogni modifica dellos tato delle checkbox della tabella dei riconoscimenti,
+     * Ad ogni modifica dello stato delle checkbox della tabella dei riconoscimenti,
      * ne effettua la richiesta di modifica al router
      */
     $(".labelCheckbox").change( event => manageCheckboxState(event));
 
+    /**
+     * Ad ogni richiesta di aggiunta di input, ne effettua la richiesta
+     * di modifica al router
+     */
     $(".editInput").change(event => manageContentChange(event));
 
+    /**
+     * Ad ogni richiesta di reset del contenuto, ne effettua la richiesta
+     * al router
+     */
     $("#tableReset").click(event => resetTable(event));
 
+    /**
+     * Ad ogni richiesta di ritornare alla pagina di fileExplorer, ne invia
+     * la richiesta al router
+     */
     $("#backLink").click(event => returnToFileExplorer(event));
 
+    /**
+     * Ad ogni richiesta di confermare il video di sintesi, ne invia
+     * la richiesta al router
+     */
     $("#confirm").click(event => {
         $("#confirm").setAttribute('disabled', 'disabled()');
         $.ajax({
@@ -132,6 +151,9 @@ $(document).ready(() => {
     $("#videoSelector").change(event => manageVideoModeChange(event));
 });
 
+/**
+ * Invia al router la richiesta di andare alla pagina "toFileExplorer"
+ */
 function returnToFileExplorer(event) {
     $.ajax({
         type: "POST",
@@ -141,6 +163,9 @@ function returnToFileExplorer(event) {
     });
 }
 
+/**
+ * Invia al router la richiesta di reimpostare la tabella
+ */
 function resetTable(event) {
     $.ajax({
         type: "POST",
@@ -150,6 +175,10 @@ function resetTable(event) {
     });
 }
 
+/**
+ * Gestisce il cambio di stato di una checkbox di una riga
+ * avvisando il router del relativo cambio
+ */
 function manageCheckboxState (event) {
     $.each($(".labelCheckbox"),(i, x) => {
         x.setAttribute('disabled', 'disabled()');
@@ -167,6 +196,10 @@ function manageCheckboxState (event) {
     });
 }
 
+/**
+ * Gestisce il cambiamento di una riga, inviando al router
+ * le relative informazioni
+ */
 function manageContentChange(event) {
     const row = $(event.target).parent().parent();
     const index = row.index();
@@ -188,6 +221,9 @@ function manageContentChange(event) {
     });
 }
 
+/**
+ * Richiede al router di ottenere la pagina "toFileExplorer"
+ */
 function goIndex() {
   $.ajax({
       url: "toFileExplorer"
@@ -200,12 +236,19 @@ function goIndex() {
 //   })
 // }
 
+/**
+ * Richiede al router di ottenere la pagina "toEdit"
+ */
 function goEdit() {
   $.ajax({
       url: "toEdit"
   })
 }
 
+/**
+ * Aggiorna il video visualizzato in "toEdit" in base alle informazioni ricevute
+ * dal router
+ */
 function updateStreaming() {
     $.ajax({
         type: "POST",
@@ -218,6 +261,9 @@ function updateStreaming() {
     });
 }
 
+/**
+ * Aggiorna la lista dei file visualizzati in "toFileExplorer"
+ */
 function updateFileList() {
   $.ajax({
       type: "POST",
@@ -230,6 +276,9 @@ function updateFileList() {
   });
 }
 
+/**
+ * Aggiorna la tabella dei frames in "toEdit"
+ */
 function updateTable() {
   $.ajax({
       type: "POST",
@@ -251,17 +300,21 @@ function updateTable() {
   });
 }
 
-  /**
-     * Aggiorna la loadingProgressBar, viene chiamata
-     * quando viene ricevuto
-     * il messaggio 'finish'
-     * @param {object} data - intero 0-100 che indica il progresso
-     */
+/**
+ * Aggiorna la loadingProgressBar, viene chiamata
+ * quando viene ricevuto
+ * il messaggio 'finish'
+ * @param {object} data - intero 0-100 che indica il progresso
+ */
 function updateProgressBar(data) {
   $('#loadingProgressBar').css('width', data + '%');
   $('#loadingProgressBar').attr('aria-valuenow', data);
 }
 
+/**
+ * Avvisa il router dell'inserimento di una nuova riga nella
+ * tabella
+ */
 function addRowManagement(event) {
     const dataToSend = {
         start: $("#newStart").val(),
@@ -279,6 +332,9 @@ function addRowManagement(event) {
     });
 }
 
+/**
+ * Avvisa il router del cambiamento del tipo di video da visualizzare
+ */
 function manageVideoModeChange(event) {
     const option = $(event.target).children("option:selected");
     const data = {
