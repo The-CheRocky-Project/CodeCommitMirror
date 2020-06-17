@@ -70,14 +70,14 @@ def lambda_handler(event, context):
                         str(start_hours).zfill(2) +
                         ":" + str(start_minute).zfill(2) +
                         ":" + str(start_seconds).zfill(2) +
-                        ":" + str(start_ms).zfill(2)
+                        ":00"
                 )
                 print(s)
                 e = (
                         str(end_hours).zfill(2) +
                         ":" + str(end_minute).zfill(2) +
                         ":" + str(end_seconds).zfill(2) +
-                        ":" + str(end_ms).zfill(2)
+                        ":00"
                 )
                 print(e)
                 details_array.append({
