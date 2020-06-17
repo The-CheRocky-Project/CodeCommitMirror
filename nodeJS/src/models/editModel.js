@@ -112,7 +112,7 @@ exports.addRow = async (params) =>{
  */
 exports.sendConfirmation= ()=>{
     let topicPub=new snsWrap.TopicPublisher('confirmation', AWSregion, userCode);
-    return topicPub.sendMessage("confirmTable","","");
+    return topicPub.sendMessage("confirmTable",{key:actualVideoKey.partialKey},"application/json");
     // return snsWrap.message({
     //     message: "confirmTable"
     // })
