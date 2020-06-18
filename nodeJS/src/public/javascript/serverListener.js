@@ -132,13 +132,11 @@ $(document).ready(() => {
      * la richiesta al router
      */
     $("#confirm").click(event => {
-        $("#confirm").setAttribute('disabled', 'disabled()');
         $.ajax({
             type: "POST",
             url:"confirmEditing"
         }).error((error) => {
             alert(error);
-            $("#confirm").removeAttribute("disabled");
         })
     });
     $("#videoSelector").change(event => manageVideoModeChange(event));
