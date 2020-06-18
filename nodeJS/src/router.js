@@ -265,7 +265,7 @@ ahl.post('/notifyEditingFinish', (req,res) => {
         if(req.body.Type == "Notification" && req.body.Message == "finish"){
             console.log("received message on notifyEditingFinish:"+req.body.Message);
             activePage = pages.fileExplorer;
-            backport.emit('finish');
+            backport.emit('refresh','');
             res.sendStatus(200);
         }
         else

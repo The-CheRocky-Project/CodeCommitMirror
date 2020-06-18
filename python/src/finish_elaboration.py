@@ -37,6 +37,7 @@ def lambda_handler(event, context):
             key = attributes['key']['Value']
             origin = s3.Object('ahlconsolebucket', 'modify/' + key)
             destination = s3.Object('ahlconsolebucket', 'origin/' + key)
+            print(key)
             origin_res = origin.get()
             origin_body = origin_res['Body'].read()
             destination.put(Body=origin_body)
