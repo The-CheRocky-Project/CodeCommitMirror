@@ -44,7 +44,7 @@ phases:
 
       # Install runtime dependencies
       - npm install --production
-      - python state_machine_injection.py -c template.yml -o template.complete.yml
+      # - python state_machine_injection.py -c template.yml -o template.complete.yml
       - aws cloudformation package --template template.complete.yml --s3-bucket $S3_BUCKET --output-template-file template-export.yml
 
       # Do not remove this statement. This command is required for AWS CodeStar projects.
