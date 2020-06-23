@@ -39,7 +39,7 @@ Parameters:
     Type: String
     Description: The bucket where the application operates
     Default: ahlconsolebucket
-Resources:
+#Resources:
   #EBApplication:
     #Description: The AWS Elastic Beanstalk application, which is a container used to deploy the correct application configuration.
     #Type: AWS::ElasticBeanstalk::Application
@@ -98,12 +98,12 @@ Resources:
           #OptionName: Subnets
           #Value: !Ref 'SubnetId'
         #- !Ref "AWS::NoValue"
-  consoleBucket:
-    Description: The bucket containing videos from the console application
-    Type: AWS::S3::Bucket
-    DeletionPolicy: Delete
-    Properties:
-      BucketName: "ahlconsolebucket"
+  #consoleBucket:
+    #Description: The bucket containing videos from the console application
+    #Type: AWS::S3::Bucket
+    #DeletionPolicy: Delete
+    #Properties:
+      #BucketName: "ahlconsolebucket"
       #NotificationConfiguration:
         #LambdaConfigurations:
           #- Event: 's3:ObjectCreated:*'
