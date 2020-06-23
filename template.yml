@@ -40,914 +40,914 @@ Parameters:
     Description: The bucket where the application operates
     Default: ahlconsolebucket
 Resources:
-  EBApplication:
-    Description: The AWS Elastic Beanstalk application, which is a container used to deploy the correct application configuration.
-    Type: AWS::ElasticBeanstalk::Application
-    Properties:
-      ApplicationName: !Sub '${ProjectId}app${Stage}'
-      Description: The name of the AWS Elastic Beanstalk application to be created for this project.
-  EBApplicationVersion:
-    Description: The version of the AWS Elastic Beanstalk application to be created for this project.
-    Type: AWS::ElasticBeanstalk::ApplicationVersion
-    Properties:
-      ApplicationName: !Ref 'EBApplication'
-      Description: The application version number.
-      SourceBundle: '.'
-  EBConfigurationTemplate:
-    Description: The AWS Elastic Beanstalk configuration template to be created for this project, which defines configuration settings used to deploy different versions of an application.
-    Type: AWS::ElasticBeanstalk::ConfigurationTemplate
-    Properties:
-      ApplicationName: !Ref 'EBApplication'
-      Description: The name of the sample configuration template.
-      OptionSettings:
-      - Namespace: aws:elasticbeanstalk:environment
-        OptionName: EnvironmentType
-        Value: SingleInstance
-      - Namespace: aws:elasticbeanstalk:environment
-        OptionName: ServiceRole
-        Value: !Ref 'EBTrustRole'
-      - Namespace: aws:elasticbeanstalk:healthreporting:system
-        OptionName: SystemType
-        Value: enhanced
-      SolutionStackName: !Ref 'SolutionStackName'
-  EBEnvironment:
-    Description: The AWS Elastic Beanstalk deployment group where the application is deployed, which is made up of the Amazon EC2 Linux instances launched for this project.
-    Type: AWS::ElasticBeanstalk::Environment
-    Properties:
-      ApplicationName: !Ref 'EBApplication'
-      EnvironmentName: !Ref 'EBApplication'
-      Description: The application to be deployed to the environment.
-      TemplateName: !Ref 'EBConfigurationTemplate'
-      VersionLabel: !Ref 'EBApplicationVersion'
-      OptionSettings:
-      - Namespace: aws:autoscaling:launchconfiguration
-        OptionName: IamInstanceProfile
-        Value: !Ref 'EBInstanceProfile'
-      - Namespace: aws:autoscaling:launchconfiguration
-        OptionName: InstanceType
-        Value: !Ref 'InstanceType'
-      - Namespace: aws:autoscaling:launchconfiguration
-        OptionName: EC2KeyName
-        Value: !Ref 'KeyPairName'
-      - Namespace: aws:ec2:vpc
-        OptionName: VPCId
-        Value: !Ref 'VpcId'
-      - !If
-        - UseSubnet
-        - Namespace: 'aws:ec2:vpc'
-          OptionName: Subnets
-          Value: !Ref 'SubnetId'
-        - !Ref "AWS::NoValue"
-  consoleBucket:
-    Description: The bucket containing videos from the console application
-    Type: AWS::S3::Bucket
-    DeletionPolicy: Retain
-    Properties:
-      BucketName: "ahlconsolebucket"
-      NotificationConfiguration:
-        LambdaConfigurations:
-          - Event: 's3:ObjectCreated:*'
-            Filter:
-              S3Key:
-                Rules:
-                  - Name: prefix
-                    Value: origin/
-                  - Name: suffix
-                    Value: .mp4
-            Function: !GetAtt thumbfy.Arn
-          - Event: 's3:ObjectCreated:*'
-            Filter:
-              S3Key:
-                Rules:
-                  - Name: prefix
-                    Value: thumbnails/
-                  - Name: suffix
-                    Value: -low.mp4
-            Function: !GetAtt remover.Arn
-          - Event: 's3:ObjectCreated:*'
-            Filter:
-              S3Key:
-                Rules:
-                  - Name: prefix
-                    Value: frames/
-                  - Name: suffix
-                    Value: -low.mp4
-            Function: !GetAtt remover.Arn
-          - Event: "s3:ObjectRemoved:*"
-            Filter:
-              S3Key:
-                Rules:
-                  - Name: prefix
-                    Value: origin
-                  - Name: suffix
-                    Value: .mp4
-            Function: !GetAtt keyThumbTransform.Arn
-          - Event: "s3:ObjectCreated:*"
-            Filter:
-              S3Key:
-                Rules:
-                  - Name: suffix
-                    Value: tmp/modified-resume.json
-            Function: !GetAtt updateVideo.Arn
-        TopicConfigurations:
-          - Event: "s3:ObjectCreated:*"
-            Filter:
-              S3Key:
-                Rules:
-                  - Name: prefix
-                    Value: thumbnails/
-                  - Name: suffix
-                    Value: .jpg
-            Topic: !Ref filesTopic
-          - Event: "s3:ObjectRemoved:*"
-            Filter:
-              S3Key:
-                Rules:
-                  - Name: prefix
-                    Value: thumbnails/
-                  - Name: suffix
-                    Value: .jpg
-            Topic: !Ref filesTopic
-  updatePermission:
-    Description: The lambda permission to been invoked by an s3 event
-    DeletionPolicy: Delete
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: 'lambda:InvokeFunction'
-      FunctionName: !Ref updateVideo
-      Principal: 's3.amazonaws.com'
-      SourceAccount: !Ref "AWS::AccountId"
-      SourceArn: !GetAtt consoleBucket.Arn
-  thumbfyPermission:
-    Description: The lambda permission to been invoked by an s3 event
-    DeletionPolicy: Delete
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: 'lambda:InvokeFunction'
-      FunctionName: !Ref thumbfy
-      Principal: 's3.amazonaws.com'
-      SourceAccount: !Ref "AWS::AccountId"
-      SourceArn: !GetAtt consoleBucket.Arn
-  keyThumbPermission:
-    Description: The lambda permission to been invoked by an s3 event
-    DeletionPolicy: Delete
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: 'lambda:InvokeFunction'
-      FunctionName: !Ref keyThumbTransform
-      Principal: 's3.amazonaws.com'
-      SourceAccount: !Ref "AWS::AccountId"
-      SourceArn: !GetAtt consoleBucket.Arn
-  filesTopicPermission:
-    Description: The sns permission to been invoked by an s3 event
-    DeletionPolicy: Delete
-    Type: AWS::SNS::TopicPolicy
-    Properties:
-      Topics:
-        - !Ref filesTopic
-      PolicyDocument:
-        Version: "2012-10-17"
-        Id: s3FilesTopic
-        Statement:
-          - Sid: s3SnsPublish
-            Effect: Allow
-            Principal:
-              Service: "s3.amazonaws.com"
-            Action:
-              - "SNS:Publish"
-            Resource: !Ref filesTopic
-  removerPermission:
-    Description: The Lambda permission to been invoked by an s3 event
-    DeletionPolicy: Delete
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: 'lambda:InvokeFunction'
-      FunctionName: !Ref remover
-      Principal: 's3.amazonaws.com'
-      SourceAccount: !Ref "AWS::AccountId"
-      SourceArn: !GetAtt consoleBucket.Arn
-  progressionTopic:
-    Description: The SNS Topic for progression news messaging
-    DeletionPolicy: Delete
-    Type: AWS::SNS::Topic
-    Properties:
-      TopicName: progression
-  trainTopic:
-    Description: The SNS Topic for training news messaging
-    DeletionPolicy: Delete
-    Type: AWS::SNS::Topic
-    Properties:
-      TopicName: training
-  editTopic:
-    Description: The SNS Topic for editing news messaging
-    DeletionPolicy: Delete
-    Type: AWS::SNS::Topic
-    Properties:
-      TopicName: editLabels
-  confirmTopic:
-    Description: The SNS Topic for confirmations news messaging
-    DeletionPolicy: Delete
-    Type: AWS::SNS::Topic
-    Properties:
-      TopicName: confirmation
-  filesTopic:
-    Description: The SNS Topic for file news messaging
-    DeletionPolicy: Delete
-    Type: AWS::SNS::Topic
-    Properties:
-      TopicName: files
-  confirmPolicy:
-    Description: The confirmationTopic Policy to invoke Lambda
-    DeletionPolicy: Delete
-    Type: AWS::SNS::TopicPolicy
-    Properties:
-      PolicyDocument:
-        Id: confirmFramerPolicy
-        Version: "2012-10-17"
-        Statement:
-          - Sid: confirmLambdaInvoke
-            Effect: "Allow"
-            Principal:
-              AWS: "*"
-            Action:
-              - "SNS:GetTopicAttributes"
-              - "SNS:SetTopicAttributes"
-              - "SNS:AddPermission"
-              - "SNS:RemovePermission"
-              - "SNS:DeleteTopic"
-              - "SNS:Subscribe"
-              - "SNS:ListSubscriptionsByTopic"
-              - "SNS:Publish"
-              - "SNS:Receive"
-            Resource: !Ref confirmTopic
-      Topics:
-        - !Ref confirmTopic
-  framerSubscription:
-    Description: The SNS subscription of the framer lambda
-    DeletionPolicy: Delete
-    Type: AWS::SNS::Subscription
-    Properties:
-      Endpoint: !GetAtt framer.Arn
-      Protocol: lambda
-      TopicArn: !Ref confirmTopic
-  framerPermission:
-    Description: The policy for confirmTopic to invoke the framer lambda
-    DeletionPolicy: Delete
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: 'lambda:InvokeFunction'
-      FunctionName: !Ref framer
-      Principal: 'sns.amazonaws.com'
-  addLabelSubscription:
-    Description: The SNS subscription of the addLabel lambda
-    DeletionPolicy: Delete
-    Type: AWS::SNS::Subscription
-    Properties:
-      Endpoint: !GetAtt addLabel.Arn
-      Protocol: lambda
-      TopicArn: !Ref editTopic
-  addLabelPermission:
-    Description: The policy for editLabel to invoke a lambda
-    DeletionPolicy: Delete
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: 'lambda:InvokeFunction'
-      FunctionName: !Ref addLabel
-      Principal: 'sns.amazonaws.com'
-  copyFinalSubscription:
-    Description: The SNS subscription of the copyFinal lambda
-    DeletionPolicy: Delete
-    Type: AWS::SNS::Subscription
-    Properties:
-      Endpoint: !GetAtt copyFinal.Arn
-      Protocol: lambda
-      TopicArn: !Ref confirmTopic
-  copyFinalPermission:
-    Description: The policy for confirmation to invoke a lambda
-    DeletionPolicy: Delete
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: 'lambda:InvokeFunction'
-      FunctionName: !Ref copyFinal
-      Principal: 'sns.amazonaws.com'
-  editLabelSubscription:
-    Description: The SNS subscription of the editLabel lambda
-    DeletionPolicy: Delete
-    Type: AWS::SNS::Subscription
-    Properties:
-      Endpoint: !GetAtt editLabel.Arn
-      Protocol: lambda
-      TopicArn: !Ref editTopic
-  editLabelPermission:
-    Description: The policy for editLabel to invoke a lambda
-    DeletionPolicy: Delete
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: 'lambda:InvokeFunction'
-      FunctionName: !Ref editLabel
-      Principal: 'sns.amazonaws.com'
-  resetLabelsSubscription:
-    Description: The SNS subscription of the resetLabel lambda
-    DeletionPolicy: Delete
-    Type: AWS::SNS::Subscription
-    Properties:
-      Endpoint: !GetAtt resetLabel.Arn
-      Protocol: lambda
-      TopicArn: !Ref editTopic
-  resetLabelPermission:
-    Description: The policy for resetLabel to invoke a lambda
-    DeletionPolicy: Delete
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: 'lambda:InvokeFunction'
-      FunctionName: !Ref resetLabel
-      Principal: 'sns.amazonaws.com'
-  changeLabelStatusSubscription:
-    Description: The SNS subscription of the changeLabelStatus lambda
-    DeletionPolicy: Delete
-    Type: AWS::SNS::Subscription
-    Properties:
-      Endpoint: !GetAtt changeLabelStatus.Arn
-      Protocol: lambda
-      TopicArn: !Ref editTopic
-  changeLabelStatusPermission:
-    Description: The policy for editLabel to invoke a lambda
-    DeletionPolicy: Delete
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: 'lambda:InvokeFunction'
-      FunctionName: !Ref changeLabelStatus
-      Principal: 'sns.amazonaws.com'
-  ahlLog:
-    Description: The Autonomous HighLight Logging Group
-    DeletionPolicy: Delete
-    Type: AWS::Logs::LogGroup
-    Properties:
-      LogGroupName: ahlLogs
-      RetentionInDays: 7
-  stepFRole:
-    Description: The role for AWS Step Functions
-    DeletionPolicy: Delete
-    Type: "AWS::IAM::Role"
-    Properties:
-      RoleName: frameWorkflowRole
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: "Allow"
-            Principal:
-              Service:
-                - states.amazonaws.com
-                - events.amazonaws.com
-            Action: "sts:AssumeRole"
-      Path: "/"
-      Policies:
-        - PolicyName: StatesExecutionPolicy
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: Allow
-                Action:
-                  - "lambda:*"
-                  - "logs:*"
-                  - "states:*"
-                Resource: "*"
-  basicLambdaRole:
-    Description: The role for AWS Lambda Functions
-    DeletionPolicy: Delete
-    Type: "AWS::IAM::Role"
-    Properties:
-      RoleName: ahllambdaRole
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: "Allow"
-            Principal:
-              Service:
-                - "lambda.amazonaws.com"
-            Action: "sts:AssumeRole"
-      Path: "/"
-      Policies:
-        - PolicyName: AWSLambdaBasicExecutionRole
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: Allow
-                Action:
-                  - "logs:*"
-                Resource: "*"
-        - PolicyName: AmazonS3FullAccess
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: Allow
-                Action:
-                  - "s3:*"
-                Resource: "*"
-        - PolicyName: IAMPassRole
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: Allow
-                Action:
-                  - "iam:PassRole"
-                Resource: "*"
-        - PolicyName: MediaConvertFullAccess
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: Allow
-                Action:
-                  - "mediaconvert:*"
-                Resource: "*"
-        - PolicyName: AmazonSNSFullAccess
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: Allow
-                Action:
-                  - "sns:*"
-                Resource: "*"
-        - PolicyName: LambdaInvoke
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: Allow
-                Action:
-                  - "lambda:InvokeFunction"
-                  - "lambda:InvokeAsync"
-                Resource: "*"
-  dynamoLambdaRole:
-    Description: The role for AWS Lambda Functions
-    DeletionPolicy: Delete
-    Type: "AWS::IAM::Role"
-    Properties:
-      RoleName: ahlDynamoLambdaRole
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: "Allow"
-            Principal:
-              Service:
-                - "lambda.amazonaws.com"
-            Action: "sts:AssumeRole"
-      Path: "/"
-      Policies:
-        - PolicyName: AWSLambdaBasicExecutionRole
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: Allow
-                Action:
-                  - "logs:*"
-                Resource: "*"
-        - PolicyName: AmazonS3FullAccess
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: Allow
-                Action:
-                  - "s3:*"
-                Resource: "*"
-        - PolicyName: AmazonDynamoDBFullAccess
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: Allow
-                Action:
-                  - "dynamodb:*"
-                Resource: "*"
-  sagemakerDynamoLambdaRole:
-    Description: The role for AWS Lambda Functions
-    DeletionPolicy: Delete
-    Type: "AWS::IAM::Role"
-    Properties:
-      RoleName: ahlSagemakerDynamoLambdaRole
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: "Allow"
-            Principal:
-              Service:
-                - "lambda.amazonaws.com"
-            Action: "sts:AssumeRole"
-      Path: "/"
-      Policies:
-        - PolicyName: AWSLambdaBasicExecutionRole
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: Allow
-                Action:
-                  - "logs:*"
-                Resource: "*"
-        - PolicyName: AmazonS3FullAccess
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: Allow
-                Action:
-                  - "s3:*"
-                Resource: "*"
-        - PolicyName: AmazonDynamoDBFullAccess
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: Allow
-                Action:
-                  - "dynamodb:*"
-                Resource: "*"
-        - PolicyName: runtime_InvokeEndpoint
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: Allow
-                Action:
-                  - "sagemaker:InvokeEndpoint"
-                Resource: "*"
-  frameWorkflow:
-    Description: The step function that defines the frame workflow
-    DeletionPolicy: Delete
-    Type: "AWS::StepFunctions::StateMachine"
-    Properties:
-      DefinitionString:
-        !Sub
-        - |-
-          ##{{STATEMACHINE_DEF}} VideoStateMachine.json
-        - prepareDataArn: !GetAtt [prepareData, Arn]
-          frameGroupingArn: !GetAtt [frameGrouping, Arn]
-          recognizerArn: !GetAtt [recognizer, Arn]
-          notifyProgressionArn: !GetAtt [notifyProgression, Arn]
-          makeResumeArn: !GetAtt [makeResume, Arn]
-          prioritizeArn: !GetAtt [checkNprioritize, Arn]
-          makeFinalArn: !GetAtt [makeFinalVideo, Arn]
-          finalVideoCleaner: !GetAtt [finalVideoCleaner, Arn]
-          recoJsonCleaner: !GetAtt [recoJsonCleaner, Arn]
-          frameCleaner: !GetAtt [frameCleaner, Arn]
-          dbCleaner: !GetAtt [dbCleaner, Arn]
-          copyResumeArn: !GetAtt [makeModiResume, Arn]
-      RoleArn: !GetAtt stepFRole.Arn
-      StateMachineName: ahlFrameWorkflow
-      StateMachineType: STANDARD
-      LoggingConfiguration:
-        Destinations:
-          - CloudWatchLogsLogGroup:
-              LogGroupArn: !GetAtt ahlLog.Arn
-        IncludeExecutionData: true
-        Level: ERROR
-  cancelWorkflow:
-    Description: The step function that cleans all job
-    DeletionPolicy: Delete
-    Type: "AWS::StepFunctions::StateMachine"
-    Properties:
-      DefinitionString:
-        !Sub
-        - |-
-          ##{{STATEMACHINE_DEF}} cleanJobs.json
-        - finalVideoCleaner: !GetAtt [finalVideoCleaner, Arn]
-          recoJsonCleaner: !GetAtt [recoJsonCleaner, Arn]
-          frameCleaner: !GetAtt [frameCleaner, Arn]
-          dbCleaner: !GetAtt [dbCleaner, Arn]
-          cancelJob: !GetAtt [cleanJobs, Arn]
-      RoleArn: !GetAtt stepFRole.Arn
-      StateMachineName: clean
-      StateMachineType: STANDARD
-      LoggingConfiguration:
-        Destinations:
-          - CloudWatchLogsLogGroup:
-              LogGroupArn: !GetAtt ahlLog.Arn
-        IncludeExecutionData: true
-        Level: ERROR
-  thumbfy:
-    Description: The lambda that runs a Mediaconvert job to create thumbnail
-    Type: AWS::Serverless::Function
-    DeletionPolicy: Delete
-    Properties:
-      Handler: thumbfy.lambda_handler
-      Role: !GetAtt basicLambdaRole.Arn
-      Runtime: python3.7
-      CodeUri: ./python/src/
-  makeFinalVideo:
-    Description: The lambda that runs a Mediaconvert job to update videos
-    Type: AWS::Serverless::Function
-    DeletionPolicy: Delete
-    Properties:
-      Handler: make_final_video.lambda_handler
-      Role: !GetAtt basicLambdaRole.Arn
-      Runtime: python3.7
-      CodeUri: ./python/src/
-      Timeout: 120
-  prepareData:
-    Description: The lambda that cleans data before processing frames
-    Type: AWS::Serverless::Function
-    DeletionPolicy: Delete
-    Properties:
-      Handler: prepare_data.lambda_handler
-      Role: !GetAtt dynamoLambdaRole.Arn
-      Runtime: python3.7
-      CodeUri: ./python/src/
-      Timeout: 120
-  frameGrouping:
-    Description: The lambda that calculates frame grouping before recognizements
-    Type: AWS::Serverless::Function
-    DeletionPolicy: Delete
-    Properties:
-      Handler: frame_grouping.lambda_handler
-      Role: !GetAtt basicLambdaRole.Arn
-      Runtime: python3.7
-      CodeUri: ./python/src/
-  recognizer:
-    Description: The lambda that calculates frame grouping before recognizements
-    Type: AWS::Serverless::Function
-    DeletionPolicy: Delete
-    Properties:
-      Handler: recognize.lambda_handler
-      Role: !GetAtt sagemakerDynamoLambdaRole.Arn
-      Runtime: python3.7
-      CodeUri: ./python/src/
-      Environment:
-        Variables:
-          ENDPOINT_NAME: IC-completeDataset-1590073086
-      Timeout: 120
-  remover:
-    Description: The lambda that deletes useless objects
-    Type: AWS::Serverless::Function
-    DeletionPolicy: Delete
-    Properties:
-      Handler: remover.lambda_handler
-      Role: !GetAtt basicLambdaRole.Arn
-      Runtime: python3.7
-      CodeUri: ./python/src/
-  framer:
-    Description: The Lambda that creates frames before processing
-    Type: AWS::Serverless::Function
-    DeletionPolicy: Delete
-    Properties:
-      Handler: framer.lambda_handler
-      Role: !GetAtt basicLambdaRole.Arn
-      Runtime: python3.7
-      CodeUri: ./python/src/
-  makeResume:
-    Descrioption: The Lambda that make the first prototipe fo resume file
-    Type: AWS::Serverless::Function
-    DeletionPolicy: Delete
-    Properties:
-      Handler: make_resume.lambda_handler
-      Role: !GetAtt dynamoLambdaRole.Arn
-      Runtime: python3.7
-      CodeUri: ./python/src/
-      Timeout: 120
-  checkNprioritize:
-    Descrioption: The Lambda that make the first prototipe fo resume file
-    Type: AWS::Serverless::Function
-    DeletionPolicy: Delete
-    Properties:
-      Handler: check_n_prioritize.lambda_handler
-      Role: !GetAtt basicLambdaRole.Arn
-      Runtime: python3.7
-      CodeUri: ./python/src/
-      Timeout: 180
-  notifyProgression:
-    Descrioption: The Lambda that notify the progression about recognizing
-    Type: AWS::Serverless::Function
-    DeletionPolicy: Delete
-    Properties:
-      Handler: notify_progression.lambda_handler
-      Role: !GetAtt basicLambdaRole.Arn
-      Runtime: python3.7
-      CodeUri: ./python/src/
-  updateVideo:
-    Descrioption: The Lambda that updates the final video
-    Type: AWS::Serverless::Function
-    DeletionPolicy: Delete
-    Properties:
-      Handler: update_video.lambda_handler
-      Role: !GetAtt basicLambdaRole.Arn
-      Runtime: python3.7
-      CodeUri: ./python/src/
-      Timeout: 180
-  keyThumbTransform:
-    Description: The lambda that transforms a video key in thumbnail key
-    DeletionPolicy: Delete
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: key_thumb_transformer.lambda_handler
-      Role: !GetAtt basicLambdaRole.Arn
-      Runtime: python3.7
-      CodeUri: ./python/src/
-      EventInvokeConfig:
-        DestinationComfig:
-          OnSuccess:
-            Destination: !GetAtt remover.Arn
-            Type: Lambda
-  recoJsonCleaner:
-    Description: The lamda that removes the resume.json file
-    DeletionPolicy: Delete
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: reco_json_cleaner.lambda_handler
-      Role: !GetAtt basicLambdaRole.Arn
-      Runtime: python3.7
-      CodeUri: ./python/src/
-  finalVideoCleaner:
-    Description: The lamda that removes the mounted video
-    DeletionPolicy: Delete
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: final_video_cleaner.lambda_handler
-      Role: !GetAtt basicLambdaRole.Arn
-      Runtime: python3.7
-      CodeUri: ./python/src/
-  frameCleaner:
-    Description: The lamda that removes frames used for recognitions
-    DeletionPolicy: Delete
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: frame_cleaner.lambda_handler
-      Role: !GetAtt basicLambdaRole.Arn
-      Runtime: python3.7
-      CodeUri: ./python/src/
-      Timeout: 100
-  dbCleaner:
-    Description: The lamda that removes records from db
-    DeletionPolicy: Delete
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: db_records_cleaner.lambda_handler
-      Role: !GetAtt dynamoLambdaRole.Arn
-      Runtime: python3.7
-      CodeUri: ./python/src/
-      Timeout: 240
-  addLabel:
-    Description: The lamda that add labels to resumefile
-    DeletionPolicy: Delete
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: label_adder.lambda_handler
-      Role: !GetAtt basicLambdaRole.Arn
-      Runtime: python3.7
-      CodeUri: ./python/src/
-      Timeout: 60
-  copyFinal:
-    Description: The lamda that copies the final video
-    DeletionPolicy: Delete
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: finish_elaboration.lambda_handler
-      Role: !GetAtt basicLambdaRole.Arn
-      Runtime: python3.7
-      CodeUri: ./python/src/
-      Timeout: 120
-  editLabel:
-    Description: The lamda that edit labels in resumefile
-    DeletionPolicy: Delete
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: label_editor.lambda_handler
-      Role: !GetAtt basicLambdaRole.Arn
-      Runtime: python3.7
-      CodeUri: ./python/src/
-      Timeout: 60
-  resetLabel:
-    Description: The lamda that resets labels in resumefile
-    DeletionPolicy: Delete
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: label_reset.lambda_handler
-      Role: !GetAtt basicLambdaRole.Arn
-      Runtime: python3.7
-      CodeUri: ./python/src/
-      Timeout: 20
-  changeLabelStatus:
-    Description: The lamda that changes checking in resumefile
-    DeletionPolicy: Delete
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: change_label_status.lambda_handler
-      Role: !GetAtt basicLambdaRole.Arn
-      Runtime: python3.7
-      CodeUri: ./python/src/
-      Timeout: 60
-  cleanJobs:
-    Description: The lamda that cleans all jobs
-    DeletionPolicy: Delete
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: clean_job.lambda_handler
-      Role: !GetAtt basicLambdaRole.Arn
-      Runtime: python3.7
-      CodeUri: ./python/src/
-      Timeout: 180
-  makeModiResume:
-    Description: The lambda that copies the resume content in the modified one
-    DeletionPolicy: Delete
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: make_modified_resume.lambda_handler
-      Role: !GetAtt basicLambdaRole.Arn
-      Runtime: python3.7
-      CodeUri: ./python/src
-      Timeout: 20
-  notifyMountEnd:
-    Description: The lambda that notify the server with sns
-    DeletionPolicy: Delete
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: notify_mount_end.lambda_handler
-      Role: !GetAtt basicLambdaRole.Arn
-      Runtime: python3.7
-      CodeUri: ./python/src
-      Timeout: 20
-  framerQueue:
-    Description: The Media Convert Queue for framing jobs
-    Type: AWS::MediaConvert::Queue
-    DeletionPolicy: Delete
-    Properties:
-      Description: Queue for framing jobs
-      Name: framer
-      PricingPlan: ON_DEMAND
-      Status: ACTIVE
-  mountQueue:
-    Description: The Media Convert Queue for customer mounting jobs
-    Type: AWS::MediaConvert::Queue
-    DeletionPolicy: Delete
-    Properties:
-      Description: Queue for mounting jobs
-      Name: videoMount
-      PricingPlan: ON_DEMAND
-      Status: ACTIVE
-  framerStatusChange:
-    Description: The CloudWatch Event for Media Convert job changes
-    DeletionPolicy: Delete
-    Type: AWS::Events::Rule
-    Properties:
-      Description: Catches events from MediaConvert framer queue
-      EventPattern:
-        source:
-          - aws.mediaconvert
-        detail-type:
-          - MediaConvert Job State Change
-        detail:
-          status:
-            - COMPLETE
-          queue:
-            - !GetAtt framerQueue.Arn
-      Name: framerFinish
-      Targets:
-        - Arn: !Ref frameWorkflow
-          Id: frameWorkFlow_Target
-          RoleArn: !GetAtt stepFRole.Arn
-  mountStatusChange:
-    Description: The CloudWatch Event for Media Convert job changes on mount queue
-    DeletionPolicy: Delete
-    Type: AWS::Events::Rule
-    Properties:
-      Description: Catches events from MediaConvert mount queue
-      EventPattern:
-        source:
-          - aws.mediaconvert
-        detail-type:
-          - MediaConvert Job State Change
-        detail:
-          status:
-            - COMPLETE
-          queue:
-            - !GetAtt mountQueue.Arn
-      Name: mountFinish
-      Targets:
-        - Arn: !GetAtt notifyMountEnd.Arn
-          Id: notifier
-  ahlMlBucket:
-    Description: The s3 Bucket where data is stored
-    Type: AWS::S3::Bucket
-    DeletionPolicy: Delete
-    Properties:
-      BucketName: ahlmlbucket
-  SageMakerExecutionRole:
-    Type: "AWS::IAM::Role"
-    Properties:
-      AssumeRolePolicyDocument:
-        Statement:
-          - Effect: "Allow"
-            Principal:
-              Service:
-                - "sagemaker.amazonaws.com"
-            Action:
-              - "sts:AssumeRole"
-      ManagedPolicyArns:
-        - "arn:aws:iam::aws:policy/AmazonSageMakerFullAccess"
-      Path: "/service-role/"
-      Policies:
-        - PolicyName: SageMakerS3BucketAccess
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: Allow
-                Action:
-                  - s3:*
-                Resource:
-                  - '*'
-  NotebookCloudWatchLogGroup:
-    Description: The SageMaker Log Group
-    DeletionPolicy: Delete
-    Type: AWS::Logs::LogGroup
+  #EBApplication:
+    #Description: The AWS Elastic Beanstalk application, which is a container used to deploy the correct application configuration.
+    #Type: AWS::ElasticBeanstalk::Application
+    #Properties:
+      #ApplicationName: !Sub '${ProjectId}app${Stage}'
+      #Description: The name of the AWS Elastic Beanstalk application to be created for this project.
+  #EBApplicationVersion:
+    #Description: The version of the AWS Elastic Beanstalk application to be created for this project.
+    #Type: AWS::ElasticBeanstalk::ApplicationVersion
+    #Properties:
+      #ApplicationName: !Ref 'EBApplication'
+      #Description: The application version number.
+      #SourceBundle: '.'
+  #EBConfigurationTemplate:
+    #Description: The AWS Elastic Beanstalk configuration template to be created for this project, which defines configuration settings used to deploy different versions of an application.
+    #Type: AWS::ElasticBeanstalk::ConfigurationTemplate
+    #Properties:
+      #ApplicationName: !Ref 'EBApplication'
+      #Description: The name of the sample configuration template.
+      #OptionSettings:
+      #- Namespace: aws:elasticbeanstalk:environment
+        #OptionName: EnvironmentType
+        #Value: SingleInstance
+      #- Namespace: aws:elasticbeanstalk:environment
+        #OptionName: ServiceRole
+        #Value: !Ref 'EBTrustRole'
+      #- Namespace: aws:elasticbeanstalk:healthreporting:system
+        #OptionName: SystemType
+        #Value: enhanced
+      #SolutionStackName: !Ref 'SolutionStackName'
+  #EBEnvironment:
+    #Description: The AWS Elastic Beanstalk deployment group where the application is deployed, which is made up of the Amazon EC2 Linux instances launched for this project.
+    #Type: AWS::ElasticBeanstalk::Environment
+    #Properties:
+      #ApplicationName: !Ref 'EBApplication'
+      #EnvironmentName: !Ref 'EBApplication'
+      #Description: The application to be deployed to the environment.
+      #TemplateName: !Ref 'EBConfigurationTemplate'
+      #VersionLabel: !Ref 'EBApplicationVersion'
+      #OptionSettings:
+      #- Namespace: aws:autoscaling:launchconfiguration
+        #OptionName: IamInstanceProfile
+        #Value: !Ref 'EBInstanceProfile'
+      #- Namespace: aws:autoscaling:launchconfiguration
+        #OptionName: InstanceType
+        #Value: !Ref 'InstanceType'
+      #- Namespace: aws:autoscaling:launchconfiguration
+        #OptionName: EC2KeyName
+        #Value: !Ref 'KeyPairName'
+      #- Namespace: aws:ec2:vpc
+        #OptionName: VPCId
+        #Value: !Ref 'VpcId'
+      #- !If
+        #- UseSubnet
+        #- Namespace: 'aws:ec2:vpc'
+          #OptionName: Subnets
+          #Value: !Ref 'SubnetId'
+        #- !Ref "AWS::NoValue"
+  #consoleBucket:
+    #Description: The bucket containing videos from the console application
+    #Type: AWS::S3::Bucket
+    #DeletionPolicy: Retain
+    #Properties:
+      #BucketName: "ahlconsolebucket"
+      #NotificationConfiguration:
+        #LambdaConfigurations:
+          #- Event: 's3:ObjectCreated:*'
+            #Filter:
+              #S3Key:
+                #Rules:
+                  #- Name: prefix
+                    #Value: origin/
+                  #- Name: suffix
+                    #Value: .mp4
+            #Function: !GetAtt thumbfy.Arn
+          #- Event: 's3:ObjectCreated:*'
+            #Filter:
+              #S3Key:
+                #Rules:
+                  #- Name: prefix
+                    #Value: thumbnails/
+                  #- Name: suffix
+                    #Value: -low.mp4
+            #Function: !GetAtt remover.Arn
+          #- Event: 's3:ObjectCreated:*'
+            #Filter:
+              #S3Key:
+                #Rules:
+                  #- Name: prefix
+                    #Value: frames/
+                  #- Name: suffix
+                    #Value: -low.mp4
+            #Function: !GetAtt remover.Arn
+          #- Event: "s3:ObjectRemoved:*"
+            #Filter:
+              #S3Key:
+                #Rules:
+                  #- Name: prefix
+                    #Value: origin
+                  #- Name: suffix
+                    #Value: .mp4
+            #Function: !GetAtt keyThumbTransform.Arn
+          #- Event: "s3:ObjectCreated:*"
+            #Filter:
+              #S3Key:
+                #Rules:
+                  #- Name: suffix
+                    #Value: tmp/modified-resume.json
+            #Function: !GetAtt updateVideo.Arn
+        #TopicConfigurations:
+          #- Event: "s3:ObjectCreated:*"
+            #Filter:
+              #S3Key:
+                #Rules:
+                  #- Name: prefix
+                    #Value: thumbnails/
+                  #- Name: suffix
+                    #Value: .jpg
+            #Topic: !Ref filesTopic
+          #- Event: "s3:ObjectRemoved:*"
+            #Filter:
+              #S3Key:
+                #Rules:
+                  #- Name: prefix
+                    #Value: thumbnails/
+                  #- Name: suffix
+                    #Value: .jpg
+            #Topic: !Ref filesTopic
+  #updatePermission:
+    #Description: The lambda permission to been invoked by an s3 event
+    #DeletionPolicy: Delete
+    #Type: AWS::Lambda::Permission
+    #Properties:
+      #Action: 'lambda:InvokeFunction'
+      #FunctionName: !Ref updateVideo
+      #Principal: 's3.amazonaws.com'
+      #SourceAccount: !Ref "AWS::AccountId"
+      #SourceArn: !GetAtt consoleBucket.Arn
+  #thumbfyPermission:
+    #Description: The lambda permission to been invoked by an s3 event
+    #DeletionPolicy: Delete
+    #Type: AWS::Lambda::Permission
+    #Properties:
+      #Action: 'lambda:InvokeFunction'
+      #FunctionName: !Ref thumbfy
+      #Principal: 's3.amazonaws.com'
+      #SourceAccount: !Ref "AWS::AccountId"
+      #SourceArn: !GetAtt consoleBucket.Arn
+  #keyThumbPermission:
+    #Description: The lambda permission to been invoked by an s3 event
+    #DeletionPolicy: Delete
+    #Type: AWS::Lambda::Permission
+    #Properties:
+      #Action: 'lambda:InvokeFunction'
+      #FunctionName: !Ref keyThumbTransform
+      #Principal: 's3.amazonaws.com'
+      #SourceAccount: !Ref "AWS::AccountId"
+      #SourceArn: !GetAtt consoleBucket.Arn
+  #filesTopicPermission:
+    #Description: The sns permission to been invoked by an s3 event
+    #DeletionPolicy: Delete
+    #Type: AWS::SNS::TopicPolicy
+    #Properties:
+      #Topics:
+        #- !Ref filesTopic
+      #PolicyDocument:
+        #Version: "2012-10-17"
+        #Id: s3FilesTopic
+        #Statement:
+          #- Sid: s3SnsPublish
+            #Effect: Allow
+            #Principal:
+              #Service: "s3.amazonaws.com"
+            #Action:
+              #- "SNS:Publish"
+            #Resource: !Ref filesTopic
+  #removerPermission:
+    #Description: The Lambda permission to been invoked by an s3 event
+    #DeletionPolicy: Delete
+    #Type: AWS::Lambda::Permission
+    #Properties:
+      #Action: 'lambda:InvokeFunction'
+      #FunctionName: !Ref remover
+      #Principal: 's3.amazonaws.com'
+      #SourceAccount: !Ref "AWS::AccountId"
+      #SourceArn: !GetAtt consoleBucket.Arn
+  #progressionTopic:
+    #Description: The SNS Topic for progression news messaging
+    #DeletionPolicy: Delete
+    #Type: AWS::SNS::Topic
+    #Properties:
+      #TopicName: progression
+  #trainTopic:
+    #Description: The SNS Topic for training news messaging
+    #DeletionPolicy: Delete
+    #Type: AWS::SNS::Topic
+    #Properties:
+      #TopicName: training
+  #editTopic:
+    #Description: The SNS Topic for editing news messaging
+    #DeletionPolicy: Delete
+    #Type: AWS::SNS::Topic
+    #Properties:
+      #TopicName: editLabels
+  #confirmTopic:
+    #Description: The SNS Topic for confirmations news messaging
+    #DeletionPolicy: Delete
+    #Type: AWS::SNS::Topic
+    #Properties:
+      #TopicName: confirmation
+  #filesTopic:
+    #Description: The SNS Topic for file news messaging
+    #DeletionPolicy: Delete
+    #Type: AWS::SNS::Topic
+    #Properties:
+      #TopicName: files
+  #confirmPolicy:
+    #Description: The confirmationTopic Policy to invoke Lambda
+    #DeletionPolicy: Delete
+    #Type: AWS::SNS::TopicPolicy
+    #Properties:
+      #PolicyDocument:
+        #Id: confirmFramerPolicy
+        #Version: "2012-10-17"
+        #Statement:
+          #- Sid: confirmLambdaInvoke
+            #Effect: "Allow"
+            #Principal:
+              #AWS: "*"
+            #Action:
+              #- "SNS:GetTopicAttributes"
+              #- "SNS:SetTopicAttributes"
+              #- "SNS:AddPermission"
+              #- "SNS:RemovePermission"
+              #- "SNS:DeleteTopic"
+              #- "SNS:Subscribe"
+              #- "SNS:ListSubscriptionsByTopic"
+              #- "SNS:Publish"
+              #- "SNS:Receive"
+            #Resource: !Ref confirmTopic
+      #Topics:
+        #- !Ref confirmTopic
+  #framerSubscription:
+    #Description: The SNS subscription of the framer lambda
+    #DeletionPolicy: Delete
+    #Type: AWS::SNS::Subscription
+    #Properties:
+      #Endpoint: !GetAtt framer.Arn
+      #Protocol: lambda
+      #TopicArn: !Ref confirmTopic
+  #framerPermission:
+    #Description: The policy for confirmTopic to invoke the framer lambda
+    #DeletionPolicy: Delete
+    #Type: AWS::Lambda::Permission
+    #Properties:
+      #Action: 'lambda:InvokeFunction'
+      #FunctionName: !Ref framer
+      #Principal: 'sns.amazonaws.com'
+  #addLabelSubscription:
+    #Description: The SNS subscription of the addLabel lambda
+    #DeletionPolicy: Delete
+    #Type: AWS::SNS::Subscription
+    #Properties:
+      #Endpoint: !GetAtt addLabel.Arn
+      #Protocol: lambda
+      #TopicArn: !Ref editTopic
+  #addLabelPermission:
+    #Description: The policy for editLabel to invoke a lambda
+    #DeletionPolicy: Delete
+    #Type: AWS::Lambda::Permission
+    #Properties:
+      #Action: 'lambda:InvokeFunction'
+      #FunctionName: !Ref addLabel
+      #Principal: 'sns.amazonaws.com'
+  #copyFinalSubscription:
+    #Description: The SNS subscription of the copyFinal lambda
+    #DeletionPolicy: Delete
+    #Type: AWS::SNS::Subscription
+    #Properties:
+      #Endpoint: !GetAtt copyFinal.Arn
+      #Protocol: lambda
+      #TopicArn: !Ref confirmTopic
+  #copyFinalPermission:
+    #Description: The policy for confirmation to invoke a lambda
+    #DeletionPolicy: Delete
+    #Type: AWS::Lambda::Permission
+    #Properties:
+      #Action: 'lambda:InvokeFunction'
+      #FunctionName: !Ref copyFinal
+      #Principal: 'sns.amazonaws.com'
+  #editLabelSubscription:
+    #Description: The SNS subscription of the editLabel lambda
+    #DeletionPolicy: Delete
+    #Type: AWS::SNS::Subscription
+    #Properties:
+      #Endpoint: !GetAtt editLabel.Arn
+      #Protocol: lambda
+      #TopicArn: !Ref editTopic
+  #editLabelPermission:
+    #Description: The policy for editLabel to invoke a lambda
+    #DeletionPolicy: Delete
+    #Type: AWS::Lambda::Permission
+    #Properties:
+      #Action: 'lambda:InvokeFunction'
+      #FunctionName: !Ref editLabel
+      #Principal: 'sns.amazonaws.com'
+  #resetLabelsSubscription:
+    #Description: The SNS subscription of the resetLabel lambda
+    #DeletionPolicy: Delete
+    #Type: AWS::SNS::Subscription
+    #Properties:
+      #Endpoint: !GetAtt resetLabel.Arn
+      #Protocol: lambda
+      #TopicArn: !Ref editTopic
+  #resetLabelPermission:
+    #Description: The policy for resetLabel to invoke a lambda
+    #DeletionPolicy: Delete
+    #Type: AWS::Lambda::Permission
+    #Properties:
+      #Action: 'lambda:InvokeFunction'
+      #FunctionName: !Ref resetLabel
+      #Principal: 'sns.amazonaws.com'
+  #changeLabelStatusSubscription:
+    #Description: The SNS subscription of the changeLabelStatus lambda
+    #DeletionPolicy: Delete
+    #Type: AWS::SNS::Subscription
+    #Properties:
+      #Endpoint: !GetAtt changeLabelStatus.Arn
+      #Protocol: lambda
+      #TopicArn: !Ref editTopic
+  #changeLabelStatusPermission:
+    #Description: The policy for editLabel to invoke a lambda
+    #DeletionPolicy: Delete
+    #Type: AWS::Lambda::Permission
+    #Properties:
+      #Action: 'lambda:InvokeFunction'
+      #FunctionName: !Ref changeLabelStatus
+      #Principal: 'sns.amazonaws.com'
+  #ahlLog:
+    #Description: The Autonomous HighLight Logging Group
+    #DeletionPolicy: Delete
+    #Type: AWS::Logs::LogGroup
+    #Properties:
+      #LogGroupName: ahlLogs
+      #RetentionInDays: 7
+  #stepFRole:
+    #Description: The role for AWS Step Functions
+    #DeletionPolicy: Delete
+    #Type: "AWS::IAM::Role"
+    #Properties:
+      #RoleName: frameWorkflowRole
+      #AssumeRolePolicyDocument:
+        #Version: "2012-10-17"
+        #Statement:
+          #- Effect: "Allow"
+            #Principal:
+              #Service:
+                #- states.amazonaws.com
+                #- events.amazonaws.com
+            #Action: "sts:AssumeRole"
+      #Path: "/"
+      #Policies:
+        #- PolicyName: StatesExecutionPolicy
+          #PolicyDocument:
+            #Version: "2012-10-17"
+            #Statement:
+              #- Effect: Allow
+                #Action:
+                  #- "lambda:*"
+                  #- "logs:*"
+                  #- "states:*"
+                #Resource: "*"
+  #basicLambdaRole:
+    #Description: The role for AWS Lambda Functions
+    #DeletionPolicy: Delete
+    #Type: "AWS::IAM::Role"
+    #Properties:
+      #RoleName: ahllambdaRole
+      #AssumeRolePolicyDocument:
+        #Version: "2012-10-17"
+        #Statement:
+          #- Effect: "Allow"
+            #Principal:
+              #Service:
+                #- "lambda.amazonaws.com"
+            #Action: "sts:AssumeRole"
+      #Path: "/"
+      #Policies:
+        #- PolicyName: AWSLambdaBasicExecutionRole
+          #PolicyDocument:
+            #Version: "2012-10-17"
+            #Statement:
+              #- Effect: Allow
+                #Action:
+                  #- "logs:*"
+                #Resource: "*"
+        #- PolicyName: AmazonS3FullAccess
+          #PolicyDocument:
+            #Version: "2012-10-17"
+            #Statement:
+              #- Effect: Allow
+                #Action:
+                  #- "s3:*"
+                #Resource: "*"
+        #- PolicyName: IAMPassRole
+          #PolicyDocument:
+            #Version: "2012-10-17"
+            #Statement:
+              #- Effect: Allow
+                #Action:
+                  #- "iam:PassRole"
+                #Resource: "*"
+        #- PolicyName: MediaConvertFullAccess
+          #PolicyDocument:
+            #Version: "2012-10-17"
+            #Statement:
+              #- Effect: Allow
+                #Action:
+                  #- "mediaconvert:*"
+                #Resource: "*"
+        #- PolicyName: AmazonSNSFullAccess
+          #PolicyDocument:
+            #Version: "2012-10-17"
+            #Statement:
+              #- Effect: Allow
+                #Action:
+                  #- "sns:*"
+                #Resource: "*"
+        #- PolicyName: LambdaInvoke
+          #PolicyDocument:
+            #Version: "2012-10-17"
+            #Statement:
+              #- Effect: Allow
+                #Action:
+                  #- "lambda:InvokeFunction"
+                  #- "lambda:InvokeAsync"
+                #Resource: "*"
+  #dynamoLambdaRole:
+    #Description: The role for AWS Lambda Functions
+    #DeletionPolicy: Delete
+    #Type: "AWS::IAM::Role"
+    #Properties:
+      #RoleName: ahlDynamoLambdaRole
+      #AssumeRolePolicyDocument:
+        #Version: "2012-10-17"
+        #Statement:
+          #- Effect: "Allow"
+            #Principal:
+              #Service:
+                #- "lambda.amazonaws.com"
+            #Action: "sts:AssumeRole"
+      #Path: "/"
+      #Policies:
+        #- PolicyName: AWSLambdaBasicExecutionRole
+          #PolicyDocument:
+            #Version: "2012-10-17"
+            #Statement:
+              #- Effect: Allow
+                #Action:
+                  #- "logs:*"
+                #Resource: "*"
+        #- PolicyName: AmazonS3FullAccess
+          #PolicyDocument:
+            #Version: "2012-10-17"
+            #Statement:
+              #- Effect: Allow
+                #Action:
+                  #- "s3:*"
+                #Resource: "*"
+        #- PolicyName: AmazonDynamoDBFullAccess
+          #PolicyDocument:
+            #Version: "2012-10-17"
+            #Statement:
+              #- Effect: Allow
+                #Action:
+                  #- "dynamodb:*"
+                #Resource: "*"
+  #sagemakerDynamoLambdaRole:
+    #Description: The role for AWS Lambda Functions
+    #DeletionPolicy: Delete
+    #Type: "AWS::IAM::Role"
+    #Properties:
+      #RoleName: ahlSagemakerDynamoLambdaRole
+      #AssumeRolePolicyDocument:
+        #Version: "2012-10-17"
+        #Statement:
+          #- Effect: "Allow"
+            #Principal:
+              #Service:
+                #- "lambda.amazonaws.com"
+            #Action: "sts:AssumeRole"
+      #Path: "/"
+      #Policies:
+        #- PolicyName: AWSLambdaBasicExecutionRole
+          #PolicyDocument:
+            #Version: "2012-10-17"
+            #Statement:
+              #- Effect: Allow
+                #Action:
+                  #- "logs:*"
+                #Resource: "*"
+        #- PolicyName: AmazonS3FullAccess
+          #PolicyDocument:
+            #Version: "2012-10-17"
+            #Statement:
+              #- Effect: Allow
+                #Action:
+                  #- "s3:*"
+                #Resource: "*"
+        #- PolicyName: AmazonDynamoDBFullAccess
+          #PolicyDocument:
+            #Version: "2012-10-17"
+            #Statement:
+              #- Effect: Allow
+                #Action:
+                  #- "dynamodb:*"
+                #Resource: "*"
+        #- PolicyName: runtime_InvokeEndpoint
+          #PolicyDocument:
+            #Version: "2012-10-17"
+            #Statement:
+              #- Effect: Allow
+                #Action:
+                  #- "sagemaker:InvokeEndpoint"
+                #Resource: "*"
+  #frameWorkflow:
+    #Description: The step function that defines the frame workflow
+    #DeletionPolicy: Delete
+    #Type: "AWS::StepFunctions::StateMachine"
+    #Properties:
+      #DefinitionString:
+        #!Sub
+        #- |-
+          #{{STATEMACHINE_DEF}} VideoStateMachine.json
+        #- prepareDataArn: !GetAtt [prepareData, Arn]
+          #frameGroupingArn: !GetAtt [frameGrouping, Arn]
+          #recognizerArn: !GetAtt [recognizer, Arn]
+          #notifyProgressionArn: !GetAtt [notifyProgression, Arn]
+          #makeResumeArn: !GetAtt [makeResume, Arn]
+          #prioritizeArn: !GetAtt [checkNprioritize, Arn]
+          #makeFinalArn: !GetAtt [makeFinalVideo, Arn]
+          #finalVideoCleaner: !GetAtt [finalVideoCleaner, Arn]
+          #recoJsonCleaner: !GetAtt [recoJsonCleaner, Arn]
+          #frameCleaner: !GetAtt [frameCleaner, Arn]
+          #dbCleaner: !GetAtt [dbCleaner, Arn]
+          #copyResumeArn: !GetAtt [makeModiResume, Arn]
+      #RoleArn: !GetAtt stepFRole.Arn
+      #StateMachineName: ahlFrameWorkflow
+      #StateMachineType: STANDARD
+      #LoggingConfiguration:
+        #Destinations:
+          #- CloudWatchLogsLogGroup:
+              #LogGroupArn: !GetAtt ahlLog.Arn
+        #IncludeExecutionData: true
+        #Level: ERROR
+  #cancelWorkflow:
+    #Description: The step function that cleans all job
+    #DeletionPolicy: Delete
+    #Type: "AWS::StepFunctions::StateMachine"
+    #Properties:
+      #DefinitionString:
+        #!Sub
+        #- |-
+          #{{STATEMACHINE_DEF}} cleanJobs.json
+        #- finalVideoCleaner: !GetAtt [finalVideoCleaner, Arn]
+          #recoJsonCleaner: !GetAtt [recoJsonCleaner, Arn]
+          #frameCleaner: !GetAtt [frameCleaner, Arn]
+          #dbCleaner: !GetAtt [dbCleaner, Arn]
+          #cancelJob: !GetAtt [cleanJobs, Arn]
+      #RoleArn: !GetAtt stepFRole.Arn
+      #StateMachineName: clean
+      #StateMachineType: STANDARD
+      #LoggingConfiguration:
+        #Destinations:
+          #- CloudWatchLogsLogGroup:
+              #LogGroupArn: !GetAtt ahlLog.Arn
+        #IncludeExecutionData: true
+        #Level: ERROR
+  #thumbfy:
+    #Description: The lambda that runs a Mediaconvert job to create thumbnail
+    #Type: AWS::Serverless::Function
+    #DeletionPolicy: Delete
+    #Properties:
+      #Handler: thumbfy.lambda_handler
+      #Role: !GetAtt basicLambdaRole.Arn
+      #Runtime: python3.7
+      #CodeUri: ./python/src/
+  #makeFinalVideo:
+    #Description: The lambda that runs a Mediaconvert job to update videos
+    #Type: AWS::Serverless::Function
+    #DeletionPolicy: Delete
+    #Properties:
+      #Handler: make_final_video.lambda_handler
+      #Role: !GetAtt basicLambdaRole.Arn
+      #Runtime: python3.7
+      #CodeUri: ./python/src/
+      #Timeout: 120
+  #prepareData:
+    #Description: The lambda that cleans data before processing frames
+    #Type: AWS::Serverless::Function
+    #DeletionPolicy: Delete
+    #Properties:
+      #Handler: prepare_data.lambda_handler
+      #Role: !GetAtt dynamoLambdaRole.Arn
+      #Runtime: python3.7
+      #CodeUri: ./python/src/
+      #Timeout: 120
+  #frameGrouping:
+    #Description: The lambda that calculates frame grouping before recognizements
+    #Type: AWS::Serverless::Function
+    #DeletionPolicy: Delete
+    #Properties:
+      #Handler: frame_grouping.lambda_handler
+      #Role: !GetAtt basicLambdaRole.Arn
+      #Runtime: python3.7
+      #CodeUri: ./python/src/
+  #recognizer:
+    #Description: The lambda that calculates frame grouping before recognizements
+    #Type: AWS::Serverless::Function
+    #DeletionPolicy: Delete
+    #Properties:
+      #Handler: recognize.lambda_handler
+      #Role: !GetAtt sagemakerDynamoLambdaRole.Arn
+      #Runtime: python3.7
+      #CodeUri: ./python/src/
+      #Environment:
+        #Variables:
+          #ENDPOINT_NAME: IC-completeDataset-1590073086
+      #Timeout: 120
+  #remover:
+    #Description: The lambda that deletes useless objects
+    #Type: AWS::Serverless::Function
+    #DeletionPolicy: Delete
+    #Properties:
+      #Handler: remover.lambda_handler
+      #Role: !GetAtt basicLambdaRole.Arn
+      #Runtime: python3.7
+      #CodeUri: ./python/src/
+  #framer:
+    #Description: The Lambda that creates frames before processing
+    #Type: AWS::Serverless::Function
+    #DeletionPolicy: Delete
+    #Properties:
+      #Handler: framer.lambda_handler
+      #Role: !GetAtt basicLambdaRole.Arn
+      #Runtime: python3.7
+      #CodeUri: ./python/src/
+  #makeResume:
+    #Descrioption: The Lambda that make the first prototipe fo resume file
+    #Type: AWS::Serverless::Function
+    #DeletionPolicy: Delete
+    #Properties:
+      #Handler: make_resume.lambda_handler
+      #Role: !GetAtt dynamoLambdaRole.Arn
+      #Runtime: python3.7
+      #CodeUri: ./python/src/
+      #Timeout: 120
+  #checkNprioritize:
+    #Descrioption: The Lambda that make the first prototipe fo resume file
+    #Type: AWS::Serverless::Function
+    #DeletionPolicy: Delete
+    #Properties:
+      #Handler: check_n_prioritize.lambda_handler
+      #Role: !GetAtt basicLambdaRole.Arn
+      #Runtime: python3.7
+      #CodeUri: ./python/src/
+      #Timeout: 180
+  #notifyProgression:
+    #Descrioption: The Lambda that notify the progression about recognizing
+    #Type: AWS::Serverless::Function
+    #DeletionPolicy: Delete
+    #Properties:
+      #Handler: notify_progression.lambda_handler
+      #Role: !GetAtt basicLambdaRole.Arn
+      #Runtime: python3.7
+      #CodeUri: ./python/src/
+  #updateVideo:
+    #Descrioption: The Lambda that updates the final video
+    #Type: AWS::Serverless::Function
+    #DeletionPolicy: Delete
+    #Properties:
+      #Handler: update_video.lambda_handler
+      #Role: !GetAtt basicLambdaRole.Arn
+      #Runtime: python3.7
+      #CodeUri: ./python/src/
+      #Timeout: 180
+  #keyThumbTransform:
+    #Description: The lambda that transforms a video key in thumbnail key
+    #DeletionPolicy: Delete
+    #Type: AWS::Serverless::Function
+    #Properties:
+      #Handler: key_thumb_transformer.lambda_handler
+      #Role: !GetAtt basicLambdaRole.Arn
+      #Runtime: python3.7
+      #CodeUri: ./python/src/
+      #EventInvokeConfig:
+        #DestinationComfig:
+          #OnSuccess:
+            #Destination: !GetAtt remover.Arn
+            #Type: Lambda
+  #recoJsonCleaner:
+    #Description: The lamda that removes the resume.json file
+    #DeletionPolicy: Delete
+    #Type: AWS::Serverless::Function
+    #Properties:
+      #Handler: reco_json_cleaner.lambda_handler
+      #Role: !GetAtt basicLambdaRole.Arn
+      #Runtime: python3.7
+      #CodeUri: ./python/src/
+  #finalVideoCleaner:
+    #Description: The lamda that removes the mounted video
+    #DeletionPolicy: Delete
+    #Type: AWS::Serverless::Function
+    #Properties:
+      #Handler: final_video_cleaner.lambda_handler
+      #Role: !GetAtt basicLambdaRole.Arn
+      #Runtime: python3.7
+      #CodeUri: ./python/src/
+  #frameCleaner:
+    #Description: The lamda that removes frames used for recognitions
+    #DeletionPolicy: Delete
+    #Type: AWS::Serverless::Function
+    #Properties:
+      #Handler: frame_cleaner.lambda_handler
+      #Role: !GetAtt basicLambdaRole.Arn
+      #Runtime: python3.7
+      #CodeUri: ./python/src/
+      #Timeout: 100
+  #dbCleaner:
+    #Description: The lamda that removes records from db
+    #DeletionPolicy: Delete
+    #Type: AWS::Serverless::Function
+    #Properties:
+      #Handler: db_records_cleaner.lambda_handler
+      #Role: !GetAtt dynamoLambdaRole.Arn
+      #Runtime: python3.7
+      #CodeUri: ./python/src/
+      #Timeout: 240
+  #addLabel:
+    #Description: The lamda that add labels to resumefile
+    #DeletionPolicy: Delete
+    #Type: AWS::Serverless::Function
+    #Properties:
+      #Handler: label_adder.lambda_handler
+      #Role: !GetAtt basicLambdaRole.Arn
+      #Runtime: python3.7
+      #CodeUri: ./python/src/
+      #Timeout: 60
+  #copyFinal:
+    #Description: The lamda that copies the final video
+    #DeletionPolicy: Delete
+    #Type: AWS::Serverless::Function
+    #Properties:
+      #Handler: finish_elaboration.lambda_handler
+      #Role: !GetAtt basicLambdaRole.Arn
+      #Runtime: python3.7
+      #CodeUri: ./python/src/
+      #Timeout: 120
+  #editLabel:
+    #Description: The lamda that edit labels in resumefile
+    #DeletionPolicy: Delete
+    #Type: AWS::Serverless::Function
+    #Properties:
+      #Handler: label_editor.lambda_handler
+      #Role: !GetAtt basicLambdaRole.Arn
+      #Runtime: python3.7
+      #CodeUri: ./python/src/
+      #Timeout: 60
+  #resetLabel:
+    #Description: The lamda that resets labels in resumefile
+    #DeletionPolicy: Delete
+    #Type: AWS::Serverless::Function
+    #Properties:
+      #Handler: label_reset.lambda_handler
+      #Role: !GetAtt basicLambdaRole.Arn
+      #Runtime: python3.7
+      #CodeUri: ./python/src/
+      #Timeout: 20
+  #changeLabelStatus:
+    #Description: The lamda that changes checking in resumefile
+    #DeletionPolicy: Delete
+    #Type: AWS::Serverless::Function
+    #Properties:
+      #Handler: change_label_status.lambda_handler
+      #Role: !GetAtt basicLambdaRole.Arn
+      #Runtime: python3.7
+      #CodeUri: ./python/src/
+      #Timeout: 60
+  #cleanJobs:
+    #Description: The lamda that cleans all jobs
+    #DeletionPolicy: Delete
+    #Type: AWS::Serverless::Function
+    #Properties:
+      #Handler: clean_job.lambda_handler
+      #Role: !GetAtt basicLambdaRole.Arn
+      #Runtime: python3.7
+      #CodeUri: ./python/src/
+      #Timeout: 180
+  #makeModiResume:
+    #Description: The lambda that copies the resume content in the modified one
+    #DeletionPolicy: Delete
+    #Type: AWS::Serverless::Function
+    #Properties:
+      #Handler: make_modified_resume.lambda_handler
+      #Role: !GetAtt basicLambdaRole.Arn
+      #Runtime: python3.7
+      #CodeUri: ./python/src
+      #Timeout: 20
+  #notifyMountEnd:
+    #Description: The lambda that notify the server with sns
+    #DeletionPolicy: Delete
+    #Type: AWS::Serverless::Function
+    #Properties:
+      #Handler: notify_mount_end.lambda_handler
+      #Role: !GetAtt basicLambdaRole.Arn
+      #Runtime: python3.7
+      #CodeUri: ./python/src
+      #Timeout: 20
+  #framerQueue:
+    #Description: The Media Convert Queue for framing jobs
+    #Type: AWS::MediaConvert::Queue
+    #DeletionPolicy: Delete
+    #Properties:
+      #Description: Queue for framing jobs
+      #Name: framer
+      #PricingPlan: ON_DEMAND
+      #Status: ACTIVE
+  #mountQueue:
+    #Description: The Media Convert Queue for customer mounting jobs
+    #Type: AWS::MediaConvert::Queue
+    #DeletionPolicy: Delete
+    #Properties:
+      #Description: Queue for mounting jobs
+      #Name: videoMount
+      #PricingPlan: ON_DEMAND
+      #Status: ACTIVE
+  #framerStatusChange:
+    #Description: The CloudWatch Event for Media Convert job changes
+    #DeletionPolicy: Delete
+    #Type: AWS::Events::Rule
+    #Properties:
+      #Description: Catches events from MediaConvert framer queue
+      #EventPattern:
+        #source:
+          #- aws.mediaconvert
+        #detail-type:
+          #- MediaConvert Job State Change
+        #detail:
+          #status:
+            #- COMPLETE
+          #queue:
+            #- !GetAtt framerQueue.Arn
+      #Name: framerFinish
+      #Targets:
+        #- Arn: !Ref frameWorkflow
+          #Id: frameWorkFlow_Target
+          #RoleArn: !GetAtt stepFRole.Arn
+  #mountStatusChange:
+    #Description: The CloudWatch Event for Media Convert job changes on mount queue
+    #DeletionPolicy: Delete
+    #Type: AWS::Events::Rule
+    #Properties:
+      #Description: Catches events from MediaConvert mount queue
+      #EventPattern:
+        #source:
+          #- aws.mediaconvert
+        #detail-type:
+          #- MediaConvert Job State Change
+        #detail:
+          #status:
+            #- COMPLETE
+          #queue:
+            #- !GetAtt mountQueue.Arn
+      #Name: mountFinish
+      #Targets:
+        #- Arn: !GetAtt notifyMountEnd.Arn
+          #Id: notifier
+  #ahlMlBucket:
+    #Description: The s3 Bucket where data is stored
+    #Type: AWS::S3::Bucket
+    #DeletionPolicy: Delete
+    #Properties:
+      #BucketName: ahlmlbucket
+  #SageMakerExecutionRole:
+    #Type: "AWS::IAM::Role"
+    #Properties:
+      #AssumeRolePolicyDocument:
+        #Statement:
+          #- Effect: "Allow"
+            #Principal:
+              #Service:
+                #- "sagemaker.amazonaws.com"
+            #Action:
+              #- "sts:AssumeRole"
+      #ManagedPolicyArns:
+        #- "arn:aws:iam::aws:policy/AmazonSageMakerFullAccess"
+      #Path: "/service-role/"
+      #Policies:
+        #- PolicyName: SageMakerS3BucketAccess
+          #PolicyDocument:
+            #Version: '2012-10-17'
+            #Statement:
+              #- Effect: Allow
+                #Action:
+                  #- s3:*
+                #Resource:
+                  #- '*'
+  #NotebookCloudWatchLogGroup:
+    #Description: The SageMaker Log Group
+    #DeletionPolicy: Delete
+    #Type: AWS::Logs::LogGroup
