@@ -1,10 +1,10 @@
 AWSTemplateFormatVersion: 2010-09-09
-Transform:
-- AWS::CodeStar
-- AWS::Serverless-2016-10-31
+#Transform:
+#- AWS::CodeStar
+#- AWS::Serverless-2016-10-31
 
-Conditions:
-  UseSubnet: !Not [!Equals [!Ref 'SubnetId', subnet-none]]
+#Conditions:
+  #UseSubnet: !Not [!Equals [!Ref 'SubnetId', subnet-none]]
 
 Parameters:
   ProjectId:
@@ -98,12 +98,12 @@ Resources:
           #OptionName: Subnets
           #Value: !Ref 'SubnetId'
         #- !Ref "AWS::NoValue"
-  #consoleBucket:
-    #Description: The bucket containing videos from the console application
-    #Type: AWS::S3::Bucket
-    #DeletionPolicy: Retain
-    #Properties:
-      #BucketName: "ahlconsolebucket"
+  consoleBucket:
+    Description: The bucket containing videos from the console application
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
+    Properties:
+      BucketName: "ahlconsolebucket"
       #NotificationConfiguration:
         #LambdaConfigurations:
           #- Event: 's3:ObjectCreated:*'
