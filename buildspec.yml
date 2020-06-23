@@ -26,17 +26,17 @@ phases:
       #- nohup /usr/local/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://127.0.0.1:2375 --storage-driver=overlay2&
       #- timeout 15 sh -c "until docker info; do echo .; sleep 1; done"
       # Sonar scanner installation
-      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.3.0.1492-linux.zip
-      - unzip ./sonar-scanner-cli-3.3.0.1492-linux.zip
-      - export PATH=$PATH:./sonar-scanner-3.3.0.1492-linux/bin/
+      #- wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.3.0.1492-linux.zip
+      #- unzip ./sonar-scanner-cli-3.3.0.1492-linux.zip
+      #- export PATH=$PATH:./sonar-scanner-3.3.0.1492-linux/bin/
   pre_build:
     commands:
       - npm test
       #- $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
       #- REPOSITORY_URI=693949087897.dkr.ecr.us-east-2.amazonaws.com/ahlcontainer
       #- COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)
-      - pytest --cov-report xml --cov python/
-      - sonar-scanner -Dsonar.login=$LOGIN -Dsonar.host.url=$HOST -Dsonar.projectKey=$Project -Dsonar.organization=$Organization
+      #- pytest --cov-report xml --cov python/
+      #- sonar-scanner -Dsonar.login=$LOGIN -Dsonar.host.url=$HOST -Dsonar.projectKey=$Project -Dsonar.organization=$Organization
   post_build:
     commands:
       # Remove existing node_modules to clear dev dependencies
@@ -45,7 +45,7 @@ phases:
       # Install runtime dependencies
       - npm install --production
       # - python state_machine_injection.py -c template.yml -o template.complete.yml
-      - aws cloudformation package --template template.complete.yml --s3-bucket $S3_BUCKET --output-template-file template-export.yml
+      - aws cloudformation package --template template.yml --s3-bucket $S3_BUCKET --output-template-file template-export.yml
 
       # Do not remove this statement. This command is required for AWS CodeStar projects.
       # Update the AWS Partition, AWS Region, account ID and project ID in the project ARN on template-configuration.json file so AWS CloudFormation can tag project resources.
